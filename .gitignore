@@ -1,0 +1,51 @@
+# Node specific
+/node_modules
+/npm-debug.log
+/yarn-error.log
+
+# Build directory
+/dist
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sw*
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore client/node_modules
+/client/node_modules
+
+# Ignore server/node_modules
+/server/node_modules
+
+# Ignore logs
+/logs
+*.log
+npm-debug.log*
+
+# Ignore Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Ignore Dependency directories
+/jspm_packages/
+
+# Typings
+typings/
+
+# Optional npm cache directory
+/.npm
+
+# Optional REPL history
+/.node_repl_history
+
+# Ignore production build files
+client/build/
+
+# Ignore IDE/Editor folders
+.vscode
+.idea
