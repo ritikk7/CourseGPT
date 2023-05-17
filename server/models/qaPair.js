@@ -6,8 +6,11 @@ const QAPairSchema = new Schema({
   course: { type: Schema.Types.ObjectId, ref: 'Course' },
   question: { type: Schema.Types.ObjectId, ref: 'Message', required: true },
   answer: { type: Schema.Types.ObjectId, ref: 'Message', required: true },
-  timestamp: { type: Date, default: Date.now },
-});
+},
+  {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  }
+);
 
 const QAPair = mongoose.model('QAPair', QAPairSchema);
 
