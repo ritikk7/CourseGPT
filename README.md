@@ -30,7 +30,16 @@ about the courses the student is taking.
 
 _What type of data will it store?_
 
+Data objects include: Users, Schools, Courses, Chats, Messages, and Feedback. There are
+additional data objects necessary for stretch goals.
+
 _What will users be able to do with this data?_
+
+They will be able to select a school and a course that they are interested in
+learning about, and begin asking questions (generating messages) to CourseGPT.
+They will also be able to view their chat history, delete chats or messages, and
+copy and paste the chat messages to outside sources. Additionally, they can
+change their user profile by editing their email and password.
 
 - changing user profile
 - copy the responses (copying feature)
