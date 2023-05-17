@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  chat: { type: Schema.Types.ObjectId, ref: 'Chat', required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   senderType: { type: String, enum: ['User', 'CourseGPT'], required: true },
   content: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
