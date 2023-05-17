@@ -12,7 +12,7 @@
     1. _Automatically schedule tasks according to effort level, importance, soft
        deadline, and hard deadline_
 6. _Gamified Social Habit Tracker_
-7. _Course GPT_ <-- Chosen
+7. _CourseGPT_ <-- Chosen
 
 ### Project Description
 
@@ -36,7 +36,7 @@ additional data objects necessary for stretch goals.
 _What will users be able to do with this data?_
 
 They will be able to select a school and a course that they are interested in
-learning about, and begin asking questions (generating messages) to CourseGPT.
+learning about, and begin asking questions to CourseGPT.
 They will also be able to view their chat history, delete chats or messages, and
 copy and paste the chat messages to outside sources. Additionally, they can
 change their user profile by editing their email and password.
