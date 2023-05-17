@@ -6,6 +6,7 @@ const UserSchema = new Schema(
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    type: { type: String, enum: ['Student', 'Professor'], default: 'Student' },
     profilePicture: { type: String, default: '' },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -13,10 +14,6 @@ const UserSchema = new Schema(
     chats: [{ type: Schema.Types.ObjectId, ref: 'Chat' }],
     school: { type: Schema.Types.ObjectId, ref: 'School' },
     favourites: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-    settings: {
-      theme: { type: String, enum: ['Dark', 'Light'], default: 'Light' },
-      //...
-    },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
