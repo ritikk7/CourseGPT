@@ -2,6 +2,14 @@
 
 ## Project Progress 1
 
+### Group Members
+
+1. _Carolyn Huang_
+2. _Ritik Keswani_
+3. _Kyle Rich_
+4. _Duffy Du_
+5. _Amy Jo_
+
 ### Brainstorming
 
 1. _Kickstarter clone_
@@ -30,8 +38,9 @@ about the courses the student is taking.
 
 _What type of data will it store?_
 
-Data objects include: Users, Schools, Courses, Chats, Messages, and Feedback. There are
-additional data objects necessary for stretch goals.
+Data objects include: Users, Schools, Courses, Chats, Messages, and Feedback.
+Please see [the models folder](server/models). There are additional data objects
+necessary for stretch goals.
 
 _What will users be able to do with this data?_
 
@@ -39,26 +48,12 @@ They will be able to select a school and a course that they are interested in
 learning about, and begin asking questions to CourseGPT.
 They will also be able to view their chat history, delete chats or messages, and
 copy and paste the chat messages to outside sources. Additionally, they can
+report errors and give feedback on CourseGPT responses so that the developers
+can improve the model, accordingly. They can
 change their user profile by editing their email and password.
-
-- changing user profile
-- copy the responses (copying feature)
-- select school/course and use the trained model to ask questions
-- report errors / provide feedback on prompt answers
-- deleting messages
 
 _What is some additional functionality you can add/remove based on time
 constraints?_
-
-### Project Requirements
-
-**Group Members:**
-
-1. _Carolyn Huang_
-2. _Ritik Keswani_
-3. _Kyle Rich_
-4. _Duffy Du_
-5. _Amy Jo_
 
 ### Project Task Requirements
 
