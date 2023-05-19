@@ -178,4 +178,14 @@ and time constraints.
 
 ### Prototypes
 
-Refer to the XXXX for prototypes of our app.
+Task: User can ask questions and the app will provide responses
+
+![Prototype1 - ask](docs/bot.png)
+
+
+Task: User can create a new account
+
+![Prototype2 - create account](docs/create-account.png)
+
+
+Refer to above for prototypes of our app.
