@@ -7,6 +7,7 @@ const MessageSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     senderType: { type: String, enum: ['User', 'CourseGPT'], required: true },
     content: { type: String, required: true },
+    deleted: { type: Boolean, default: false },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
