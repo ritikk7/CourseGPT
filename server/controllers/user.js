@@ -3,7 +3,7 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  // TODO
+  res.send({ data: 'Hello World, from express' });
 };
 
 const updateUser = (req, res) => {
