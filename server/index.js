@@ -25,11 +25,9 @@ app.use('/api/users', userRoutes);
 const messageRoutes = require('./routes/message');
 app.use('/api/chats/:chatId/messages', messageRoutes);
 
-app.get('/api/details', (req, res) => {
-  res.send({ data: 'Hello World, from express' });
-});
-
 app.listen(port, () => {
-  console.log(`CourseGPT listening on port ${port}!`);
+  console.log(
+    `CourseGPT listening on port ${port}! URL: http://localhost:${port}/`
+  );
   console.log(process.env.JWT_SECRET);
 });
