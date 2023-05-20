@@ -7,7 +7,7 @@ const createMessage = (req, res) => {
 };
 
 const updateMessage = (req, res) => {
-  // TODO
+  // TODO  (may not need this)
 };
 
 const deleteMessage = (req, res) => {

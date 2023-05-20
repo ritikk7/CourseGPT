@@ -20,8 +20,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
+app.use('/api/users', userRoutes);
 
+const messageRoutes = require('./routes/message');
+app.use('/api/chats/:chatId/messages', messageRoutes);
 app.get('/api/details', (req, res) => {
   res.send({ data: 'Hello World, from express' });
 });

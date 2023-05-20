@@ -8,19 +8,19 @@ const {
   deleteMessage,
 } = require('../controllers/message');
 
-router.get('/api/chats/:chatId/messages/:messageId', (req, res) => {
+router.get('/:messageId', (req, res) => {
   getMessage(req, res);
 });
 
-router.post('/api/chats/:chatId/messages', (req, res) => {
-  createMessage(req, res);
+router.post('/', (req, res) => {
+  createMessage(req, res); //may not need this
 });
 
-router.put('/api/chats/:chatId/messages/:messageId', (req, res) => {
+router.put('/:messageId', (req, res) => {
   updateMessage(req, res);
 });
 
-router.delete('/api/chats/:chatId/messages/:messageId', (req, res) => {
+router.delete('/:messageId', (req, res) => {
   deleteMessage(req, res);
 });
 

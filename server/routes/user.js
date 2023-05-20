@@ -8,19 +8,19 @@ const {
   deleteUser,
 } = require('../controllers/user');
 
-router.get('/api/users/:userId', (req, res) => {
+router.get('/:userId', (req, res) => {
   getUser(req, res);
 });
 
-router.post('/api/users', (req, res) => {
+router.post('/', (req, res) => {
   createUser(req, res);
 });
 
-router.put('/api/users/:userId', (req, res) => {
+router.put('/:userId', (req, res) => {
   updateUser(req, res);
 });
 
-router.delete('/api/users/:userId', (req, res) => {
+router.delete('/:userId', (req, res) => {
   deleteUser(req, res);
 });
 
