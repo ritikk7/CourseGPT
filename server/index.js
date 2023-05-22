@@ -15,8 +15,9 @@ const userRoutes = require('./routes/user');
 app.use('/api/users', userRoutes);
 
 const messageRoutes = require('./routes/message');
-const path = require('path');
 app.use('/api/chats/:chatId/messages', messageRoutes);
+
+const path = require('path');
 
 const build = path.join(__dirname, '../client/build');
 if (process.env.NODE_ENV === 'production') {
