@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.listen(port, () => {
   console.log(
-    `CourseGPT listening on port ${port}! URL http://localhost:${port}/`
+    `CourseGPT listening on port ${port}! URL: http://localhost:${port}/`
   );
   console.log(process.env.JWT_SECRET);
 });
