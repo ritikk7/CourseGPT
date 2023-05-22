@@ -5,7 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,7 +15,15 @@ const userRoutes = require('./routes/user');
 app.use('/api/users', userRoutes);
 
 const messageRoutes = require('./routes/message');
+const path = require('path');
 app.use('/api/chats/:chatId/messages', messageRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.listen(port, () => {
   console.log(
