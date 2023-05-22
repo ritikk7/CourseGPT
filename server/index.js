@@ -2,15 +2,7 @@ require('dotenv').config({ path: '.env' });
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
-const fs = require('fs');
-
-// Could not get the .env file to work normally with dotenv :(
-// This is my manual fix
-const envConfig = dotenv.parse(fs.readFileSync('.env'));
-for (const key in envConfig) {
-  process.env[key] = envConfig[key];
-}
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT;
