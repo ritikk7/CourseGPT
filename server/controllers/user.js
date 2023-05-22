@@ -6,7 +6,7 @@ const getUser = (req, res) => {
 
 const createUser = (req, res) => {
   // TODO
-  res.send({ data: `Hello post usr ${process.env.JWT_SECRET}` });
+  res.send({ data: `Hello post usr` });
 };
 
 const updateUser = (req, res) => {
