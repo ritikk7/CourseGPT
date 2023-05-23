@@ -26,10 +26,10 @@ const feedbackRoutes = require('./routes/feedback');
 app.use('/api/users/:userId/messages/:messageId/feedback', feedbackRoutes);
 
 const chatRoutes = require('./routes/chat');
-app.use('api/users/:userId/chats', chatRoutes);
+app.use('/api/users/:userId/chats', chatRoutes);
 
 const qaPairRoutes = require('./routes/qaPair');
-app.use('api/courses/:courseId/chats/:chatId/:questionId/:answerId/', qaPairRoutes);
+app.use('/api/courses/:courseId/chats/:chatId/:questionId/:answerId/', qaPairRoutes);
 
 const path = require('path');
 

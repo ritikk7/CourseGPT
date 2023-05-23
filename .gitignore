@@ -15,6 +15,7 @@
 # Ignore logs
 /logs
 *.log
+/server/hello.txt
 
 # Ignore runtime data
 pids
