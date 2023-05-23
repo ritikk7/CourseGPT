@@ -14,19 +14,25 @@ const userRoutes = require('./routes/user');
 app.use('/api/users', userRoutes);
 
 const messageRoutes = require('./routes/message');
-app.use('/api/chats/:chatId/messages', messageRoutes);
+app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
+
+const qaPairRoutes = require('./routes/qaPair');
+app.use('/api/users/:userId/chats/:chatId/qaPairs', qaPairRoutes);
+
+const chatRoutes = require('./routes/chat');
+app.use('/api/users/:userId/chats', chatRoutes);
+
+const feedbackRoutes = require('./routes/feedback');
+app.use(
+  '/api/users/:userId/chats/:chatId/messages/:messageId/feedbacks',
+  feedbackRoutes
+);
 
 const courseRoutes = require('./routes/course');
 app.use('/api/schools/:schoolId/courses', courseRoutes);
 
 const schoolRoutes = require('./routes/school');
 app.use('/api/schools', schoolRoutes);
-
-const feedbackRoutes = require('./routes/feedback');
-app.use('/api/chats/:chatId/messages/:messageId', feedbackRoutes);
-
-const chatRoutes = require('./routes/chat');
-app.use('/api/users/:userId/chats', chatRoutes);
 
 const path = require('path');
 
