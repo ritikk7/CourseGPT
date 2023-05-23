@@ -17,8 +17,8 @@
 - Data visualization Website (of some random USA data)
 - Algorithm visualization App
 - Automated Google Calendar Scheduling
-    - Automatically schedule tasks according to effort level, importance, soft
-      deadline, and hard deadline
+  - Automatically schedule tasks according to effort level, importance, soft
+    deadline, and hard deadline
 - Gamified Social Habit Tracker
 - CourseGPT <-- Chosen
 
@@ -69,112 +69,112 @@ and time constraints.
 #### Minimal Requirements
 
 1. **Simple user login**
-    - As a user, I want to be able to create an account and log in
-      so that I can access CourseGPT.
+   - As a user, I want to be able to create an account and log in
+     so that I can access CourseGPT.
 2. **Being able to ask questions (1 course supported)**
-    - As a student user, I want to be able to ask questions and
-      receive answers for at least one supported course so that I can understand
-      the course content better.
+   - As a student user, I want to be able to ask questions and
+     receive answers for at least one supported course so that I can understand
+     the course content better.
 3. **Chat history (view)**
-    - As a student user, I want to be able to view my past chats so
-      that I can review the information that I've learned.
+   - As a student user, I want to be able to view my past chats so
+     that I can review the information that I've learned.
 
 #### Standard Requirements
 
 1. **Deleting chat history**
-    - As a student user, I want to be able to clear my chat history
-      so that I can keep my chat interface focused on my current
-      learning goals.
+   - As a student user, I want to be able to clear my chat history
+     so that I can keep my chat interface focused on my current
+     learning goals.
 2. **Feedback on individual messages**
-    - As a user, I want to be able to provide feedback on each
-      response from CourseGPT so that I can help the developers improve
-      CourseGPT
-      and further my learning.
+   - As a user, I want to be able to provide feedback on each
+     response from CourseGPT so that I can help the developers improve
+     CourseGPT
+     and further my learning.
 3. **Favourite courses**
-    - As a student user, I want to be able to favorite courses and
-      have them easily selectable when creating a new chat so that I can quickly
-      access the courses I'm currently studying. Although I recognize that only
-      one course will be significantly trained and useful.
+   - As a student user, I want to be able to favorite courses and
+     have them easily selectable when creating a new chat so that I can quickly
+     access the courses I'm currently studying. Although I recognize that only
+     one course will be significantly trained and useful.
 4. **Suggested prompt generation**
-    - As a student user, I want to have suggested prompts based on
-      my selected course so that I can get ideas for what questions to ask or
-      topics to explore.
+   - As a student user, I want to have suggested prompts based on
+     my selected course so that I can get ideas for what questions to ask or
+     topics to explore.
 5. **Profile changes**
-    - As a user, I want to be able to edit my email and password in my profile
-      settings so that I can keep my account information up to date.
+   - As a user, I want to be able to edit my email and password in my profile
+     settings so that I can keep my account information up to date.
 
 #### Stretch Requirements
 
 1. **Professor improved CourseGPT model**
-    - As a professor user, I want to be able to upload PDF documents
-      that provide more information for training my course
-      so that CourseGPT can provide more helpful answers to students.
+   - As a professor user, I want to be able to upload PDF documents
+     that provide more information for training my course
+     so that CourseGPT can provide more helpful answers to students.
 2. **Professor new CourseGPT model**
-    - As a professor user, I want to be able to upload PDF documents
-      that will be used to create and train a new course so that
-      students in my course can utilize ChatGPT.
+   - As a professor user, I want to be able to upload PDF documents
+     that will be used to create and train a new course so that
+     students in my course can utilize ChatGPT.
 3. **Admin/Developer dashboard**
-    - As an admin, I want to have a dashboard that provides an
-      overview of usage statistics, such as the number of users, number
-      of questions asked, and most popular courses, so that I can understand how
-      the system is being used and make data-driven decisions about how to
-      improve it.
+   - As an admin, I want to have a dashboard that provides an
+     overview of usage statistics, such as the number of users, number
+     of questions asked, and most popular courses, so that I can understand how
+     the system is being used and make data-driven decisions about how to
+     improve it.
 4. **Community feature**
-    - As a student user, I want to be able to see popular questions
-      asked by other students for a certain course and answers endorsed by
-      instructors so that I can learn more from other student usage and what my
-      instructors believe to be important.
+   - As a student user, I want to be able to see popular questions
+     asked by other students for a certain course and answers endorsed by
+     instructors so that I can learn more from other student usage and what my
+     instructors believe to be important.
 5. **Usage Analytics**
-    - As a developer for CourseGPT, I want to have easy
-      access to detailed data related to each course, such as popular questions
-      and answers, feedback on messages, and other relevant data points so that
-      I can analyze user behavior and CourseGPT's performance and
-      improve the models for each course, further increasing user satisfaction
-      and learning.
+   - As a developer for CourseGPT, I want to have easy
+     access to detailed data related to each course, such as popular questions
+     and answers, feedback on messages, and other relevant data points so that
+     I can analyze user behavior and CourseGPT's performance and
+     improve the models for each course, further increasing user satisfaction
+     and learning.
 6. **Multiple Course Support**
-    - As a student user, I want to be able to select multiple different courses
-      and receive helpful assistance in all of them so that I can learn more
-      about all the courses I am taking, rather than just one.
+   - As a student user, I want to be able to select multiple different courses
+     and receive helpful assistance in all of them so that I can learn more
+     about all the courses I am taking, rather than just one.
 7. **Chat Search Functionality**
-    - As a student user, I want to be able to access a search bar to search
-      through all of my chats to easily locate information so that I can
-      efficiently find the information I need without having to scroll through
-      all my chats.
+   - As a student user, I want to be able to access a search bar to search
+     through all of my chats to easily locate information so that I can
+     efficiently find the information I need without having to scroll through
+     all my chats.
 
 ### Task Breakdown
 
 #### Simple user login
 
 - **"Create Account" and "Login" frontend pages**
-    - Design and implement the frontend pages for
-      creating a new account and logging in. These pages should include fields
-      such as email and
-      password.
+  - Design and implement the frontend pages for
+    creating a new account and logging in. These pages should include fields
+    such as email and
+    password.
 - **Set up User API**
-    - Set up endpoints in the backend to handle account creation and login
-      requests.
-    - Implement the logic for validating the input data and storing the user
-      data in the database.
+  - Set up endpoints in the backend to handle account creation and login
+    requests.
+  - Implement the logic for validating the input data and storing the user
+    data in the database.
 - **Set up User schema**
-    - Define the UserSchema for MongoDB.
+  - Define the UserSchema for MongoDB.
 
 #### Being able to ask questions (1 course supported)
 
 - **"Chat" page**
-    - Design and implement the frontend page for course chats. This should
-      include a user input field and a conversation-like interface.
+  - Design and implement the frontend page for course chats. This should
+    include a user input field and a conversation-like interface.
 - **Set up Chat and Message API**
-    - Set up endpoints in the backend to handle chat and chat message requests.
-    - Implement the logic for responding with CourseGPT and storing the chats
-      and messages in the database.
+  - Set up endpoints in the backend to handle chat and chat message requests.
+  - Implement the logic for responding with CourseGPT and storing the chats
+    and messages in the database.
 - **Set up Chat and Message schemas**
-    - Define the ChatSchema and MessageSchema for MongoDB.
+  - Define the ChatSchema and MessageSchema for MongoDB.
 - **Data generation for CourseGPT training**
-    - Generate a list of questions and answers related to one UBC course. Use
-      this data to train the CourseGPT model.
+  - Generate a list of questions and answers related to one UBC course. Use
+    this data to train the CourseGPT model.
 - **Model training**
-    - Implement the logic for training the CourseGPT model based on the training
-      data.
+  - Implement the logic for training the CourseGPT model based on the training
+    data.
 
 ### Prototypes
 
@@ -182,10 +182,8 @@ Task: User can ask questions and the app will provide responses
 
 ![Prototype1 - ask](docs/bot.png)
 
-
 Task: User can create a new account
 
 ![Prototype2 - create account](docs/create-account.png)
-
 
 Refer to above for prototypes of our app.

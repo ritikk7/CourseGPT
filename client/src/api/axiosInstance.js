@@ -1,7 +1,15 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+let api;
+
+if (process.env.NODE_ENV === 'production') {
+  api = axios.create({
+    baseURL: 'https://course-gpt.herokuapp.com/api',
+  });
+} else {
+  api = axios.create({
+    baseURL: 'http://localhost:3001/api',
+  });
+}
 
 export default api;

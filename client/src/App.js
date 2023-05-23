@@ -5,7 +5,7 @@ import api from './api/axiosInstance';
 function App() {
   const callApi = () => {
     api
-      .get('/details')
+      .post('/users')
       .then(response => {
         const data = response.data;
         alert(JSON.stringify(data));
