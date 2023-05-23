@@ -23,13 +23,10 @@ const schoolRoutes = require('./routes/school');
 app.use('/api/schools', schoolRoutes);
 
 const feedbackRoutes = require('./routes/feedback');
-app.use('/api/users/:userId/messages/:messageId/feedback', feedbackRoutes);
+app.use('/api/chats/:chatId/messages/:messageId', feedbackRoutes);
 
 const chatRoutes = require('./routes/chat');
 app.use('/api/users/:userId/chats', chatRoutes);
-
-const qaPairRoutes = require('./routes/qaPair');
-app.use('/api/courses/:courseId/chats/:chatId/:questionId/:answerId/', qaPairRoutes);
 
 const path = require('path');
 
