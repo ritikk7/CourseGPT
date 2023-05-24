@@ -1,5 +1,5 @@
 .App {
-  background-color: #3e414e;
+  background-color: var(--gray1);
   min-height: 100vh;
   display: flex;
   align-items: center;

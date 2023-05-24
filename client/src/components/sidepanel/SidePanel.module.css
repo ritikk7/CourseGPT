@@ -1,8 +1,10 @@
 .sidepanel {
-    background: rgb(29, 29, 30);
+    background: var(--black1);
     width: 18%;
     position: absolute;
     left: 0;
     top: 0;
     height: 100vh;
+    flex-direction: column;
+    display: flex;
 }
