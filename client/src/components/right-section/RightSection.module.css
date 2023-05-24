@@ -30,6 +30,7 @@
     width: 100%;
     outline: none;
     background-color: var(--gray2);
+    color: white;
 }
 
 .input::placeholder {
@@ -42,7 +43,6 @@
     right: 0;
     outline: none;
     border: none;
-    height: 42px;
+    height: 48px;
     width: 60px;
-    margin-top: -42px;
 }

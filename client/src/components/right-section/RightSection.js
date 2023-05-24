@@ -19,6 +19,7 @@ const RightSection = () => {
         <div className={styles.inputSection}>
            <div className={styles.inputArea}>
            <input className={styles.input} placeholder='Enter a prompt...'/>
+       {/* TODO: replace btn with svg */}
             <button className={styles.sendBtn}  onClick={callApi}>Send</button>
            </div>
         </div>
