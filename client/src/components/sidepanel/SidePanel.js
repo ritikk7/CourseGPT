@@ -7,10 +7,8 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider
+  MenuDivider, 
+  Image
  } from '@chakra-ui/react';
  import { HamburgerIcon } from '@chakra-ui/icons'
 
@@ -26,16 +24,23 @@ const SidePanel = () => {
         <Button mt={4} width='100%' bg='transparent' _hover={{ bg: "rgb(61, 61, 61)" }} border='1px' borderColor='gray.300'>+ New Chat</Button>
        </div>
        <div className={styles.profile}>
-        <div>Username</div>
+       
        <Menu>
-
   <MenuButton as={Button} bg='transparent' _hover={{ bg: "rgb(61, 61, 61)" }} _focus={{ bg: "rgb(61, 61, 61)" }} 
-    _expanded={{ bg: "rgb(61, 61, 61)" }}>
-  <HamburgerIcon/>
+    _expanded={{ bg: "rgb(61, 61, 61)" }} leftIcon={  
+    <Image
+      borderRadius='full'
+      boxSize='32px'
+      src='https://bit.ly/dan-abramov'
+      alt='Dan Abramov'
+    />} rightIcon={<HamburgerIcon/>} width='100%'>
+      Username
   </MenuButton>
   <MenuList bg='black' border='none'>
     <MenuItem bg='black'>Profile</MenuItem>
+    <MenuDivider borderColor='rgb(100, 100, 102)'  />
     <MenuItem bg='black'>Clear conversations</MenuItem>
+    <MenuDivider borderColor='rgb(100, 100, 102)' />
     <MenuItem bg='black'>Logout</MenuItem>
   </MenuList>
 </Menu></div> 
