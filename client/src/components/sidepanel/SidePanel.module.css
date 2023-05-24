@@ -8,3 +8,14 @@
     flex-direction: column;
     display: flex;
 }
+
+.courseSelect {
+    width: 90%;
+    margin: auto;
+    margin-top: 16px;
+}
+
+.profile{
+    min-height: 50px;
+    padding: 16px;
+}
