@@ -1,0 +1,8 @@
+.sidepanel {
+    background: rgb(29, 29, 30);
+    width: 18%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+}

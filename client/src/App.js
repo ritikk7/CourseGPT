@@ -1,6 +1,8 @@
 import React from 'react';
 import './styles/App.css';
 import api from './api/axiosInstance';
+import SidePanel from './components/sidepanel/SidePanel';
+import RightSection from './components/right-section/RightSection';
 
 function App() {
   const callApi = () => {
@@ -17,9 +19,9 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <button onClick={callApi}>Call API</button>
-      </header>
+      <SidePanel/>
+      <RightSection/>
+{/*    <button onClick={callApi}>Call API</button> */}
     </div>
   );
 }
