@@ -4,6 +4,9 @@ import api from '../../api/axiosInstance';
 
 import {  Text  } from '@chakra-ui/react';
 
+import { ArrowForwardIcon } from '@chakra-ui/icons'
+
+
 const RightSection = () => {
     const callApi = () => {
         api
@@ -19,14 +22,12 @@ const RightSection = () => {
   return ( 
     <div className={styles.container}>
       <div className={styles.mainPanel}>
-       <Text as='b' fontSize='4xl'> CourseGPT</Text>
+       <Text as='b' fontSize='4xl'>CourseGPT</Text>
       </div>
         <div className={styles.inputSection}>
            <div className={styles.inputArea}>
            <input className={styles.input} placeholder='Enter a prompt...'/>
-       {/* TODO: replace btn with svg */}
-            <button className={styles.sendBtn}  onClick={callApi}>Send</button>
-           </div>
+            <button className={styles.sendBtn} onClick={callApi}><ArrowForwardIcon/></button>           </div>
         </div>
     </div>
   )
