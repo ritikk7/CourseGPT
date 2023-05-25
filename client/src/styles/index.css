@@ -1,9 +1,9 @@
 :root {
  --placeholder: rgb(194, 194, 194);
- --gray1:#373948;
+ --gray1:#353744;
  --gray2: #474a5a;
  --black1: rgb(31, 31, 32); 
- /* menuDividerColor: rgb(100, 100, 102) */
+ /* borderColor: rgb(100, 100, 102) */
 }
 
 body {

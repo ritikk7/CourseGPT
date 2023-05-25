@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './RightSection.module.css';
 import api from '../../api/axiosInstance';
 
+import {  Text  } from '@chakra-ui/react';
+
 const RightSection = () => {
     const callApi = () => {
         api
@@ -16,6 +18,9 @@ const RightSection = () => {
       };
   return ( 
     <div className={styles.container}>
+      <div className={styles.mainPanel}>
+       <Text as='b' fontSize='4xl'> CourseGPT</Text>
+      </div>
         <div className={styles.inputSection}>
            <div className={styles.inputArea}>
            <input className={styles.input} placeholder='Enter a prompt...'/>
