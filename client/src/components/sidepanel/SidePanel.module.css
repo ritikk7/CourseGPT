@@ -1,20 +1,20 @@
 .sidepanel {
-    background: var(--black1);
-    width: 18%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    flex-direction: column;
-    display: flex;
+  background: var(--black1);
+  width: 18%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  flex-direction: column;
+  display: flex;
 }
 
 .courseSelect {
-    width: 90%;
-    margin: auto;
-    margin-top: 16px;
+  width: 90%;
+  margin: auto;
+  margin-top: 16px;
 }
 
-.profile{
-    padding: 16px;
+.profile {
+  padding: 16px;
 }
