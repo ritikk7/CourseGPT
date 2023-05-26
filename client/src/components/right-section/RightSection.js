@@ -4,7 +4,7 @@ import { Text, HStack } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PromptButton from '../PromptButton/PromptButton';
 
-const RightSection = ({ selectedCourse }) => {
+const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
   const [inputText, setInputText] = useState('');
 
   const renderPrompts = () => {
@@ -37,7 +37,13 @@ const RightSection = ({ selectedCourse }) => {
             value={inputText}
             onChange={e => setInputText(e.target.value)}
           />
-          <button className={styles.sendBtn} onClick={() => setInputText('')}>
+          <button
+            className={styles.sendBtn}
+            onClick={() => {
+              setCurrentPrompt(inputText);
+              setInputText('');
+            }}
+          >
             <ArrowForwardIcon />
           </button>
         </div>

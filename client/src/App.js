@@ -9,11 +9,18 @@ function App() {
   const [selectedCourse, setSelectedCourse] = useState(
     new CourseObject('cpsc455')
   );
+  const [currentPrompt, setCurrentPrompt] = useState('');
   return (
     <ChakraProvider>
       <div className="App">
-        <SidePanel setSelectedCourse={setSelectedCourse} />
-        <RightSection selectedCourse={selectedCourse} />
+        <SidePanel
+          setSelectedCourse={setSelectedCourse}
+          currentPrompt={currentPrompt}
+        />
+        <RightSection
+          selectedCourse={selectedCourse}
+          setCurrentPrompt={setCurrentPrompt}
+        />
       </div>
     </ChakraProvider>
   );

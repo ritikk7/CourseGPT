@@ -13,9 +13,9 @@ class CourseObject {
       ];
     } else if (courseName === 'cpsc310') {
       this.prompts = [
-        'What are the learning outcomes of CPSC 310 and their significance in software engineering?',
+        'What are the learning outcomes of CPSC 310?',
         'How is the project graded?',
-        'What is the definition of software and what role does it play in various domains?',
+        'What is the definition of software engineering?',
       ];
     } else {
       this.prompts = [
