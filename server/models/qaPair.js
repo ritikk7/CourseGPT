@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const QAPairSchema = new Schema(
   {
-    chat: { type: Schema.Types.ObjectId, ref: 'Chat', required: true },
-    course: { type: Schema.Types.ObjectId, ref: 'Course', required: true },
-    question: { type: Schema.Types.ObjectId, ref: 'Message', required: true },
-    answer: { type: Schema.Types.ObjectId, ref: 'Message', required: true },
-    keywords: [{ type: String, required: true }],
+    chat: { type: Schema.Types.ObjectId, ref: 'Chat'},
+    course: { type: Schema.Types.ObjectId, ref: 'Course'},
+    question: { type: Schema.Types.ObjectId, ref: 'Message'},
+    answer: { type: Schema.Types.ObjectId, ref: 'Message'},
+    keywords: [{ type: String}],
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

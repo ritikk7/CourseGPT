@@ -4,11 +4,10 @@ const Schema = mongoose.Schema;
 const SchoolSchema = new Schema(
   {
     name: { type: String, required: true, unique: true },
-    location: { type: String, required: true },
+    location: { type: String},
     type: {
       type: String,
-      enum: ['University', 'College', 'High School'],
-      required: true,
+      enum: ['University', 'College', 'High School']
     },
     website: { type: String, default: '' },
     logo: { type: String, default: '' },
