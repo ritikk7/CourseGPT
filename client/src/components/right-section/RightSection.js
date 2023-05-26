@@ -11,7 +11,7 @@ const prompts = [
   'What technologies will be applied in the CPSC455 course?',
 ];
 
-const RightSection = () => {
+const RightSection = ({ selectedCourse }) => {
   const [inputText, setInputText] = useState('');
 
   const PromptButton = ({ promptText }) => {
@@ -33,17 +33,23 @@ const RightSection = () => {
     );
   };
 
+  const renderPrompts = () => {
+    return (
+      <HStack mt={24} spacing="16px" className={styles.fadeIn}>
+        {prompts.map((prompt, i) => (
+          <PromptButton key={i} promptText={prompt} />
+        ))}
+      </HStack>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.mainPanel}>
         <Text as="b" fontSize="4xl">
           CourseGPT
         </Text>
-        <HStack mt={24} spacing="16px">
-          {prompts.map(prompt => (
-            <PromptButton promptText={prompt} />
-          ))}
-        </HStack>
+        {selectedCourse === 'cpsc455' && renderPrompts()}
       </div>
       <div className={styles.inputSection}>
         <div className={styles.inputArea}>

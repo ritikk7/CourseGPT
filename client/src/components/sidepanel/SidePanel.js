@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 
-const SidePanel = () => {
+const SidePanel = ({ setSelectedCourse }) => {
   const callApi = () => {
     api
       .post('/users')
@@ -29,9 +29,12 @@ const SidePanel = () => {
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
         <Select
-          placeholder="Select a course"
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           borderColor="rgb(100, 100, 102)"
+          defaultValue="cpsc455"
+          onChange={e => {
+            setSelectedCourse(e.target.value);
+          }}
         >
           <option value="cpsc455">CPSC455</option>
           <option value="cpsc310">CPSC310</option>
