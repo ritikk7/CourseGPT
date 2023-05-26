@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styles from './RightSection.module.css';
 
-import { Text, HStack, Button } from '@chakra-ui/react';
+import { Text, HStack } from '@chakra-ui/react';
 
 import { ArrowForwardIcon } from '@chakra-ui/icons';
+import PromptButton from '../PromptButton/PromptButton';
 
 const prompts = [
   'What is the course CPSC455 about?',
@@ -11,33 +12,24 @@ const prompts = [
   'What technologies will be applied in the CPSC455 course?',
 ];
 
+const prompts310 = [
+  'What are the learning outcomes of CPSC 310 and their significance in software engineering?',
+  'How is the project graded?',
+  'What is the definition of software and what role does it play in various domains?',
+];
+
 const RightSection = ({ selectedCourse }) => {
   const [inputText, setInputText] = useState('');
-
-  const PromptButton = ({ promptText }) => {
-    return (
-      <Button
-        bg="#42434f"
-        _hover={{ bg: '#2b2b2e' }}
-        border="none"
-        whiteSpace="normal"
-        blockSize="auto"
-        px={8}
-        py={4}
-        onClick={() => setInputText(promptText)}
-      >
-        <Text fontSize="md" fontWeight={400}>
-          {promptText}
-        </Text>
-      </Button>
-    );
-  };
 
   const renderPrompts = () => {
     return (
       <HStack mt={24} spacing="16px" className={styles.fadeIn}>
         {prompts.map((prompt, i) => (
-          <PromptButton key={i} promptText={prompt} />
+          <PromptButton
+            key={i}
+            promptText={prompt}
+            setInputText={setInputText}
+          />
         ))}
       </HStack>
     );

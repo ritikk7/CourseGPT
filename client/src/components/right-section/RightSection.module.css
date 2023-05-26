@@ -54,7 +54,7 @@
 }
 
 .fadeIn {
-  animation: fadeIn 0.4s;
+  animation: fadeIn 0.5s;
 }
 
 @keyframes fadeIn {
