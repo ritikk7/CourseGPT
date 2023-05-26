@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './SidePanel.module.css';
+import api from '../../api/axiosInstance';
 import {
   Select,
   Button,
@@ -13,6 +14,17 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 
 const SidePanel = () => {
+  const callApi = () => {
+    api
+      .post('/users')
+      .then(response => {
+        const data = response.data;
+        alert(JSON.stringify(data));
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
@@ -32,6 +44,7 @@ const SidePanel = () => {
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           border="1px"
           borderColor="rgb(100, 100, 102)"
+          onClick={callApi}
         >
           + New Chat
         </Button>
