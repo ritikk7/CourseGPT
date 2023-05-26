@@ -16,4 +16,4 @@ const QAPairSchema = new Schema(
 
 const QAPair = mongoose.model('QAPair', QAPairSchema);
 
-module.exports = { QAPair };
+module.exports = QAPair;

@@ -1,4 +1,4 @@
-const getQaPair = (req, res) => {
+const getQaPair = async (req, res) => {
   // TODO
   const qaPairId = req.params.qaPairId;
   const courseId = req.params.courseId;
@@ -10,7 +10,7 @@ const getQaPair = (req, res) => {
   });
 };
 
-const createQaPair = (req, res) => {
+const createQaPair = async (req, res) => {
   // TODO
   const courseId = req.params.courseId;
   const chatId = req.params.chatId;
@@ -21,7 +21,7 @@ const createQaPair = (req, res) => {
   });
 };
 
-const updateQaPair = (req, res) => {
+const updateQaPair = async (req, res) => {
   // TODO
   const qaPairId = req.params.qaPairId;
   const courseId = req.params.courseId;
@@ -33,7 +33,7 @@ const updateQaPair = (req, res) => {
   });
 };
 
-const deleteQaPair = (req, res) => {
+const deleteQaPair = async (req, res) => {
   // TODO
   const qaPairId = req.params.qaPairId;
   const courseId = req.params.courseId;
