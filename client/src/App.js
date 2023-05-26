@@ -1,26 +1,17 @@
 import React from 'react';
 import './styles/App.css';
-import api from './api/axiosInstance';
+import SidePanel from './components/sidepanel/SidePanel';
+import RightSection from './components/right-section/RightSection';
+import { ChakraProvider } from '@chakra-ui/react';
 
 function App() {
-  const callApi = () => {
-    api
-      .post('/users')
-      .then(response => {
-        const data = response.data;
-        alert(JSON.stringify(data));
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={callApi}>Call API</button>
-      </header>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <SidePanel />
+        <RightSection />
+      </div>
+    </ChakraProvider>
   );
 }
 
