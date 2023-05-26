@@ -12,6 +12,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import CourseObject from '../../models/CourseObject';
 
 const SidePanel = ({ setSelectedCourse }) => {
   const callApi = () => {
@@ -33,7 +34,7 @@ const SidePanel = ({ setSelectedCourse }) => {
           borderColor="rgb(100, 100, 102)"
           defaultValue="cpsc455"
           onChange={e => {
-            setSelectedCourse(e.target.value);
+            setSelectedCourse(new CourseObject(e.target.value));
           }}
         >
           <option value="cpsc455">CPSC455</option>

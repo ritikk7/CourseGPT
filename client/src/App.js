@@ -3,9 +3,12 @@ import './styles/App.css';
 import SidePanel from './components/sidepanel/SidePanel';
 import RightSection from './components/right-section/RightSection';
 import { ChakraProvider } from '@chakra-ui/react';
+import CourseObject from './models/CourseObject';
 
 function App() {
-  const [selectedCourse, setSelectedCourse] = useState('cpsc455');
+  const [selectedCourse, setSelectedCourse] = useState(
+    new CourseObject('cpsc455')
+  );
   return (
     <ChakraProvider>
       <div className="App">
