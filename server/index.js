@@ -2,51 +2,64 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
-
-const app = express();
-const port = process.env.PORT || 3001;
-app.use(cors());
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-const userRoutes = require('./routes/user');
-app.use('/api/users', userRoutes);
-
-const messageRoutes = require('./routes/message');
-app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
-
-const qaPairRoutes = require('./routes/qaPair');
-app.use('/api/users/:userId/chats/:chatId/qaPairs', qaPairRoutes);
-
-const chatRoutes = require('./routes/chat');
-app.use('/api/users/:userId/chats', chatRoutes);
-
-const feedbackRoutes = require('./routes/feedback');
-app.use(
-  '/api/users/:userId/chats/:chatId/messages/:messageId/feedbacks',
-  feedbackRoutes
-);
-
-const courseRoutes = require('./routes/course');
-app.use('/api/schools/:schoolId/courses', courseRoutes);
-
-const schoolRoutes = require('./routes/school');
-app.use('/api/schools', schoolRoutes);
-
+const connectToDB = require('./database/connectToDB');
 const path = require('path');
+const userRoutes = require("./routes/user");
+const messageRoutes = require("./routes/message");
+const qaPairRoutes = require("./routes/qaPair");
+const chatRoutes = require("./routes/chat");
+const feedbackRoutes = require("./routes/feedback");
+const courseRoutes = require("./routes/course");
+const schoolRoutes = require("./routes/school");
 
-const build = path.join(__dirname, '../client/build');
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(build));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(build, 'index.html'));
-  });
+start();
+
+function start() {
+    const app = express();
+    const port = process.env.PORT || 3001;
+    setupExpress(app);
+    setupRoutes(app);
+    if (process.env.NODE_ENV === 'production') serveBuild(app);
+
+    run(app, port);
 }
 
-app.listen(port, () => {
-  console.log(
-    `CourseGPT listening on port ${port}! URL: http://localhost:${port}/`
-  );
-  console.log(process.env.JWT_SECRET);
-});
+function setupExpress(app) {
+    app.use(cors());
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.json());
+}
+
+function setupRoutes(app) {
+    app.use('/api/users', userRoutes);
+    app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
+    app.use('/api/users/:userId/chats/:chatId/qaPairs', qaPairRoutes);
+    app.use('/api/users/:userId/chats', chatRoutes);
+    app.use(
+        '/api/users/:userId/chats/:chatId/messages/:messageId/feedbacks',
+        feedbackRoutes
+    );
+    app.use('/api/schools/:schoolId/courses', courseRoutes);
+    app.use('/api/schools', schoolRoutes);
+}
+
+function serveBuild(app) {
+    const buildPath = path.join(__dirname, '../client/build');
+    if (process.env.NODE_ENV === 'production') {
+        app.use(express.static(buildPath));
+        app.get('*', (req, res) => {
+            res.sendFile(path.resolve(buildPath, 'index.html'));
+        });
+    }
+}
+
+function run(app, port) {
+    connectToDB().then(() => {
+        app.listen(port, () => {
+            console.log(
+                `CourseGPT server is running on port ${port}! URL: http://localhost:${port}/`
+            );
+            console.log(process.env.JWT_SECRET);
+        });
+    });
+}

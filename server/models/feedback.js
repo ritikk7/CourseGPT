@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const FeedbackSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    message: { type: Schema.Types.ObjectId, ref: 'Message', required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User'},
+    message: { type: Schema.Types.ObjectId, ref: 'Message'},
     rating: { type: Number, required: true, min: 1, max: 5 },
     comment: { type: String, default: '' },
   },
@@ -15,4 +15,4 @@ const FeedbackSchema = new Schema(
 
 const Feedback = mongoose.model('Feedback', FeedbackSchema);
 
-module.exports = { Feedback };
+module.exports = Feedback;
