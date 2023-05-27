@@ -1,60 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './RightSection.module.css';
-import api from '../../api/axiosInstance';
-
-import { Text, HStack, Button } from '@chakra-ui/react';
-
+import { Text, HStack } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
+import PromptButton from '../PromptButton/PromptButton';
 
-const RightSection = () => {
-  const PromptButton = () => {
+const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
+  const [inputText, setInputText] = useState('');
+
+  const renderPrompts = () => {
     return (
-      <Button
-        bg="#42434f"
-        _hover={{ bg: '#2b2b2e' }}
-        border="none"
-        whiteSpace="normal"
-        blockSize="auto"
-        px={8}
-        py={4}
-      >
-        <Text fontSize="md" fontWeight={400}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor?
-        </Text>
-      </Button>
+      <HStack mt={24} spacing="16px">
+        {selectedCourse.getPrompts().map((prompt, i) => (
+          <PromptButton
+            key={i}
+            promptText={prompt}
+            setInputText={setInputText}
+          />
+        ))}
+      </HStack>
     );
   };
 
-  const callApi = () => {
-    api
-      .post('/users')
-      .then(response => {
-        const data = response.data;
-        alert(JSON.stringify(data));
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
   return (
     <div className={styles.container}>
       <div className={styles.mainPanel}>
         <Text as="b" fontSize="4xl">
           CourseGPT
         </Text>
-        <HStack mt={24} spacing="16px">
-          <PromptButton />
-          <PromptButton />
-          <PromptButton />
-        </HStack>
+        {renderPrompts()}
       </div>
       <div className={styles.inputSection}>
         <div className={styles.inputArea}>
-          <input className={styles.input} placeholder="Enter a prompt..." />
-          <button className={styles.sendBtn} onClick={callApi}>
+          <input
+            className={styles.input}
+            placeholder="Enter a prompt..."
+            value={inputText}
+            onChange={e => setInputText(e.target.value)}
+          />
+          <button
+            className={styles.sendBtn}
+            onClick={() => {
+              setCurrentPrompt(inputText);
+              setInputText('');
+            }}
+          >
             <ArrowForwardIcon />
-          </button>{' '}
+          </button>
         </div>
       </div>
     </div>

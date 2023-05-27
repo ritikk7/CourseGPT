@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './SidePanel.module.css';
+import api from '../../api/axiosInstance';
 import {
   Select,
   Button,
@@ -11,15 +12,30 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import CourseObject from '../../models/CourseObject';
 
-const SidePanel = () => {
+const SidePanel = ({ setSelectedCourse }) => {
+  const callApi = () => {
+    api
+      .post('/users')
+      .then(response => {
+        const data = response.data;
+        alert(JSON.stringify(data));
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
         <Select
-          placeholder="Select a course"
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           borderColor="rgb(100, 100, 102)"
+          defaultValue="cpsc455"
+          onChange={e => {
+            setSelectedCourse(new CourseObject(e.target.value));
+          }}
         >
           <option value="cpsc455">CPSC455</option>
           <option value="cpsc310">CPSC310</option>
@@ -32,6 +48,7 @@ const SidePanel = () => {
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           border="1px"
           borderColor="rgb(100, 100, 102)"
+          onClick={callApi}
         >
           + New Chat
         </Button>
