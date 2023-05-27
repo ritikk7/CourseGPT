@@ -1,23 +1,30 @@
-const getUser = (req, res) => {
+const User = require("../models/user");
+const getUser = async (req, res) => {
   // TODO
   const userId = req.params.userId;
-  res.send({ data: `Hello get usr ${userId}` });
+  //const user = await User.findById(userId);
+  res.send({data: `Hello get usr ${userId}`});
 };
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   // TODO
+  //const newUser = new User(req.body);
+  //const createdUser = await newUser.save();
   res.send({ data: `Hello post usr` });
 };
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
   // TODO
   const userId = req.params.userId;
-  res.send({ data: `Hello put usr ${userId}` });
+  const updates = req.body;
+  //const updatedUser = await User.findByIdAndUpdate(userId, updates);
+  res.send({ data: `Hello put usr ${userId} ${updates}` });
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
   // TODO
   const userId = req.params.userId;
+  //const deletedUser = await User.findByIdAndDelete(userId);
   res.send({ data: `Hello delete usr ${userId}` });
 };
 

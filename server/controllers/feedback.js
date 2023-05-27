@@ -1,4 +1,4 @@
-const getFeedback = (req, res) => {
+const getFeedback = async (req, res) => {
   // TODO
   const userId = req.params.userId;
   const messageId = req.params.messageId;
@@ -8,7 +8,7 @@ const getFeedback = (req, res) => {
   });
 };
 
-const createFeedback = (req, res) => {
+const createFeedback = async (req, res) => {
   // TODO
   const userId = req.params.userId;
   const messageId = req.params.messageId;
@@ -17,7 +17,7 @@ const createFeedback = (req, res) => {
   });
 };
 
-const updateFeedback = (req, res) => {
+const updateFeedback = async (req, res) => {
   // TODO
   const userId = req.params.userId;
   const messageId = req.params.messageId;
@@ -27,7 +27,7 @@ const updateFeedback = (req, res) => {
   });
 };
 
-const deleteFeedback = (req, res) => {
+const deleteFeedback = async (req, res) => {
   // TODO
   const userId = req.params.userId;
   const messageId = req.params.messageId;

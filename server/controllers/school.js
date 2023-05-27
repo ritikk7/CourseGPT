@@ -1,22 +1,22 @@
-const getSchool = (req, res) => {
+const getSchool = async (req, res) => {
   // TODO
   const schoolId = req.params.schoolId;
   res.send({ data: `Hello get school ${schoolId}` });
 };
 
-const createSchool = (req, res) => {
+const createSchool = async (req, res) => {
   // TODO
   const schoolId = req.params.schoolId;
   res.send({ data: `Hello create school in ${schoolId}` });
 };
 
-const updateSchool = (req, res) => {
+const updateSchool = async (req, res) => {
   // TODO
   const schoolId = req.params.schoolId;
   res.send({ data: `Hello update school ${schoolId}` });
 };
 
-const deleteSchool = (req, res) => {
+const deleteSchool = async (req, res) => {
   // TODO (need to delete associated courses when this happens)
   const schoolId = req.params.schoolId;
   res.send({ data: `Hello delete school ${schoolId}` });

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User'},
     messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
     course: { type: Schema.Types.ObjectId, ref: 'Course' },
     deleted: { type: Boolean, default: false },
@@ -15,4 +15,4 @@ const ChatSchema = new Schema(
 
 const Chat = mongoose.model('Chat', ChatSchema);
 
-module.exports = { Chat };
+module.exports = Chat;
