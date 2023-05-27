@@ -1,5 +1,5 @@
 # CourseGPT
-
+[CourseGPT](https://course-gpt.herokuapp.com/)
 ## Project Progress 1
 
 ### Group Members
