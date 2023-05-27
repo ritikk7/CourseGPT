@@ -186,4 +186,4 @@ Task: User can create a new account
 
 ![Prototype2 - create account](docs/create-account.png)
 
-Refer to above for prototypes of our app.
+Refer to above for prototypes of our app. Or navigate to our [deployed version](https://course-gpt.herokuapp.com/)
