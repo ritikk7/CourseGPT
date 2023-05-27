@@ -1,0 +1,54 @@
+.container {
+  width: 82%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+}
+
+.inputSection {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 16vh;
+}
+
+.inputArea {
+  margin-top: 16px;
+  width: 60%;
+  text-align: center;
+  margin: auto;
+  position: relative;
+}
+
+.input {
+  padding: 12px;
+  box-shadow: rgba(48, 45, 45, 0.2) 0px 7px 29px 0px;
+  border-radius: 4px;
+  font-size: medium;
+  border: none;
+  width: 100%;
+  outline: none;
+  background-color: var(--gray2);
+  color: white;
+}
+
+.input::placeholder {
+  color: var(--placeholder);
+}
+
+.sendBtn {
+  background: transparent;
+  position: absolute;
+  right: 0;
+  outline: none;
+  border: none;
+  height: 48px;
+  width: 66px;
+}
+
+.mainPanel {
+  text-align: center;
+  padding: 13vh;
+  height: 84vh;
+}

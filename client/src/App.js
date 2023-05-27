@@ -1,26 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/App.css';
-import api from './api/axiosInstance';
+import SidePanel from './components/sidepanel/SidePanel';
+import RightSection from './components/right-section/RightSection';
+import { ChakraProvider } from '@chakra-ui/react';
+import CourseObject from './models/CourseObject';
 
 function App() {
-  const callApi = () => {
-    api
-      .get('/details')
-      .then(response => {
-        const data = response.data;
-        alert(JSON.stringify(data));
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
-
+  const [selectedCourse, setSelectedCourse] = useState(
+    new CourseObject('cpsc455')
+  );
+  const [currentPrompt, setCurrentPrompt] = useState('');
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={callApi}>Call API</button>
-      </header>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <SidePanel
+          setSelectedCourse={setSelectedCourse}
+          currentPrompt={currentPrompt}
+        />
+        <RightSection
+          selectedCourse={selectedCourse}
+          setCurrentPrompt={setCurrentPrompt}
+        />
+      </div>
+    </ChakraProvider>
   );
 }
 
