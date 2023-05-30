@@ -12,6 +12,8 @@ const chatRoutes = require("./routes/chat");
 const feedbackRoutes = require("./routes/feedback");
 const courseRoutes = require("./routes/course");
 const schoolRoutes = require("./routes/school");
+const passport = require("./config/passport");
+
 const testing = process.env.NODE_ENV !== 'production';
 
 start();
@@ -28,7 +30,7 @@ function start() {
 function setupExpress(app) {
     app.use(cors());
     app.use(bodyParser.urlencoded({extended: false}));
-    app.use(bodyParser.json());
+    app.use(passport.initialize());
 }
 
 function setupRoutes(app) {
@@ -47,21 +49,16 @@ function setupRoutes(app) {
 
 function serveBuild(app) {
     const buildPath = path.join(__dirname, '../client/build');
-    if (process.env.NODE_ENV === 'production') {
-        app.use(express.static(buildPath));
-        app.get('*', (req, res) => {
-            res.sendFile(path.resolve(buildPath, 'index.html'));
-        });
-    }
+    app.use(express.static(buildPath));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(buildPath, 'index.html'));
+    });
 }
 
 function run(app, port) {
     connectToDB().then(() => {
         app.listen(port, () => {
-            console.log(
-                `CourseGPT server is running on port ${port}! URL: http://localhost:${port}/`
-            );
-            console.log(process.env.JWT_SECRET);
+            console.log(`Running on port ${port}! URL: http://localhost:${port}/`);
         });
     });
 }
