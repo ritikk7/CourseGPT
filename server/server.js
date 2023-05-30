@@ -23,7 +23,7 @@ function start() {
     const port = process.env.PORT || 3001;
     setupExpress(app);
     setupRoutes(app);
-    if (!testing) serveBuild(app);
+    if (testing) serveBuild(app);
     run(app, port);
 }
 

@@ -1,17 +1,9 @@
-const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
-function googleAuth() {
-    passport.authenticate('google', {session: false, scope: ['profile', 'email']})
-}
-
-function googleCallback() {
-    passport.authenticate('google', {session: false, failureRedirect: '/login'});
-}
-
 function jwtSign(req, res) {
+    console.log(req.user);
     const payload = {
         user: {
             id: req.user.id
@@ -83,8 +75,6 @@ function validateToken(req, res, next) {
 }
 
 module.exports = {
-    googleAuth,
-    googleCallback,
     jwtSign,
     register,
     login,
