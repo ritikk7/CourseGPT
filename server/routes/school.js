@@ -8,20 +8,12 @@ const {
   deleteSchool,
 } = require('../controllers/school');
 
-router.get('/:schoolId', (req, res) => {
-  getSchool(req, res);
-});
+router.get('/:schoolId', getSchool);
 
-router.post('/', (req, res) => {
-  createSchool(req, res);
-});
+router.post('/', createSchool);
 
-router.put('/:schoolId', (req, res) => {
-  updateSchool(req, res);
-});
+router.put('/:schoolId', updateSchool);
 
-router.delete('/:schoolId', (req, res) => {
-  deleteSchool(req, res);
-});
+router.delete('/:schoolId', deleteSchool);
 
 module.exports = router;

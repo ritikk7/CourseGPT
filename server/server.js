@@ -2,8 +2,9 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
-const connectToDB = require('./database/connectToDB');
+const connectToDB = require('./config/connectToDB');
 const path = require('path');
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const messageRoutes = require("./routes/message");
 const qaPairRoutes = require("./routes/qaPair");
@@ -11,6 +12,7 @@ const chatRoutes = require("./routes/chat");
 const feedbackRoutes = require("./routes/feedback");
 const courseRoutes = require("./routes/course");
 const schoolRoutes = require("./routes/school");
+const testing = process.env.NODE_ENV !== 'production';
 
 start();
 
@@ -19,8 +21,7 @@ function start() {
     const port = process.env.PORT || 3001;
     setupExpress(app);
     setupRoutes(app);
-    if (process.env.NODE_ENV === 'production') serveBuild(app);
-
+    if (!testing) serveBuild(app);
     run(app, port);
 }
 
@@ -31,6 +32,7 @@ function setupExpress(app) {
 }
 
 function setupRoutes(app) {
+    app.use('/api/auth', authRoutes);
     app.use('/api/users', userRoutes);
     app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
     app.use('/api/users/:userId/chats/:chatId/qaPairs', qaPairRoutes);
@@ -63,3 +65,5 @@ function run(app, port) {
         });
     });
 }
+
+module.exports = testing;

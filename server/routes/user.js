@@ -8,20 +8,12 @@ const {
   deleteUser,
 } = require('../controllers/user');
 
-router.get('/:userId', (req, res) => {
-  getUser(req, res);
-});
+router.get('/:userId', getUser);
 
-router.post('/', (req, res) => {
-  createUser(req, res);
-});
+router.post('/', createUser);
 
-router.put('/:userId', (req, res) => {
-  updateUser(req, res);
-});
+router.put('/:userId', updateUser);
 
-router.delete('/:userId', (req, res) => {
-  deleteUser(req, res);
-});
+router.delete('/:userId', deleteUser);
 
 module.exports = router;

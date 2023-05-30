@@ -12,20 +12,12 @@ const {
   deleteQaPair,
 } = require('../controllers/qaPair');
 
-router.get('/:qaPairId', (req, res) => {
-  getQaPair(req, res);
-});
+router.get('/:qaPairId', getQaPair);
 
-router.post('/', (req, res) => {
-  createQaPair(req, res); //may not need this
-});
+router.post('/', createQaPair);
 
-router.put('/:qaPairId', (req, res) => {
-  updateQaPair(req, res);
-});
+router.put('/:qaPairId', updateQaPair);
 
-router.delete('/:qaPairId', (req, res) => {
-  deleteQaPair(req, res);
-});
+router.delete('/:qaPairId',deleteQaPair);
 
 module.exports = router;

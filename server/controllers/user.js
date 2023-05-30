@@ -11,7 +11,7 @@ async function createUser(req, res) {
   // TODO
   //const newUser = new User(req.body);
   //const createdUser = await newUser.save();
-  res.send({ data: `Hello post usr` });
+  res.send({ data: `Hello post usr ${req}` });
 }
 
 async function updateUser(req, res) {

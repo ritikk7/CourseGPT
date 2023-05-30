@@ -8,20 +8,12 @@ const {
   deleteChat,
 } = require('../controllers/chat');
 
-router.get('/:chatId', (req, res) => {
-  getChat(req, res);
-});
+router.get('/:chatId', getChat);
 
-router.post('/', (req, res) => {
-  createChat(req, res);
-});
+router.post('/', createChat);
 
-router.put('/:chatId', (req, res) => {
-  updateChat(req, res);
-});
+router.put('/:chatId', updateChat);
 
-router.delete('/:chatId', (req, res) => {
-  deleteChat(req, res);
-});
+router.delete('/:chatId', deleteChat);
 
 module.exports = router;

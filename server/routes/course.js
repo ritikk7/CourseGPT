@@ -8,20 +8,12 @@ const {
   deleteCourse,
 } = require('../controllers/course');
 
-router.get('/:courseId', (req, res) => {
-  getCourse(req, res);
-});
+router.get('/:courseId', getCourse);
 
-router.post('/', (req, res) => {
-  createCourse(req, res);
-});
+router.post('/', createCourse);
 
-router.put('/:courseId', (req, res) => {
-  updateCourse(req, res);
-});
+router.put('/:courseId', updateCourse);
 
-router.delete('/:courseId', (req, res) => {
-  deleteCourse(req, res);
-});
+router.delete('/:courseId', deleteCourse);
 
 module.exports = router;

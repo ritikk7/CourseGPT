@@ -8,20 +8,12 @@ const {
   deleteMessage,
 } = require('../controllers/message');
 
-router.get('/:messageId', (req, res) => {
-  getMessage(req, res);
-});
+router.get('/:messageId', getMessage);
 
-router.post('/', (req, res) => {
-  createMessage(req, res); //may not need this
-});
+router.post('/', createMessage);
 
-router.put('/:messageId', (req, res) => {
-  updateMessage(req, res);
-});
+router.put('/:messageId', updateMessage);
 
-router.delete('/:messageId', (req, res) => {
-  deleteMessage(req, res);
-});
+router.delete('/:messageId', deleteMessage);
 
 module.exports = router;

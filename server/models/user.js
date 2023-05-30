@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate')
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String},
+    googleId: { type: String, unique: true },
     type: {
       type: String,
       enum: ['Student', 'Professor', 'Admin', 'Developer'],
@@ -22,7 +24,7 @@ const UserSchema = new Schema(
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
   }
 );
-
+UserSchema.plugin(findOrCreate);
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User ;

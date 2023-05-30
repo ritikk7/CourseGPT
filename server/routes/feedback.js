@@ -8,20 +8,12 @@ const {
   deleteFeedback,
 } = require('../controllers/feedback');
 
-router.get('/:feedbackId', (req, res) => {
-  getFeedback(req, res);
-});
+router.get('/:feedbackId', getFeedback);
 
-router.post('/', (req, res) => {
-  createFeedback(req, res);
-});
+router.post('/', createFeedback);
 
-router.put('/:feedbackId', (req, res) => {
-  updateFeedback(req, res);
-});
+router.put('/:feedbackId', updateFeedback);
 
-router.delete('/:feedbackId', (req, res) => {
-  deleteFeedback(req, res);
-});
+router.delete('/:feedbackId', deleteFeedback);
 
 module.exports = router;
