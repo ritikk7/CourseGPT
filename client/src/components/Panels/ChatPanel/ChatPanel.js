@@ -4,6 +4,7 @@ import styles from './ChatPanel.module.css';
 import ChatSection from '../../Chat/ChatSection';
 
 const ChatPanel = () => {
+  // from chatGPT prompts
   const staticChats = [
     'Why is the sky blue?',
     `The sky appears blue due to a phenomenon called Rayleigh scattering. The Earth's atmosphere is composed of various molecules and tiny particles, such as nitrogen and oxygen molecules, as well as dust and water droplets. When sunlight reaches the Earth's atmosphere, it contains a wide range of colors, including all the colors of the visible spectrum: red, orange, yellow, green, blue, indigo, and violet. Imagine flipping a coin. In classical computing, it can either be heads (0) or tails (1), but in quantum computing, a qubit can be in a state that is both heads and tails simultaneously. It's like the qubit is spinning and can be both up and down at once.`,

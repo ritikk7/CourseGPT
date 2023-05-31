@@ -12,28 +12,32 @@ const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
   // );
   const [mainPanel, setMainPanel] = useState(<ChatPanel />);
 
+  const renderInput = () => (
+    <div className={styles.inputSection}>
+      <div className={styles.inputArea}>
+        <input
+          className={styles.input}
+          placeholder="Enter a prompt..."
+          value={inputText}
+          onChange={e => setInputText(e.target.value)}
+        />
+        <button
+          className={styles.sendBtn}
+          onClick={() => {
+            setCurrentPrompt(inputText);
+            setInputText('');
+          }}
+        >
+          <ArrowForwardIcon />
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className={styles.container}>
       {mainPanel}
-      <div className={styles.inputSection}>
-        <div className={styles.inputArea}>
-          <input
-            className={styles.input}
-            placeholder="Enter a prompt..."
-            value={inputText}
-            onChange={e => setInputText(e.target.value)}
-          />
-          <button
-            className={styles.sendBtn}
-            onClick={() => {
-              setCurrentPrompt(inputText);
-              setInputText('');
-            }}
-          >
-            <ArrowForwardIcon />
-          </button>
-        </div>
-      </div>
+      {renderInput()}
     </div>
   );
 };
