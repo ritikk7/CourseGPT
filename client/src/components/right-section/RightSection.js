@@ -4,13 +4,25 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import InfoPanel from '../Panels/InfoPanel/InfoPanel';
 import ChatPanel from '../Panels/ChatPanel/ChatPanel';
 
-const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
+const RightSection = ({
+  mainPanel,
+  selectedCourse,
+  setCurrentPrompt,
+  setMainPanel,
+}) => {
   const [inputText, setInputText] = useState('');
 
-  // const [mainPanel, setMainPanel] = useState(
-  //   <InfoPanel setInputText={setInputText} selectedCourse={selectedCourse} />
-  // );
-  const [mainPanel, setMainPanel] = useState(<ChatPanel />);
+  const renderMainPanel = () => {
+    if (mainPanel === 'CHAT') {
+      return <ChatPanel />;
+    } else
+      return (
+        <InfoPanel
+          setInputText={setInputText}
+          selectedCourse={selectedCourse}
+        />
+      );
+  };
 
   const renderInput = () => (
     <div className={styles.inputSection}>
@@ -26,6 +38,7 @@ const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
           onClick={() => {
             setCurrentPrompt(inputText);
             setInputText('');
+            setMainPanel('CHAT');
           }}
         >
           <ArrowForwardIcon />
@@ -36,7 +49,7 @@ const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
 
   return (
     <div className={styles.container}>
-      {mainPanel}
+      {renderMainPanel()}
       {renderInput()}
     </div>
   );
