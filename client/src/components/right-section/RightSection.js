@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import styles from './RightSection.module.css';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import InfoPanel from '../Panels/InfoPanel/InfoPanel';
+import ChatPanel from '../Panels/ChatPanel/ChatPanel';
 
 const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
   const [inputText, setInputText] = useState('');
 
-  const [mainPanel, setMainPanel] = useState(
-    <InfoPanel setInputText={setInputText} selectedCourse={selectedCourse} />
-  );
+  // const [mainPanel, setMainPanel] = useState(
+  //   <InfoPanel setInputText={setInputText} selectedCourse={selectedCourse} />
+  // );
+  const [mainPanel, setMainPanel] = useState(<ChatPanel />);
 
   return (
     <div className={styles.container}>
