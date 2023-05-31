@@ -1,6 +1,7 @@
 .chatComponent {
   width: 100%;
   padding: 48px;
+  min-height: 120px;
 }
 
 .chatContent {

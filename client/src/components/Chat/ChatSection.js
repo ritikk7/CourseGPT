@@ -26,7 +26,7 @@ const ChatSection = ({ message, index }) => {
   return (
     <div className={styles.chatComponent} style={{ backgroundColor }}>
       <div className={styles.chatContent}>
-        {ProfileIcon}
+        {message && ProfileIcon}
         {message}
       </div>
     </div>
