@@ -2,3 +2,9 @@
   width: 100%;
   padding: 48px;
 }
+
+.chatContent {
+  width: 82%;
+  margin: auto;
+  display: flex;
+}
