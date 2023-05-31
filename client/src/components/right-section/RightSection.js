@@ -1,34 +1,18 @@
 import React, { useState } from 'react';
 import styles from './RightSection.module.css';
-import { Text, HStack } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import PromptButton from '../PromptButton/PromptButton';
+import InfoPanel from '../Panels/InfoPanel/InfoPanel';
 
 const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
   const [inputText, setInputText] = useState('');
 
-  const renderPrompts = () => {
-    return (
-      <HStack mt={24} spacing="16px">
-        {selectedCourse.getPrompts().map((prompt, i) => (
-          <PromptButton
-            key={i}
-            promptText={prompt}
-            setInputText={setInputText}
-          />
-        ))}
-      </HStack>
-    );
-  };
+  const [mainPanel, setMainPanel] = useState(
+    <InfoPanel setInputText={setInputText} selectedCourse={selectedCourse} />
+  );
 
   return (
     <div className={styles.container}>
-      <div className={styles.mainPanel}>
-        <Text as="b" fontSize="4xl">
-          CourseGPT
-        </Text>
-        {renderPrompts()}
-      </div>
+      {mainPanel}
       <div className={styles.inputSection}>
         <div className={styles.inputArea}>
           <input
