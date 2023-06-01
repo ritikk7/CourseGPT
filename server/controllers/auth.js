@@ -87,7 +87,7 @@ function signToken(userId, res) {
 
     res.cookie('token', token, {
         httpOnly: true,
-        maxAge: expiresIn1Min,
+        //maxAge: expiresIn1Min,
     });
 }
 

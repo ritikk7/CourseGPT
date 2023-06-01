@@ -44,7 +44,7 @@ const getUser = createAsyncThunk(
             const response = await api.get('/auth/get-auth-user');
             return response.data;
         } catch (error) {
-            console.error(error);
+            console.warn(error);
             return false;
         }
     }
@@ -65,8 +65,6 @@ const logoutUser = createAsyncThunk(
         }
     }
 );
-
-
 
 const authSlice = createSlice({
     name: 'auth',

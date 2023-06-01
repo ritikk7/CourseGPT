@@ -4,7 +4,7 @@ const { login, register, validateToken, getAuthorizedUser, googleCallback, logou
 const passport = require("passport");
 
 
-router.get('/google', passport.authenticate('google', {session: false, scope: ['profile']}))
+router.get('/google', passport.authenticate('google', {session: false, scope: ['profile', 'email']}))
 
 router.get('/google/callback', passport.authenticate('google', {session: false, failureRedirect: '/login'}), googleCallback);
 
@@ -14,7 +14,7 @@ router.post('/login', login);
 
 router.get('/get-auth-user', validateToken, getAuthorizedUser);
 
-router.post('/get-auth-user', logout);
+router.post('/logout', logout);
 
 module.exports = router;
 
