@@ -17,5 +17,3 @@ root.render(
         </ChakraProvider>
     </Provider>
 )
-
-export const testing = process.env.NODE_ENV !== 'production';

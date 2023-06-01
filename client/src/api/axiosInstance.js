@@ -1,9 +1,9 @@
 import axios from 'axios';
-import {testing} from "../index";
+
+const url = process.env.NODE_ENV === "development" || process.env.REACT_APP_ENV === "staging" ? 'http://localhost:3001/api' : 'https://course-gpt.herokuapp.com/api';
 
 const api = axios.create({
-  //baseURL: testing ? 'http://localhost:3001/api' : 'https://course-gpt.herokuapp.com/api',
-  baseURL:'http://localhost:3001/api',
+  baseURL: url,
   withCredentials: true,
 });
 

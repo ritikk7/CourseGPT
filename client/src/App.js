@@ -4,9 +4,7 @@ import Home from "./pages/Home";
 import Login from './pages/Login';
 import Register from './pages/Register';
 import LoginSuccess from './pages/LoginSuccess';
-
 function App() {
-
     return (
         <Routes>
             <Route path="/" element={ <Home/> }/>

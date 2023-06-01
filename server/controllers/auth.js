@@ -58,11 +58,8 @@ async function logout(req, res, next) {
 
 async function getAuthorizedUser(req, res, next) {
     try {
-        console.log("me:" + req.user);
         const user = await User.findById(req.user.id);
-        console.log("after db findById inside me");
         if (!user) {
-            console.log("User not found");
             return res.status(404).send('User not found');
         }
         res.json({ user: user});
@@ -78,17 +75,18 @@ function signToken(userId, res) {
         }
     }
 
-    const expireDays = 5;
-    const expireInMs = 1000 * 60 * 60 * 24 * expireDays;
-    const expireInS = expireInMs / 1000;
-    const expiresIn1Min = 1000 * 60;
+    const expireMinutes = process.env.NODE_ENV === "production" ? 5 * 24 * 60 : 1;
+    const expireInMs = expireMinutes * 60 * 1000;
+    const expireInS = expireMinutes * 60;
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expiresIn1Min / 1000 });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expireInS });
 
     res.cookie('token', token, {
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        //maxAge: expiresIn1Min,
+        maxAge: expireInMs,
     });
+
 }
 
 function validateToken(req, res, next) {
@@ -99,7 +97,7 @@ function validateToken(req, res, next) {
     }
 
     if (blacklistedTokens[token]) {
-        return res.status(401).send('Blacklisted token. Presumably because this user logged out');
+        return res.status(401).send('Blacklisted token. Presumably because this user logged out.');
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {

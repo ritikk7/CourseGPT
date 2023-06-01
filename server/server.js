@@ -14,8 +14,6 @@ const schoolRoutes = require("./routes/school");
 const passport = require("./config/passport");
 const cookieParser = require("cookie-parser");
 
-const testing = process.env.NODE_ENV !== 'production';
-
 start();
 
 function start() {
@@ -23,7 +21,7 @@ function start() {
     const port = process.env.PORT || 3001;
     setupExpress(app);
     setupRoutes(app);
-    if (testing) serveBuild(app);
+    if (process.env.NODE_ENV !== "development") serveBuild(app);
     run(app, port);
 }
 
@@ -64,5 +62,3 @@ function run(app, port) {
         });
     });
 }
-
-module.exports = testing;
