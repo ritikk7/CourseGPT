@@ -13,6 +13,7 @@ const feedbackRoutes = require("./routes/feedback");
 const courseRoutes = require("./routes/course");
 const schoolRoutes = require("./routes/school");
 const passport = require("./config/passport");
+const cookieParser = require("cookie-parser");
 
 const testing = process.env.NODE_ENV !== 'production';
 
@@ -29,8 +30,10 @@ function start() {
 
 function setupExpress(app) {
     app.use(cors());
-    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
     app.use(passport.initialize());
+    app.use(cookieParser());
 }
 
 function setupRoutes(app) {

@@ -7,12 +7,11 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "api/auth/google/callback",
+            callbackURL: "http://localhost:3001/api/auth/google/callback",
         },
         findOrCreate
     )
 );
-
 async function findOrCreate(accessToken, refreshToken, profile, done) {
     try {
         const user = await User.findOne({ googleId: profile.id });
@@ -31,14 +30,6 @@ async function findOrCreate(accessToken, refreshToken, profile, done) {
         done(err, null);
     }
 }
-
-// passport.serializeUser(function(user, done) {
-//     done(null, user.id);
-// });
-//
-// passport.deserializeUser(function(id, done) {
-//     User.findById(id).then(user => done(null, user));
-// });
 
 module.exports = passport;
 
