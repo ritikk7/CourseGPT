@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-let blacklistedTokens = {};
+const BlacklistedToken = require("../models/blacklistedToken");
 
 function googleCallback(req, res) {
     signToken(req.user.id, res);
@@ -49,7 +49,7 @@ async function login(req, res, next) {
 async function logout(req, res, next) {
     try {
         const token = req.cookies.token;
-        blacklistedTokens[token] = true;
+        await blacklistToken(token);
         res.clearCookie('token');
         res.send('Successfully logged out');
     } catch (error) {
@@ -91,16 +91,25 @@ function signToken(userId, res) {
     });
 }
 
+async function blacklistToken(token){
+    try {
+        await BlacklistedToken.create({ token });
+    } catch (error) {
+        console.log('Error blacklisting token:', error);
+    }
+}
 
-function validateToken(req, res, next) {
+
+async function validateToken(req, res, next) {
     const token = req.cookies.token;
 
     if (!token) {
         return res.status(401).send('No token provided');
     }
 
-    if (blacklistedTokens[token]) {
-        return res.status(401).send('Blacklisted token. Presumably because this user logged out.');
+    const blacklistedToken = await BlacklistedToken.findOne({ token });
+    if (blacklistedToken) {
+        return res.status(401).json({ error: 'Token is blacklisted. Presumably because user logged out.' });
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {

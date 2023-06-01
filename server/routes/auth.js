@@ -13,7 +13,7 @@ router.post('/login', login);
 
 router.get('/get-auth-user', validateToken, getAuthorizedUser);
 
-router.post('/logout', logout);
+router.post('/logout', validateToken, logout);
 
 module.exports = router;
 
