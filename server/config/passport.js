@@ -7,7 +7,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:3001/api/auth/google/callback",
+            callbackURL: "/api/auth/google/callback",
         },
         findOrCreate
     )
@@ -23,7 +23,8 @@ async function findOrCreate(accessToken, refreshToken, profile, done) {
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
                 googleId: profile.id
-            }).save();
+            });
+            await newUser.save();
             done(null, newUser);
         }
     } catch(err) {

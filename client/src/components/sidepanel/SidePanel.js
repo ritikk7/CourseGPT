@@ -13,8 +13,11 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import CourseObject from '../../models/CourseObject';
+import {useDispatch} from "react-redux";
+import {logoutUser} from "../../redux/authSlice";
 
 const SidePanel = ({ setSelectedCourse }) => {
+  const dispatch = useDispatch();
   const callApi = () => {
     api
       .post('/users')
@@ -79,7 +82,7 @@ const SidePanel = ({ setSelectedCourse }) => {
             <MenuDivider borderColor="rgb(100, 100, 102)" />
             <MenuItem bg="black">Clear conversations</MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black">Logout</MenuItem>
+            <MenuItem bg="black" onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </div>

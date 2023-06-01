@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+let blacklistedTokens = {};
 
 function googleCallback(req, res) {
     signToken(req.user.id, res);
@@ -9,7 +10,6 @@ function googleCallback(req, res) {
 
 async function register(req, res, next) {
     try {
-        console.log(req.body);
         const pass = await bcrypt.hash(req.body.password, 10);
 
         const newUser = await new User({
@@ -18,12 +18,9 @@ async function register(req, res, next) {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
         });
-
-        console.log(newUser);
-
+        await newUser.save();
         signToken(newUser.id, res);
-        console.log("signed");
-        res.redirect("/login-success");
+        res.send('Successful register');
     } catch (error) {
         next(error);
     }
@@ -42,16 +39,30 @@ async function login(req, res, next) {
         }
 
         signToken(user.id, res);
-        res.redirect("/login-success");
+        res.send('Successful login');
     } catch (error) {
         next(error);
     }
 }
 
-async function me(req, res, next) {
+async function logout(req, res, next) {
     try {
+        const token = req.cookies.token;
+        blacklistedTokens[token] = true;
+        res.clearCookie('token');
+        res.send('Successfully logged out');
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getAuthorizedUser(req, res, next) {
+    try {
+        console.log("me:" + req.user);
         const user = await User.findById(req.user.id);
+        console.log("after db findById inside me");
         if (!user) {
+            console.log("User not found");
             return res.status(404).send('User not found');
         }
         res.json({ user: user});
@@ -70,12 +81,13 @@ function signToken(userId, res) {
     const expireDays = 5;
     const expireInMs = 1000 * 60 * 60 * 24 * expireDays;
     const expireInS = expireInMs / 1000;
+    const expiresIn1Min = 1000 * 60;
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expireInS});
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expiresIn1Min / 1000 });
 
     res.cookie('token', token, {
         httpOnly: true,
-        maxAge: expireInMs,
+        maxAge: expiresIn1Min,
     });
 }
 
@@ -86,11 +98,15 @@ function validateToken(req, res, next) {
         return res.status(401).send('No token provided');
     }
 
+    if (blacklistedTokens[token]) {
+        return res.status(401).send('Blacklisted token. Presumably because this user logged out');
+    }
+
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
         if (err) {
             return res.status(403).send('Invalid token');
         }
-        req.user = { id: decodedToken.user.id }
+        req.user = { id: decodedToken.user.id };
         next();
     });
 }
@@ -100,6 +116,7 @@ module.exports = {
     register,
     login,
     validateToken,
-    me,
-    googleCallback
+    getAuthorizedUser,
+    googleCallback,
+    logout
 };

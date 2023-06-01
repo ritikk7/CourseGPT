@@ -5,8 +5,7 @@ const UserSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String},
-    googleId: { type: String, unique: true },
-    token: { type: String, unique: true },
+    googleId: { type: String},
     type: {
       type: String,
       enum: ['Student', 'Professor', 'Admin', 'Developer'],
