@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import CourseObject from "../models/CourseObject";
-import SidePanel from "../components/sidepanel/SidePanel";
-import RightSection from "../components/right-section/RightSection";
+import CourseObject from "../../models/CourseObject";
+import SidePanel from "../../components/sidepanel/SidePanel";
+import RightSection from "../../components/right-section/RightSection";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {getUser, setUser} from "../redux/authSlice";
+import {getUser, setUser} from "../../redux/authSlice";
 
 function Home() {
     const authState = useSelector(state => state.auth);

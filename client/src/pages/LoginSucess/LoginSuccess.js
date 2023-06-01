@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {getUser, setUser} from "../redux/authSlice";
+import {getUser, setUser} from "../../redux/authSlice";
 
 const LoginSuccessPage = () => {
     const dispatch = useDispatch();
