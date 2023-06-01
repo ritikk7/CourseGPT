@@ -4,7 +4,7 @@ const url = process.env.NODE_ENV === "development" || process.env.REACT_APP_ENV 
 
 const api = axios.create({
   baseURL: url,
-  withCredentials: true,
+  withCredentials: true
 });
 
 export default api;

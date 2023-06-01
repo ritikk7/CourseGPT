@@ -15,9 +15,11 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 import CourseObject from '../../models/CourseObject';
 import {useDispatch} from "react-redux";
 import {logoutUser} from "../../redux/authSlice";
+import {useNavigate} from "react-router-dom";
 
 const SidePanel = ({ setSelectedCourse }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const callApi = () => {
     api
       .post('/users')
@@ -29,6 +31,13 @@ const SidePanel = ({ setSelectedCourse }) => {
         console.error(error);
       });
   };
+
+  const handleLogout = () => {
+    dispatch(logoutUser()).then(() => {
+      navigate('/login');
+    });
+  };
+
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
@@ -82,7 +91,7 @@ const SidePanel = ({ setSelectedCourse }) => {
             <MenuDivider borderColor="rgb(100, 100, 102)" />
             <MenuItem bg="black">Clear conversations</MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
+            <MenuItem bg="black" onClick={handleLogout}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </div>

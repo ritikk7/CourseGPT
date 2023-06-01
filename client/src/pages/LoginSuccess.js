@@ -7,20 +7,25 @@ const LoginSuccessPage = () => {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
     const navigate = useNavigate();
+
     useEffect(() => {
         dispatch(getUser()).then(response => {
             if(response.payload) {
                 dispatch(setUser(response.payload));
                 navigate('/');
             } else {
-                console.error('Something went wrong with login success');
+                console.error('Login success error', response);
                 navigate('/login');
             }
+        }).catch(err => {
+            console.error('User could not be authenticated', err);
+            navigate('/login');
         });
     }, [navigate, dispatch, authState.user]);
 
     return null;
 };
+
 
 export default LoginSuccessPage;
 

@@ -14,7 +14,12 @@ passport.use(
 );
 async function findOrCreate(accessToken, refreshToken, profile, done) {
     try {
-        const user = await User.findOne({ googleId: profile.id });
+        let user = await User.findOne({ googleId: profile.id });
+
+        if (!user) {
+            user = await User.findOne({ email: profile.emails[0].value });
+        }
+
         if (user) {
             done(null, user);
         } else {

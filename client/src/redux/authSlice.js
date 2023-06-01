@@ -5,13 +5,7 @@ const registerUser = createAsyncThunk(
     'auth/registerUser',
     async (userCredentials) => {
         try {
-            console.log("registerUserCredentials: " + userCredentials);
             const response = await api.post('/auth/register', userCredentials);
-            console.log(JSON.stringify(response.data));
-            if (response.status === 200) {
-                console.log("redirect to login-success");
-                window.location.href = "/login-success";
-            }
             return response.data;
         } catch (error) {
             console.error(error);
@@ -25,9 +19,6 @@ const loginUser = createAsyncThunk(
     async (userCredentials) => {
         try{
             const response = await api.post('/auth/login', userCredentials);
-            if (response.status === 200) {
-                window.location.href = "/login-success";
-            }
             return response.data;
         } catch (error) {
             console.error(error);
@@ -44,7 +35,7 @@ const getUser = createAsyncThunk(
             const response = await api.get('/auth/get-auth-user');
             return response.data;
         } catch (error) {
-            console.warn(error);
+            console.warn("User could not be authenticated", error);
             return false;
         }
     }
@@ -55,10 +46,7 @@ const logoutUser = createAsyncThunk(
     async () => {
         try {
             const response = await api.post('/auth/logout');
-            if (response.status === 200) {
-                window.location.href = "/login";
-            }
-            return true;
+            return response.data;
         } catch (error) {
             console.error(error);
             return false;

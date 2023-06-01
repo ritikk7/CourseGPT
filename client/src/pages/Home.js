@@ -12,6 +12,7 @@ function Home() {
     const [selectedCourse, setSelectedCourse] = useState(new CourseObject('cpsc455'));
     const [currentPrompt, setCurrentPrompt] = useState('');
     const navigate = useNavigate();
+
     useEffect(() => {
         if (!authState.user) {
             dispatch(getUser()).then(response => {

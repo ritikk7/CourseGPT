@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {getUser, registerUser, setUser} from '../redux/authSlice';
+import {registerUser} from '../redux/authSlice';
 import {useNavigate} from "react-router-dom";
 
 function Register() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [credentials, setCredentials] = useState({ email: '', password: '', firstName: '', lastName: '' });
+
+    const handleChange = (e) => {
+        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userCredentials = {
-            email,
-            password,
-            firstName,
-            lastName,
-        };
-        await dispatch(registerUser(userCredentials));
+        const response = await dispatch(registerUser(credentials));
+        if (response.payload) {
+            navigate('/login-success');
+        } else {
+            // TODO error
+        }
     }
 
     const handleGoogleLogin = () => window.location.href = 'http://localhost:3001/api/auth/google';
@@ -28,10 +28,10 @@ function Register() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='First Name' onChange={(e) => setFirstName(e.target.value)} />
-                <input type='text' placeholder='Last Name' onChange={(e) => setLastName(e.target.value)} />
-                <input type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-                <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+                <input name='firstName' type='text' placeholder='First Name' onChange={handleChange} />
+                <input name='lastName' type='text' placeholder='Last Name' onChange={handleChange} />
+                <input name='email' type='text' placeholder='Email' onChange={handleChange} />
+                <input name='password' type='password' placeholder='Password' onChange={handleChange} />
                 <button type='submit'>Register</button>
             </form>
             <button onClick={handleGoogleLogin}>Register with Google</button>

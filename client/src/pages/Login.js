@@ -5,17 +5,21 @@ import {useNavigate} from "react-router-dom";
 
 function Login() {
     const dispatch = useDispatch();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
     const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userCredentials = {
-            email,
-            password
-        };
-        await dispatch(loginUser(userCredentials));
+        const response = await dispatch(loginUser(credentials));
+        if (response.payload) {
+            navigate('/login-success');
+        } else {
+            // TODO error
+        }
     }
 
     const handleGoogleLogin = () => window.location.href = 'http://localhost:3001/api/auth/google';
@@ -26,8 +30,8 @@ function Login() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-                <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+                <input name='email' type='text' placeholder='Email' onChange={handleChange} />
+                <input name='password' type='password' placeholder='Password' onChange={handleChange} />
                 <button type='submit'>Login</button>
             </form>
             <button onClick={handleGoogleLogin}>Login with Google</button>

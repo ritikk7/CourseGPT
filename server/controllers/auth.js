@@ -5,7 +5,8 @@ let blacklistedTokens = {};
 
 function googleCallback(req, res) {
     signToken(req.user.id, res);
-    res.redirect("/login-success");
+    const redirect = process.env.NODE_ENV !== "development" ? "/login-success" : "http://localhost:3000/login-success"
+    res.redirect(redirect);
 }
 
 async function register(req, res, next) {
@@ -74,20 +75,22 @@ function signToken(userId, res) {
             id: userId
         }
     }
+    const isProduction = process.env.NODE_ENV === 'production';
 
-    const expireMinutes = process.env.NODE_ENV === "production" ? 5 * 24 * 60 : 1;
+    const expireMinutes = isProduction ? 5 * 24 * 60 : 5;
     const expireInMs = expireMinutes * 60 * 1000;
     const expireInS = expireMinutes * 60;
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expireInS });
 
     res.cookie('token', token, {
-        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         maxAge: expireInMs,
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax'
     });
-
 }
+
 
 function validateToken(req, res, next) {
     const token = req.cookies.token;
