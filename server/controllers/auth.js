@@ -2,70 +2,76 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const BlacklistedToken = require("../models/blacklistedToken");
+const homeURL = process.env.NODE_ENV !== "development" ? "/" : "http://localhost:3000/"
 
-function googleCallback(req, res) {
+function signAndRedirect(req, res) {
     signToken(req.user.id, res);
-    const redirect = process.env.NODE_ENV !== "development" ? "/login-success" : "http://localhost:3000/login-success"
-    res.redirect(redirect);
+    res.redirect(homeURL);
 }
 
-async function register(req, res, next) {
+async function register(req, res) {
     try {
         const pass = await bcrypt.hash(req.body.password, 10);
 
-        const newUser = await new User({
+        const newUser = new User({
             email: req.body.email,
             password: pass,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
         });
-        await newUser.save();
-        signToken(newUser.id, res);
-        res.send('Successful register');
+
+        const savedUser = await newUser.save();
+
+        if (!savedUser) {
+            throw new Error('Error while saving user');
+        }
+
+        signToken(savedUser.id, res);
+        res.json({user: savedUser});
     } catch (error) {
-        next(error);
+        res.status(500).json({error: error.message});
     }
 }
 
-async function login(req, res, next) {
+async function login(req, res) {
     try {
-        const user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({email: req.body.email});
         if (!user) {
-            return res.status(400).send('Invalid email');
+            return res.status(400).json({error: 'Invalid email'});
         }
 
         const isMatch = await bcrypt.compare(req.body.password, user.password);
         if (!isMatch) {
-            return res.status(400).send('Invalid password');
+            return res.status(400).json({error: 'Invalid password'});
         }
 
         signToken(user.id, res);
-        res.send('Successful login');
+        res.json({user: user});
     } catch (error) {
-        next(error);
+        res.status(500).json({error: error.message});
     }
 }
 
-async function logout(req, res, next) {
+
+async function logout(req, res) {
     try {
-        const token = req.cookies.token;
-        await blacklistToken(token);
+        await blacklistToken(req.cookies.token);
         res.clearCookie('token');
-        res.send('Successfully logged out');
+        res.json({message: 'Successfully logged out'});
     } catch (error) {
-        next(error);
+        res.status(500).json({error: error.message});
     }
 }
 
-async function getAuthorizedUser(req, res, next) {
+async function getAuthorizedUser(req, res) {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(404).json({error: 'User not found'});
         }
-        res.json({ user: user});
+        res.json({user: user});
     } catch (error) {
-        next(error);
+        res.status(500).json({error: error.message});
     }
 }
 
@@ -77,11 +83,12 @@ function signToken(userId, res) {
     }
     const isProduction = process.env.NODE_ENV === 'production';
 
-    const expireMinutes = isProduction ? 5 * 24 * 60 : 5;
+    const productionExpireDays = 5;
+    const expireMinutes = isProduction ? productionExpireDays * 24 * 60 : 5;
     const expireInMs = expireMinutes * 60 * 1000;
     const expireInS = expireMinutes * 60;
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expireInS });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: expireInS});
 
     res.cookie('token', token, {
         httpOnly: true,
@@ -91,9 +98,9 @@ function signToken(userId, res) {
     });
 }
 
-async function blacklistToken(token){
+async function blacklistToken(token) {
     try {
-        await BlacklistedToken.create({ token });
+        await BlacklistedToken.create({token});
     } catch (error) {
         console.log('Error blacklisting token:', error);
     }
@@ -104,19 +111,19 @@ async function validateToken(req, res, next) {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).send('No token provided');
+        return res.status(401).json({error: 'No token provided'});
     }
 
-    const blacklistedToken = await BlacklistedToken.findOne({ token });
+    const blacklistedToken = await BlacklistedToken.findOne({token});
     if (blacklistedToken) {
-        return res.status(401).json({ error: 'Token is blacklisted. Presumably because user logged out.' });
+        return res.status(401).json({error: 'Token is blacklisted. Presumably because user logged out.'});
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
         if (err) {
-            return res.status(403).send('Invalid token');
+            return res.status(403).json({error: 'Invalid token'});
         }
-        req.user = { id: decodedToken.user.id };
+        req.user = {id: decodedToken.user.id};
         next();
     });
 }
@@ -127,6 +134,6 @@ module.exports = {
     login,
     validateToken,
     getAuthorizedUser,
-    googleCallback,
+    signAndRedirect,
     logout
 };
