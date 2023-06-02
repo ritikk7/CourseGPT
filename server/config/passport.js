@@ -18,7 +18,7 @@ async function findOrCreate(accessToken, refreshToken, profile, done) {
         let user = await User.findOne({ googleId: profile.id });
 
         if (!user) {
-            user = await User.findOne({ email: profile.emails[0].value });
+            user = await User.findOneAndUpdate({ email: profile.emails[0].value },{ googleId: profile.id });
         }
 
         if (user) {
