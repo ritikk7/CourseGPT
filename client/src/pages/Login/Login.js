@@ -70,11 +70,11 @@ export default function Login() {
                         <Stack spacing={4}>
                             <FormControl id="email" isRequired>
                                 <FormLabel color={'white'}>Email address</FormLabel>
-                                <Input name="email" type="email" onChange={handleChange} />
+                                <Input name="email" type="email" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <FormControl id="password" isRequired>
                                 <FormLabel color={'white'}>Password</FormLabel>
-                                <Input name="password" type="password" onChange={handleChange} />
+                                <Input name="password" type="password" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <Stack spacing={2}>
                                 <Button

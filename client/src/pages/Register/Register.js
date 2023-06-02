@@ -70,19 +70,19 @@ export default function Register() {
                         <Stack spacing={4}>
                             <FormControl id="firstName" isRequired>
                                 <FormLabel color={'white'}>First Name</FormLabel>
-                                <Input name="firstName" type="text" onChange={handleChange} />
+                                <Input name="firstName" type="text" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <FormControl id="lastName" isRequired>
                                 <FormLabel color={'white'}>Last Name</FormLabel>
-                                <Input name="lastName" type="text" onChange={handleChange} />
+                                <Input name="lastName" type="text" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <FormControl id="email" isRequired>
                                 <FormLabel color={'white'}>Email</FormLabel>
-                                <Input name="email" type="text" onChange={handleChange} />
+                                <Input name="email" type="text" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <FormControl id="password" isRequired>
                                 <FormLabel color={'white'}>Password</FormLabel>
-                                <Input name="password" type="password" onChange={handleChange} />
+                                <Input name="password" type="password" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <Stack spacing={2}>
                                 <Button

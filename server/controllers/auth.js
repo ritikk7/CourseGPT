@@ -11,6 +11,11 @@ function signAndRedirect(req, res) {
 
 async function register(req, res) {
     try {
+        const existingUser = await User.findOne({email: req.body.email});
+        if (existingUser) {
+            return res.status(409).json({error: 'User already exists'});
+        }
+
         const pass = await bcrypt.hash(req.body.password, 10);
 
         const newUser = new User({
