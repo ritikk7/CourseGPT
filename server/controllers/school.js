@@ -1,30 +1,64 @@
+const School = require("../models/school");
+
 async function getSchool(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello get school ${schoolId}` });
+  try {
+    const schoolId = req.params.schoolId;
+    const school = await School.find({ _id: schoolId });
+
+    res.status(200).json({ school: school });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function getAllSchools(req, res) {
+  try {
+    const schools = await School.find({});
+
+    res.status(200).json({ schools: schools });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 async function createSchool(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello create school in ${schoolId}` });
+  try {
+    const newSchool = new School({
+      courseName: req.body.courseName,
+      courseCode: req.body.courseCode,
+      department: req.body.department,
+      website: req.body.website ? req.body.website : '',
+      logo: req.body.logo ? req.body.logo : '',
+      courses: [],
+    });
+
+    const savedSchool = await newSchool.save();
+    res.status(200).json({ school: savedSchool });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 async function updateSchool(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello update school ${schoolId}` });
-}
+    try {  
+      const schoolId = req.params.schoolId;
+      const school = await School.find({ _id: schoolId });
+      school.courseName = req.body.courseName ? req.body.courseName : school.courseName
+      school.courseCode = req.body.courseCode ? req.body.courseCode : school.courseCode
+      school.department = req.body.department ? req.body.department : school.department
+      school.website = req.body.website ? req.body.website : school.website
+      school.logo = req.body.logo ? req.body.logo : school.logo
 
-async function deleteSchool(req, res) {
-  // TODO (need to delete associated courses when this happens)
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello delete school ${schoolId}` });
+      const savedSchool = await school.save();
+      res.status(200).json({ school: savedSchool });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
 }
 
 module.exports = {
   getSchool,
   createSchool,
+  getAllSchools,
   updateSchool,
-  deleteSchool,
 };

@@ -1,33 +1,53 @@
+const Course = require("../models/course");
+const School = require("../models/school");
+
 async function getCourse(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  const courseId = req.params.courseId;
-  res.send({ data: `Hello get course ${courseId} for school ${schoolId}` });
+  try {
+    const courseId = req.params.courseId;
+    const course = await Course.find({ _id: courseId });
+
+    res.status(200).json({ course: course });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function getAllCourses(req, res) {
+  try {
+    const schoolId = req.params.schoolId;
+    const courses = await Course.find({ school: schoolId });
+
+    res.status(200).json({ courses: courses });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 async function createCourse(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello create new course for ${schoolId}` });
-}
+  try {
+    const schoolId = req.params.schoolId;
+    const newCourse = new Course({
+      courseName: req.body.courseName,
+      courseCode: req.body.courseCode,
+      department: req.body.department,
+      school: schoolId,
+      promptTemplates: [],
+    });
 
-async function updateCourse(req, res) {
-  // TODO
-  const courseId = req.params.courseId;
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello update course ${courseId} for school ${schoolId}` });
-}
+    const savedCourse = await newCourse.save();
+    const school = await School.findById(schoolId);
+    school.courses.append(savedCourse);
+    await school.save() 
 
-async function deleteCourse(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  const courseId = req.params.courseId;
-  res.send({ data: `Hello delete msg ${courseId} for school ${schoolId}` });
+    res.status(200).json({ course: savedCourse });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 module.exports = {
   getCourse,
+  getAllCourses,
   createCourse,
-  updateCourse,
-  deleteCourse,
 };
