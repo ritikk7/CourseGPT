@@ -1,53 +1,25 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import api from "../api/axiosInstance";
 
-const registerUser = createAsyncThunk(
-    'auth/registerUser',
-    async (userCredentials, {dispatch}) => {
-        try {
-            const response = await api.post('/auth/register', userCredentials);
-            return response.data.user;
-        } catch (error) {
-            throw error.response.data.error;
+const createAuthRequest = (name, requestType, path, dataField) => {
+    return createAsyncThunk(
+        `auth/${name}`,
+        async (payload = null) => {
+            try {
+                const response = await api[requestType](path, payload);
+                return response.data[dataField];
+            } catch (error) {
+                throw error.response.data.error;
+            }
         }
-    }
-);
+    );
+};
 
-const loginUser = createAsyncThunk(
-    'auth/loginUser',
-    async (userCredentials, {dispatch}) => {
-        try {
-            const response = await api.post('/auth/login', userCredentials);
-            return response.data.user;
-        } catch (error) {
-            throw error.response.data.error;
-        }
-    }
-);
+const registerUser = createAuthRequest('registerUser', 'post', '/auth/register', 'user');
+const loginUser = createAuthRequest('loginUser', 'post', '/auth/login', 'user');
+const getUser = createAuthRequest('getUser', 'get', '/auth/get-auth-user', 'user');
+const logoutUser = createAuthRequest('logoutUser', 'post', '/auth/logout', 'message');
 
-const getUser = createAsyncThunk(
-    'auth/getUser',
-    async () => {
-        try {
-            const response = await api.get('/auth/get-auth-user');
-            return response.data.user;
-        } catch (error) {
-            throw error.response.data.error;
-        }
-    }
-);
-
-const logoutUser = createAsyncThunk(
-    'auth/logoutUser',
-    async () => {
-        try {
-            const response = await api.post('/auth/logout');
-            return response.data.user;
-        } catch (error) {
-            throw error.response.data.error;
-        }
-    }
-);
 
 const authSlice = createSlice({
     name: 'auth',
@@ -59,6 +31,9 @@ const authSlice = createSlice({
     reducers: {
         setUser: (state, action) => {
             state.user = action.payload;
+        },
+        setError: (state, action) => {
+            state.error = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -105,5 +80,15 @@ const authSlice = createSlice({
 });
 
 export {registerUser, loginUser, getUser, logoutUser};
-export const {setUser} = authSlice.actions;
+export const {setUser, setError} = authSlice.actions;
 export default authSlice.reducer;
+
+/**
+ * All code written by team.
+ * Helped with understanding:
+ * - https://redux-toolkit.js.org/api/createAsyncThunk
+ * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - Other general Redux docs
+ * - Chat GPT
+ * - Stack Overflow / Google
+ */

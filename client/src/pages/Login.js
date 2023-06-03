@@ -11,12 +11,14 @@ import {
     Heading,
     Text,
     Alert,
-    AlertIcon,
+    AlertIcon, InputRightElement, InputGroup,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../redux/authSlice';
+import {loginUser, setError} from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from "../../api/axiosInstance";
+import { baseUrl } from "../api/axiosInstance";
+import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {FaGoogle} from "react-icons/fa";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -24,8 +26,10 @@ export default function Login() {
     const navigate = useNavigate();
     const user = useSelector(state => state.auth.user);
     const error = useSelector(state => state.auth.error);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
+        dispatch(setError(null));
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
 
@@ -34,8 +38,14 @@ export default function Login() {
         dispatch(loginUser(credentials));
     };
 
-    const handleGoogleLogin = () => (window.location.href = baseUrl + '/auth/google');
-    const navigateToRegister = () => navigate('/register');
+    const handleGoogleLogin = () => {
+        dispatch(setError(null));
+        window.location.href = baseUrl + '/auth/google';
+    }
+    const navigateToRegister = () => {
+        dispatch(setError(null));
+        navigate('/register');
+    }
 
     useEffect(() => {
         if (user) {
@@ -61,7 +71,7 @@ export default function Login() {
                     boxShadow={'lg'}
                     p={8}>
                     {error && (
-                        <Alert status="error">
+                        <Alert status="error" mb={5}>
                             <AlertIcon />
                             {error}
                         </Alert>
@@ -74,7 +84,18 @@ export default function Login() {
                             </FormControl>
                             <FormControl id="password" isRequired>
                                 <FormLabel color={'white'}>Password</FormLabel>
-                                <Input name="password" type="password" color={'white'} onChange={handleChange} />
+                                <InputGroup>
+                                    <Input name="password" type={showPassword ? 'text' : 'password'} color={'white'} onChange={handleChange} />
+                                    <InputRightElement h={'full'}>
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() =>
+                                                setShowPassword((showPassword) => !showPassword)
+                                            }>
+                                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
                             </FormControl>
                             <Stack spacing={2}>
                                 <Button
@@ -90,6 +111,7 @@ export default function Login() {
                                 <Text align='center' color={'white'}>
                                     or
                                 </Text>
+
                                 <Button
                                     bg={'red.600'}
                                     color={'white'}
@@ -97,17 +119,18 @@ export default function Login() {
                                         bg: 'red.700',
                                     }}
                                     onClick={handleGoogleLogin}
+                                    leftIcon={<FaGoogle />}
                                 >
                                     Login with Google
                                 </Button>
                             </Stack>
                         </Stack>
                     </form>
-                    <Flex justify="center" mt={4}>
-                        <Link onClick={navigateToRegister} fontSize='sm' color={'blue.400'}>
-                            Don't have an account? Create one!
-                        </Link>
-                    </Flex>
+                    <Stack justify="center" mt={4}>
+                        <Text align={'center'} color={'white'}>
+                            Don't have an account? <Link onClick={navigateToRegister} color={'blue.400'}>Create one!</Link>
+                        </Text>
+                    </Stack>
                 </Box>
             </Stack>
         </Flex>
@@ -115,5 +138,14 @@ export default function Login() {
 }
 
 
-
-// pulled this straight from https://chakra-templates.dev/templates/forms/authentication/simpleCard
+/**
+ * Majority of code written by team.
+ * The visual component structure was copied and adapted from:
+ * - https://chakra-templates.dev/forms/authentication
+ *
+ * Helped with understanding:
+ * - https://reactrouter.com/en/main/hooks/use-navigate
+ * - Stack Overflow / Google
+ * - Chakra docs
+ * - Redux docs
+ */

@@ -40,6 +40,11 @@ async function findOrCreate(accessToken, refreshToken, profile, done) {
 
 module.exports = passport;
 
-// HELPED WITH UNDERSTANDING
-// https://www.passportjs.org/packages/passport-google-oauth20/
-// https://www.youtube.com/playlist?list=PL4cUxeGkcC9jdm7QX143aMLAqyM-jTZ2x
+/**
+ * Majority of code written by team. Some copied from passport documentation.
+ * Helped with understanding:
+ * - https://www.passportjs.org/packages/passport-google-oauth20/
+ * - https://www.youtube.com/playlist?list=PL4cUxeGkcC9jdm7QX143aMLAqyM-jTZ2x
+ * - Mongoose docs
+ * - ChatGPT
+ */

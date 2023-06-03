@@ -28,7 +28,7 @@ function start() {
 function setupExpress(app) {
     if(process.env.NODE_ENV === "development") {
         app.use(cors({
-            origin: 'http://localhost:3000',
+            origin: 'http://localhost:3000', // Stack Overflow, Google, or ChatGPT helped me with this (Can't Remember)
             credentials: true,
         }));
     } else {

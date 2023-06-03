@@ -11,12 +11,14 @@ import {
     Heading,
     Text,
     Alert,
-    AlertIcon,
+    AlertIcon, InputRightElement, InputGroup, HStack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../redux/authSlice';
+import {registerUser, setError} from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from "../../api/axiosInstance";
+import { baseUrl } from "../api/axiosInstance";
+import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {FaGoogle} from "react-icons/fa";
 
 export default function Register() {
     const dispatch = useDispatch();
@@ -26,6 +28,7 @@ export default function Register() {
     const error = useSelector(state => state.auth.error);
 
     const handleChange = (e) => {
+        dispatch(setError(null));
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
 
@@ -34,8 +37,15 @@ export default function Register() {
         dispatch(registerUser(credentials));
     };
 
-    const handleGoogleLogin = () => (window.location.href = baseUrl + '/auth/google');
-    const navigateToLogin = () => navigate('/login');
+    const [showPassword, setShowPassword] = useState(false);
+    const handleGoogleLogin = () => {
+        dispatch(setError(null));
+        window.location.href = baseUrl + '/auth/google';
+    }
+    const navigateToLogin = () => {
+        dispatch(setError(null));
+        navigate('/login');
+    }
 
     useEffect(() => {
         if (user) {
@@ -52,7 +62,7 @@ export default function Register() {
             <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
                 <Stack align={'center'}>
                     <Heading fontSize={'4xl'} color={'white'}>
-                        Create an account
+                        Sign up
                     </Heading>
                 </Stack>
                 <Box
@@ -61,28 +71,45 @@ export default function Register() {
                     boxShadow={'lg'}
                     p={8}>
                     {error && (
-                        <Alert status="error">
+                        <Alert status="error" mb={5}>
                             <AlertIcon />
                             {error}
                         </Alert>
                     )}
                     <form onSubmit={handleSubmit}>
                         <Stack spacing={4}>
-                            <FormControl id="firstName" isRequired>
-                                <FormLabel color={'white'}>First Name</FormLabel>
-                                <Input name="firstName" type="text" color={'white'} onChange={handleChange} />
-                            </FormControl>
-                            <FormControl id="lastName" isRequired>
-                                <FormLabel color={'white'}>Last Name</FormLabel>
-                                <Input name="lastName" type="text" color={'white'} onChange={handleChange} />
-                            </FormControl>
+                            <HStack>
+                                <Box>
+                                    <FormControl id="firstName" isRequired>
+                                        <FormLabel color={'white'}>First Name</FormLabel>
+                                        <Input name="firstName" type="text" color={'white'} onChange={handleChange} />
+                                    </FormControl>
+                                </Box>
+                                <Box>
+                                    <FormControl id="lastName">
+                                        <FormLabel color={'white'}>Last Name</FormLabel>
+                                        <Input name="lastName" type="text" color={'white'} onChange={handleChange} />
+                                    </FormControl>
+                                </Box>
+                            </HStack>
                             <FormControl id="email" isRequired>
                                 <FormLabel color={'white'}>Email</FormLabel>
                                 <Input name="email" type="text" color={'white'} onChange={handleChange} />
                             </FormControl>
                             <FormControl id="password" isRequired>
                                 <FormLabel color={'white'}>Password</FormLabel>
-                                <Input name="password" type="password" color={'white'} onChange={handleChange} />
+                                <InputGroup>
+                                    <Input name="password" type={showPassword ? 'text' : 'password'} color={'white'} onChange={handleChange} />
+                                    <InputRightElement h={'full'}>
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() =>
+                                                setShowPassword((showPassword) => !showPassword)
+                                            }>
+                                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
                             </FormControl>
                             <Stack spacing={2}>
                                 <Button
@@ -105,19 +132,32 @@ export default function Register() {
                                         bg: 'red.700',
                                     }}
                                     onClick={handleGoogleLogin}
+                                    leftIcon={<FaGoogle />}
                                 >
-                                    Register with Google
+                                    Login with Google
                                 </Button>
                             </Stack>
                         </Stack>
                     </form>
-                    <Flex justify="center" mt={4}>
-                        <Link onClick={navigateToLogin} fontSize='sm' color={'blue.400'}>
-                            Already have an account? Login!
-                        </Link>
-                    </Flex>
+                    <Stack justify="center" mt={4}>
+                        <Text align={'center'} color={'white'}>
+                            Already have an account? <Link onClick={navigateToLogin} color={'blue.400'}>Login!</Link>
+                        </Text>
+                    </Stack>
                 </Box>
             </Stack>
         </Flex>
     );
 }
+
+/**
+ * Majority of code written by team.
+ * The visual component structure was copied and adapted from:
+ * - https://chakra-templates.dev/forms/authentication
+ *
+ * Helped with understanding:
+ * - https://reactrouter.com/en/main/hooks/use-navigate
+ * - Stack Overflow / Google
+ * - Chakra docs
+ * - Redux docs
+ */
