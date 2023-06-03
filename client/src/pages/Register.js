@@ -29,7 +29,7 @@ export default function Register() {
 
     const handleChange = (e) => {
         dispatch(setError(null));
-        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+        setCredentials((state) => ({...state, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = (e) => {
