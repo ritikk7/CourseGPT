@@ -11,8 +11,15 @@ async function getSchool(req, res) {
   }
 }
 
+
 async function getAllSchools(req, res) {
   try {
+    if (req.body.name) {
+      const school = await School.find({ name: req.body.name });
+      res.status(200).json({ school: school });
+      return
+    }
+
     const schools = await School.find({});
 
     res.status(200).json({ schools: schools });
@@ -24,9 +31,9 @@ async function getAllSchools(req, res) {
 async function createSchool(req, res) {
   try {
     const newSchool = new School({
-      courseName: req.body.courseName,
-      courseCode: req.body.courseCode,
-      department: req.body.department,
+      name: req.body.name,
+      location: req.body.location,
+      type: req.body.type,
       website: req.body.website ? req.body.website : '',
       logo: req.body.logo ? req.body.logo : '',
       courses: [],

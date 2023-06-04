@@ -14,6 +14,12 @@ async function getCourse(req, res) {
 
 async function getAllCourses(req, res) {
   try {
+    if (req.body.courseName) {
+      const course = await Course.find({ courseName: req.body.courseName });
+      res.status(200).json({ course: course });
+      return
+    }
+
     const schoolId = req.params.schoolId;
     const courses = await Course.find({ school: schoolId });
 
@@ -36,7 +42,7 @@ async function createCourse(req, res) {
 
     const savedCourse = await newCourse.save();
     const school = await School.findById(schoolId);
-    school.courses.append(savedCourse);
+    school.courses.push(savedCourse);
     await school.save() 
 
     res.status(200).json({ course: savedCourse });
