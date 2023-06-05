@@ -12,7 +12,6 @@ const ChatPanel = () => {
     'Quantum computing is a new and exciting field that uses the principles of quantum mechanics to perform calculations. In classical computing, we use bits to represent information, which can be either a 0 or a 1. But in quantum computing, we use quantum bits, or qubits, which can represent both 0 and 1 at the same time. This is due to a property called superposition.',
     'Got any creative ideas for a 10 year old’s birthday?',
     "Of course! Here are some creative ideas for a 10-year-old's birthday party: Science Party: Organize a science-themed party where the kids can participate in fun experiments and demonstrations. You can hire a science entertainer or set up different stations with hands-on activities like making slime, volcano eruptions, or creating simple chemical reactions.",
-    '',
   ];
   return (
     <div className={styles.chatPanel}>
