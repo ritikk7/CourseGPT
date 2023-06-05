@@ -9,6 +9,7 @@
   margin: auto;
   display: flex;
 }
+
 .chatComponent:last-child {
-  padding-bottom: 180px;
+  padding-bottom: 28vh;
 }
