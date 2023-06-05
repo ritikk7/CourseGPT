@@ -30,6 +30,13 @@ const RightSection = ({
     }
   };
 
+  const onInputSubmit = () => {
+    setInputText('');
+    setMainPanel('CHAT');
+    setCurrentPrompt(inputText);
+    updateChatMessages(inputText);
+  };
+
   const renderMainPanel = () => {
     if (mainPanel === 'CHAT') {
       return <ChatPanel chatHistory={chatHistory} />;
@@ -50,14 +57,16 @@ const RightSection = ({
           placeholder="Enter a prompt..."
           value={inputText}
           onChange={e => setInputText(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              onInputSubmit();
+            }
+          }}
         />
         <button
           className={styles.sendBtn}
           onClick={() => {
-            setInputText('');
-            setMainPanel('CHAT');
-            setCurrentPrompt(inputText);
-            updateChatMessages(inputText);
+            onInputSubmit();
           }}
         >
           <ArrowForwardIcon />
