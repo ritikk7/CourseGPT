@@ -1,0 +1,15 @@
+.chatComponent {
+  width: 100%;
+  padding: 48px;
+  min-height: 120px;
+}
+
+.chatContent {
+  width: 82%;
+  margin: auto;
+  display: flex;
+}
+
+.chatComponent:nth-last-child(2) {
+  padding-bottom: 28vh;
+}

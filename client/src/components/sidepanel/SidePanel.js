@@ -14,7 +14,7 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 import CourseObject from '../../models/CourseObject';
 
-const SidePanel = ({ setSelectedCourse }) => {
+const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
   const callApi = () => {
     api
       .post('/users')
@@ -26,6 +26,9 @@ const SidePanel = ({ setSelectedCourse }) => {
         console.error(error);
       });
   };
+
+  const handleNewChat = () => setMainPanel('INFO');
+
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
@@ -48,7 +51,7 @@ const SidePanel = ({ setSelectedCourse }) => {
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           border="1px"
           borderColor="rgb(100, 100, 102)"
-          onClick={callApi}
+          onClick={() => handleNewChat()}
         >
           + New Chat
         </Button>
@@ -71,6 +74,7 @@ const SidePanel = ({ setSelectedCourse }) => {
             }
             rightIcon={<HamburgerIcon />}
             width="100%"
+            onClick={callApi}
           >
             Username
           </MenuButton>

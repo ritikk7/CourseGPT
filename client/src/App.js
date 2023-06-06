@@ -10,16 +10,22 @@ function App() {
     new CourseObject('cpsc455')
   );
   const [currentPrompt, setCurrentPrompt] = useState('');
+  // TODO: redux states
+  const [mainPanel, setMainPanel] = useState('INFO');
+
   return (
     <ChakraProvider>
       <div className="App">
         <SidePanel
           setSelectedCourse={setSelectedCourse}
           currentPrompt={currentPrompt}
+          setMainPanel={setMainPanel}
         />
         <RightSection
           selectedCourse={selectedCourse}
           setCurrentPrompt={setCurrentPrompt}
+          mainPanel={mainPanel}
+          setMainPanel={setMainPanel}
         />
       </div>
     </ChakraProvider>
