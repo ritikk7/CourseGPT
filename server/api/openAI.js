@@ -30,5 +30,30 @@ async function deleteTrainedModel(model) {
     console.log(response);
 }
 
+// Upload a file that contains document(s) to be used across various endpoints/features. 
+// Currently, the size of all the files uploaded by one organization can be up to 1 GB.
 // openAI training data file upload (JSONL)
+async function uploadTrainedFile(file) {
+    const response = await openai.deleteModel({
+        purpose: "fine-tune",
+        file: file
+      });
+    console.log(response);
+}
 
+// Creates an embedding vector representing the input text.
+async function createEmbeddings(model, input, user) {
+    const response = await openai.deleteModel({
+        model: model
+      });
+    console.log(response);
+}
+
+async function createCompletion(prompt) {
+    const completion = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: prompt,
+      });
+    let response = completion.data.choices[0].text;
+    return response;
+}
