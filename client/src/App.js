@@ -1,35 +1,16 @@
-import React, { useState } from 'react';
 import './styles/App.css';
-import SidePanel from './components/sidepanel/SidePanel';
-import RightSection from './components/right-section/RightSection';
-import { ChakraProvider } from '@chakra-ui/react';
-import CourseObject from './models/CourseObject';
-
+import { Routes, Route } from 'react-router-dom';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 function App() {
-  const [selectedCourse, setSelectedCourse] = useState(
-    new CourseObject('cpsc455')
-  );
-  const [currentPrompt, setCurrentPrompt] = useState('');
-  // TODO: redux states
-  const [mainPanel, setMainPanel] = useState('INFO');
-
-  return (
-    <ChakraProvider>
-      <div className="App">
-        <SidePanel
-          setSelectedCourse={setSelectedCourse}
-          currentPrompt={currentPrompt}
-          setMainPanel={setMainPanel}
-        />
-        <RightSection
-          selectedCourse={selectedCourse}
-          setCurrentPrompt={setCurrentPrompt}
-          mainPanel={mainPanel}
-          setMainPanel={setMainPanel}
-        />
-      </div>
-    </ChakraProvider>
-  );
+    return (
+        <Routes>
+            <Route path="/" element={ <Home/> }/>
+            <Route path="/login" element={ <Login/> }/>
+            <Route path="/register" element={ <Register/> }/>
+        </Routes>
+    );
 }
 
 export default App;

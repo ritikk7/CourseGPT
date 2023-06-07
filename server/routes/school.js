@@ -1,27 +1,21 @@
 const express = require('express');
 const router = express.Router();
-
 const {
   getSchool,
   createSchool,
   updateSchool,
   deleteSchool,
 } = require('../controllers/school');
+const {validateToken} = require("../controllers/auth");
 
-router.get('/:schoolId', (req, res) => {
-  getSchool(req, res);
-});
+router.use(validateToken);
 
-router.post('/', (req, res) => {
-  createSchool(req, res);
-});
+router.get('/:schoolId', getSchool);
 
-router.put('/:schoolId', (req, res) => {
-  updateSchool(req, res);
-});
+router.post('/', createSchool);
 
-router.delete('/:schoolId', (req, res) => {
-  deleteSchool(req, res);
-});
+router.put('/:schoolId', updateSchool);
+
+router.delete('/:schoolId', deleteSchool);
 
 module.exports = router;

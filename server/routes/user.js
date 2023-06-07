@@ -1,27 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
 const {
-  getUser,
-  createUser,
   updateUser,
   deleteUser,
 } = require('../controllers/user');
+const {validateToken} = require("../controllers/auth");
 
-router.get('/:userId', (req, res) => {
-  getUser(req, res);
-});
+router.use(validateToken);
 
-router.post('/', (req, res) => {
-  createUser(req, res);
-});
+router.put('/:userId', updateUser);
 
-router.put('/:userId', (req, res) => {
-  updateUser(req, res);
-});
-
-router.delete('/:userId', (req, res) => {
-  deleteUser(req, res);
-});
+router.delete('/:userId', deleteUser);
 
 module.exports = router;

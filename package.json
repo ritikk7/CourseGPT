@@ -2,14 +2,18 @@
   "name": "coursegpt",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "cd server && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "npm run server",
+    "client:dev": "cd client && npm run start:dev",
+    "server:dev": "cd server && npm run start:dev",
+    "start:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+
+    "start:staging": "cd client && npm run build:staging && cd .. && cd server && npm run start:staging",
+
+    "start": "npm run server:prod",
+    "server:prod": "cd server && npm run start:prod",
     "heroku-postbuild": "cd client && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+
     "postinstall": "cd server && npm install && cd ../client && npm install && cd ..",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -27,8 +31,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^2.8.8",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8"
   },
   "dependencies": {
     "concurrently": "^8.0.1"

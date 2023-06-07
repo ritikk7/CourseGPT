@@ -1,9 +1,9 @@
 require('dotenv').config();
-const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
-const connectToDB = require('./database/connectToDB');
+const connectToDB = require('./config/connectToDB');
 const path = require('path');
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const messageRoutes = require("./routes/message");
 const qaPairRoutes = require("./routes/qaPair");
@@ -11,6 +11,8 @@ const chatRoutes = require("./routes/chat");
 const feedbackRoutes = require("./routes/feedback");
 const courseRoutes = require("./routes/course");
 const schoolRoutes = require("./routes/school");
+const passport = require("./config/passport");
+const cookieParser = require("cookie-parser");
 
 start();
 
@@ -19,18 +21,28 @@ function start() {
     const port = process.env.PORT || 3001;
     setupExpress(app);
     setupRoutes(app);
-    if (process.env.NODE_ENV === 'production') serveBuild(app);
-
+    if (process.env.NODE_ENV !== "development") serveBuild(app);
     run(app, port);
 }
 
 function setupExpress(app) {
-    app.use(cors());
-    app.use(bodyParser.urlencoded({extended: false}));
-    app.use(bodyParser.json());
+    if(process.env.NODE_ENV === "development") {
+        app.use(cors({
+            origin: 'http://localhost:3000', // Stack Overflow, Google, or ChatGPT helped me with this (Can't Remember)
+            credentials: true,
+        }));
+    } else {
+        app.use(cors());
+    }
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
+    app.use(passport.initialize());
+    app.use(cookieParser());
 }
 
+
 function setupRoutes(app) {
+    app.use('/api/auth', authRoutes);
     app.use('/api/users', userRoutes);
     app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
     app.use('/api/users/:userId/chats/:chatId/qaPairs', qaPairRoutes);
@@ -45,21 +57,16 @@ function setupRoutes(app) {
 
 function serveBuild(app) {
     const buildPath = path.join(__dirname, '../client/build');
-    if (process.env.NODE_ENV === 'production') {
-        app.use(express.static(buildPath));
-        app.get('*', (req, res) => {
-            res.sendFile(path.resolve(buildPath, 'index.html'));
-        });
-    }
+    app.use(express.static(buildPath));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(buildPath, 'index.html'));
+    });
 }
 
 function run(app, port) {
     connectToDB().then(() => {
         app.listen(port, () => {
-            console.log(
-                `CourseGPT server is running on port ${port}! URL: http://localhost:${port}/`
-            );
-            console.log(process.env.JWT_SECRET);
+            console.log(`Running on port ${port}! URL: http://localhost:${port}/`);
         });
     });
 }
