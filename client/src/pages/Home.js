@@ -9,8 +9,6 @@ import {getUser, setUser} from "../redux/authSlice";
 function Home() {
     const authState = useSelector(state => state.auth);
     const dispatch = useDispatch();
-    const [selectedCourse, setSelectedCourse] = useState(new CourseObject('cpsc455'));
-    const [currentPrompt, setCurrentPrompt] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,15 +23,25 @@ function Home() {
         }
     }, [authState, dispatch, navigate]);
 
+    const [selectedCourse, setSelectedCourse] = useState(
+        new CourseObject('cpsc455')
+    );
+    const [currentPrompt, setCurrentPrompt] = useState('');
+    // TODO: redux states
+    const [mainPanel, setMainPanel] = useState('INFO');
+
     return (
         <div className="App">
             <SidePanel
                 setSelectedCourse={setSelectedCourse}
                 currentPrompt={currentPrompt}
+                setMainPanel={setMainPanel}
             />
             <RightSection
                 selectedCourse={selectedCourse}
                 setCurrentPrompt={setCurrentPrompt}
+                mainPanel={mainPanel}
+                setMainPanel={setMainPanel}
             />
         </div>
     );

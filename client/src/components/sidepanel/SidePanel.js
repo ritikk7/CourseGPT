@@ -17,7 +17,7 @@ import {useDispatch} from "react-redux";
 import {logoutUser} from "../../redux/authSlice";
 import {useNavigate} from "react-router-dom";
 
-const SidePanel = ({ setSelectedCourse }) => {
+const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const callApi = () => {
@@ -31,12 +31,12 @@ const SidePanel = ({ setSelectedCourse }) => {
         console.error(error);
       });
   };
-
   const handleLogout = () => {
     dispatch(logoutUser()).then(() => {
       navigate('/login');
     });
   };
+  const handleNewChat = () => setMainPanel('INFO');
 
   return (
     <div className={styles.sidepanel}>
@@ -60,7 +60,7 @@ const SidePanel = ({ setSelectedCourse }) => {
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           border="1px"
           borderColor="rgb(100, 100, 102)"
-          onClick={callApi}
+          onClick={() => handleNewChat()}
         >
           + New Chat
         </Button>
@@ -83,6 +83,7 @@ const SidePanel = ({ setSelectedCourse }) => {
             }
             rightIcon={<HamburgerIcon />}
             width="100%"
+            onClick={callApi}
           >
             Username
           </MenuButton>
