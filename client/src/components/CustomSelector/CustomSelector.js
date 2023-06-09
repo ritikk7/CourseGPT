@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
-import { Box, Input, Text } from '@chakra-ui/react';
+import { Box, Select, Text } from '@chakra-ui/react';
 
-const CustomTextbox = ({type, value}) => {
+const CustomSelector= ({type}) => {
 
     return (
         <Box display="flex" alignItems="center" height="8vh">
             <Text
                 fontWeight="bold"
-                color="#FFF"
+                color="#FFFFFF"
                 marginRight="2" 
                 paddingRight="2"
                 width="150px"
             >
                 {type} 
             </Text>
-            <Input
+            <Select
                 width="250px"
                 background="#FFFFFF"
-                placeholder={value}
-            />
+            >
+                <option>PlaceHolder 1</option>
+                <option>PlaceHolder 2</option>
+                <option>PlaceHolder 3</option>
+            </Select>
         </Box>
     )
 }
 
-export default CustomTextbox;
+export default CustomSelector;

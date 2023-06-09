@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Button, Box, Image, Text } from '@chakra-ui/react';
+import { Button, Box, Image, Text, Stack } from '@chakra-ui/react';
 import CustomTextbox from '../components/CustomTextbox/CustomTextbox';
+import CustomSelector from '../components/CustomSelector/CustomSelector';
 import '../styles/Profile.css';
 
 function Profile() {
@@ -27,25 +28,32 @@ function Profile() {
                     alt='Default Profile Picture'
                 />
             </div>
-            <CustomTextbox
-                value={value}
-                type={"First Name"}
-            />
-            <CustomTextbox
-                value={value}
-                type={"Last Name"}
-            />
-            <CustomTextbox
-                value={value}
-                type={"Email"}
-            />
-            <CustomTextbox
-                value={value}
-                type={"Account Type"}
-            />
+            <Stack spacing="3" alignItems="center">
+                <CustomTextbox
+                    value={value}
+                    type={"First Name"}
+                />
+                <CustomTextbox
+                    value={value}
+                    type={"Last Name"}
+                />
+                <CustomTextbox
+                    value={value}
+                    type={"Email"}
+                />
+                <CustomSelector
+                    type={"Account Type"}
+                />
+                <CustomSelector
+                    type={"School"}
+                />
+            </Stack>
             <Box display="flex" justifyContent="center" marginTop="12">
                 <Button>
                     Submit
+                </Button>
+                <Button marginLeft="5">
+                    Change Password
                 </Button>
             </Box>
         </div>
