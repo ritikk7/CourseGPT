@@ -37,6 +37,9 @@ const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
     });
   };
   const handleNewChat = () => setMainPanel('INFO');
+  const handleOpenProfile = () => {
+    navigate('/profile');
+  }
 
   return (
     <div className={styles.sidepanel}>
@@ -88,7 +91,7 @@ const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
             Username
           </MenuButton>
           <MenuList bg="black" border="none">
-            <MenuItem bg="black">Profile</MenuItem>
+            <MenuItem bg="black" onClick={handleOpenProfile}>Profile</MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
             <MenuItem bg="black">Clear conversations</MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
