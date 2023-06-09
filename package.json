@@ -7,13 +7,10 @@
     "client:dev": "cd client && npm run start:dev",
     "server:dev": "cd server && npm run start:dev",
     "start:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-
     "start:staging": "cd client && npm run build:staging && cd .. && cd server && npm run start:staging",
-
     "start": "npm run server:prod",
     "server:prod": "cd server && npm run start:prod",
     "heroku-postbuild": "cd client && npm run build",
-
     "postinstall": "cd server && npm install && cd ../client && npm install && cd ..",
     "lint": "eslint .",
     "format": "prettier --write .",

@@ -6,7 +6,7 @@ const {
   updateMessage,
   deleteMessage,
 } = require('../controllers/message');
-const {validateToken} = require("../controllers/auth");
+const { validateToken } = require('../controllers/auth');
 
 router.use(validateToken);
 

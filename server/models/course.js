@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema({
-  courseName: { type: String},
-  courseCode: { type: String},
-  department: { type: String},
-  school: { type: Schema.Types.ObjectId, ref: 'School'},
+  courseName: { type: String },
+  courseCode: { type: String },
+  department: { type: String },
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
   promptTemplates: [{ type: String }],
 });
 

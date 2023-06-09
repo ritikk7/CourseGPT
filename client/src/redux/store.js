@@ -1,11 +1,10 @@
-import {configureStore} from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import schoolReducer from './schoolSlice';
-
+import schoolCourseReducer from './schoolCourseSlice';
 
 export default configureStore({
-    reducer: {
-        auth: authReducer,
-        school: schoolReducer
-    },
-})
+  reducer: {
+    auth: authReducer,
+    schoolCourse: schoolCourseReducer,
+  },
+});

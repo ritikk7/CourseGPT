@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './SidePanel.module.css';
-import api from '../../api/axiosInstance';
+import api from '../../../api/axiosInstance';
 import {
   Select,
   Button,
@@ -12,14 +12,29 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import CourseObject from '../../models/CourseObject';
-import {useDispatch} from "react-redux";
-import {logoutUser} from "../../redux/authSlice";
-import {useNavigate} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { setCourse } from '../../../redux/schoolCourseSlice';
+import Settings from '../../usersettings/settings';
 
-const SidePanel = ({ setSelectedCourse }) => {
+const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const courses = useSelector(state => state.schoolCourse.courses);
+  const school = useSelector(state => state.schoolCourse.school);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   const callApi = () => {
     api
       .post('/users')
@@ -44,14 +59,17 @@ const SidePanel = ({ setSelectedCourse }) => {
         <Select
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           borderColor="rgb(100, 100, 102)"
-          defaultValue="cpsc455"
           onChange={e => {
-            setSelectedCourse(new CourseObject(e.target.value));
+            dispatch(
+              setCourse({ schoolId: school._id, courseId: e.target.value })
+            );
           }}
         >
-          <option value="cpsc455">CPSC455</option>
-          <option value="cpsc310">CPSC310</option>
-          <option value="cpsc320">CPSC320</option>
+          {courses.map((course, i) => (
+            <option key={i} value={course._id}>
+              {course.courseName}
+            </option>
+          ))}
         </Select>
         <Button
           mt={4}
@@ -87,13 +105,18 @@ const SidePanel = ({ setSelectedCourse }) => {
             Username
           </MenuButton>
           <MenuList bg="black" border="none">
-            <MenuItem bg="black">Profile</MenuItem>
+            <MenuItem bg="black" onClick={handleOpenPopup}>
+              Profile
+            </MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
             <MenuItem bg="black">Clear conversations</MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem bg="black" onClick={handleLogout}>
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
+        <Settings isOpen={isPopupOpen} handleClose={handleClosePopup} />
       </div>
     </div>
   );

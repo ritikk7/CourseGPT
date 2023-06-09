@@ -6,7 +6,7 @@ const {
   updateChat,
   deleteChat,
 } = require('../controllers/chat');
-const {validateToken} = require("../controllers/auth");
+const { validateToken } = require('../controllers/auth');
 
 router.use(validateToken);
 

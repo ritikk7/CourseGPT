@@ -3,20 +3,26 @@ import styles from './RightSection.module.css';
 import { Text, HStack } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PromptButton from '../PromptButton/PromptButton';
+import { useSelector } from 'react-redux';
 
-const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
+const RightSection = () => {
   const [inputText, setInputText] = useState('');
+  const selectedCourse = useSelector(
+    state => state.schoolCourse.selectedCourse
+  );
 
   const renderPrompts = () => {
     return (
       <HStack mt={24} spacing="16px">
-        {selectedCourse.getPrompts().map((prompt, i) => (
-          <PromptButton
-            key={i}
-            promptText={prompt}
-            setInputText={setInputText}
-          />
-        ))}
+        {selectedCourse
+          ? selectedCourse.promptTemplates.map((prompt, i) => (
+              <PromptButton
+                key={i}
+                promptText={prompt}
+                setInputText={setInputText}
+              />
+            ))
+          : ''}
       </HStack>
     );
   };
@@ -40,7 +46,6 @@ const RightSection = ({ selectedCourse, setCurrentPrompt }) => {
           <button
             className={styles.sendBtn}
             onClick={() => {
-              setCurrentPrompt(inputText);
               setInputText('');
             }}
           >

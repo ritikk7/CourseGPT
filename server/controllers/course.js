@@ -1,5 +1,5 @@
-const Course = require("../models/course");
-const School = require("../models/school");
+const Course = require('../models/course');
+const School = require('../models/school');
 
 async function getCourse(req, res) {
   try {
@@ -17,7 +17,7 @@ async function getAllCourses(req, res) {
     if (req.body.courseName) {
       const course = await Course.find({ courseName: req.body.courseName });
       res.status(200).json({ course: course });
-      return
+      return;
     }
 
     const schoolId = req.params.schoolId;
@@ -43,10 +43,9 @@ async function createCourse(req, res) {
     const savedCourse = await newCourse.save();
     const school = await School.findById(schoolId);
     school.courses.push(savedCourse);
-    await school.save() 
+    await school.save();
 
     res.status(200).json({ course: savedCourse });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

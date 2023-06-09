@@ -1,4 +1,4 @@
-const School = require("../models/school");
+const School = require('../models/school');
 
 async function getSchool(req, res) {
   try {
@@ -11,13 +11,12 @@ async function getSchool(req, res) {
   }
 }
 
-
 async function getAllSchools(req, res) {
   try {
     if (req.body.name) {
       const school = await School.find({ name: req.body.name });
       res.status(200).json({ school: school });
-      return
+      return;
     }
 
     const schools = await School.find({});
@@ -47,20 +46,26 @@ async function createSchool(req, res) {
 }
 
 async function updateSchool(req, res) {
-    try {  
-      const schoolId = req.params.schoolId;
-      const school = await School.find({ _id: schoolId });
-      school.courseName = req.body.courseName ? req.body.courseName : school.courseName
-      school.courseCode = req.body.courseCode ? req.body.courseCode : school.courseCode
-      school.department = req.body.department ? req.body.department : school.department
-      school.website = req.body.website ? req.body.website : school.website
-      school.logo = req.body.logo ? req.body.logo : school.logo
+  try {
+    const schoolId = req.params.schoolId;
+    const school = await School.find({ _id: schoolId });
+    school.courseName = req.body.courseName
+      ? req.body.courseName
+      : school.courseName;
+    school.courseCode = req.body.courseCode
+      ? req.body.courseCode
+      : school.courseCode;
+    school.department = req.body.department
+      ? req.body.department
+      : school.department;
+    school.website = req.body.website ? req.body.website : school.website;
+    school.logo = req.body.logo ? req.body.logo : school.logo;
 
-      const savedSchool = await school.save();
-      res.status(200).json({ school: savedSchool });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+    const savedSchool = await school.save();
+    res.status(200).json({ school: savedSchool });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 module.exports = {
