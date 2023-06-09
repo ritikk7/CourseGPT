@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
-import SidePanel from '../components/home/sidepanel/SidePanel';
-import RightSection from '../components/home/right-section/RightSection';
+import React, { useEffect, useState } from 'react';
+import SidePanel from '../components/sidepanel/SidePanel';
+import RightSection from '../components/right-section/RightSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUser, setUser } from '../redux/authSlice';
 
+
 function Home() {
   const authState = useSelector(state => state.auth);
+  const [currentPrompt, setCurrentPrompt] = useState('');
+  // TODO: redux states
+  const [mainPanel, setMainPanel] = useState('INFO');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,12 +26,19 @@ function Home() {
     }
   }, [authState, dispatch, navigate]);
 
-  return (
-    <div className="App">
-      <SidePanel />
-      <RightSection />
-    </div>
-  );
+    return (
+        <div className="App">
+            <SidePanel
+                currentPrompt={currentPrompt}
+                setMainPanel={setMainPanel}
+            />
+            <RightSection
+                setCurrentPrompt={setCurrentPrompt}
+                mainPanel={mainPanel}
+                setMainPanel={setMainPanel}
+            />
+        </div>
+    );
 }
 
 export default Home;
