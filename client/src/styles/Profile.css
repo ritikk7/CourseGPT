@@ -1,0 +1,11 @@
+.Profile {
+    height: 100vh;
+    background: #373e47d0
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+}
