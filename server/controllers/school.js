@@ -13,13 +13,12 @@ async function getSchool(req, res) {
 
 async function getAllSchools(req, res) {
   try {
-    if (req.body.name) {
-      const school = await School.find({ name: req.body.name });
-      res.status(200).json({ school: school });
-      return;
-    }
-
-    const schools = await School.find({});
+    // if (req.body.name) {
+    //   const school = await School.find({ name: req.body.name });
+    //   res.status(200).json({ school: school });
+    //   return;
+    // }
+    const schools = await School.find();
 
     res.status(200).json({ schools: schools });
   } catch (error) {

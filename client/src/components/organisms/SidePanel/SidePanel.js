@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { setCourse } from '../../../redux/schoolCourseSlice';
+import { setCourse } from '../../../redux/schoolsSlice';
 import ProfileModal from '../ProfileModal';
 import CourseSelectorModal from "../CourseSelectorModal";
 

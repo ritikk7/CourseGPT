@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
-import schoolCourseReducer from './schoolCourseSlice';
+import schoolCourseReducer from './schoolsSlice';
 
 export default configureStore({
   reducer: {
-    auth: userReducer,
+    user: userReducer,
     schoolCourse: schoolCourseReducer,
   },
 });

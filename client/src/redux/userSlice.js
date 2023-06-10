@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../api/axiosInstance';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../api/axiosInstance";
 
-const createAuthRequest = (name, requestType, path, dataField) => {
+const createUserRequest = (name, requestType, path, dataField) => {
   return createAsyncThunk(`user/${name}`, async (payload = null) => {
     try {
       const response = await api[requestType](path, payload);
@@ -12,84 +12,128 @@ const createAuthRequest = (name, requestType, path, dataField) => {
   });
 };
 
-const registerUser = createAuthRequest(
-  'registerUser',
-  'post',
-  '/auth/register',
-  'user'
-);
-const loginUser = createAuthRequest('loginUser', 'post', '/auth/login', 'user');
-const getUser = createAuthRequest(
-  'getUser',
-  'get',
-  '/auth/get-auth-user',
-  'user'
-);
-const logoutUser = createAuthRequest(
-  'logoutUser',
-  'post',
-  '/auth/logout',
-  'message'
+const registerUser = createUserRequest(
+  "registerUser",
+  "post",
+  "/auth/register",
+  "user"
 );
 
+const loginUser = createUserRequest(
+  "loginUser",
+  "post",
+  "/auth/login",
+  "user"
+);
+
+const logoutUser = createUserRequest(
+  "logoutUser",
+  "post",
+  "/auth/logout",
+  "message"
+);
+
+const fetchUser = createUserRequest(
+  "fetchUser",
+  "get",
+  "/auth/get-auth-user",
+  "user"
+);
+
+const updateUser = createAsyncThunk(`user/updateUser`, async (payload, { getState }) => {
+  try {
+    const state = getState(); // check this
+    const userId = state.user.data.id; // check this
+    const response = await api.patch(`/users/${userId}`, payload);
+    return response.data.user;
+  } catch (error) {
+    throw error.response.data.error;
+  }
+});
+
+const deleteUser = createAsyncThunk(`user/deleteUser`, async (_, { getState }) => {
+  try {
+    const state = getState(); // check this
+    const userId = state.user.data.id; // check this
+    const response = await api.patch(`/users/${userId}`);
+    return response.data.message;
+  } catch (error) {
+    throw error.response.data.error;
+  }
+});
+
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
-    user: null,
-    error: null,
-    authError: null,
+    data: null,
+    authError: null
   },
   reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
+    setAuthError: (state, action) => {
+      state.authError = action.payload;
+    }
   },
   extraReducers: builder => {
     builder
       .addCase(loginUser.pending, state => {
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.error = action.error.message;
-      })
-      .addCase(registerUser.pending, state => {
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.error = action.error.message;
-      })
-      .addCase(logoutUser.pending, state => {
-        state.error = null;
-      })
-      .addCase(logoutUser.fulfilled, state => {
-        state.user = null;
-      })
-      .addCase(logoutUser.rejected, (state, action) => {
-        state.error = action.error.message;
-      })
-      .addCase(getUser.pending, (state, action) => {
         state.authError = null;
       })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.data = action.payload;
       })
-      .addCase(getUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action) => {
+        state.authError = action.error.message;
+      })
+      .addCase(registerUser.pending, state => {
+        state.authError = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.data = action.payload;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.authError = action.error.message;
+      })
+      .addCase(logoutUser.pending, state => {
+        state.authError = null;
+      })
+      .addCase(logoutUser.fulfilled, state => {
+        state.data = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.authError = action.error.message;
+      })
+      .addCase(fetchUser.pending, (state, action) => {
+        state.authError = null;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.data = action.payload;
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
         state.authError = action.payload;
+      })
+      .addCase(updateUser.pending, state => {
+        state.authError = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.data = action.payload;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.authError = action.error.message;
+      })
+      .addCase(deleteUser.pending, state => {
+        state.authError = null;
+      })
+      .addCase(deleteUser.fulfilled, state => {
+        state.data = null;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.authError = action.error.message;
       });
-  },
+  }
 });
 
-export { registerUser, loginUser, getUser, logoutUser };
-export const { setUser, setError } = userSlice.actions;
+export { registerUser, loginUser, fetchUser, logoutUser, updateUser, deleteUser };
+export const { setAuthError } = userSlice.actions;
 export default userSlice.reducer;
 
 /**

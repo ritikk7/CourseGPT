@@ -17,7 +17,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, setError } from '../../redux/userSlice';
+import { registerUser, setAuthError } from '../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -25,18 +25,18 @@ import { FaGoogle } from 'react-icons/fa';
 
 export default function Register() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(state => state.user.data);
+  const authError = useSelector(state => state.user.authError);
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
   });
-  const navigate = useNavigate();
-  const user = useSelector(state => state.auth.user);
-  const error = useSelector(state => state.auth.error);
 
   const handleChange = e => {
-    dispatch(setError(null));
+    dispatch(setAuthError(null));
     setCredentials(state => ({ ...state, [e.target.name]: e.target.value }));
   };
 
@@ -47,11 +47,11 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const handleGoogleLogin = () => {
-    dispatch(setError(null));
+    dispatch(setAuthError(null));
     window.location.href = baseUrl + '/auth/google';
   };
   const navigateToLogin = () => {
-    dispatch(setError(null));
+    dispatch(setAuthError(null));
     navigate('/login');
   };
 
@@ -70,10 +70,10 @@ export default function Register() {
           </Heading>
         </Stack>
         <Box rounded={'lg'} bg={'gray.700'} boxShadow={'lg'} p={8}>
-          {error && (
+          {authError && (
             <Alert status="error" mb={5}>
               <AlertIcon />
-              {error}
+              {authError}
             </Alert>
           )}
           <form onSubmit={handleSubmit}>

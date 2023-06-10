@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import api from '../../../api/axiosInstance';
 import {useDispatch} from 'react-redux';
-import {fetchCourses, fetchSchool} from '../../../redux/schoolCourseSlice';
+import {fetchCourses, fetchSchool} from '../../../redux/schoolsSlice';
 
 const SchoolCourseSelector = () => {
     const [firstDropdownValue, setFirstDropdownValue] = useState('');

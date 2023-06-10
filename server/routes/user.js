@@ -5,7 +5,7 @@ const { validateToken } = require('../controllers/auth');
 
 router.use(validateToken);
 
-router.put('/:userId', updateUser);
+router.patch('/:userId', updateUser);
 
 router.delete('/:userId', deleteUser);
 
