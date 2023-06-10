@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Box, VStack, Image, Input, Text, Stack, Select, FormControl, FormLabel } from '@chakra-ui/react';
-import SchoolCourseSelector from './SchoolClassSelector/SchoolCourseSelector';
+import SchoolCourseSelector from '../molecules/SchoolClassSelector/SchoolCourseSelector';
 
 function ProfileSettings() {
     const [firstName, setFirstName] = useState('');

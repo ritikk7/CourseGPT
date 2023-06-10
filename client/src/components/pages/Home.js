@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import SidePanel from '../components/SidePanel/SidePanel';
-import RightSection from '../components/RightSection/RightSection';
+import SidePanel from '../organisms/SidePanel/SidePanel';
+import RightSection from '../organisms/RightSection/RightSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../redux/authSlice';
+import { getUser } from '../../redux/authSlice';
 import {Spinner, Box} from "@chakra-ui/react";
 
 function Home() {

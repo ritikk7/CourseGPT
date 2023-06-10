@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Box, Input, Text } from '@chakra-ui/react';
 
 const CustomTextbox = ({type, value}) => {

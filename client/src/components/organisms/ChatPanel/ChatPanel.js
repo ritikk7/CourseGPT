@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
 import styles from './ChatPanel.module.css';
-import ChatSection from '../../Chat/ChatSection';
+import ChatSection from '../../molecules/Chat/ChatSection';
 
 const ChatPanel = ({ chatHistory }) => {
   const scrollRef = useRef(null);
