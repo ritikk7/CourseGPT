@@ -17,7 +17,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, setError } from '../../redux/authSlice';
+import { registerUser, setError } from '../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';

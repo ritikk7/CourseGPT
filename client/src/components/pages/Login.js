@@ -16,7 +16,7 @@ import {
   InputGroup,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, setError } from '../../redux/authSlice';
+import { loginUser, setError } from '../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';

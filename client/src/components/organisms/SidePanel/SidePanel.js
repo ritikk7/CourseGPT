@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../../redux/authSlice';
+import { logoutUser } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { setCourse } from '../../../redux/schoolCourseSlice';

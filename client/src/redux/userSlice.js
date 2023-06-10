@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 
 const createAuthRequest = (name, requestType, path, dataField) => {
-  return createAsyncThunk(`auth/${name}`, async (payload = null) => {
+  return createAsyncThunk(`user/${name}`, async (payload = null) => {
     try {
       const response = await api[requestType](path, payload);
       return response.data[dataField];
@@ -32,8 +32,8 @@ const logoutUser = createAuthRequest(
   'message'
 );
 
-const authSlice = createSlice({
-  name: 'auth',
+const userSlice = createSlice({
+  name: 'user',
   initialState: {
     user: null,
     error: null,
@@ -89,8 +89,8 @@ const authSlice = createSlice({
 });
 
 export { registerUser, loginUser, getUser, logoutUser };
-export const { setUser, setError } = authSlice.actions;
-export default authSlice.reducer;
+export const { setUser, setError } = userSlice.actions;
+export default userSlice.reducer;
 
 /**
  * All code written by team.
