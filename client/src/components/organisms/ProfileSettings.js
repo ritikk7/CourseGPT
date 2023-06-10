@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Box, VStack, Image, Input, Text, Stack, Select, FormControl, FormLabel } from '@chakra-ui/react';
+import { Box, VStack, Image, Input, Text, Stack, Select, FormControl, FormLabel } from '@chakra-ui/react';
 import SchoolCourseSelector from '../molecules/SchoolClassSelector/SchoolCourseSelector';
 
 function ProfileSettings() {

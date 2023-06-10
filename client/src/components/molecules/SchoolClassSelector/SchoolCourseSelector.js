@@ -1,85 +1,71 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
-    Select,
-    Checkbox,
-    CheckboxGroup,
-    VStack, FormControl, FormLabel,
-} from '@chakra-ui/react';
-import api from '../../../api/axiosInstance';
-import {useDispatch} from 'react-redux';
-import {fetchCourses, fetchSchool} from '../../../redux/schoolsSlice';
+  Select,
+  Checkbox,
+  CheckboxGroup,
+  VStack, FormControl, FormLabel
+} from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCourses, fetchSchool, fetchSchools } from "../../../redux/schoolsSlice";
 
 const SchoolCourseSelector = () => {
-    const [firstDropdownValue, setFirstDropdownValue] = useState('');
-    const [firstDropdownOptions, setFirstDropdownOptions] = useState([]);
-    const [secondDropdownValue, setSecondDropdownValue] = useState([]);
-    const [secondDropdownOptions, setSecondDropdownOptions] = useState([]);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const schools = useSelector(state => state.schools.data);
+  const [selectedSchool, setSelectedSchool] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await api.get('schools');
+  useEffect(() => {
+    if (!schools) {
+      dispatch(fetchSchools()).then(res => {
+      });
+    }
 
-            setFirstDropdownOptions(
-                response.data.schools.map(school => ({
-                    label: school.name,
-                    value: school._id,
-                }))
-            );
-        };
+  }, [dispatch, schools]);
 
-        fetchData();
-    }, []);
+  const handleSchoolDropdownChange = e => {
+    setSelectedSchool(e.target.value);
+  };
 
-    const handleFirstDropdownChange = async event => {
-        if (!event.target.value) {
-            setSecondDropdownOptions([]);
-            return;
-        }
-
-        dispatch(fetchSchool(event.target.value));
-        setFirstDropdownValue(event.target.value);
-
-        const response = await api.get(`/schools/${event.target.value}/courses`);
-
-        setSecondDropdownOptions(
-            response.data.courses.map(course => ({
-                label: course.courseName,
-                value: course._id,
-            }))
-        );
-    };
-
-    const handleSecondDropdownChange = async event => {
-        dispatch(fetchCourses({firstDropdownValue, event}));
-        setSecondDropdownValue(event);
-    };
-
-    return (
-        <FormControl>
-            <FormLabel>School</FormLabel>
-            <Select onChange={handleFirstDropdownChange}>
-                <option value="">What school do you attend?</option>
-                {firstDropdownOptions.map(option => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </Select>
-            <CheckboxGroup
-                value={secondDropdownValue}
-                onChange={handleSecondDropdownChange}
-            >
-                <VStack align="start" spacing={2}>
-                    {secondDropdownOptions.map(option => (
-                        <Checkbox key={option.value} value={option.value}>
-                            {option.label}
-                        </Checkbox>
-                    ))}
-                </VStack>
-            </CheckboxGroup>
-        </FormControl>
+  const renderSchoolDropdownOptions = () => {
+    return schools.map(school => (
+        <option key={school.value} value={option.value}>
+          {option.label}
+        </option>
+      )
     );
+  };
+
+  if (schools) {
+    return (
+      <FormControl>
+        <FormLabel>School</FormLabel>
+        <Select onChange={handleSchoolDropdownChange}>
+          <option value="">What school do you attend?</option>
+
+        </Select>
+        <CheckboxGroup
+          value={secondDropdownValue}
+          onChange={handleSecondDropdownChange}
+        >
+          <VStack align="start" spacing={2}>
+            {secondDropdownOptions.map(option => (
+              <Checkbox key={option.value} value={option.value}>
+                {option.label}
+              </Checkbox>
+            ))}
+          </VStack>
+        </CheckboxGroup>
+      </FormControl>
+    );
+  } else {
+    return (
+      <FormControl>
+        <FormLabel>School</FormLabel>
+        <Select>
+          <option value="">Loading schools...</option>
+        </Select>
+      </FormControl>
+    );
+  }
 };
 
 export default SchoolCourseSelector;
