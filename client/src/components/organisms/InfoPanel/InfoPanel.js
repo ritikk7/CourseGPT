@@ -1,5 +1,5 @@
 import React from 'react';
-import PromptButton from '../../PromptButton/PromptButton';
+import PromptButton from '../../atoms/PromptButton/PromptButton';
 import styles from './InfoPanel.module.css';
 import { Text, HStack } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';

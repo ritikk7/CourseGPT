@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './SidePanel.module.css';
-import api from '../../api/axiosInstance';
+import api from '../../../api/axiosInstance';
 import {
   Select,
   Button,
@@ -13,12 +13,12 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../redux/authSlice';
+import { logoutUser } from '../../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { setCourse } from '../../redux/schoolCourseSlice';
-import ProfileModal from '../UserSettings/ProfileModal';
-import CourseSelectorModal from "../UserSettings/CourseSelectorModal";
+import { setCourse } from '../../../redux/schoolCourseSlice';
+import ProfileModal from '../ProfileModal';
+import CourseSelectorModal from "../CourseSelectorModal";
 
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();

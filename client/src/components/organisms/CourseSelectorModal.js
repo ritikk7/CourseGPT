@@ -1,6 +1,6 @@
 import React from 'react';
-import CustomModal from "./CustomModal";
-import SchoolCourseSelector from "./SchoolClassSelector/SchoolCourseSelector";
+import CustomModal from "../molecules/CustomModal";
+import SchoolCourseSelector from "../molecules/SchoolClassSelector/SchoolCourseSelector";
 import {ModalBody} from "@chakra-ui/react";
 
 const CourseSelectorModal = ({isOpen, handleClose}) => {
