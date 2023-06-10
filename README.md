@@ -101,7 +101,7 @@ and time constraints.
    - As a student user, I want to have suggested prompts based on
      my selected course so that I can get ideas for what questions to ask or
      topics to explore.
-5. **Profile changes**
+5. **ProfileSettings changes**
    - As a user, I want to be able to edit my email and password in my profile
      settings so that I can keep my account information up to date.
 

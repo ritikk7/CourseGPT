@@ -17,15 +17,8 @@ import { logoutUser } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { setCourse } from '../../redux/schoolCourseSlice';
-import Settings from '../usersettings/settings';
-
-
-
-// import React, { useState } from 'react';
-// import styles from './RightSection.module.css';
-// import { ArrowForwardIcon } from '@chakra-ui/icons';
-// import InfoPanel from '../Panels/InfoPanel/InfoPanel';
-// import ChatPanel from '../Panels/ChatPanel/ChatPanel';
+import ProfileModal from '../UserSettings/ProfileModal';
+import CourseSelectorModal from "../UserSettings/CourseSelectorModal";
 
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();
@@ -33,14 +26,19 @@ const SidePanel = ({ setMainPanel }) => {
   const courses = useSelector(state => state.schoolCourse.courses);
   const school = useSelector(state => state.schoolCourse.school);
 
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isCourseSelectorOpen, setCourseSelectorOpen] = useState(true);
 
-  const handleOpenPopup = () => {
-    setIsPopupOpen(true);
+  const handleOpenSettings = () => {
+    setIsSettingsOpen(true);
   };
 
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
+  const handleCloseSettings = () => {
+    setIsSettingsOpen(false);
+  };
+
+  const handleCloseCourseSelector = () => {
+    setCourseSelectorOpen(false);
   };
 
   const callApi = () => {
@@ -60,9 +58,6 @@ const SidePanel = ({ setMainPanel }) => {
     });
   };
   const handleNewChat = () => setMainPanel('INFO');
-  const handleOpenProfile = () => {
-    navigate('/profile');
-  }
 
   return (
     <div className={styles.sidepanel}>
@@ -117,7 +112,7 @@ const SidePanel = ({ setMainPanel }) => {
             Username
           </MenuButton>
           <MenuList bg="black" border="none">
-            <MenuItem bg="black" onClick={handleOpenPopup}>
+            <MenuItem bg="black" onClick={handleOpenSettings}>
               Profile
             </MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
@@ -128,7 +123,8 @@ const SidePanel = ({ setMainPanel }) => {
             </MenuItem>
           </MenuList>
         </Menu>
-        <Settings isOpen={isPopupOpen} handleClose={handleClosePopup} />
+        <CourseSelectorModal isOpen={isCourseSelectorOpen} handleClose={handleCloseCourseSelector} />
+        <ProfileModal isOpen={isSettingsOpen} handleClose={handleCloseSettings} />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import SidePanel from '../components/sidepanel/SidePanel';
-import RightSection from '../components/right-section/RightSection';
+import SidePanel from '../components/SidePanel/SidePanel';
+import RightSection from '../components/RightSection/RightSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUser, setUser } from '../redux/authSlice';
@@ -9,7 +9,6 @@ import { getUser, setUser } from '../redux/authSlice';
 function Home() {
   const authState = useSelector(state => state.auth);
   const [currentPrompt, setCurrentPrompt] = useState('');
-  // TODO: redux states
   const [mainPanel, setMainPanel] = useState('INFO');
   const dispatch = useDispatch();
   const navigate = useNavigate();
