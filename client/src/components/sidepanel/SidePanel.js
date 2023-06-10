@@ -60,6 +60,9 @@ const SidePanel = ({ setMainPanel }) => {
     });
   };
   const handleNewChat = () => setMainPanel('INFO');
+  const handleOpenProfile = () => {
+    navigate('/profile');
+  }
 
   return (
     <div className={styles.sidepanel}>
