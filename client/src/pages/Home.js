@@ -3,27 +3,43 @@ import SidePanel from '../components/SidePanel/SidePanel';
 import RightSection from '../components/RightSection/RightSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getUser, setUser } from '../redux/authSlice';
-
+import { getUser } from '../redux/authSlice';
+import {Spinner, Box} from "@chakra-ui/react";
 
 function Home() {
-  const authState = useSelector(state => state.auth);
-  const [currentPrompt, setCurrentPrompt] = useState('');
-  const [mainPanel, setMainPanel] = useState('INFO');
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+    const user = useSelector(state => state.auth.user);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPrompt, setCurrentPrompt] = useState('');
+    const [mainPanel, setMainPanel] = useState('INFO');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!authState.user) {
-      dispatch(getUser()).then(response => {
-        if (response.payload) {
-          dispatch(setUser(response.payload));
+    useEffect(() => {
+        if(!user) {
+            dispatch(getUser()).then(response => {
+                if (!response.payload) {
+                    navigate('/login');
+                }
+            });
         } else {
-          navigate('/login');
+            setIsLoading(false);
         }
-      });
+
+    }, [user, dispatch, navigate]);
+
+    if (isLoading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                />
+            </Box>
+        );
     }
-  }, [authState, dispatch, navigate]);
 
     return (
         <div className="App">

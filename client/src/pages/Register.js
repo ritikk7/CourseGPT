@@ -155,7 +155,7 @@ export default function Register() {
                   onClick={handleGoogleLogin}
                   leftIcon={<FaGoogle />}
                 >
-                  Login with Google
+                  Register with Google
                 </Button>
               </Stack>
             </Stack>
