@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import CourseObject from '../../models/CourseObject';
-import {useDispatch} from "react-redux";
-import {logoutUser} from "../../redux/authSlice";
-import {useNavigate} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
   const dispatch = useDispatch();
@@ -36,7 +36,9 @@ const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
       navigate('/login');
     });
   };
-  const handleNewChat = () => setMainPanel('INFO');
+  const handleNewChat = () => {
+    setMainPanel('INFO');
+  };
 
   return (
     <div className={styles.sidepanel}>
@@ -92,7 +94,9 @@ const SidePanel = ({ setSelectedCourse, setMainPanel }) => {
             <MenuDivider borderColor="rgb(100, 100, 102)" />
             <MenuItem bg="black">Clear conversations</MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem bg="black" onClick={handleLogout}>
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
       </div>

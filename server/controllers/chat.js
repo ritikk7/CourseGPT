@@ -1,4 +1,5 @@
 const Chat = require('../models/chat');
+const User = require('../models/user');
 
 async function getChat(req, res) {
   // TODO
@@ -10,55 +11,55 @@ async function getChat(req, res) {
 async function createChat(req, res) {
   // TODO
   const userId = req.params.userId;
-  res.send({ data: `Hello create new chat for user ${userId}` });
   try {
     const chat = new Chat({
-      users: userId,
+      user: userId,
       messages: [],
-      course: req.body.course,
+      // course: req.body.course,
     });
-    await chat.save();
-    res.status(201).send({ chat: chat });
+    const newChat = await chat.save();
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(500).send({ error: 'There is no such user!' });
+    }
+    user.chats.push(newChat._id);
+    await user.save();
+
+    res.status(201).send({ chat: newChat });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
 }
+
+// async function updateUser(req, res) {
+//   const userId = req.params.userId;
+//   const updates = req.body;
+
+//   try {
+//     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+//       new: true,
+//     });
+//     res.send({ user: updatedUser });
+//   } catch (error) {
+//     res.status(500).send({ error: 'Failed to update user' });
+//   }
+// }
 
 async function updateChat(req, res) {
-  // TODO
-  const userId = req.params.userId;
   const chatId = req.params.chatId;
-  res.send({ data: `Hello update chatId ${chatId} for user ${userId}` });
+  const updates = req.body;
 
   try {
     const chat = await Chat.findById(chatId);
     if (!chat) {
       res.status(404).send({ error: 'Chat not found' });
     }
-    const { messages, course, deleted } = req.body;
-    chat.messages = messages;
-    chat.course = course;
-    chat.deleted = deleted;
-    const updatedChat = await chat.save();
-    res.status(200).send({ updatedChat: updatedChat });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-}
 
-async function deleteChat(req, res) {
-  // TODO
-  const userId = req.params.userId;
-  const chatId = req.params.chatId;
-  res.send({ data: `Hello delete chatId ${chatId} for user ${userId}` });
+    const updatedChat = await Chat.findByIdAndUpdate(chatId, updates, {
+      new: true,
+    });
 
-  try {
-    const chat = await Chat.findById(chatId);
-    if (!chat) {
-      res.status(404).send({ error: 'Chat not found' });
-    }
-    await chat.remove();
-    res.status(200).send({ message: 'Chat deleted successfully' });
+    res.status(200).send({ chat: updatedChat });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -68,5 +69,4 @@ module.exports = {
   getChat,
   createChat,
   updateChat,
-  deleteChat,
 };

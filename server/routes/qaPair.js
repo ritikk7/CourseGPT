@@ -10,9 +10,9 @@ const {
   updateQaPair,
   deleteQaPair,
 } = require('../controllers/qaPair');
-const {validateToken} = require("../controllers/auth");
+const { validateToken } = require('../controllers/auth');
 
-router.use(validateToken);
+// router.use(validateToken);
 
 router.get('/:qaPairId', getQaPair);
 
@@ -20,6 +20,6 @@ router.post('/', createQaPair);
 
 router.put('/:qaPairId', updateQaPair);
 
-router.delete('/:qaPairId',deleteQaPair);
+router.delete('/:qaPairId', deleteQaPair);
 
 module.exports = router;

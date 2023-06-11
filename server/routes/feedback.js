@@ -6,9 +6,9 @@ const {
   updateFeedback,
   deleteFeedback,
 } = require('../controllers/feedback');
-const {validateToken} = require("../controllers/auth");
+const { validateToken } = require('../controllers/auth');
 
-router.use(validateToken);
+// router.use(validateToken);
 
 router.get('/:feedbackId', getFeedback);
 
