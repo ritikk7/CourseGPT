@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import styles from './ChatPanel.module.css';
 import ChatSection from '../../molecules/Chat/ChatSection';
 
-const ChatPanel = ({ chatHistory }) => {
+const ExistingChatPanel = ({ chatHistory }) => {
   const scrollRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -33,4 +33,4 @@ const ChatPanel = ({ chatHistory }) => {
   );
 };
 
-export default ChatPanel;
+export default ExistingChatPanel;

@@ -62,24 +62,75 @@ const deleteUser = createAsyncThunk(`user/deleteUser`, async (_, { getState }) =
   }
 });
 
+// TODO ensure correctness
+const createChat = createAsyncThunk("user/createChat", async (payload, { getState }) => {
+  try {
+    const state = getState();
+    const userId = state.user.data._id;
+    const response = await api.post(`/api/users/${userId}/chats`, payload);
+    return response.data.chat;
+  } catch (error) {
+    throw error.response.data.error;
+  }
+});
+
+// TODO ensure correctness
+const getChat = createAsyncThunk("user/getChat", async (payload, { getState }) => {
+  try {
+    const state = getState();
+    const userId = state.user.data._id;
+    const response = await api.get(`/api/users/${userId}/chats/${payload.chatId}`);
+    return response.data.chat;
+  } catch (error) {
+    throw error.response.data.error;
+  }
+});
+
+// TODO ensure correctness
+const getChatMessages = createAsyncThunk("user/getChatMessages", async (payload, { getState }) => {
+  try {
+    const state = getState();
+    const userId = state.user.data._id;
+    const chatId = state.user.activeChat._id;
+    const response = await api.get(`/api/users/${userId}/chats/${chatId}/messages/`, payload);
+    return response.data.messages;
+  } catch (error) {
+    throw error.response.data.error;
+  }
+});
+
+// TODO ensure correctness
+const createUserMessage = createAsyncThunk("user/createUserMessage", async (payload, { getState }) => {
+  try {
+    const state = getState();
+    const userId = state.user.data._id;
+    const chatId = state.user.activeChat._id;
+    const response = await api.post(`/api/users/${userId}/chats/${chatId}/messages/`, payload);
+    return response.data; // should be a tuple with the chat GPT message and the user message
+  } catch (error) {
+    throw error.response.data.error;
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     data: null,
+    chats: {},
+    favouriteCourses: {},
+    school: null,
+    activeChat: null,
+    activeMessages: {},
     authError: null,
-    activeChatId: null,
-    activeNewChatDropdownCourseId: null
+    activeNewChatDropdownCourse: null,
   },
   reducers: {
     setAuthError: (state, action) => {
       state.authError = action.payload;
     },
-    setActiveChatId: (state, action) => {
-      state.activeChatId = action.payload;
-    },
-    setActiveNewChatDropdownCourseId: (state, action) => {
-      state.activeNewChatDropdownCourseId = action.payload;
-    },
+    setActiveNewChatDropdownCourse: (state, action) => {
+      state.activeNewChatDropdownCourse = action.payload;
+    }
   },
   extraReducers: builder => {
     builder
@@ -136,77 +187,30 @@ const userSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.authError = action.error.message;
-      });
+      })
+      .addCase(createChat.fulfilled, (state, action) => {
+        state.data.chats.push(action.payload);
+        state.activeChat = action.payload;
+      })
+      .addCase(getChat.fulfilled, (state, action) => {
+        state.activeChat = action.payload;
+      })
+      .addCase(getChatMessages.fulfilled, (state, action) => {
+        state.activeMessages = action.payload;
+      })
+      .addCase(createUserMessage.fulfilled, (state, action) => {
+        const userMessage = action.payload.userMessage;
+        const courseGptMessage = action.payload.courseGptMessage;
+        state.activeMessages.push(userMessage);
+        state.activeMessages.push(courseGptMessage);
+      })
   }
 });
 
 
-const selectUserState = (state) => state.user;
-
-export const selectUser = createSelector(
-  selectUserState,
-  (user) => user.data
-);
-
-export const selectUserEmail = createSelector(
-  selectUser,
-  (user) => user ? user.email : null
-);
-
-export const selectUserPassword = createSelector(
-  selectUser,
-  (user) => user ? user.password : null
-);
-
-export const selectUserGoogleId = createSelector(
-  selectUser,
-  (user) => user ? user.googleId : null
-);
-
-export const selectUserType = createSelector(
-  selectUser,
-  (user) => user ? user.type : null
-);
-
-export const selectUserProfilePicture = createSelector(
-  selectUser,
-  (user) => user ? user.profilePicture : null
-);
-
-export const selectUserFirstName = createSelector(
-  selectUser,
-  (user) => user ? user.firstName : null
-);
-
-export const selectUserLastName = createSelector(
-  selectUser,
-  (user) => user ? user.lastName : null
-);
-
-export const selectUserDateOfBirth = createSelector(
-  selectUser,
-  (user) => user ? user.dateOfBirth : null
-);
-
-export const selectUserChats = createSelector(
-  selectUser,
-  (user) => user ? user.chats : null
-);
-
-export const selectUserSchool = createSelector(
-  selectUser,
-  (user) => user ? user.school : null
-);
-
-export const selectUserFavourites = createSelector(
-  selectUser,
-  (user) => user ? user.favourites : null
-);
-
-export { registerUser, loginUser, fetchUser, logoutUser, updateUser, deleteUser };
-export const { setAuthError, setActiveNewChatDropdownCourseId, setActiveChatId } = userSlice.actions;
+export { registerUser, loginUser, fetchUser, logoutUser, updateUser, deleteUser , createChat, getChat, getChatMessages, createUserMessage };
+export const { setAuthError , setActiveNewChatDropdownCourse} = userSlice.actions;
 export default userSlice.reducer;
-
 /**
  * All code written by team.
  * Helped with understanding:

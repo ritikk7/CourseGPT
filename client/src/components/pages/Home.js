@@ -17,6 +17,7 @@ function Home() {
 
     useEffect(() => {
         if(!user) {
+            setIsLoading(true);
             dispatch(fetchUser()).then(response => {
                 if (!response.payload) {
                     navigate('/login');

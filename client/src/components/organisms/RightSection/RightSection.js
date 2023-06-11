@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './RightSection.module.css';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import NewChatPanel from '../InfoPanel/InfoPanel';
-import ExistingChatPanel from '../ChatPanel/ChatPanel';
+import NewChatPanel from '../InfoPanel/NewChatPanel';
+import ExistingChatPanel from '../ChatPanel/ExistingChatPanel';
 
 // from chatGPT prompts
 const staticChats = [

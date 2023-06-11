@@ -18,10 +18,10 @@ import {
   ModalCloseButton,
   Checkbox
 } from "@chakra-ui/react";
-import { updateUser } from "../../redux/userSlice";
-import { fetchSchools } from "../../redux/schoolsSlice";
-import { fetchCourses } from "../../redux/coursesSlice";
-
+import { updateUser } from "../../../redux/userSlice";
+import { fetchSchools } from "../../../redux/schoolsSlice";
+import { fetchCourses } from "../../../redux/coursesSlice";
+// TODO REFACTOR AND BREAK DOWN
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.data);

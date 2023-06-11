@@ -2,6 +2,7 @@ import { Select } from "@chakra-ui/react";
 import React from "react";
 
 const NewChatCourseSelector = ({ courses, onChange }) => {
+  console.log(courses);
 
   return (
     <Select
@@ -10,7 +11,7 @@ const NewChatCourseSelector = ({ courses, onChange }) => {
       onChange={(e) => onChange(e)}
     >
       {courses.map((course, i) => (
-        <option key={i} value={course._id}>
+        <option key={i} value={course}>
           {course.courseName}
         </option>
       ))}

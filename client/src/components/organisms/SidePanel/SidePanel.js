@@ -11,17 +11,17 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
-import { logoutUser, selectUserFavourites, setActiveNewChatDropdownCourseId } from "../../../redux/userSlice";
+import { logoutUser, setActiveNewChatDropdownCourse} from "../../../redux/userSlice";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ProfileModal from '../ProfileModal';
+import ProfileModal from '../ProfileModal/ProfileModal';
 import NewChatCourseSelector from "../../atoms/NewChatCourseSelector/NewChatCourseSelector";
 import NewChatButton from "../../atoms/NewChatButton/NewChatButton";
 
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const favouriteCourses = useSelector(selectUserFavourites);
+  const favouriteCourses = useSelector((state) => state.user.data.favourites);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -41,7 +41,7 @@ const SidePanel = ({ setMainPanel }) => {
   const handleNewChat = () => setMainPanel('INFO');
 
   const handleNewChatCourseSelectorChange = (e) => {
-      dispatch(setActiveNewChatDropdownCourseId(e.target.value));
+      dispatch(setActiveNewChatDropdownCourse(e.target.value));
   }
 
   return (

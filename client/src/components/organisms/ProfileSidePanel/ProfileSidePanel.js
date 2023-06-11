@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './ProfileSidePanel.module.css';
 import { Text, Flex } from '@chakra-ui/react';
 
 const ProfileSidePanel = () => {

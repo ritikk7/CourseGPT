@@ -5,10 +5,6 @@ const fetchCourses = createAsyncThunk(
   "courses/fetchCourses",
   async (schoolId) => {
     const response = await api.get(`/schools/${schoolId}/courses`);
-    console.log({
-      schoolId: schoolId,
-      courses: response.data.courses
-    });
     return {
       schoolId: schoolId,
       courses: response.data.courses
