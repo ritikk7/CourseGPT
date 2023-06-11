@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/userSlice';
 import {Spinner, Box} from "@chakra-ui/react";
+import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
 
 function Home() {
     const user = useSelector(state => state.user.data);
@@ -28,19 +29,7 @@ function Home() {
         }
     }, [user, dispatch, navigate]);
 
-    if (isLoading) {
-        return (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
-                size="xl"
-              />
-          </Box>
-        );
-    }
+    if (isLoading) return <LoadingSpinner/>;
 
     return (
       <div className="App">

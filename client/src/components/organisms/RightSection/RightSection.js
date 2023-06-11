@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './RightSection.module.css';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import InfoPanel from '../InfoPanel/InfoPanel';
-import ChatPanel from '../ChatPanel/ChatPanel';
+import NewChatPanel from '../InfoPanel/InfoPanel';
+import ExistingChatPanel from '../ChatPanel/ChatPanel';
 
 // from chatGPT prompts
 const staticChats = [
@@ -38,10 +38,10 @@ const RightSection = ({
 
   const renderMainPanel = () => {
     if (mainPanel === 'CHAT') {
-      return <ChatPanel chatHistory={chatHistory} />;
+      return <ExistingChatPanel chatHistory={chatHistory} />;
     } else
       return (
-        <InfoPanel
+        <NewChatPanel
           setInputText={setInputText}
         />
       );

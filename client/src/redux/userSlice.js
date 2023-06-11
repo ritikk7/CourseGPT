@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 
 const createUserRequest = (name, requestType, path, dataField) => {
@@ -66,12 +66,20 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     data: null,
-    authError: null
+    authError: null,
+    activeChatId: null,
+    activeNewChatDropdownCourseId: null
   },
   reducers: {
     setAuthError: (state, action) => {
       state.authError = action.payload;
-    }
+    },
+    setActiveChatId: (state, action) => {
+      state.activeChatId = action.payload;
+    },
+    setActiveNewChatDropdownCourseId: (state, action) => {
+      state.activeNewChatDropdownCourseId = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -132,8 +140,71 @@ const userSlice = createSlice({
   }
 });
 
+
+const selectUserState = (state) => state.user;
+
+export const selectUser = createSelector(
+  selectUserState,
+  (user) => user.data
+);
+
+export const selectUserEmail = createSelector(
+  selectUser,
+  (user) => user ? user.email : null
+);
+
+export const selectUserPassword = createSelector(
+  selectUser,
+  (user) => user ? user.password : null
+);
+
+export const selectUserGoogleId = createSelector(
+  selectUser,
+  (user) => user ? user.googleId : null
+);
+
+export const selectUserType = createSelector(
+  selectUser,
+  (user) => user ? user.type : null
+);
+
+export const selectUserProfilePicture = createSelector(
+  selectUser,
+  (user) => user ? user.profilePicture : null
+);
+
+export const selectUserFirstName = createSelector(
+  selectUser,
+  (user) => user ? user.firstName : null
+);
+
+export const selectUserLastName = createSelector(
+  selectUser,
+  (user) => user ? user.lastName : null
+);
+
+export const selectUserDateOfBirth = createSelector(
+  selectUser,
+  (user) => user ? user.dateOfBirth : null
+);
+
+export const selectUserChats = createSelector(
+  selectUser,
+  (user) => user ? user.chats : null
+);
+
+export const selectUserSchool = createSelector(
+  selectUser,
+  (user) => user ? user.school : null
+);
+
+export const selectUserFavourites = createSelector(
+  selectUser,
+  (user) => user ? user.favourites : null
+);
+
 export { registerUser, loginUser, fetchUser, logoutUser, updateUser, deleteUser };
-export const { setAuthError } = userSlice.actions;
+export const { setAuthError, setActiveNewChatDropdownCourseId, setActiveChatId } = userSlice.actions;
 export default userSlice.reducer;
 
 /**
