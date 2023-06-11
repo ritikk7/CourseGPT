@@ -23,10 +23,10 @@ const coursesSlice = createSlice({
     // The `allCourses` object maps `schoolId` keys to arrays of courses.
     // Example: { "schoolId1": [courseObject1, courseObject2], "schoolId2": [courseObject3, courseObject4] }
     allCourses: {},
-    // The `favourites` object maps `courseId` keys to a course object.
+    // The `userFavourites` object maps `courseId` keys to a course object.
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2 }
 
-    favourites: {},
+    userFavourites: {},
     currentlySelectedDropdownCourse: null,
     error: null
   },

@@ -6,24 +6,31 @@ async function getCourse(req, res) {
     const courseId = req.params.courseId;
     const course = await Course.find({ _id: courseId });
 
-    res.status(200).json({ course: course });
+    res.status(200).json({ course });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
-async function getAllCourses(req, res) {
+async function getCourses(req, res) {
   try {
-    if (req.body.courseName) {
-      const course = await Course.find({ courseName: req.body.courseName });
-      res.status(200).json({ course: course });
-      return;
-    }
-
     const schoolId = req.params.schoolId;
     const courses = await Course.find({ school: schoolId });
 
-    res.status(200).json({ courses: courses });
+    res.status(200).json({ courses });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function getCoursesByIds(req, res) {
+  try {
+    const courseIds = req.query.ids.split(',');
+    const courses = await Course.find({
+      _id: { $in: courseIds },
+      school: req.params.schoolId
+    });
+    res.status(200).json({ courses });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -53,6 +60,7 @@ async function createCourse(req, res) {
 
 module.exports = {
   getCourse,
-  getAllCourses,
+  getCourses,
   createCourse,
+  getCoursesByIds
 };
