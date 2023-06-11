@@ -38,7 +38,7 @@ const schoolsSlice = createSlice({
     // The `school` object maps `schoolId` keys to a school.
     // Example: { "schoolId1": schoolObject1, "schoolId2": schoolObject2, }
     schools: {},
-    userSchool: null
+    userSchool: null // school object
   },
   reducers: {
     setUserSchool: (state, action) => {

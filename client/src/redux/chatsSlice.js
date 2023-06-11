@@ -52,7 +52,7 @@ const chatsSlice = createSlice({
     // The `userChats` object maps `chatId` keys to a chat object.
     // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
-    activeChat: null
+    activeChat: null // chat object
   },
   reducers: {
     setActiveChat: (state, action) => {
