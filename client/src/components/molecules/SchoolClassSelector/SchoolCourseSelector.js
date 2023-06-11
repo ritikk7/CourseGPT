@@ -1,71 +1,136 @@
 import React, { useState, useEffect } from "react";
 import {
-  Select,
+  Button,
   Checkbox,
-  CheckboxGroup,
-  VStack, FormControl, FormLabel
+  FormControl,
+  FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay,
+  Select,
+  VStack
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCourses, fetchSchool, fetchSchools } from "../../../redux/schoolsSlice";
+import { fetchSchools } from "../../../redux/schoolsSlice";
+import { fetchCourses } from "../../../redux/coursesSlice";
+import { updateUser } from "../../../redux/userSlice";
 
-const SchoolCourseSelector = () => {
+const SchoolCourseSelector = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
-  const schools = useSelector(state => state.schools.data);
-  const [selectedSchool, setSelectedSchool] = useState(null);
+  const schools = useSelector((state) => state.schools.data);
+  const courses = useSelector((state) => state.courses.data);
+  const previousSelectedSchoolID = useSelector((state) => state.user.data.school);
+  const userFavouriteCourses = useSelector((state) => state.user.data.favourites);
+  const [newSelectedSchoolID, setNewSelectedSchoolID] = useState(null);
+  const [availableCourses, setAvailableCourses] = useState([]);
+  const [selectedCourses, setSelectedCourses] = useState([]);
 
   useEffect(() => {
-    if (!schools) {
-      dispatch(fetchSchools()).then(res => {
-      });
+    if (!schools || schools.length === 0) {
+      dispatch(fetchSchools());
     }
-
   }, [dispatch, schools]);
 
-  const handleSchoolDropdownChange = e => {
-    setSelectedSchool(e.target.value);
+  useEffect(() => {
+    if (previousSelectedSchoolID) {
+      setNewSelectedSchoolID(previousSelectedSchoolID);
+      if (courses[previousSelectedSchoolID]) {
+        setAvailableCourses(courses[previousSelectedSchoolID]);
+      } else {
+        dispatch(fetchCourses(previousSelectedSchoolID));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (newSelectedSchoolID) {
+      if (courses[newSelectedSchoolID]) {
+        const newCourses = courses[newSelectedSchoolID].map((course) => ({
+          ...course,
+          selected: userFavouriteCourses.includes(course._id)
+        }));
+        setAvailableCourses(newCourses);
+      } else {
+        dispatch(fetchCourses(newSelectedSchoolID));
+      }
+    }
+  }, [dispatch, newSelectedSchoolID, courses, userFavouriteCourses]);
+
+  const handleSchoolChange = (e) => {
+    setNewSelectedSchoolID(e.target.value);
   };
 
-  const renderSchoolDropdownOptions = () => {
-    return schools.map(school => (
-        <option key={school.value} value={option.value}>
-          {option.label}
-        </option>
-      )
-    );
+  const handleCourseChange = (courseID) => {
+    const updatedCourses = availableCourses.map((course) => {
+      if (course._id === courseID) {
+        const isSelected = !course.selected;
+        if (isSelected) {
+          setSelectedCourses((prev) => [...prev, courseID]);
+        } else {
+          setSelectedCourses((prev) => prev.filter((_id) => _id !== courseID));
+        }
+        return { ...course, selected: isSelected };
+      }
+      return course;
+    });
+
+    setAvailableCourses(updatedCourses);
   };
 
-  if (schools) {
-    return (
-      <FormControl>
-        <FormLabel>School</FormLabel>
-        <Select onChange={handleSchoolDropdownChange}>
-          <option value="">What school do you attend?</option>
+  const handleSave = () => {
+    const payload = {
+      school: newSelectedSchoolID,
+      favourites: selectedCourses
+    };
 
-        </Select>
-        <CheckboxGroup
-          value={secondDropdownValue}
-          onChange={handleSecondDropdownChange}
-        >
-          <VStack align="start" spacing={2}>
-            {secondDropdownOptions.map(option => (
-              <Checkbox key={option.value} value={option.value}>
-                {option.label}
-              </Checkbox>
-            ))}
-          </VStack>
-        </CheckboxGroup>
-      </FormControl>
-    );
-  } else {
-    return (
-      <FormControl>
-        <FormLabel>School</FormLabel>
-        <Select>
-          <option value="">Loading schools...</option>
-        </Select>
-      </FormControl>
-    );
-  }
+    dispatch(updateUser(payload))
+      .then(() => {
+        handleClose();
+      })
+      .catch((error) => {
+        console.log("Failed to update user:", error);
+      });
+  };
+
+  const renderSchools = () => {
+    return schools.map((school) => (
+      <option key={school._id} value={school._id}>
+        {school.name}
+      </option>
+    ));
+  };
+
+  const renderCourses = () => {
+    return availableCourses.map((course) => (
+      <Checkbox
+        key={course._id}
+        value={course._id}
+        isChecked={course.selected}
+        onChange={() => handleCourseChange(course._id)}
+      >
+        {course.courseName}
+      </Checkbox>
+    ));
+  };
+
+  return (
+        <ModalBody mt={7}>
+          <FormControl>
+            <FormLabel>School</FormLabel>
+            <Select defaultValue={previousSelectedSchoolID ? previousSelectedSchoolID : "Select a School"}
+                    onChange={handleSchoolChange}>
+              {renderSchools()}
+            </Select>
+            <FormLabel>Courses</FormLabel>
+            <VStack align="start" spacing={2}>
+              {renderCourses()}
+            </VStack>
+          </FormControl>
+          <ModalCloseButton mt={2} size={"lg"} />
+          <ModalFooter>
+            <Button onClick={handleSave}>
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalBody>
+  );
 };
 
 export default SchoolCourseSelector;

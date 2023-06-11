@@ -42,8 +42,8 @@ const fetchUser = createUserRequest(
 
 const updateUser = createAsyncThunk(`user/updateUser`, async (payload, { getState }) => {
   try {
-    const state = getState(); // check this
-    const userId = state.user.data.id; // check this
+    const state = getState();
+    const userId = state.user.data._id;
     const response = await api.patch(`/users/${userId}`, payload);
     return response.data.user;
   } catch (error) {
@@ -53,9 +53,9 @@ const updateUser = createAsyncThunk(`user/updateUser`, async (payload, { getStat
 
 const deleteUser = createAsyncThunk(`user/deleteUser`, async (_, { getState }) => {
   try {
-    const state = getState(); // check this
-    const userId = state.user.data.id; // check this
-    const response = await api.patch(`/users/${userId}`);
+    const state = getState();
+    const userId = state.user.data._id;
+    const response = await api.delete(`/users/${userId}`);
     return response.data.message;
   } catch (error) {
     throw error.response.data.error;

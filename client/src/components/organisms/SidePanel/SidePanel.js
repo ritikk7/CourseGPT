@@ -16,15 +16,15 @@ import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { setCourse } from '../../../redux/schoolsSlice';
 import ProfileModal from '../ProfileModal';
 import CourseSelectorModal from "../CourseSelectorModal";
+import SchoolCourseSelector from "../../molecules/SchoolClassSelector/SchoolCourseSelector";
 
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const courses = useSelector(state => state.schoolCourse.courses);
-  const school = useSelector(state => state.schoolCourse.school);
+  // const courses = useSelector(state => state.schoolCourse.courses);
+  // const school = useSelector(state => state.schoolCourse.school);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCourseSelectorOpen, setCourseSelectorOpen] = useState(true);
@@ -65,17 +65,17 @@ const SidePanel = ({ setMainPanel }) => {
         <Select
           _hover={{ bg: 'rgb(61, 61, 61)' }}
           borderColor="rgb(100, 100, 102)"
-          onChange={e => {
-            dispatch(
-              setCourse({ schoolId: school._id, courseId: e.target.value })
-            );
-          }}
+          // onChange={e => {
+          //   dispatch(
+          //     setCourse({ schoolId: school._id, courseId: e.target.value })
+          //   );
+          // }}
         >
-          {courses.map((course, i) => (
-            <option key={i} value={course._id}>
-              {course.courseName}
-            </option>
-          ))}
+          {/*{courses.map((course, i) => (*/}
+          {/*  <option key={i} value={course._id}>*/}
+          {/*    {course.courseName}*/}
+          {/*  </option>*/}
+          {/*))}*/}
         </Select>
         <Button
           mt={4}
@@ -123,7 +123,7 @@ const SidePanel = ({ setMainPanel }) => {
             </MenuItem>
           </MenuList>
         </Menu>
-        <CourseSelectorModal isOpen={isCourseSelectorOpen} handleClose={handleCloseCourseSelector} />
+        <SchoolCourseSelector isOpen={isCourseSelectorOpen} handleClose={handleCloseCourseSelector} />
         <ProfileModal isOpen={isSettingsOpen} handleClose={handleCloseSettings} />
       </div>
     </div>

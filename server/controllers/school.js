@@ -18,7 +18,7 @@ async function getAllSchools(req, res) {
     //   res.status(200).json({ school: school });
     //   return;
     // }
-    const schools = await School.find();
+    const schools = await School.find({});
 
     res.status(200).json({ schools: schools });
   } catch (error) {

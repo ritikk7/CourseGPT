@@ -1,11 +1,18 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 
 const fetchCourses = createAsyncThunk(
   "courses/fetchCourses",
   async (schoolId) => {
     const response = await api.get(`/schools/${schoolId}/courses`);
-    return { schoolId, courses: response.data.courses };
+    console.log({
+      schoolId: schoolId,
+      courses: response.data.courses
+    });
+    return {
+      schoolId: schoolId,
+      courses: response.data.courses
+    };
   }
 );
 
