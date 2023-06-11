@@ -16,11 +16,11 @@ export const fetchMessages = createAsyncThunk(
 
 export const createMessageInActiveChat = createAsyncThunk(
   'messages/createMessageInActiveChat',
-  async (_, { getState }) => {
+  async (newMessage, { getState }) => {
     try {
       const userId = getState().auth.userId;
       const chatId = getState().chat.activeChat?._id;
-      const response = await api.post(`/api/users/${userId}/chatIds/${chatId}/messages`);
+      const response = await api.post(`/api/users/${userId}/chatIds/${chatId}/messages`, { content: newMessage});
       return {
         userMessage: response.data.userMessage,
         gptResponse: response.data.gptResponse,

@@ -8,7 +8,6 @@ const ExistingChatPanel = () => {
   const messageId = useSelector(state => state.chats.activeChat.messages)
   const chatHistory = useSelector(state => state.messages[messageId])
 
-
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });

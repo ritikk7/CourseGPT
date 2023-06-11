@@ -9,7 +9,6 @@ import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
 function Home() {
     const user = useSelector(state => state.user.data);
     const [isLoading, setIsLoading] = useState(true);
-    const [currentPrompt, setCurrentPrompt] = useState('');
     const [mainPanel, setMainPanel] = useState('INFO');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -34,11 +33,9 @@ function Home() {
     return (
       <div className="App">
           <SidePanel
-            currentPrompt={currentPrompt}
             setMainPanel={setMainPanel}
           />
           <RightSection
-            setCurrentPrompt={setCurrentPrompt}
             mainPanel={mainPanel}
             setMainPanel={setMainPanel}
           />
