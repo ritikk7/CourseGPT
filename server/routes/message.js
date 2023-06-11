@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams to access chatId (ie parent route)
 const {
   getMessage,
-  createMessage,
+  createUserMessage,
   updateMessage,
   deleteMessage,
   getAllMessages,
@@ -15,7 +15,7 @@ router.get('/:messageId', getMessage);
 
 router.get('/', getAllMessages);
 
-router.post('/', createMessage);
+router.post('/', createUserMessage);
 
 router.put('/:messageId', updateMessage);
 
