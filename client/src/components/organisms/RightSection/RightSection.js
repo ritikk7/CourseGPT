@@ -16,6 +16,7 @@ const RightSection = ({
   const updateChatMessages = newPrompt => {
     if (newPrompt) {
       dispatch(createMessageInActiveChat(newPrompt))
+      
     }
   };
 

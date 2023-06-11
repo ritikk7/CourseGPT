@@ -11,17 +11,21 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
-import { logoutUser, setActiveNewChatDropdownCourse} from "../../../redux/userSlice";
+import { logoutUser} from "../../../redux/userSlice";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import NewChatCourseSelector from "../../atoms/NewChatCourseSelector/NewChatCourseSelector";
 import NewChatButton from "../../atoms/NewChatButton/NewChatButton";
+import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
+import { createChat } from '../../../redux/chatsSlice';
+
 
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const favouriteCourses = useSelector((state) => state.user.data.favourites);
+  const favCourses = useSelector((state) => state.courses.userFavourites.values());
+  const currentlySelectedDropdownCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse)
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -39,17 +43,21 @@ const SidePanel = ({ setMainPanel }) => {
     });
   };
   const handleNewChat = () => {
+    if (!currentlySelectedDropdownCourse) {
+      return;
+    }
+    dispatch(createChat(currentlySelectedDropdownCourse._id))
     setMainPanel('INFO');
   };
 
   const handleNewChatCourseSelectorChange = (e) => {
-      dispatch(setActiveNewChatDropdownCourse(e.target.value));
+    dispatch(setCurrentlySelectedDropdownCourse(e.target.value))
   }
 
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        <NewChatCourseSelector courses={favouriteCourses} onChange={handleNewChatCourseSelectorChange}/>
+        <NewChatCourseSelector courses={favCourses} onChange={handleNewChatCourseSelectorChange}/>
         <NewChatButton onClick={handleNewChat}/>
       </div>
       <div className={styles.profile}>

@@ -15,7 +15,7 @@ async function createChat(req, res) {
     const chat = new Chat({
       user: userId,
       messages: [],
-      // course: req.body.course,
+      course: req.body.course,
     });
     const newChat = await chat.save();
     const user = await User.findById(userId);

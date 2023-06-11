@@ -55,6 +55,9 @@ const coursesSlice = createSlice({
   reducers: {
     setError: (state, action) => {
       state.error = action.payload;
+    }, 
+    setCurrentlySelectedDropdownCourse: (state, action) => {
+      state.currentlySelectedDropdownCourse = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -103,20 +106,10 @@ const coursesSlice = createSlice({
         }
 
       });
-
-
   }
 });
 
-export const { setError } = coursesSlice.actions;
+
+export const { setError, setCurrentlySelectedDropdownCourse } = coursesSlice.actions;
 export default coursesSlice.reducer;
 
-/**
- * All code written by team.
- * Helped with understanding:
- * - https://redux-toolkit.js.org/api/createAsyncThunk
- * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
- * - Other general Redux docs
- * - Chat GPT
- * - Stack Overflow / Google
- */
