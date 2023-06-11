@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { loginUser, registerUser, fetchUser, logoutUser } from "./authSlice";
-import { createMessageInActiveChat } from "./messagesSlice";
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
