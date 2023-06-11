@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 
 
-const fetchCourses = createAsyncThunk(
-  "courses/fetchCourses",
+const fetchSchoolCourses = createAsyncThunk(
+  "courses/fetchSchoolCourses",
   async (schoolId, { getState }) => {
     try {
       const response = await api.get(`/schools/${schoolId}/courses`);
@@ -17,6 +17,27 @@ const fetchCourses = createAsyncThunk(
   }
 );
 
+const fetchUserFavouriteCourses = createAsyncThunk(
+  "courses/fetchUserFavouriteCourses",
+  async (_, { getState }) => {
+    try {
+      const favouriteIds = getState().user.favourites;
+      const schoolId = getState().user.school;
+      const courseIds = favouriteIds.join(',');
+      const response = await api.get(`/schools/${schoolId}/courses/byIds?ids=${courseIds}`);
+      const courses = response.data.courses;
+      const coursesById = {};
+      for (let course of courses) {
+        coursesById[course._id] = course;
+      }
+      return coursesById;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
+    }
+  }
+);
+
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
@@ -25,7 +46,6 @@ const coursesSlice = createSlice({
     allCourses: {},
     // The `userFavourites` object maps `courseId` keys to a course object.
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2 }
-
     userFavourites: {},
     currentlySelectedDropdownCourse: null,
     error: null
@@ -33,19 +53,22 @@ const coursesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCourses.pending, (state) => {
+      .addCase(fetchSchoolCourses.pending, (state) => {
         state.error = null;
       })
-      .addCase(fetchCourses.fulfilled, (state, action) => {
+      .addCase(fetchSchoolCourses.fulfilled, (state, action) => {
         state.data[action.payload.schoolId] = action.payload.courses;
       })
-      .addCase(fetchCourses.rejected, (state, action) => {
+      .addCase(fetchSchoolCourses.rejected, (state, action) => {
         state.error = action.error.message;
-      });
+      })
+      .addCase(fetchUserFavouriteCourses.fulfilled, (state, action) => {
+        state.userFavourites = action.payload;
+      })
   },
 });
 
-export { fetchCourses };
+export { fetchSchoolCourses, fetchUserFavouriteCourses };
 export default coursesSlice.reducer;
 
 /**

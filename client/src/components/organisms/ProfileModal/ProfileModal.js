@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { updateUser } from "../../../redux/userSlice";
 import { fetchSchools } from "../../../redux/schoolsSlice";
-import { fetchCourses } from "../../../redux/coursesSlice";
+import { fetchSchoolCourses } from "../../../redux/coursesSlice";
 // TODO REFACTOR AND BREAK DOWN
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       if (courses[previousSelectedSchoolID]) {
         setAvailableCourses(courses[previousSelectedSchoolID]);
       } else {
-        dispatch(fetchCourses(previousSelectedSchoolID));
+        dispatch(fetchSchoolCourses(previousSelectedSchoolID));
       }
     }
   }, [previousSelectedSchoolID, courses, dispatch]);
@@ -63,7 +63,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         }));
         setAvailableCourses(newCourses);
       } else {
-        dispatch(fetchCourses(newSelectedSchoolID));
+        dispatch(fetchSchoolCourses(newSelectedSchoolID));
       }
     }
   }, [newSelectedSchoolID, courses, userFavouriteCourses, dispatch]);
