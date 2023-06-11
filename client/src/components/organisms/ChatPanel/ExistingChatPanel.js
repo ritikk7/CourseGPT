@@ -21,8 +21,8 @@ const ExistingChatPanel = () => {
     <>
       <div className={styles.chatPanel}>
         {chatHistory &&
-          chatHistory.map((msg, index) => (
-            <ChatSection key={index} index={index} message={msg} />
+          chatHistory.map((msgId, index) => (
+            <ChatSection key={index} messageId={msgId} />
           ))}
         <div
           id="dummy-div"
