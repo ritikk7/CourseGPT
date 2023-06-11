@@ -5,7 +5,7 @@ export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
   async (chatId, { getState }) => {
     try {
-      const userId = getState().auth.user?._id;
+      const userId = getState().auth.userId;
       const response = await api.get(`/api/users/${userId}/chats/${chatId}/messages`);
       return response.data.messages;
     } catch (error) {
@@ -18,7 +18,7 @@ export const createMessageInActiveChat = createAsyncThunk(
   'messages/createMessageInActiveChat',
   async (_, { getState }) => {
     try {
-      const userId = getState().auth.user?._id;
+      const userId = getState().auth.userId;
       const chatId = getState().chat.activeChat?._id;
       const response = await api.post(`/api/users/${userId}/chatIds/${chatId}/messages`);
       return {

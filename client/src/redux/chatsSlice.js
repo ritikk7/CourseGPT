@@ -5,7 +5,7 @@ export const fetchChats = createAsyncThunk(
   'chats/fetchChats',
   async (_, { getState }) => {
     try {
-      const userId = getState().auth.user?._id;
+      const userId = getState().auth.userId;
       const response = await api.get(`/api/users/${userId}/chats`);
       const chats = response.data.chats;
       const chatsById = {};
@@ -23,7 +23,7 @@ export const createChat = createAsyncThunk(
   'chats/createChat',
   async (courseId, { getState }) => {
     try {
-      const userId = getState().auth.user?._id;
+      const userId = getState().auth.userId;
       const response = await api.post(`/api/users/${userId}/chats`, {course: courseId });
       return response.data.chat;
     } catch (error) {

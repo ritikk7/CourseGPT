@@ -7,7 +7,7 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (payload, { getState }) => {
     try {
-      const userId = getState().auth.user?._id;
+      const userId = getState().auth.userId;
       const response = await api.put(`/users/${userId}`, payload);
       return response.data.user;
     } catch (error) {
@@ -20,7 +20,7 @@ export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (_, { getState }) => {
     try {
-      const userId = getState().auth.user?._id;
+      const userId = getState().auth.userId;
       const response = await api.delete(`/users/${userId}`);
       return response.data.user;
     } catch (error) {
