@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
-import { logoutUser} from "../../../redux/userSlice";
+import { logoutUser} from "../../../redux/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileModal from '../ProfileModal/ProfileModal';

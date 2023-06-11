@@ -16,7 +16,7 @@ import {
   InputGroup,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, setAuthError } from '../../redux/userSlice';
+import { loginUser, setError } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -31,7 +31,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = e => {
-    dispatch(setAuthError(null));
+    dispatch(setError(null));
     setCredentials(state => ({ ...state, [e.target.name]: e.target.value }));
   };
 
@@ -41,11 +41,11 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    dispatch(setAuthError(null));
+    dispatch(setError(null));
     window.location.href = baseUrl + '/auth/google';
   };
   const navigateToRegister = () => {
-    dispatch(setAuthError(null));
+    dispatch(setError(null));
     navigate('/register');
   };
 

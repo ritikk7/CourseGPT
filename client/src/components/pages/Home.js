@@ -3,7 +3,7 @@ import SidePanel from '../organisms/SidePanel/SidePanel';
 import RightSection from '../organisms/RightSection/RightSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchUser } from '../../redux/userSlice';
+import { fetchUser } from '../../redux/authSlice';
 import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
 
 function Home() {
