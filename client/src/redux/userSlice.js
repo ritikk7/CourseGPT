@@ -36,26 +36,26 @@ export const deleteUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    profilePicture: "",
-    firstName: "",
-    lastName: "",
-    dateOfBirth: null,
-    chats: [], // ids
-    school: null, // id
-    favourites: [], // ids
+    profilePicture: null, // string
+    firstName: null, // string
+    lastName: null, // string
+    dateOfBirth: null, // string
+    chats: null, // array of string id's
+    school: null, // string id
+    favourites: null, // array of string id's
 
     loading: false,
-    error: null
+    error: null // string message
   },
   reducers: {
     clearUser: state => {
-      state.profilePicture = "";
-      state.firstName = "";
-      state.lastName = "";
+      state.profilePicture = null;
+      state.firstName = null;
+      state.lastName = null;
       state.dateOfBirth = null;
-      state.chats = [];
+      state.chats = null;
       state.school = null;
-      state.favourites = [];
+      state.favourites = null;
     }
   },
   extraReducers: builder => {
@@ -77,10 +77,17 @@ const userSlice = createSlice({
         state.error = action.error.message;
         state.loading = false;
       })
-      .addCase(deleteUser.pending, state => {
+      .addCase(deleteUser.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
+        state.profilePicture = null;
+        state.firstName = null;
+        state.lastName = null;
+        state.dateOfBirth = null;
+        state.chats = null;
+        state.school = null;
+        state.favourites = null;
         state.loading = false;
       })
       .addCase(deleteUser.rejected, (state, action) => {
@@ -114,14 +121,14 @@ const userSlice = createSlice({
         state.school = action.payload.school;
         state.favourites = action.payload.favourites;
       })
-      .addCase(logoutUser.fulfilled, state => {
-        state.profilePicture = "";
-        state.firstName = "";
-        state.lastName = "";
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.profilePicture = null;
+        state.firstName = null;
+        state.lastName = null;
         state.dateOfBirth = null;
-        state.chats = [];
+        state.chats = null;
         state.school = null;
-        state.favourites = [];
+        state.favourites = null;
       })
       .addCase(createChat.fulfilled, (state, action) => {
         state.chats = [...state.chats, action.payload._id];

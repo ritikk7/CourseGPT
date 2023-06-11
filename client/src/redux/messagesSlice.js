@@ -34,18 +34,23 @@ export const createMessageInActiveChat = createAsyncThunk(
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: {
-    // The `state` object maps `chatId` keys to arrays of messages.
+    // The `data` object maps `chatId` keys to arrays of messages.
     // Example: { "chatId1": [messageObject1, messageObject2], "chatId2": [messageObject3, messageObject4] }
+    data: null,
+    error:null // string message
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchMessages.fulfilled, (state, action) => {
-        const chatId= action.payload[0]?.chat;
-        if(chatId) state[chatId] = action.payload;
+        if(state.data === null) state.data = {};
+        const chatId = action.payload[0]?.chat;
+        if (chatId) state.data[chatId] = action.payload;
       })
       .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
+        if(state.data === null) state.data = {};
         const chatId = action.payload.userMessage.chat;
+        if(state[chatId] === null) state[chatId] = [];
         state[chatId].push(action.payload.userMessage);
         state[chatId].push(action.payload.gptResponse);
       });

@@ -39,9 +39,9 @@ const fetchUser = createUserRequest(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    userId: null,
+    userId: null, // string id
     loading: false,
-    error: null
+    error: null // string message
   },
   reducers: {
     setError: (state, action) => {

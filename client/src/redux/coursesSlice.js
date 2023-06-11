@@ -49,7 +49,7 @@ const coursesSlice = createSlice({
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2 }
     userFavourites: null,
     currentlySelectedDropdownCourse: null, // course object
-    error: null
+    error: null // string message
   },
   reducers: {},
   extraReducers: (builder) => {
