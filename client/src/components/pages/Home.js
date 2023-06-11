@@ -4,7 +4,6 @@ import RightSection from '../organisms/RightSection/RightSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/userSlice';
-import {Spinner, Box} from "@chakra-ui/react";
 import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
 
 function Home() {

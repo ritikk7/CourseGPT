@@ -37,28 +37,44 @@ const messagesSlice = createSlice({
     // The `data` object maps `chatId` keys to arrays of messages.
     // Example: { "chatId1": [messageObject1, messageObject2], "chatId2": [messageObject3, messageObject4] }
     data: null,
-    error:null // string message
+    loading: false,
+    error: null // string message
   },
-  reducers: {},
+  reducers: {
+    setError: (state, action) => {
+      state.error = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.fulfilled, (state, action) => {
+      .addCase(fetchMessages.pending, (state) => {
+        state.loading = true;
         state.error = null;
+      })
+      .addCase(fetchMessages.fulfilled, (state, action) => {
+        state.loading = false;
         if(state.data === null) state.data = {};
         const chatId = action.payload[0]?.chat;
         if (chatId) state.data[chatId] = action.payload;
       })
       .addCase(fetchMessages.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       })
+      .addCase(createMessageInActiveChat.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
+        state.loading = false;
         if(state.data === null) state.data = {};
         const chatId = action.payload.userMessage.chat;
-        if(state[chatId] === null) state[chatId] = [];
-        state[chatId].push(action.payload.userMessage);
-        state[chatId].push(action.payload.gptResponse);
+        if(state.data[chatId] === null) state.data[chatId] = [];
+        state.data[chatId].push(action.payload.userMessage);
+        state.data[chatId].push(action.payload.gptResponse);
       })
       .addCase(createMessageInActiveChat.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       })
   },

@@ -38,22 +38,30 @@ const schoolsSlice = createSlice({
     // The `school` object maps `schoolId` keys to a school.
     // Example: { "schoolId1": schoolObject1, "schoolId2": schoolObject2, }
     schools: {},
-    userSchool: null // school object
+    userSchool: null, // school object
+    loading: false,
+    error: null // string error
   },
   reducers: {
     setUserSchool: (state, action) => {
       state.userSchool = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSchools.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
       .addCase(fetchSchools.fulfilled, (state, action) => {
+        state.loading = false;
         state.schools = action.payload;
       })
       .addCase(fetchSchools.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
