@@ -178,9 +178,6 @@ const userSlice = createSlice({
         state.chats = [...state.chats, action.payload._id];
       })
       .addCase(fetchChats.fulfilled, (state, action) => {
-        state.chats = Object.keys(action.payload);
-      })
-      .addCase(fetchChats.fulfilled, (state, action) => {
         state.chats = [...state.chats, action.payload._id];
       });
   }

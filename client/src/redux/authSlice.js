@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 
 const createUserRequest = (name, requestType, path) => {
-  return createAsyncThunk(`user/${name}`, async (payload = null) => {
+  return createAsyncThunk(`auth/${name}`, async (payload = null) => {
     try {
       const response = await api[requestType](path, payload);
       return response.data.user;
