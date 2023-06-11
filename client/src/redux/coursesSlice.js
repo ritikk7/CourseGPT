@@ -44,10 +44,10 @@ const coursesSlice = createSlice({
   initialState: {
     // The `allCourses` object maps `schoolId` keys to arrays of courses.
     // Example: { "schoolId1": [courseObject1, courseObject2], "schoolId2": [courseObject3, courseObject4] }
-    allCourses: {},
+    allCourses: null,
     // The `userFavourites` object maps `courseId` keys to a course object.
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2 }
-    userFavourites: {},
+    userFavourites: null,
     currentlySelectedDropdownCourse: null, // course object
     error: null
   },
@@ -58,20 +58,28 @@ const coursesSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchSchoolCourses.fulfilled, (state, action) => {
-        state.data[action.payload.schoolId] = action.payload.courses;
+        if(state.allCourses === null) {
+          state.allCourses = {};
+        }
+        state.allCourses[action.payload.schoolId] = action.payload.courses;
       })
       .addCase(fetchSchoolCourses.rejected, (state, action) => {
         state.error = action.error.message;
+        state.allCourses = null;
       })
       .addCase(fetchUserFavouriteCourses.fulfilled, (state, action) => {
         state.userFavourites = action.payload;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
+        if(state.userFavourites === null) {
+          state.userFavourites = {};
+        }
+
         const updatedFavourites = action.payload.favourites;
 
         for (let courseId in state.userFavourites) {
           if (!updatedFavourites.includes(courseId)) {
-            state.userFavourites = {};
+            state.userFavourites = null;
             break;
           }
         }
