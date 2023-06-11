@@ -121,7 +121,7 @@ const userSlice = createSlice({
         state.favourites = [];
       })
       .addCase(createChat.fulfilled, (state, action) => {
-        this.chats = [...state.chats, action.payload._id];
+        state.chats = [...state.chats, action.payload._id];
       })
       .addCase(fetchChats.fulfilled, (state, action) => {
         state.chats = Object.keys(action.payload);
