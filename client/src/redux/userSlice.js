@@ -37,7 +37,7 @@ const userSlice = createSlice({
     lastName: "",
     dateOfBirth: null,
     chats: [], // ids
-    school: null, // ids
+    school: null, // id
     favourites: [], // ids
 
     loading: false,
