@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../api/axiosInstance';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../api/axiosInstance";
 
 export const fetchChats = createAsyncThunk(
-  'chats/fetchChats',
+  "chats/fetchChats",
   async (_, { getState }) => {
     try {
       const userId = getState().auth.userId;
@@ -19,12 +19,25 @@ export const fetchChats = createAsyncThunk(
   }
 );
 
+export const fetchChat = createAsyncThunk(
+  "chats/fetchChat",
+  async (chatId, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      const response = await api.get(`/api/users/${userId}/chats/${chatId}`);
+      return response.data.chat;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
+    }
+  }
+);
+
 export const createChat = createAsyncThunk(
-  'chats/createChat',
+  "chats/createChat",
   async (courseId, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.post(`/api/users/${userId}/chats`, {course: courseId });
+      const response = await api.post(`/api/users/${userId}/chats`, { course: courseId });
       return response.data.chat;
     } catch (error) {
       throw error.response?.data?.error ? error.response.data.error : error.message;
@@ -33,19 +46,18 @@ export const createChat = createAsyncThunk(
 );
 
 
-
 const chatsSlice = createSlice({
-  name: 'chats',
+  name: "chats",
   initialState: {
     // The `userChats` object maps `chatId` keys to a chat object.
     // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
-    activeChat: null,
+    activeChat: null
   },
   reducers: {
     setActiveChat: (state, action) => {
       state.activeChat = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -54,8 +66,11 @@ const chatsSlice = createSlice({
       })
       .addCase(createChat.fulfilled, (state, action) => {
         state.userChats[action.payload._id] = action.payload;
+      })
+      .addCase(fetchChat.fulfilled, (state, action) => {
+        state.userChats[action.payload._id] = action.payload;
       });
-  },
+  }
 });
 
 export const { setActiveChat } = chatsSlice.actions;
