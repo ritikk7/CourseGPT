@@ -63,6 +63,45 @@ const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.profilePicture = action.payload.profilePicture || state.profilePicture;
+        state.firstName = action.payload.firstName || state.firstName;
+        state.lastName = action.payload.lastName || state.lastName;
+        state.dateOfBirth = action.payload.dateOfBirth || state.dateOfBirth;
+        state.chats = action.payload.chats || state.chats;
+        state.school = action.payload.school || state.school;
+        state.favourites = action.payload.favourites || state.favourites;
+
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(updateUser.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUser.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.profilePicture = null;
+        state.firstName = null;
+        state.lastName = null;
+        state.dateOfBirth = null;
+        state.chats = null;
+        state.school = null;
+        state.favourites = null;
+
+        state.loading = false;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
       .addCase(loginUser.pending, state => {
         state.loading = true;
         state.error = null;
