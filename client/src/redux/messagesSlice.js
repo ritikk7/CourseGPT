@@ -43,9 +43,13 @@ const messagesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchMessages.fulfilled, (state, action) => {
+        state.error = null;
         if(state.data === null) state.data = {};
         const chatId = action.payload[0]?.chat;
         if (chatId) state.data[chatId] = action.payload;
+      })
+      .addCase(fetchMessages.rejected, (state, action) => {
+        state.error = action.error.message;
       })
       .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
         if(state.data === null) state.data = {};
@@ -53,7 +57,10 @@ const messagesSlice = createSlice({
         if(state[chatId] === null) state[chatId] = [];
         state[chatId].push(action.payload.userMessage);
         state[chatId].push(action.payload.gptResponse);
-      });
+      })
+      .addCase(createMessageInActiveChat.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
   },
 });
 
