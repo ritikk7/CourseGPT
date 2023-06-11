@@ -24,7 +24,7 @@ const fetchUserFavouriteCourses = createAsyncThunk(
     try {
       const favouriteIds = getState().user.favourites;
       const schoolId = getState().user.school;
-      const courseIds = favouriteIds.join(',');
+      const courseIds = favouriteIds.join(",");
       const response = await api.get(`/schools/${schoolId}/courses/byIds?ids=${courseIds}`);
       const courses = response.data.courses;
       const coursesById = {};
@@ -49,29 +49,47 @@ const coursesSlice = createSlice({
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2 }
     userFavourites: null,
     currentlySelectedDropdownCourse: null, // course object
+    loading: false,
     error: null // string message
   },
-  reducers: {},
+  reducers: {
+    setError: (state, action) => {
+      state.error = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSchoolCourses.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
       .addCase(fetchSchoolCourses.fulfilled, (state, action) => {
-        if(state.allCourses === null) {
+        state.loading = false;
+        if (state.allCourses === null) {
           state.allCourses = {};
         }
         state.allCourses[action.payload.schoolId] = action.payload.courses;
       })
       .addCase(fetchSchoolCourses.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
         state.allCourses = null;
       })
+      .addCase(fetchUserFavouriteCourses.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchUserFavouriteCourses.fulfilled, (state, action) => {
+        state.loading = false;
         state.userFavourites = action.payload;
       })
+      .addCase(fetchUserFavouriteCourses.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+        state.userFavourites = null;
+      })
       .addCase(updateUser.fulfilled, (state, action) => {
-        if(state.userFavourites === null) {
+        if (state.userFavourites === null) {
           state.userFavourites = {};
         }
 
@@ -87,7 +105,7 @@ const coursesSlice = createSlice({
       });
 
 
-  },
+  }
 });
 
 export { fetchSchoolCourses, fetchUserFavouriteCourses };

@@ -52,23 +52,55 @@ const chatsSlice = createSlice({
     // The `userChats` object maps `chatId` keys to a chat object.
     // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
-    activeChat: null // chat object
+    activeChat: null, // chat object
+    loading: false,
+    error: null // string message
   },
   reducers: {
     setActiveChat: (state, action) => {
       state.activeChat = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchChats.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchChats.fulfilled, (state, action) => {
         state.userChats = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchChats.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(createChat.pending, state => {
+        state.loading = true;
+        state.error = null;
       })
       .addCase(createChat.fulfilled, (state, action) => {
         state.userChats[action.payload._id] = action.payload;
+        state.loading = false;
+      })
+      .addCase(createChat.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(fetchChat.pending, state => {
+        state.loading = true;
+        state.error = null;
       })
       .addCase(fetchChat.fulfilled, (state, action) => {
         state.userChats[action.payload._id] = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchChat.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
       });
   }
 });
