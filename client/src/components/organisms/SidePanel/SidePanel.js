@@ -38,7 +38,9 @@ const SidePanel = ({ setMainPanel }) => {
       navigate('/login');
     });
   };
-  const handleNewChat = () => setMainPanel('INFO');
+  const handleNewChat = () => {
+    setMainPanel('INFO');
+  };
 
   const handleNewChatCourseSelectorChange = (e) => {
       dispatch(setActiveNewChatDropdownCourse(e.target.value));

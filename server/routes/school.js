@@ -8,7 +8,7 @@ const {
 } = require('../controllers/school');
 const { validateToken } = require('../controllers/auth');
 
-router.use(validateToken);
+// router.use(validateToken);
 
 router.get('/:schoolId', getSchool);
 

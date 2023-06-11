@@ -5,12 +5,14 @@ const {
   createMessage,
   updateMessage,
   deleteMessage,
+  getAllMessages,
 } = require('../controllers/message');
 const { validateToken } = require('../controllers/auth');
 
-router.use(validateToken);
+// router.use(validateToken);
 
 router.get('/:messageId', getMessage);
+router.get('/', getAllMessages);
 
 router.post('/', createMessage);
 

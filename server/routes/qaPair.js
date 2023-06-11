@@ -12,7 +12,7 @@ const {
 } = require('../controllers/qaPair');
 const { validateToken } = require('../controllers/auth');
 
-router.use(validateToken);
+// router.use(validateToken);
 
 router.get('/:qaPairId', getQaPair);
 
