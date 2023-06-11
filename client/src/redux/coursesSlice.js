@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
+import { updateUser } from "./userSlice";
 
 
 const fetchSchoolCourses = createAsyncThunk(
@@ -65,6 +66,19 @@ const coursesSlice = createSlice({
       .addCase(fetchUserFavouriteCourses.fulfilled, (state, action) => {
         state.userFavourites = action.payload;
       })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        const updatedFavourites = action.payload.favourites;
+
+        for (let courseId in state.userFavourites) {
+          if (!updatedFavourites.includes(courseId)) {
+            state.userFavourites = {};
+            break;
+          }
+        }
+
+      });
+
+
   },
 });
 
