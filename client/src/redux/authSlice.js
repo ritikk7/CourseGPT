@@ -12,25 +12,25 @@ const createUserRequest = (name, requestType, path) => {
   });
 };
 
-const registerUser = createUserRequest(
+export const registerUser = createUserRequest(
   "registerUser",
   "post",
   "/auth/register",
 );
 
-const loginUser = createUserRequest(
+export const loginUser = createUserRequest(
   "loginUser",
   "post",
   "/auth/login",
 );
 
-const logoutUser = createUserRequest(
+export const logoutUser = createUserRequest(
   "logoutUser",
   "post",
   "/auth/logout",
 );
 
-const fetchUser = createUserRequest(
+export const fetchUser = createUserRequest(
   "fetchUser",
   "get",
   "/auth/get-auth-user",
@@ -101,7 +101,6 @@ const authSlice = createSlice({
   }
 });
 
-export { registerUser, loginUser, fetchUser, logoutUser};
 export const { setError } = authSlice.actions;
 export default authSlice.reducer;
 

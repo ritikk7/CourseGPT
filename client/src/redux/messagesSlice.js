@@ -80,6 +80,7 @@ const messagesSlice = createSlice({
   },
 });
 
+export const {  setError } = messagesSlice.actions;
 export default messagesSlice.reducer;
 
 

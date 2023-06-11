@@ -3,7 +3,7 @@ import api from "../api/axiosInstance";
 import { updateUser } from "./userSlice";
 
 
-const fetchSchoolCourses = createAsyncThunk(
+export const fetchSchoolCourses = createAsyncThunk(
   "courses/fetchSchoolCourses",
   async (schoolId, { getState }) => {
     try {
@@ -18,7 +18,7 @@ const fetchSchoolCourses = createAsyncThunk(
   }
 );
 
-const fetchUserFavouriteCourses = createAsyncThunk(
+export const fetchUserFavouriteCourses = createAsyncThunk(
   "courses/fetchUserFavouriteCourses",
   async (_, { getState }) => {
     try {
@@ -108,7 +108,7 @@ const coursesSlice = createSlice({
   }
 });
 
-export { fetchSchoolCourses, fetchUserFavouriteCourses };
+export const { setError } = coursesSlice.actions;
 export default coursesSlice.reducer;
 
 /**

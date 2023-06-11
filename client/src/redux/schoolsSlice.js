@@ -77,7 +77,7 @@ const schoolsSlice = createSlice({
   }
 });
 
-export const { setUserSchool } = schoolsSlice.actions;
+export const { setUserSchool, setError } = schoolsSlice.actions;
 export default schoolsSlice.reducer;
 
 

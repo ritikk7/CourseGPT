@@ -105,7 +105,7 @@ const chatsSlice = createSlice({
   }
 });
 
-export const { setActiveChat } = chatsSlice.actions;
+export const { setActiveChat, setError } = chatsSlice.actions;
 export default chatsSlice.reducer;
 
 /**
