@@ -5,7 +5,9 @@ import ChatSection from '../../molecules/Chat/ChatSection';
 
 const ExistingChatPanel = () => {
   const scrollRef = useRef(null);
-  const chatHistory = useSelector(state => state.chats.activeChat.messages)
+  const messageId = useSelector(state => state.chats.activeChat.messages)
+  const chatHistory = useSelector(state => state.messages[messageId])
+
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -21,8 +23,8 @@ const ExistingChatPanel = () => {
     <>
       <div className={styles.chatPanel}>
         {chatHistory &&
-          chatHistory.map((msgId, index) => (
-            <ChatSection key={index} messageId={msgId} />
+          chatHistory.map((msg, index) => (
+            <ChatSection key={index} message={msg} />
           ))}
         <div
           id="dummy-div"
