@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const NewChatPanel = ({ setInputText }) => {
   const selectedCourse = useSelector(
-    state => state.user.activeNewChatDropdownCourse
+    state => state.courses.currentlySelectedDropdownCourse
   );
 
   const renderPrompts = () => {

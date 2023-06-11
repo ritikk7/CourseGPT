@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-
+import { useSelector } from 'react-redux';
 import styles from './ChatPanel.module.css';
 import ChatSection from '../../molecules/Chat/ChatSection';
 
-const ExistingChatPanel = ({ chatHistory }) => {
+const ExistingChatPanel = () => {
   const scrollRef = useRef(null);
+  const chatHistory = useSelector(state => state.chats.activeChat.messages)
 
   const scrollToBottom = () => {
     if (scrollRef.current) {

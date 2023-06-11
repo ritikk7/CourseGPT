@@ -38,7 +38,7 @@ const RightSection = ({
 
   const renderMainPanel = () => {
     if (mainPanel === 'CHAT') {
-      return <ExistingChatPanel chatHistory={chatHistory} />;
+      return <ExistingChatPanel />;
     } else
       return (
         <NewChatPanel
