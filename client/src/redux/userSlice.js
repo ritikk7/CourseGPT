@@ -1,30 +1,34 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { loginUser, registerUser, fetchUser, logoutUser } from "./authSlice";
+import { createMessageInActiveChat } from "./messagesSlice";
 
-const updateUser = createAsyncThunk(
+export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (payload, { getState }) => {
-    const user = getState().auth.user;
-    if (user) {
-      const response = await api.put(`/users/${user._id}`, payload);
-      return response.data;
+    try {
+      const userId = getState().auth.user?._id;
+      const response = await api.put(`/users/${userId}`, payload);
+      return response.data.user;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
     }
-    throw new Error("User not logged in");
   }
 );
 
-const deleteUser = createAsyncThunk(
+export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (_, { getState }) => {
-    const user = getState().auth.user;
-    if (user) {
-      const response = await api.delete(`/users/${user._id}`);
-      return response.data;
+    try {
+      const userId = getState().auth.user?._id;
+      const response = await api.delete(`/users/${userId}`);
+      return response.data.user;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
     }
-    throw new Error("User not logged in");
   }
 );
+
 
 const userSlice = createSlice({
   name: "user",
@@ -36,6 +40,7 @@ const userSlice = createSlice({
     chats: [], // ids
     school: null, // ids
     favourites: [], // ids
+
     loading: false,
     error: null
   },
@@ -80,7 +85,6 @@ const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        // Here we update the user state when a user logs in
         state.profilePicture = action.payload.profilePicture;
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
@@ -115,10 +119,19 @@ const userSlice = createSlice({
         state.chats = [];
         state.school = null;
         state.favourites = [];
-      });
+      })
   }
 });
 
-export { updateUser, deleteUser };
 export const { clearUser } = userSlice.actions;
 export default userSlice.reducer;
+
+/**
+ * All code written by team.
+ * Helped with understanding:
+ * - https://redux-toolkit.js.org/api/createAsyncThunk
+ * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - Other general Redux docs
+ * - Chat GPT
+ * - Stack Overflow / Google
+ */

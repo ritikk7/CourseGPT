@@ -70,6 +70,6 @@ async function updateSchool(req, res) {
 module.exports = {
   getSchool,
   createSchool,
-  getAllSchools,
+  getSchools: getAllSchools,
   updateSchool,
 };

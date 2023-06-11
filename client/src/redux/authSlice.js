@@ -7,7 +7,7 @@ const createUserRequest = (name, requestType, path) => {
       const response = await api[requestType](path, payload);
       return response.data.user;
     } catch (error) {
-      throw error.response.data.error;
+      throw error.response?.data?.error ? error.response.data.error : error.message;
     }
   });
 };

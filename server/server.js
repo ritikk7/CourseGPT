@@ -6,7 +6,6 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const messageRoutes = require('./routes/message');
-const qaPairRoutes = require('./routes/qaPair');
 const chatRoutes = require('./routes/chat');
 const feedbackRoutes = require('./routes/feedback');
 const courseRoutes = require('./routes/course');
@@ -46,7 +45,6 @@ function setupRoutes(app) {
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);
   app.use('/api/users/:userId/chatIds/:chatId/messages', messageRoutes);
-  app.use('/api/users/:userId/chatIds/:chatId/qaPairs', qaPairRoutes);
   app.use('/api/users/:userId/chatIds', chatRoutes);
   app.use(
     '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedbacks',

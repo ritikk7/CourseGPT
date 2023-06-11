@@ -1,34 +1,67 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 
-export const fetchChats = createAsyncThunk('chats/fetchChats', async (_, { getState }) => {
-  const { _id: userId } = getState().auth.user;
-  const response = await api.get(`/api/users/${userId}/chatIds`);
-  return response.data;
-});
+export const fetchChats = createAsyncThunk(
+  'chats/fetchChats',
+  async (_, { getState }) => {
+    try {
+      const userId = getState().auth.user?._id;
+      const response = await api.get(`/api/users/${userId}/chats`);
+      return response.data.chats;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
+    }
+  }
+);
 
-export const createChat = createAsyncThunk('chats/createChat', async (_, { getState }) => {
-  const { _id: userId } = getState().auth.user;
-  const response = await api.post(`/api/users/${userId}/chatIds`);
-  return response.data;
-});
+export const createChat = createAsyncThunk(
+  'chats/createChat',
+  async (payload, { getState }) => {
+    try {
+      const userId = getState().auth.user?._id;
+      const response = await api.post(`/api/users/${userId}/chats`, payload);
+      return response.data.chat;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
+    }
+  }
+);
+
+
 
 const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
+    // The `userChats` object maps `chatId` keys to a chat object.
+    // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
-    activeChat: {},
+    activeChat: null,
   },
-  reducers: {},
+  reducers: {
+    setActiveChat: (state, action) => {
+      state.activeChat = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchChats.fulfilled, (state, action) => {
-        state = action.payload;
+        state.userChats = action.payload;
       })
       .addCase(createChat.fulfilled, (state, action) => {
-        state[action.payload._id] = action.payload;
+        state.userChats[action.payload._id] = action.payload;
       });
   },
 });
 
+export const { setActiveChat } = chatsSlice.actions;
 export default chatsSlice.reducer;
+
+/**
+ * All code written by team.
+ * Helped with understanding:
+ * - https://redux-toolkit.js.org/api/createAsyncThunk
+ * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - Other general Redux docs
+ * - Chat GPT
+ * - Stack Overflow / Google
+ */

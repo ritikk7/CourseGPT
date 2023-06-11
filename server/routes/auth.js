@@ -15,6 +15,7 @@ router.get(
   passport.authenticate('google', {
     session: false,
     scope: ['profile', 'email'],
+    failureRedirect: '/login',
   })
 );
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const { updateUser, deleteUser } = require('../controllers/user');
 const { validateToken } = require('../controllers/auth');
 
-// router.use(validateToken);
+router.use(validateToken);
 
 router.patch('/:userId', updateUser);
 

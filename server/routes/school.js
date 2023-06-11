@@ -2,20 +2,14 @@ const express = require('express');
 const router = express.Router();
 const {
   getSchool,
-  getAllSchools,
-  createSchool,
-  updateSchool,
+  getSchools,
 } = require('../controllers/school');
 const { validateToken } = require('../controllers/auth');
 
-// router.use(validateToken);
+router.use(validateToken);
 
 router.get('/:schoolId', getSchool);
 
-router.get('/', getAllSchools);
-
-router.post('/', createSchool);
-
-router.put('/:schoolId', updateSchool);
+router.get('/', getSchools);
 
 module.exports = router;

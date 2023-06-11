@@ -7,16 +7,12 @@ const {
 } = require('../controllers/course');
 const { validateToken } = require('../controllers/auth');
 
-// router.use(validateToken);
+router.use(validateToken);
 
 router.get('/:courseId', getCourse);
 
 router.get('/', getAllCourses);
 
 router.post('/', createCourse);
-
-// router.put('/:courseId', updateCourse);
-
-// router.delete('/:courseId', deleteCourse);
 
 module.exports = router;

@@ -31,20 +31,6 @@ async function createChat(req, res) {
   }
 }
 
-// async function updateUser(req, res) {
-//   const userId = req.params.userId;
-//   const updates = req.body;
-
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
-//       new: true,
-//     });
-//     res.send({ user: updatedUser });
-//   } catch (error) {
-//     res.status(500).send({ error: 'Failed to update user' });
-//   }
-// }
-
 async function updateChat(req, res) {
   const chatId = req.params.chatId;
   const updates = req.body;
