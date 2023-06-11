@@ -5,10 +5,13 @@ import { createChat, fetchChats } from "./chatsSlice";
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async (payload, { getState }) => {
+  async (updates, { getState }) => {
     try {
+      // updates must use same interface as schema
+      // Example: updating user favourites, updates = {favourites: [favouriteId1, favouriteId2, favouriteId3]}
+      // Example2: updating user first and last name, updates = {firstName: "John", lastName: "Doe"}
       const userId = getState().auth.userId;
-      const response = await api.put(`/users/${userId}`, payload);
+      const response = await api.put(`/users/${userId}`, updates);
       return response.data.user;
     } catch (error) {
       throw error.response?.data?.error ? error.response.data.error : error.message;
