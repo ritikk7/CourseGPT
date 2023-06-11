@@ -39,7 +39,7 @@ const fetchUser = createUserRequest(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    userId: null,
     loading: false,
     error: null
   },
@@ -55,7 +55,7 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.userId = action.payload._id;
         state.loading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -67,11 +67,11 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.userId = action.payload._id;
         state.loading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.error = action.error.message;
+        state.userId = action.payload._id;
         state.loading = false;
       })
       .addCase(logoutUser.pending, state => {
@@ -91,7 +91,7 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.userId = action.payload._id;
         state.loading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
