@@ -7,7 +7,12 @@ export const fetchChats = createAsyncThunk(
     try {
       const userId = getState().auth.user?._id;
       const response = await api.get(`/api/users/${userId}/chats`);
-      return response.data.chats;
+      const chats = response.data.chats;
+      const chatsById = {};
+      for (let chat of chats) {
+        chatsById[chat._id] = chat;
+      }
+      return chatsById;
     } catch (error) {
       throw error.response?.data?.error ? error.response.data.error : error.message;
     }

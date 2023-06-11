@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { loginUser, registerUser, fetchUser, logoutUser } from "./authSlice";
-import { createChat } from "./chatsSlice";
+import { createChat, fetchChats } from "./chatsSlice";
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
@@ -122,6 +122,9 @@ const userSlice = createSlice({
       })
       .addCase(createChat.fulfilled, (state, action) => {
         this.chats = [...state.chats, action.payload._id];
+      })
+      .addCase(fetchChats.fulfilled, (state, action) => {
+        state.chats = Object.keys(action.payload);
       })
   }
 });
