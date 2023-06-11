@@ -45,11 +45,11 @@ function setupExpress(app) {
 function setupRoutes(app) {
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);
-  app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
-  app.use('/api/users/:userId/chats/:chatId/qaPairs', qaPairRoutes);
-  app.use('/api/users/:userId/chats', chatRoutes);
+  app.use('/api/users/:userId/chatIds/:chatId/messages', messageRoutes);
+  app.use('/api/users/:userId/chatIds/:chatId/qaPairs', qaPairRoutes);
+  app.use('/api/users/:userId/chatIds', chatRoutes);
   app.use(
-    '/api/users/:userId/chats/:chatId/messages/:messageId/feedbacks',
+    '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedbacks',
     feedbackRoutes
   );
   app.use('/api/schools/:schoolId/courses', courseRoutes);

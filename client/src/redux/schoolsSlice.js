@@ -10,7 +10,7 @@ const fetchSchools = createAsyncThunk(
 );
 
 const fetchSchool = createAsyncThunk(
-  "schools/fetchSchool",
+  "school/fetchSchool",
   async (schoolId) => {
     const response = await api.get(`/schools/${schoolId}`);
     return response.data.school;
@@ -18,10 +18,10 @@ const fetchSchool = createAsyncThunk(
 );
 
 const schoolsSlice = createSlice({
-  name: "schools",
+  name: "school",
   initialState: {
-    data: [],
-    error: null
+    schools: {},
+    userSchool: {}
   },
   reducers: {},
   extraReducers: (builder) => {

@@ -15,8 +15,8 @@ const fetchCourses = createAsyncThunk(
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
-    data: {},
-    error: null
+    allCourses: {},
+    favourites: {}
   },
   reducers: {},
   extraReducers: (builder) => {
