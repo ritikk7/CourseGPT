@@ -34,7 +34,7 @@ async function createMessage(req, res) {
     chat.messages.push(newMessage._id);
     await chat.save();
 
-    res.status(201).json({ message: newMessage });
+    res.status(201).json({ userMessage: newMessage, gptResponse: '' });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' });
   }
