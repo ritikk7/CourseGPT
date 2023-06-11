@@ -16,10 +16,10 @@ export const fetchChats = createAsyncThunk(
 
 export const createChat = createAsyncThunk(
   'chats/createChat',
-  async (payload, { getState }) => {
+  async (courseId, { getState }) => {
     try {
       const userId = getState().auth.user?._id;
-      const response = await api.post(`/api/users/${userId}/chats`, payload);
+      const response = await api.post(`/api/users/${userId}/chats`, {course: courseId });
       return response.data.chat;
     } catch (error) {
       throw error.response?.data?.error ? error.response.data.error : error.message;
