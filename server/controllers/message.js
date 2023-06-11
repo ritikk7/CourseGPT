@@ -4,8 +4,6 @@ const Message = require('../models/message');
 async function getAllMessages(req, res) {
   // TODO
   const chatId = req.params.chatId;
-
-  // const messages = await Message.findAll({ where: { chatId } });
   const messages = await Message.find({ chat: chatId });
   res.status(200).json({ messages });
 }
@@ -18,7 +16,7 @@ async function getMessage(req, res) {
 }
 
 // TODO: make endpoint for coursegpt later
-async function createMessage(req, res) {
+async function createUserMessage(req, res) {
   try {
     const chatId = req.params.chatId;
     const userId = req.params.userId;
@@ -56,7 +54,7 @@ async function deleteMessage(req, res) {
 
 module.exports = {
   getMessage,
-  createMessage,
+  createUserMessage,
   updateMessage,
   deleteMessage,
   getAllMessages,
