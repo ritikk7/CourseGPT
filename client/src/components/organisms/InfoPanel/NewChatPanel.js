@@ -13,7 +13,7 @@ const NewChatPanel = ({ setInputText }) => {
     return (
       <HStack mt={24} spacing="16px">
         {selectedCourse
-          ? selectedCourse.promptTemplates.map((prompt, i) => (
+          ? selectedCourse.promptTemplates?.map((prompt, i) => (
               <PromptButton
                 key={i}
                 promptText={prompt}

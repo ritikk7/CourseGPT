@@ -22,7 +22,7 @@ const ExistingChatPanel = () => {
     <>
       <div className={styles.chatPanel}>
         {chatHistory &&
-          chatHistory.map((msg, index) => (
+          chatHistory?.map((msg, index) => (
             <ChatSection key={index} message={msg} />
           ))}
         <div

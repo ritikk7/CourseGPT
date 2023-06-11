@@ -26,8 +26,8 @@ export default function Login() {
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
-  const user = useSelector(state => state.user.data);
-  const authError = useSelector(state => state.user.authError);
+  const user = useSelector(state => state.auth.userId);
+  const authError = useSelector(state => state.auth.error);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = e => {

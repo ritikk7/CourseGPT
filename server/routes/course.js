@@ -4,7 +4,6 @@ const {
   getCourse,
   getCourses,
   createCourse,
-  getCoursesByIds
 } = require('../controllers/course');
 const { validateToken } = require('../controllers/auth');
 
@@ -13,8 +12,6 @@ router.use(validateToken);
 router.get('/:courseId', getCourse);
 
 router.get('/', getCourses);
-
-router.get('/byIds', getCoursesByIds)
 
 router.post('/', createCourse);
 

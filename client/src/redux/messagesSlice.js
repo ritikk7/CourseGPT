@@ -36,7 +36,7 @@ const messagesSlice = createSlice({
   initialState: {
     // The `data` object maps `chatId` keys to arrays of messages.
     // Example: { "chatId1": [messageObject1, messageObject2], "chatId2": [messageObject3, messageObject4] }
-    data: null,
+    data: {},
     loading: false,
     error: null // string message
   },
@@ -53,7 +53,6 @@ const messagesSlice = createSlice({
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
         state.loading = false;
-        if(state.data === null) state.data = {};
         const chatId = action.payload[0]?.chat;
         if (chatId) state.data[chatId] = action.payload;
       })
@@ -67,7 +66,6 @@ const messagesSlice = createSlice({
       })
       .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
         state.loading = false;
-        if(state.data === null) state.data = {};
         const chatId = action.payload.userMessage.chat;
         if(state.data[chatId] === null) state.data[chatId] = [];
         state.data[chatId].push(action.payload.userMessage);

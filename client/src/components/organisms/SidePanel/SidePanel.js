@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import styles from './SidePanel.module.css';
 import {
   Button,
@@ -17,17 +17,22 @@ import { useSelector } from 'react-redux';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import NewChatCourseSelector from "../../atoms/NewChatCourseSelector/NewChatCourseSelector";
 import NewChatButton from "../../atoms/NewChatButton/NewChatButton";
-import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
+import { fetchUserFavouriteCourses, setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
 import { createChat } from '../../../redux/chatsSlice';
 
 
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const favCourses = useSelector((state) => state.courses.userFavourites.values());
+  const userFavourites = useSelector((state) => state.user.favourites);
+  const favCourses = useSelector((state) => state.courses.userFavourites);
   const currentlySelectedDropdownCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse)
-
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+
+  useEffect(() => {
+    dispatch(fetchUserFavouriteCourses());
+  }, [userFavourites])
 
   const handleOpenSettings = () => {
     setIsSettingsOpen(true);
@@ -57,8 +62,12 @@ const SidePanel = ({ setMainPanel }) => {
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        <NewChatCourseSelector courses={favCourses} onChange={handleNewChatCourseSelectorChange}/>
-        <NewChatButton onClick={handleNewChat}/>
+        {Object.keys(favCourses).length !== 0 && (
+          <>
+            <NewChatCourseSelector courses={favCourses} onChange={handleNewChatCourseSelectorChange}/>
+            <NewChatButton onClick={handleNewChat}/>
+          </>
+        )}
       </div>
       <div className={styles.profile}>
         <Menu>

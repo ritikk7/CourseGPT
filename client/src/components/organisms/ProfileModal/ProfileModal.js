@@ -19,98 +19,117 @@ import {
   Checkbox
 } from "@chakra-ui/react";
 import { updateUser } from "../../../redux/userSlice";
-import { fetchSchools } from "../../../redux/schoolsSlice";
-import { fetchSchoolCourses } from "../../../redux/coursesSlice";
-// TODO REFACTOR AND BREAK DOWN
+import { fetchSchools, fetchUserSchool } from "../../../redux/schoolsSlice";
+import { fetchSchoolCourses, fetchUserFavouriteCourses } from "../../../redux/coursesSlice";
+import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
+
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const schools = useSelector((state) => state.schools.schools);
-  const courses = useSelector((state) => state.courses.allCourses);
-  const userFavouriteCourses = useSelector((state) => state.user.favourites);
-  const previousSelectedSchoolID = useSelector((state) => state.user.school);
-  const [newSelectedSchoolID, setNewSelectedSchoolID] = useState(null);
-  const [availableCourses, setAvailableCourses] = useState([]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [accountType, setAccountType] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
+  const currUserFavouriteCourses = useSelector((state) => state.courses.userFavourites);
+  const currUserSchool = useSelector((state) => state.schools.userSchool);
+  const schoolIdToSchoolMap = useSelector((state) => state.schools.schools);
+  const schoolIdToCoursesMap = useSelector((state) => state.courses.allCourses);
+
+  const [allAvailableCourses, setAllAvailableCourses] = useState({});
+
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [email, setEmail] = useState(user.email);
+  const [accountType, setAccountType] = useState(user.type);
+
+
+
+  // When the page first loads
   useEffect(() => {
-    if (!schools || Object.keys(schools).length === 0) {
+    if (Object.keys(schoolIdToSchoolMap).length === 0) {
       dispatch(fetchSchools());
     }
-  }, [dispatch, schools]);
-
-  useEffect(() => {
-    if (previousSelectedSchoolID) {
-      setNewSelectedSchoolID(previousSelectedSchoolID);
-      if (courses[previousSelectedSchoolID]) {
-        setAvailableCourses(courses[previousSelectedSchoolID]);
-      } else {
-        dispatch(fetchSchoolCourses(previousSelectedSchoolID));
-      }
+    if (Object.values(currUserFavouriteCourses).length === 0) {
+      dispatch(fetchUserFavouriteCourses());
     }
-  }, [previousSelectedSchoolID, courses, dispatch]);
-
-  useEffect(() => {
-    if (newSelectedSchoolID) {
-      if (courses[newSelectedSchoolID]) {
-        const newCourses = courses[newSelectedSchoolID].map((course) => ({
-          ...course,
-          selected: userFavouriteCourses.includes(course._id),
-        }));
-        setAvailableCourses(newCourses);
-      } else {
-        dispatch(fetchSchoolCourses(newSelectedSchoolID));
-      }
+    if (currUserSchool === null) {
+      dispatch(fetchUserSchool());
     }
-  }, [newSelectedSchoolID, courses, userFavouriteCourses, dispatch]);
+  }, []);
 
   useEffect(() => {
-    setFirstName(user.firstName || "");
-    setLastName(user.lastName || "");
-    setEmail(user.email || "");
-    setAccountType(user.type || "");
-  }, [user]);
+    if (currUserSchool !== null) {
+      dispatch(fetchSchoolCourses(currUserSchool._id));
+    }
+  }, [currUserSchool, dispatch]);
 
+  useEffect(() => {
+    if (Object.keys(schoolIdToSchoolMap).length !== 0) {
+      setIsLoading(false);
+    }
+  }, [schoolIdToSchoolMap])
+
+  const [newSelectedSchool, setNewSelectedSchool] = useState(null);
+  const [newSelectedCourses, setNewSelectedCourses] = useState({});
+
+  useEffect(() => {
+    if(currUserSchool) {
+      setNewSelectedSchool(currUserSchool);
+    }
+    if(currUserFavouriteCourses) {
+      setNewSelectedCourses(currUserFavouriteCourses);
+    }
+    if(schoolIdToCoursesMap && currUserSchool && schoolIdToCoursesMap[currUserSchool._id]) {
+      setAllAvailableCourses(schoolIdToCoursesMap[currUserSchool._id]);
+    }
+  }, [currUserSchool, currUserFavouriteCourses, dispatch]);
+
+
+  // On school change, ensure all courses are available
+  useEffect(() => {
+    if(schoolIdToCoursesMap && newSelectedSchool && schoolIdToCoursesMap[newSelectedSchool._id]) {
+      setAllAvailableCourses(schoolIdToCoursesMap[newSelectedSchool._id]);
+    } else if(newSelectedSchool) {
+      console.log(newSelectedSchool);
+      dispatch(fetchSchoolCourses(newSelectedSchool._id));
+    }
+  }, [newSelectedSchool, schoolIdToCoursesMap]);
+
+  // On changes
   const handleSchoolChange = (e) => {
-    const selectedSchoolId = e.target.value;
-    setNewSelectedSchoolID(selectedSchoolId);
-    setSelectedCourses([]);
-    if (courses[selectedSchoolId]) {
-      const newCourses = courses[selectedSchoolId].map((course) => ({
-        ...course,
-        selected: userFavouriteCourses.includes(course._id),
-      }));
-      setAvailableCourses(newCourses);
-    } else {
-      dispatch(fetchSchoolCourses(selectedSchoolId));
-    }
+    setNewSelectedSchool(schoolIdToSchoolMap[e.target.value]);
   };
 
-  const handleCourseChange = (courseID) => {
-    const updatedCourses = availableCourses.map((course) => {
-      if (course._id === courseID) {
-        const isSelected = !course.selected;
-        if (isSelected) {
-          setSelectedCourses((state) => [...state, courseID]);
-        } else {
-          setSelectedCourses((state) =>
-            state.filter((_id) => _id !== courseID)
-          );
-        }
-        return { ...course, selected: isSelected };
+  const handleCourseChange = (course) => {
+    setNewSelectedCourses((prevCourses) => {
+      if (prevCourses[course._id]) {
+        const {[course._id]: deletedCourse, ...remainingCourses} = prevCourses;
+        return remainingCourses;
+      } else {
+        return { ...prevCourses, [course._id]: course};
       }
-      return course;
     });
-
-    setAvailableCourses(updatedCourses);
   };
+
+  // On save
+  const handleSave = () => {
+    const favourites = Object.keys(newSelectedCourses);
+
+    const updatedUser = {
+      firstName,
+      lastName,
+      email,
+      school: newSelectedSchool._id,
+      favourites,
+      type: accountType
+    };
+
+    dispatch(updateUser(updatedUser));
+    handleClose();
+  };
+
+  // Render
 
   const renderSchools = () => {
-    return Object.values(schools).map((school) => (
+    return Object.values(schoolIdToSchoolMap).map((school) => (
       <option key={school._id} value={school._id}>
         {school.name}
       </option>
@@ -118,91 +137,97 @@ const ProfileModal = ({ isOpen, handleClose }) => {
   };
 
   const renderCourses = () => {
-    return availableCourses.map((course) => (
+    return Object.values(allAvailableCourses).map((course) => (
       <Checkbox
         key={course._id}
-        value={course._id}
-        isChecked={course.selected}
-        onChange={() => handleCourseChange(course._id)}
+        isChecked={!!newSelectedCourses[course._id]}
+        onChange={() => handleCourseChange(course)}
       >
         {course.courseName}
       </Checkbox>
     ));
   };
 
-  const handleSave = () => {
-    const updatedUser = {
-      firstName,
-      lastName,
-      email,
-      type: accountType,
-      school: newSelectedSchoolID,
-      favourites: selectedCourses,
-    };
-    dispatch(updateUser(updatedUser));
-    handleClose();
-  };
+
+  if (isLoading) return <LoadingSpinner/>;
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} size="xl">
+    <Modal isOpen={isOpen} onClose={handleClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
-        <VStack spacing="5" width="100%" padding="5">
-          <Text fontSize="3xl" fontWeight="bold">
-            Edit Profile Settings
-          </Text>
-          <Box boxSize="150px">
-            <Image
-              borderRadius="full"
-              boxSize="150px"
-              src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
-              alt="Profile Picture"
-            />
-          </Box>
-          <Stack spacing="5" width="100%">
+        <ModalCloseButton />
+        <VStack p={5}>
+          <Stack direction="row">
+            <Box boxSize="150px">
+              <Image
+                borderRadius="full"
+                boxSize="150px"
+                src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
+                alt="Profile Picture"
+              />
+            </Box>
+          </Stack>
+          <Box w="100%">
+            <Stack direction="row" spacing={4}>
+              <FormControl>
+                <FormLabel>First name</FormLabel>
+                <Input
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Last name</FormLabel>
+                <Input
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </FormControl>
+            </Stack>
             <FormControl>
-              <FormLabel>First Name</FormLabel>
-              <Input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Last Name</FormLabel>
-              <Input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Email</FormLabel>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <FormLabel>Email address</FormLabel>
+              <Input
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Account Type</FormLabel>
               <Select
-                placeholder="Select account type"
+                placeholder="Account Type"
                 value={accountType}
                 onChange={(e) => setAccountType(e.target.value)}
               >
                 <option value="Student">Student</option>
-                <option value="Professor">Professor</option>
-                <option value="Developer">Developer</option>
+                <option value="Professor">Teacher</option>
                 <option value="Admin">Admin</option>
+                <option value="Developer">Developer</option>
               </Select>
             </FormControl>
+          </Box>
+          <Box w="100%">
             <FormControl>
               <FormLabel>School</FormLabel>
               <Select
-                defaultValue={previousSelectedSchoolID ? previousSelectedSchoolID : "Select a School"}
+                placeholder="Select school"
+                value={newSelectedSchool?._id}
                 onChange={handleSchoolChange}
               >
                 {renderSchools()}
               </Select>
-              <FormLabel>Courses</FormLabel>
-              <VStack align="start" spacing={2}>
-                {renderCourses()}
-              </VStack>
             </FormControl>
-          </Stack>
+            <Text fontSize="lg">Courses</Text>
+            {renderCourses()}
+          </Box>
         </VStack>
-        <ModalCloseButton mt={2} size={"lg"} />
         <ModalFooter>
-          <Button onClick={handleSave}>Save</Button>
+          <Button colorScheme="blue" mr={3} onClick={handleSave}>
+            Save
+          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -11,7 +11,9 @@ export const updateUser = createAsyncThunk(
       // Example: updating user favourites, updates = {favourites: [favouriteId1, favouriteId2, favouriteId3]}
       // Example2: updating user first and last name, updates = {firstName: "John", lastName: "Doe"}
       const userId = getState().auth.userId;
-      const response = await api.put(`/users/${userId}`, updates);
+      console.log(updates, userId);
+      const response = await api.patch(`/users/${userId}`, updates);
+      console.log(response);
       return response.data.user;
     } catch (error) {
       throw error.response?.data?.error ? error.response.data.error : error.message;
@@ -39,10 +41,12 @@ const userSlice = createSlice({
     profilePicture: null, // string
     firstName: null, // string
     lastName: null, // string
+    email: null, // string
     dateOfBirth: null, // string
     chats: null, // array of string id's
     school: null, // string id
     favourites: null, // array of string id's
+    type: null, // string type
 
     loading: false,
     error: null // string message
@@ -52,10 +56,12 @@ const userSlice = createSlice({
       state.profilePicture = null;
       state.firstName = null;
       state.lastName = null;
+      state.email = null;
       state.dateOfBirth = null;
       state.chats = null;
       state.school = null;
       state.favourites = null;
+      state.type = null;
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -67,10 +73,12 @@ const userSlice = createSlice({
         state.profilePicture = action.payload.profilePicture || state.profilePicture;
         state.firstName = action.payload.firstName || state.firstName;
         state.lastName = action.payload.lastName || state.lastName;
+        state.email = action.payload.email || state.email;
         state.dateOfBirth = action.payload.dateOfBirth || state.dateOfBirth;
         state.chats = action.payload.chats || state.chats;
         state.school = action.payload.school || state.school;
         state.favourites = action.payload.favourites || state.favourites;
+        state.type = action.payload.type || state.type;
 
         state.loading = false;
         state.error = null;
@@ -91,10 +99,12 @@ const userSlice = createSlice({
         state.profilePicture = null;
         state.firstName = null;
         state.lastName = null;
+        state.email = null;
         state.dateOfBirth = null;
         state.chats = null;
         state.school = null;
         state.favourites = null;
+        state.type = null;
 
         state.loading = false;
       })
@@ -110,10 +120,12 @@ const userSlice = createSlice({
         state.profilePicture = action.payload.profilePicture;
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
+        state.email = action.payload.email;
         state.dateOfBirth = action.payload.dateOfBirth;
         state.chats = action.payload.chats;
         state.school = action.payload.school;
         state.favourites = action.payload.favourites;
+        state.type = action.payload.type;
         state.loading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -128,10 +140,12 @@ const userSlice = createSlice({
         state.profilePicture = action.payload.profilePicture;
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
+        state.email = action.payload.email;
         state.dateOfBirth = action.payload.dateOfBirth;
         state.chats = action.payload.chats;
         state.school = action.payload.school;
         state.favourites = action.payload.favourites;
+        state.type = action.payload.type;
         state.loading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -146,10 +160,12 @@ const userSlice = createSlice({
         state.profilePicture = action.payload.profilePicture;
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
+        state.email = action.payload.email;
         state.dateOfBirth = action.payload.dateOfBirth;
         state.chats = action.payload.chats;
         state.school = action.payload.school;
         state.favourites = action.payload.favourites;
+        state.type = action.payload.type;
         state.loading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
@@ -164,10 +180,12 @@ const userSlice = createSlice({
         state.profilePicture = null;
         state.firstName = null;
         state.lastName = null;
+        state.email = null;
         state.dateOfBirth = null;
         state.chats = null;
         state.school = null;
         state.favourites = null;
+        state.type = null;
         state.loading = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {

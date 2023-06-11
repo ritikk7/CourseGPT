@@ -19,6 +19,19 @@ export const fetchSchools = createAsyncThunk(
   }
 );
 
+export const fetchUserSchool = createAsyncThunk(
+  "schools/fetchUserSchool",
+  async (_, { getState }) => {
+    try {
+      const schoolId = getState().user.school;
+      const response = await api.get(`/schools/${schoolId}`);
+
+      return response.data.school;
+    } catch (error) {
+      throw error.response?.data?.error ? error.response.data.error : error.message;
+    }
+  }
+);
 
 export const fetchSchool = createAsyncThunk(
   "schools/fetchSchool",
@@ -61,6 +74,29 @@ const schoolsSlice = createSlice({
         state.schools = action.payload;
       })
       .addCase(fetchSchools.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchUserSchool.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserSchool.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userSchool = action.payload;
+      })
+      .addCase(fetchUserSchool.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchSchool.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchSchool.fulfilled, (state, action) => {
+        state.loading = false;
+        state.schools[action.payload._id] = action.payload;
+      })
+      .addCase(fetchSchool.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
