@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
+import { handleRequestError } from "./reduxUtil";
+import { createMessageInActiveChat } from "./messagesSlice";
 
 
 // Helpers
@@ -17,16 +19,14 @@ const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
-const handleRequestError = (error) => {
-  throw error.response?.data?.error ? error.response.data.error : error.message;
-};
+
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
   async (_, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.get(`/api/users/${userId}/chats`);
+      const response = await api.get(`/users/${userId}/chats`);
       const chats = response.data.chats;
       const chatsById = {};
       for (let chat of chats) {
@@ -44,7 +44,7 @@ export const fetchChat = createAsyncThunk(
   async (chatId, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.get(`/api/users/${userId}/chats/${chatId}`);
+      const response = await api.get(`/users/${userId}/chats/${chatId}`);
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);
@@ -57,7 +57,7 @@ export const createChat = createAsyncThunk(
   async (courseId, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.post(`/api/users/${userId}/chats`, { course: courseId });
+      const response = await api.post(`/users/${userId}/chats`, { course: courseId });
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);
@@ -95,8 +95,18 @@ const chatsSlice = createSlice({
       .addCase(fetchChat.fulfilled, handleFulfilled)
       .addCase(fetchChat.rejected, handleRejected)
       .addCase(createChat.pending, handlePending)
-      .addCase(createChat.fulfilled, handleFulfilled)
-      .addCase(createChat.rejected, handleRejected);
+      .addCase(createChat.fulfilled,(state, action) => {
+        state.activeChat = action.payload
+        handleFulfilled(state, action);
+      })
+      .addCase(createChat.rejected, handleRejected)
+      .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
+        const activeChatId = state.activeChat._id;
+        if(!state.userChats[activeChatId].messages) state.userChats[activeChatId].messages = [];
+        state.userChats[activeChatId].messages.push(action.payload.userMessage._id);
+        state.userChats[activeChatId].messages.push(action.payload.gptResponse._id);
+        state.activeChat = state.userChats[activeChatId];
+    })
   }
 });
 

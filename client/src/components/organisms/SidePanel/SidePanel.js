@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import NewChatCourseSelector from "../../atoms/NewChatCourseSelector/NewChatCourseSelector";
 import NewChatButton from "../../atoms/NewChatButton/NewChatButton";
-import { fetchUserFavouriteCourses, setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
+import { setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
 import { createChat } from '../../../redux/chatsSlice';
 
 
@@ -46,8 +46,15 @@ const SidePanel = ({ setMainPanel }) => {
   };
 
   const handleNewChatCourseSelectorChange = (e) => {
-    dispatch(setCurrentlySelectedDropdownCourse(e.target.value))
+    dispatch(setCurrentlySelectedDropdownCourse(userFavouriteCourses[e.target.value]))
   }
+
+  useEffect(() => {
+    if (!currentlySelectedDropdownCourse && userFavouriteCourses && Object.values(userFavouriteCourses).length > 0){
+      dispatch(setCurrentlySelectedDropdownCourse(Object.values(userFavouriteCourses)[0]));
+    }
+  }, []);
+
 
   return (
     <div className={styles.sidepanel}>
@@ -55,7 +62,7 @@ const SidePanel = ({ setMainPanel }) => {
         {Object.keys(userFavouriteCourses).length !== 0 && (
           <>
             <NewChatCourseSelector courses={userFavouriteCourses} onChange={handleNewChatCourseSelectorChange}/>
-            <NewChatButton onClick={handleNewChat}/>
+            <NewChatButton handleNewChat={handleNewChat}/>
           </>
         )}
       </div>

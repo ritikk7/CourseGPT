@@ -4,7 +4,7 @@ import styles from './InfoPanel.module.css';
 import { Text, HStack } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-const NewChatPanel = ({ setInputText }) => {
+const InfoPanel = ({ setInputText }) => {
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
@@ -35,4 +35,4 @@ const NewChatPanel = ({ setInputText }) => {
   );
 };
 
-export default NewChatPanel;
+export default InfoPanel;

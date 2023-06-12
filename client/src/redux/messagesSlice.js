@@ -10,7 +10,7 @@ export const fetchMessages = createAsyncThunk(
   async (chatId, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.get(`/api/users/${userId}/chats/${chatId}/messages`);
+      const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
       return response.data.messages;
     } catch (error) {
       handleRequestError(error);
@@ -23,8 +23,8 @@ export const createMessageInActiveChat = createAsyncThunk(
   async (newMessage, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const chatId = getState().chat.activeChat?._id;
-      const response = await api.post(`/api/users/${userId}/chatIds/${chatId}/messages`, { content: newMessage});
+      const chatId = getState().chats.activeChat?._id;
+      const response = await api.post(`/users/${userId}/chats/${chatId}/messages`, { content: newMessage});
       return {
         userMessage: response.data.userMessage,
         gptResponse: response.data.gptResponse,
@@ -71,7 +71,7 @@ const messagesSlice = createSlice({
       .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
         state.loading = false;
         const chatId = action.payload.userMessage.chat;
-        if(state.data[chatId] === null) state.data[chatId] = [];
+        if(!state.data[chatId]) state.data[chatId] = [];
         state.data[chatId].push(action.payload.userMessage);
         state.data[chatId].push(action.payload.gptResponse);
       })

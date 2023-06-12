@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './RightSection.module.css';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import NewChatPanel from '../InfoPanel/NewChatPanel';
+import InfoPanel from '../InfoPanel/InfoPanel';
 import ExistingChatPanel from '../ChatPanel/ExistingChatPanel';
 import { useDispatch } from "react-redux";
 import { createMessageInActiveChat } from '../../../redux/messagesSlice';
@@ -31,7 +31,7 @@ const RightSection = ({
       return <ExistingChatPanel />;
     } else
       return (
-        <NewChatPanel
+        <InfoPanel
           setInputText={setInputText}
         />
       );

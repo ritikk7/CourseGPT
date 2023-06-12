@@ -8,6 +8,16 @@ async function getChat(req, res) {
   res.send({ data: `Hello get chatId ${chatId} for user ${userId}` });
 }
 
+async function getChats(req, res) {
+  try {
+    const userId = req.params.userId;
+    const chats = await Chat.find({ user: userId });
+    res.send({ chats});
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+}
+
 async function createChat(req, res) {
   // TODO
   const userId = req.params.userId;
@@ -55,4 +65,5 @@ module.exports = {
   getChat,
   createChat,
   updateChat,
+  getChats
 };

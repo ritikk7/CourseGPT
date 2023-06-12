@@ -26,13 +26,24 @@ async function createUserMessage(req, res) {
       senderType: 'User',
       content: req.body.content,
     });
-    const newMessage = await message.save();
+    const newUserMessage = await message.save();
+
+    const gptMessage = new Message({
+      chat: chatId,
+      user: userId,
+      senderType: 'CourseGPT',
+      content: 'hello my name is GPT',
+    });
+    const newGptMessage = await gptMessage.save();
 
     const chat = await Chat.findById(chatId);
-    chat.messages.push(newMessage._id);
+
+
+    chat.messages.push(newUserMessage._id);
+    chat.messages.push(newGptMessage._id);
     await chat.save();
 
-    res.status(201).json({ userMessage: newMessage, gptResponse: '' });
+    res.status(201).json({ userMessage: newUserMessage, gptResponse: newGptMessage });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' });
   }
