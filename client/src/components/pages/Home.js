@@ -17,6 +17,15 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!authenticatedUserId) {
+      setIsLoading(true);
+      loginAndLoadUserData();
+    } else {
+      loadUserData();
+    }
+  }, [authenticatedUserId, dispatch]);
+
   const loginAndLoadUserData = async () => {
     try {
       await dispatch(fetchUser()).then(async response => {
@@ -54,25 +63,18 @@ function Home() {
     }
   };
 
-  useEffect(() => {
-    if (!authenticatedUserId) {
-      setIsLoading(true);
-      loginAndLoadUserData();
-    }
-  }, [authenticatedUserId, dispatch]);
-
 
 
   const userFavourites = useSelector(state => state.user.favourites);
   const userSchool = useSelector(state => state.user.school);
 
   useEffect(() => {
-    if (userSchool) {
+    if (userSchool && !isLoading) {
       dispatch(fetchSchoolCourses(userSchool));
     }
   }, [userSchool, dispatch]);
   useEffect(() => {
-    if (userSchool) {
+    if (userSchool && !isLoading) {
       dispatch(fetchUserFavouriteCourses());
     }
   }, [userFavourites, dispatch]);
