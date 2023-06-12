@@ -2,6 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { updateUser } from "./userSlice";
 
+const handleRequestError = (error) => {
+  throw error.response?.data?.error ? error.response.data.error : error.message;
+};
+
+
+// Async
 export const fetchSchools = createAsyncThunk(
   "schools/fetchSchools",
   async (_, { getState }) => {
@@ -14,7 +20,7 @@ export const fetchSchools = createAsyncThunk(
       }
       return schoolsById;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -28,11 +34,12 @@ export const fetchUserSchool = createAsyncThunk(
 
       return response.data.school;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
 
+// Helpers
 export const fetchSchool = createAsyncThunk(
   "schools/fetchSchool",
   async (schoolId, { getState }) => {
@@ -40,10 +47,15 @@ export const fetchSchool = createAsyncThunk(
       const response = await api.get(`/schools/${schoolId}`);
       return response.data.school;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
+
+const updateStateLoading = (state, loadingStatus) => {
+  state.loading = loadingStatus;
+  state.error = null;
+};
 
 const schoolsSlice = createSlice({
   name: "school",
@@ -65,57 +77,45 @@ const schoolsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchSchools.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+      .addCase(fetchSchools.pending, (state) => updateStateLoading(state, true))
       .addCase(fetchSchools.fulfilled, (state, action) => {
-        state.loading = false;
         state.schools = action.payload;
+        updateStateLoading(state, false);
       })
       .addCase(fetchSchools.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.error.message;
+        updateStateLoading(state, false);
       })
-      .addCase(fetchUserSchool.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
+      .addCase(fetchUserSchool.pending, (state) => updateStateLoading(state, true))
       .addCase(fetchUserSchool.fulfilled, (state, action) => {
-        state.loading = false;
         state.userSchool = action.payload;
+        updateStateLoading(state, false);
       })
       .addCase(fetchUserSchool.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.error.message;
+        updateStateLoading(state, false);
       })
-      .addCase(fetchSchool.pending, (state, action) => {
-        state.loading = true;
-      })
+      .addCase(fetchSchool.pending, (state) => updateStateLoading(state, true))
       .addCase(fetchSchool.fulfilled, (state, action) => {
-        state.loading = false;
         state.schools[action.payload._id] = action.payload;
+        updateStateLoading(state, false);
       })
       .addCase(fetchSchool.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.error.message;
+        updateStateLoading(state, false);
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         if (action.payload.school) {
-          const userSchoolId = action.payload.school;
-          if (state.schools[userSchoolId]) {
-            state.userSchool = state.schools[userSchoolId];
-          } else {
-            state.userSchool = null;
-          }
+          state.userSchool = state.schools[action.payload.school] || null;
         }
       });
   }
 });
 
+
+
 export const { setUserSchool, setError } = schoolsSlice.actions;
 export default schoolsSlice.reducer;
-
 
 /**
  * All code written by team.

@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 
+const handleRequestError = (error) => {
+  throw error.response?.data?.error ? error.response.data.error : error.message;
+};
+
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
   async (chatId, { getState }) => {
@@ -9,7 +13,7 @@ export const fetchMessages = createAsyncThunk(
       const response = await api.get(`/api/users/${userId}/chats/${chatId}/messages`);
       return response.data.messages;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -26,7 +30,7 @@ export const createMessageInActiveChat = createAsyncThunk(
         gptResponse: response.data.gptResponse,
       };
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -77,6 +81,8 @@ const messagesSlice = createSlice({
       })
   },
 });
+
+
 
 export const {  setError } = messagesSlice.actions;
 export default messagesSlice.reducer;

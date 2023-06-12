@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { updateUser } from "./userSlice";
 
+const handleRequestError = (error) => {
+  throw error.response?.data?.error ? error.response.data.error : error.message;
+};
 
 export const fetchSchoolCourses = createAsyncThunk(
   "courses/fetchSchoolCourses",
@@ -13,7 +16,7 @@ export const fetchSchoolCourses = createAsyncThunk(
         courses: response.data.courses
       };
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -34,7 +37,7 @@ export const fetchUserFavouriteCourses = createAsyncThunk(
       }
       return coursesById;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -94,6 +97,8 @@ const coursesSlice = createSlice({
       });
   }
 });
+
+
 
 
 export const { setError, setCurrentlySelectedDropdownCourse } = coursesSlice.actions;

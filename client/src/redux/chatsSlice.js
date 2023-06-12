@@ -1,6 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 
+
+// Helpers
+
+const handleLoading = (state, loadingStatus) => {
+  state.loading = loadingStatus;
+  state.error = null;
+};
+const handlePending = (state) => handleLoading(state, true);
+const handleFulfilled = (state, action) => {
+  state.userChats[action.payload._id] = action.payload;
+  handleLoading(state, false);
+};
+const handleRejected = (state, action) => {
+  state.error = action.error.message;
+  state.loading = false;
+};
+const handleRequestError = (error) => {
+  throw error.response?.data?.error ? error.response.data.error : error.message;
+};
+
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
   async (_, { getState }) => {
@@ -14,7 +34,7 @@ export const fetchChats = createAsyncThunk(
       }
       return chatsById;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -27,7 +47,7 @@ export const fetchChat = createAsyncThunk(
       const response = await api.get(`/api/users/${userId}/chats/${chatId}`);
       return response.data.chat;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
@@ -40,11 +60,10 @@ export const createChat = createAsyncThunk(
       const response = await api.post(`/api/users/${userId}/chats`, { course: courseId });
       return response.data.chat;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   }
 );
-
 
 const chatsSlice = createSlice({
   name: "chats",
@@ -66,44 +85,21 @@ const chatsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChats.pending, state => {
-        state.loading = true;
-        state.error = null;
-      })
+      .addCase(fetchChats.pending, handlePending)
       .addCase(fetchChats.fulfilled, (state, action) => {
         state.userChats = action.payload;
-        state.loading = false;
+        handleLoading(state, false);
       })
-      .addCase(fetchChats.rejected, (state, action) => {
-        state.error = action.error.message;
-        state.loading = false;
-      })
-      .addCase(createChat.pending, state => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(createChat.fulfilled, (state, action) => {
-        state.userChats[action.payload._id] = action.payload;
-        state.loading = false;
-      })
-      .addCase(createChat.rejected, (state, action) => {
-        state.error = action.error.message;
-        state.loading = false;
-      })
-      .addCase(fetchChat.pending, state => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchChat.fulfilled, (state, action) => {
-        state.userChats[action.payload._id] = action.payload;
-        state.loading = false;
-      })
-      .addCase(fetchChat.rejected, (state, action) => {
-        state.error = action.error.message;
-        state.loading = false;
-      });
+      .addCase(fetchChats.rejected, handleRejected)
+      .addCase(fetchChat.pending, handlePending)
+      .addCase(fetchChat.fulfilled, handleFulfilled)
+      .addCase(fetchChat.rejected, handleRejected)
+      .addCase(createChat.pending, handlePending)
+      .addCase(createChat.fulfilled, handleFulfilled)
+      .addCase(createChat.rejected, handleRejected);
   }
 });
+
 
 export const { setActiveChat, setError } = chatsSlice.actions;
 export default chatsSlice.reducer;

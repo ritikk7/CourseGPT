@@ -1,13 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 
+
+// Helpers
+const handleLoading = (state, loadingStatus) => {
+  state.loading = loadingStatus;
+  state.error = null;
+};
+const handlePending = state => handleLoading(state, true);
+const handleFulfilled = (state, action) => {
+  state.userId = action.payload._id;
+  handleLoading(state, false);
+};
+const handleRejected = (state, action) => {
+  state.error = action.error.message;
+  state.loading = false;
+};
+const handleRequestError = (error) => {
+  throw error.response?.data?.error ? error.response.data.error : error.message;
+};
+
+// Async
 const createUserRequest = (name, requestType, path) => {
   return createAsyncThunk(`auth/${name}`, async (payload = null) => {
     try {
       const response = await api[requestType](path, payload);
       return response.data.user;
     } catch (error) {
-      throw error.response?.data?.error ? error.response.data.error : error.message;
+      handleRequestError(error);
     }
   });
 };
@@ -50,60 +70,31 @@ const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(loginUser.pending, state => {
-        state.error = null;
-        state.loading = true;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.userId = action.payload._id;
-        state.loading = false;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.error = action.error.message;
-        state.loading = false;
-      })
-      .addCase(registerUser.pending, state => {
-        state.error = null;
-        state.loading = true;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.userId = action.payload._id;
-        state.loading = false;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.error = action.error.message;
-        state.loading = false;
-      })
-      .addCase(logoutUser.pending, state => {
-        state.error = null;
-        state.loading = true;
-      })
+      .addCase(loginUser.pending, handlePending)
+      .addCase(loginUser.fulfilled, handleFulfilled)
+      .addCase(loginUser.rejected, handleRejected)
+      .addCase(registerUser.pending, handlePending)
+      .addCase(registerUser.fulfilled, handleFulfilled)
+      .addCase(registerUser.rejected, handleRejected)
+      .addCase(logoutUser.pending, handlePending)
       .addCase(logoutUser.fulfilled, state => {
-        state.user = null;
-        state.loading = false;
+        state.userId = null;
+        handleLoading(state, false);
       })
-      .addCase(logoutUser.rejected, (state, action) => {
-        state.error = action.error.message;
-        state.loading = false;
-      })
-      .addCase(fetchUser.pending, state => {
-        state.error = null;
-        state.loading = true;
-      })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.userId = action.payload._id;
-        state.loading = false;
-      })
+      .addCase(logoutUser.rejected, handleRejected)
+      .addCase(fetchUser.pending, handlePending)
+      .addCase(fetchUser.fulfilled, handleFulfilled)
       .addCase(fetchUser.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = null;
         state.loading = false;
       });
   }
 });
 
+
+
 export const { setError } = authSlice.actions;
 export default authSlice.reducer;
-
 
 /**
  * All code written by team.

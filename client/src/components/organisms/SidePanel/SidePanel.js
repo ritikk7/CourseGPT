@@ -24,22 +24,12 @@ import { createChat } from '../../../redux/chatsSlice';
 const SidePanel = ({ setMainPanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userFavourites = useSelector((state) => state.user.favourites);
-  const favCourses = useSelector((state) => state.courses.userFavourites);
+  const userFavouriteCourses = useSelector((state) => state.courses.userFavourites);
   const currentlySelectedDropdownCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [viewSettings, setViewSettings] = useState(false);
 
-
-  useEffect(() => {
-    dispatch(fetchUserFavouriteCourses());
-  }, [userFavourites])
-
-  const handleOpenSettings = () => {
-    setIsSettingsOpen(true);
-  };
-
-  const handleCloseSettings = () => {
-    setIsSettingsOpen(false);
+  const handleViewSettings = () => {
+    setViewSettings(!viewSettings);
   };
 
   const handleLogout = () => {
@@ -62,9 +52,9 @@ const SidePanel = ({ setMainPanel }) => {
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        {Object.keys(favCourses).length !== 0 && (
+        {Object.keys(userFavouriteCourses).length !== 0 && (
           <>
-            <NewChatCourseSelector courses={favCourses} onChange={handleNewChatCourseSelectorChange}/>
+            <NewChatCourseSelector courses={userFavouriteCourses} onChange={handleNewChatCourseSelectorChange}/>
             <NewChatButton onClick={handleNewChat}/>
           </>
         )}
@@ -91,7 +81,7 @@ const SidePanel = ({ setMainPanel }) => {
             Username
           </MenuButton>
           <MenuList bg="black" border="none">
-            <MenuItem bg="black" onClick={handleOpenSettings}>
+            <MenuItem bg="black" onClick={handleViewSettings}>
               Profile
             </MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
@@ -102,7 +92,7 @@ const SidePanel = ({ setMainPanel }) => {
             </MenuItem>
           </MenuList>
         </Menu>
-        <ProfileModal isOpen={isSettingsOpen} handleClose={handleCloseSettings} />
+        {viewSettings && <ProfileModal isOpen={viewSettings} handleClose={handleViewSettings} />}
       </div>
     </div>
   );
