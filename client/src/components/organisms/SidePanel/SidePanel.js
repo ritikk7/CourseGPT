@@ -19,6 +19,7 @@ import NewChatCourseSelector from "../../atoms/NewChatCourseSelector/NewChatCour
 import NewChatButton from "../../atoms/NewChatButton/NewChatButton";
 import { setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
 import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
+import { setActivePanelInfo } from "../../../redux/userSlice";
 
 
 const SidePanel = ({ setMainPanel }) => {
@@ -42,7 +43,7 @@ const SidePanel = ({ setMainPanel }) => {
       return;
     }
     dispatch(createChatWithSelectedDropdownCourse(currentlySelectedDropdownCourse._id))
-    setMainPanel('INFO');
+    dispatch(setActivePanelInfo())
   };
 
   const handleNewChatCourseSelectorChange = (e) => {

@@ -3,14 +3,13 @@ import styles from './RightSection.module.css';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ExistingChatPanel from '../ChatPanel/ExistingChatPanel';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createMessageAndGetGptResponseInActiveChat } from '../../../redux/messagesSlice';
+import { setActivePanelChat } from "../../../redux/userSlice";
 
-const RightSection = ({
-  mainPanel,
-  setMainPanel,
-}) => {
+const RightSection = () => {
   const dispatch = useDispatch();
+  const activePanel = useSelector(state => state.user.activePanel);
   const [inputText, setInputText] = useState('');
 
   const updateChatMessages = newPrompt => {
@@ -23,11 +22,11 @@ const RightSection = ({
   const onInputSubmit = () => {
     updateChatMessages(inputText);
     setInputText('');
-    setMainPanel('CHAT');
+    dispatch(setActivePanelChat);
   };
 
   const renderMainPanel = () => {
-    if (mainPanel === 'CHAT') {
+    if (activePanel === 'CHAT') {
       return <ExistingChatPanel />;
     } else
       return (

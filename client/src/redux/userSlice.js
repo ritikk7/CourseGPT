@@ -84,7 +84,9 @@ const userSlice = createSlice({
     favourites: [],
     type: null,
     loading: false,
-    error: null // string message
+    error: null, // string message
+
+    activePanel: "INFO" // "CHAT", "INFO"
   },
   reducers: {
     clearUser: (state) => {
@@ -92,6 +94,12 @@ const userSlice = createSlice({
     },
     setError: (state, action) => {
       state.error = action.payload;
+    },
+    setActivePanelInfo: (state, action) => {
+      state.activePanel = "INFO";
+    },
+    setActivePanelChat: (state, action) => {
+      state.activePanel = "CHAT";
     }
   },
   extraReducers: builder => {
@@ -124,7 +132,7 @@ const userSlice = createSlice({
   }
 });
 
-export const { clearUser, setError } = userSlice.actions;
+export const { clearUser, setError, setActivePanelChat, setActivePanelInfo } = userSlice.actions;
 export default userSlice.reducer;
 
 /**

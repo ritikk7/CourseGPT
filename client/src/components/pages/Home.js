@@ -7,10 +7,10 @@ import { fetchUser } from "../../redux/authSlice";
 import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
 import { fetchAllSchools, } from "../../redux/schoolsSlice";
 import { fetchAllCourses, } from "../../redux/coursesSlice";
+import { fetchUserChats } from "../../redux/chatsSlice";
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const [mainPanel, setMainPanel] = useState("INFO");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,6 +40,7 @@ function Home() {
     try {
       await dispatch(fetchAllSchools);
       await dispatch(fetchAllCourses);
+      await dispatch(fetchUserChats);
     } catch (error) {
       console.log(error);
     }
@@ -49,13 +50,8 @@ function Home() {
 
   return (
     <div className="App">
-      <SidePanel
-        setMainPanel={setMainPanel}
-      />
-      <RightSection
-        mainPanel={mainPanel}
-        setMainPanel={setMainPanel}
-      />
+      <SidePanel/>
+      <RightSection/>
     </div>
   );
 }
