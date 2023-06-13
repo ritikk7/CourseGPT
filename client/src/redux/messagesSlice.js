@@ -20,18 +20,22 @@ const handleRequestError = (error) => {
 };
 
 // Async Functions
+const fetchMessages = async (chatId, userId) => {
+  const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
+  const msgs = response.data.messages;
+  const msgsById = {};
+  for (let msg of msgs) {
+    msgsById[msg._id] = msg;
+  }
+  return msgsById;
+};
+
 export const fetchChatMessages = createAsyncThunk(
   'messages/fetchChatMessages',
   async (chatId, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
-      const msgs = response.data.messages;
-      const msgsById = {};
-      for (let msg of msgs) {
-        msgsById[msg._id] = msg;
-      }
-      return msgsById;
+      return await fetchMessages(chatId, userId);
     } catch (error) {
       handleRequestError(error);
     }
@@ -40,17 +44,11 @@ export const fetchChatMessages = createAsyncThunk(
 
 export const fetchActiveChatMessages = createAsyncThunk(
   'messages/fetchActiveChatMessages',
-  async (chatId, { getState }) => {
+  async (_, { getState }) => {
     try {
       const chatId = getState().chats.activeChat._id;
       const userId = getState().auth.userId;
-      const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
-      const msgs = response.data.messages;
-      const msgsById = {};
-      for (let msg of msgs) {
-        msgsById[msg._id] = msg;
-      }
-      return msgsById;
+      return await fetchMessages(chatId, userId);
     } catch (error) {
       handleRequestError(error);
     }
@@ -59,8 +57,9 @@ export const fetchActiveChatMessages = createAsyncThunk(
 
 export const createMessageAndGetGptResponseInActiveChat = createAsyncThunk(
   'messages/createMessageAndGetGptResponseInActiveChat',
-  async (newMessage, { getState }) => {
+  async (message, { getState }) => {
     try {
+      const newMessage = message || getState().messages.currentUserInput;
       const userId = getState().auth.userId;
       const chatId = getState().chats.activeChat?._id;
       const response = await api.post(`/users/${userId}/chats/${chatId}/messages`, { content: newMessage});
@@ -80,12 +79,16 @@ const messagesSlice = createSlice({
     // The `messages` object maps each `messageId` key to a message object.
     // Example: { "messageId1": messageObject1, "messageId2": messageObject2}
     messages: {},
+    currentUserInput: '',
     loading: false,
     error: null // string message
   },
   reducers: {
-    setError: (state, action) => {
+    setMessagesError: (state, action) => {
       state.error = action.payload;
+    },
+    setCurrentUserInput: (state, action) => {
+      state.currentUserInput = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -115,7 +118,7 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { setError } = messagesSlice.actions;
+export const { setMessagesError , setCurrentUserInput} = messagesSlice.actions;
 export default messagesSlice.reducer;
 
 

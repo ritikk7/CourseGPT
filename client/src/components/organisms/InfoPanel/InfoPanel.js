@@ -14,12 +14,12 @@ const InfoPanel = ({ setInputText }) => {
       <HStack mt={24} spacing="16px">
         {selectedCourse
           ? selectedCourse.promptTemplates?.map((prompt, i) => (
-              <PromptButton
-                key={i}
-                promptText={prompt}
-                setInputText={setInputText}
-              />
-            ))
+            <PromptButton
+              key={i}
+              promptText={prompt}
+              setInputText={() => setInputText(prompt)}
+            />
+          ))
           : ''}
       </HStack>
     );

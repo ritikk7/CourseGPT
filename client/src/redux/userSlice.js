@@ -92,7 +92,7 @@ const userSlice = createSlice({
     clearUser: (state) => {
       clearUserData(state);
     },
-    setError: (state, action) => {
+    setUserError: (state, action) => {
       state.error = action.payload;
     },
     setActivePanelInfo: (state, action) => {
@@ -112,18 +112,9 @@ const userSlice = createSlice({
       .addCase(deleteUser.rejected, handleRejected)
 
       // authSlice actions
-      .addCase(loginUser.pending, handlePending)
       .addCase(loginUser.fulfilled, updateUserData)
-      .addCase(loginUser.rejected, handleRejected)
-      .addCase(registerUser.pending, handlePending)
       .addCase(registerUser.fulfilled, updateUserData)
-      .addCase(registerUser.rejected, handleRejected)
-      .addCase(fetchUser.pending, handlePending)
       .addCase(fetchUser.fulfilled, updateUserData)
-      .addCase(fetchUser.rejected, handleRejected)
-      .addCase(logoutUser.pending, handlePending)
-      .addCase(logoutUser.fulfilled, clearUserData)
-      .addCase(logoutUser.rejected, handleRejected)
 
       // chatSlice actions
       .addCase(createChatWithSelectedDropdownCourse.fulfilled, (state, action) => {
@@ -132,7 +123,7 @@ const userSlice = createSlice({
   }
 });
 
-export const { clearUser, setError, setActivePanelChat, setActivePanelInfo } = userSlice.actions;
+export const { clearUser, setUserError, setActivePanelChat, setActivePanelInfo } = userSlice.actions;
 export default userSlice.reducer;
 
 /**

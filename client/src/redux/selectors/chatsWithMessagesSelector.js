@@ -8,10 +8,10 @@ export const chatsWithMessagesSelector = createSelector(
   (chats, messages) => {
     const chatsWithMessages = {};
 
-    for (const chat in chats) {
+    for (const chat of Object.values(chats)) {
       const chatWithMessages = { ...chat, messages: {} };
       for (const courseId of chat.courses) {
-        chatWithMessages.messages[courseId] = messages[courseId];
+        chatWithMessages.messages[courseId] = { ...messages[courseId] };
       }
       chatsWithMessages[chat._id] = chatWithMessages;
     }

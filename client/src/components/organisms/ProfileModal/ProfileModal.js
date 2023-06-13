@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -19,53 +19,42 @@ import {
   Checkbox
 } from "@chakra-ui/react";
 import { updateUser } from "../../../redux/userSlice";
+import { schoolsWithCoursesSelector } from "../../../redux/selectors/schoolsWithCoursesSelector";
+import { userFavoriteCoursesSelector } from "../../../redux/selectors/userFavoriteCoursesSelector";
+import { userSchoolSelector } from "../../../redux/selectors/userSchoolSelector";
 
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
+  const userFavoriteCourses = useSelector(userFavoriteCoursesSelector);
+  const userSchool = useSelector(userSchoolSelector);
 
-  const currUserFavouriteCourses = useSelector((state) => state.courses.userFavourites);
-  const currUserSchool = useSelector((state) => state.schools.userSchool);
-  const schoolIdToSchoolMap = useSelector((state) => state.schools.schools);
-  const schoolIdToCoursesMap = useSelector((state) => state.courses.allCourses);
+  const [userInfo, setUserInfo] = useState({
+    email: user.email,
+    //password: user.password,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    type: user.type
+  });
 
-
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [email, setEmail] = useState(user.email);
-  const [accountType, setAccountType] = useState(user.type);
-
-  const [newSelectedSchool, setNewSelectedSchool] = useState(null);
-  const [newSelectedCourses, setNewSelectedCourses] = useState({});
-  const [currentlyAvailableCourses, setCurrentlyAvailableCourses] = useState([]);
-
-  useEffect(() => {
-    if (currUserSchool) {
-      setNewSelectedSchool(currUserSchool);
-    }
-    if (currUserFavouriteCourses) {
-      setNewSelectedCourses(currUserFavouriteCourses);
-    }
-    if (schoolIdToCoursesMap && currUserSchool && schoolIdToCoursesMap[currUserSchool._id]) {
-      setCurrentlyAvailableCourses(schoolIdToCoursesMap[currUserSchool._id]);
-    }
-  }, [currUserSchool, currUserFavouriteCourses, dispatch]);
-
-
-  useEffect(() => {
-    if(newSelectedSchool && schoolIdToCoursesMap[newSelectedSchool._id]) {
-      setCurrentlyAvailableCourses(schoolIdToCoursesMap[newSelectedSchool._id]);
-    } else {
-      setCurrentlyAvailableCourses([]);
-    }
-  }, [newSelectedSchool]);
+  const [selectedSchool, setSelectedSchool] = useState(userSchool);
+  const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
 
   const handleSchoolChange = (e) => {
-    setNewSelectedSchool(schoolIdToSchoolMap[e.target.value]);
+    setSelectedSchool(schoolsWithCourses[e.target.value]);
   };
 
+  useEffect(() => {
+    if(selectedSchool && userSchool && selectedSchool._id === userSchool._id) {
+      setSelectedCourses(userFavoriteCourses);
+    } else {
+      setSelectedCourses({});
+    }
+  },[selectedSchool])
+
   const handleCourseChange = (course) => {
-    setNewSelectedCourses((prevCourses) => {
+    setSelectedCourses((prevCourses) => {
       if (prevCourses[course._id]) {
         const { [course._id]: deletedCourse, ...remainingCourses } = prevCourses;
         return remainingCourses;
@@ -75,41 +64,38 @@ const ProfileModal = ({ isOpen, handleClose }) => {
     });
   };
 
-  // On save
   const handleSave = () => {
-    const favourites = Object.keys(newSelectedCourses);
+    const favourites = Object.keys(selectedCourses);
+    const school = selectedSchool._id;
     const updatedUser = {
-      firstName,
-      lastName,
-      email,
-      school: newSelectedSchool._id,
-      favourites,
-      type: accountType
+      ...userInfo,
+      school,
+      favourites
     };
     dispatch(updateUser(updatedUser));
     handleClose();
   };
 
-  // Render
-
   const renderSchools = () => {
-    return Object.values(schoolIdToSchoolMap).map((school) => (
-      <option key={school._id} value={school._id}>
+    return Object.values(schoolsWithCourses).map((school, i) => (
+      <option key={i} value={school._id}>
         {school.name}
       </option>
     ));
   };
 
   const renderCourses = () => {
-    return currentlyAvailableCourses.map((course) => (
-      <Checkbox
-        key={course._id}
-        isChecked={!!newSelectedCourses[course._id]}
-        onChange={() => handleCourseChange(course)}
-      >
-        {course.courseName}
-      </Checkbox>
-    ));
+    if(selectedSchool) {
+      return Object.values(selectedSchool.courses).map((course, i) => (
+        <Checkbox
+          key={i}
+          isChecked={!!selectedCourses[course._id]}
+          onChange={() => handleCourseChange(course)}
+        >
+          {course.courseCode}
+        </Checkbox>
+      ))
+    }
   };
 
   return (
@@ -134,16 +120,16 @@ const ProfileModal = ({ isOpen, handleClose }) => {
                 <FormLabel>First name</FormLabel>
                 <Input
                   placeholder="First name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={userInfo.firstName}
+                  onChange={(e) => setUserInfo({...userInfo, firstName: e.target.value })}
                 />
               </FormControl>
               <FormControl>
                 <FormLabel>Last name</FormLabel>
                 <Input
                   placeholder="Last name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={userInfo.lastName}
+                  onChange={(e) => setUserInfo({...userInfo, lastName: e.target.value })}
                 />
               </FormControl>
             </Stack>
@@ -151,15 +137,15 @@ const ProfileModal = ({ isOpen, handleClose }) => {
               <FormLabel>Email address</FormLabel>
               <Input
                 placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userInfo.email}
+                onChange={(e) => setUserInfo({...userInfo, email: e.target.value })}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Account Type</FormLabel>
               <Select
-                value={accountType}
-                onChange={(e) => setAccountType(e.target.value)}
+                value={userInfo.type}
+                onChange={(e) => setUserInfo({...userInfo, type: e.target.value })}
               >
                 <option value="Student">Student</option>
                 <option value="Professor">Teacher</option>
@@ -172,8 +158,8 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             <FormControl>
               <FormLabel>School</FormLabel>
               <Select
-                placeholder="Select school"
-                value={newSelectedSchool?._id}
+                placeholder="Select a school"
+                value={selectedSchool?._id}
                 onChange={handleSchoolChange}
               >
                 {renderSchools()}

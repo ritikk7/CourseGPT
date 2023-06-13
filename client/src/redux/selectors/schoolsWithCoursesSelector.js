@@ -8,10 +8,10 @@ export const schoolsWithCoursesSelector = createSelector(
   (schools, courses) => {
     const schoolsWithCourses = {};
 
-    for (const school in schools) {
+    for (const school of Object.values(schools)) {
       const schoolWithCourses = { ...school, courses: {} };
       for (const courseId of school.courses) {
-        schoolWithCourses.courses[courseId] = courses[courseId];
+        schoolWithCourses.courses[courseId] = { ...courses[courseId] };
       }
       schoolsWithCourses[school._id] = schoolWithCourses;
     }

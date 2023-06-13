@@ -77,7 +77,7 @@ const coursesSlice = createSlice({
     error: null // string message
   },
   reducers: {
-    setError: (state, action) => {
+    setCoursesError: (state, action) => {
       state.error = action.payload;
     },
     setCurrentlySelectedDropdownCourse: (state, action) => {
@@ -107,7 +107,7 @@ const coursesSlice = createSlice({
   }
 });
 
-export const { setError, setCurrentlySelectedDropdownCourse } = coursesSlice.actions;
+export const { setCoursesError, setCurrentlySelectedDropdownCourse } = coursesSlice.actions;
 export default coursesSlice.reducer;
 
 

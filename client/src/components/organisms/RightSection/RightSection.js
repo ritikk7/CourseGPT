@@ -1,71 +1,60 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import styles from './RightSection.module.css';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ExistingChatPanel from '../ChatPanel/ExistingChatPanel';
 import { useDispatch, useSelector } from "react-redux";
-import { createMessageAndGetGptResponseInActiveChat } from '../../../redux/messagesSlice';
+import { createMessageAndGetGptResponseInActiveChat, setCurrentUserInput } from "../../../redux/messagesSlice";
 import { setActivePanelChat } from "../../../redux/userSlice";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+
+const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
+  <div className={styles.inputSection}>
+    <div className={styles.inputArea}>
+      <input
+        className={styles.input}
+        placeholder="Enter a prompt..."
+        value={currentUserInput || ''}
+        onChange={e => setInputText(e.target.value)}
+        onKeyDown={onInputSubmit}
+      />
+      <button
+        className={styles.sendBtn}
+        onClick={onInputSubmit}
+      >
+        <ArrowForwardIcon />
+      </button>
+    </div>
+  </div>
+);
 
 const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
-  const [inputText, setInputText] = useState('');
+  const currentUserInput = useSelector(state => state.messages.currentUserInput);
 
-  const updateChatMessages = newPrompt => {
-    if (newPrompt) {
-      dispatch(createMessageAndGetGptResponseInActiveChat(newPrompt))
-      
-    }
+  const onInputSubmit = (e) => {
+    if (e.type === 'keydown' && e.key !== 'Enter') return;
+    dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
+    dispatch(setCurrentUserInput(''));
+    dispatch(setActivePanelChat());
   };
 
-  const onInputSubmit = () => {
-    updateChatMessages(inputText);
-    setInputText('');
-    dispatch(setActivePanelChat);
+  const setInputText = (value) => {
+    dispatch(setCurrentUserInput(value));
   };
 
-  const renderMainPanel = () => {
-    if (activePanel === 'CHAT') {
-      return <ExistingChatPanel />;
-    } else
-      return (
-        <InfoPanel
-          setInputText={setInputText}
-        />
-      );
-  };
-
-  const renderInput = () => (
-    <div className={styles.inputSection}>
-      <div className={styles.inputArea}>
-        <input
-          className={styles.input}
-          placeholder="Enter a prompt..."
-          value={inputText}
-          onChange={e => setInputText(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && inputText) {
-              onInputSubmit();
-            }
-          }}
-        />
-        <button
-          className={styles.sendBtn}
-          onClick={() => {
-            onInputSubmit();
-          }}
-        >
-          <ArrowForwardIcon />
-        </button>
-      </div>
-    </div>
-  );
+  const mainPanel = activePanel === 'CHAT'
+    ? <ExistingChatPanel />
+    : <InfoPanel setInputText={setInputText} />;
 
   return (
     <div className={styles.container}>
-      {renderMainPanel()}
-      {renderInput()}
+      {mainPanel}
+      <InputArea
+        currentUserInput={currentUserInput}
+        setInputText={setInputText}
+        onInputSubmit={onInputSubmit}
+      />
     </div>
   );
 };

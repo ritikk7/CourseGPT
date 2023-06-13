@@ -86,7 +86,7 @@ const chatsSlice = createSlice({
         state.activeChat = action.payload;
       }
     },
-    setError: (state, action) => {
+    setChatsError: (state, action) => {
       state.error = action.payload;
     }
   },
@@ -106,6 +106,7 @@ const chatsSlice = createSlice({
       .addCase(fetchChat.rejected, handleRejected)
       .addCase(createChatWithSelectedDropdownCourse.pending, handlePending)
       .addCase(createChatWithSelectedDropdownCourse.fulfilled,(state, action) => {
+        state.userChats[action.payload._id] = action.payload;
         state.activeChat = action.payload
         handleLoading(state, false);
       })
@@ -116,12 +117,13 @@ const chatsSlice = createSlice({
         const activeChatId = state.activeChat._id;
         state.userChats[activeChatId].messages.push(action.payload.userMessage._id);
         state.userChats[activeChatId].messages.push(action.payload.gptResponse._id);
+        state.activeChat = state.userChats[activeChatId];
     })
   }
 });
 
 
-export const { setActiveChat, setError } = chatsSlice.actions;
+export const { setActiveChat, setChatsError } = chatsSlice.actions;
 export default chatsSlice.reducer;
 
 

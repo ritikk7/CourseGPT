@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styles from './SidePanel.module.css';
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Menu,
@@ -7,63 +8,67 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Image,
-} from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { useDispatch } from 'react-redux';
-import { logoutUser} from "../../../redux/authSlice";
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import ProfileModal from '../ProfileModal/ProfileModal';
+  Image
+} from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+
+import styles from "./SidePanel.module.css";
+import ProfileModal from "../ProfileModal/ProfileModal";
 import NewChatCourseSelector from "../../atoms/NewChatCourseSelector/NewChatCourseSelector";
 import NewChatButton from "../../atoms/NewChatButton/NewChatButton";
 import { setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
-import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
+import { userFavoriteCoursesSelector } from "../../../redux/selectors/userFavoriteCoursesSelector";
+import { createChatWithSelectedDropdownCourse } from "../../../redux/chatsSlice";
 import { setActivePanelInfo } from "../../../redux/userSlice";
-
+import { logoutUser } from "../../../redux/authSlice";
 
 const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userFavouriteCourses = useSelector((state) => state.courses.userFavourites);
-  const currentlySelectedDropdownCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse)
-  const [viewSettings, setViewSettings] = useState(false);
-
-  const handleViewSettings = () => {
-    setViewSettings(!viewSettings);
-  };
-
-  const handleLogout = () => {
-    dispatch(logoutUser()).then(() => {
-      navigate('/login');
-    });
-  };
-  const handleNewChat = () => {
-    if (!currentlySelectedDropdownCourse) {
-      return;
-    }
-    dispatch(createChatWithSelectedDropdownCourse(currentlySelectedDropdownCourse._id))
-    dispatch(setActivePanelInfo())
-  };
-
-  const handleNewChatCourseSelectorChange = (e) => {
-    dispatch(setCurrentlySelectedDropdownCourse(userFavouriteCourses[e.target.value]))
-  }
+  const favouriteCourses = useSelector(userFavoriteCoursesSelector);
+  const selectedCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse);
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState(null)
 
   useEffect(() => {
-    if (!currentlySelectedDropdownCourse && userFavouriteCourses && Object.values(userFavouriteCourses).length > 0){
-      dispatch(setCurrentlySelectedDropdownCourse(Object.values(userFavouriteCourses)[0]));
+    const firstCourse = favouriteCourses && (Object.values(favouriteCourses)[0] || null);
+    dispatch(setCurrentlySelectedDropdownCourse(firstCourse));
+  }, [favouriteCourses, dispatch]);
+
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    navigate("/login");
+  };
+
+  const handleNewChat = () => {
+    if (selectedCourse) {
+      dispatch(createChatWithSelectedDropdownCourse(selectedCourse._id));
+      dispatch(setActivePanelInfo());
     }
-  }, []);
+  };
+
+  const handleCourseChange = (event) => {
+    const newCourseId = event.target.value;
+    const newCourse = favouriteCourses[newCourseId];
+    dispatch(setCurrentlySelectedDropdownCourse(newCourse));
+  };
+
+  useEffect(() => {
+    if(selectedCourse) {
+      setDefaultDropdownValue(selectedCourse._id);
+    } else if (favouriteCourses && Object.values(favouriteCourses)[0] && Object.values(favouriteCourses)[0]._id){
+      setDefaultDropdownValue(Object.values(favouriteCourses)[0]._id);
+    }
+  }, [selectedCourse, favouriteCourses])
 
 
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        {Object.keys(userFavouriteCourses).length !== 0 && (
+        {favouriteCourses && Object.keys(favouriteCourses).length !== 0 && (
           <>
-            <NewChatCourseSelector courses={userFavouriteCourses} onChange={handleNewChatCourseSelectorChange}/>
-            <NewChatButton handleNewChat={handleNewChat}/>
+            <NewChatCourseSelector courses={favouriteCourses} onChange={handleCourseChange} defaultValue={defaultDropdownValue}/>
+            <NewChatButton handleNewChat={handleNewChat} />
           </>
         )}
       </div>
@@ -72,9 +77,9 @@ const SidePanel = () => {
           <MenuButton
             as={Button}
             bg="transparent"
-            _hover={{ bg: 'rgb(61, 61, 61)' }}
-            _focus={{ bg: 'rgb(61, 61, 61)' }}
-            _expanded={{ bg: 'rgb(61, 61, 61)' }}
+            _hover={{ bg: "rgb(61, 61, 61)" }}
+            _focus={{ bg: "rgb(61, 61, 61)" }}
+            _expanded={{ bg: "rgb(61, 61, 61)" }}
             leftIcon={
               <Image
                 borderRadius="full"
@@ -89,7 +94,7 @@ const SidePanel = () => {
             Username
           </MenuButton>
           <MenuList bg="black" border="none">
-            <MenuItem bg="black" onClick={handleViewSettings}>
+            <MenuItem bg="black" onClick={() => setSettingsOpen(true)}>
               Profile
             </MenuItem>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
@@ -100,7 +105,7 @@ const SidePanel = () => {
             </MenuItem>
           </MenuList>
         </Menu>
-        {viewSettings && <ProfileModal isOpen={viewSettings} handleClose={handleViewSettings} />}
+        {isSettingsOpen && <ProfileModal isOpen={isSettingsOpen} handleClose={() => setSettingsOpen(false)} />}
       </div>
     </div>
   );

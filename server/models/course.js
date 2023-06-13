@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema({
   courseName: { type: String },
-  courseCode: { type: String },
+  courseCode: { type: String, required: true },
   department: { type: String },
   school: { type: Schema.Types.ObjectId, ref: 'School' },
   promptTemplates: [{ type: String }],

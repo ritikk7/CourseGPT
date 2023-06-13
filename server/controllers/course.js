@@ -37,11 +37,11 @@ async function createCourse(req, res) {
   try {
     const schoolId = req.params.schoolId;
     const newCourse = new Course({
-      courseName: req.body.courseName,
+      courseName: req.body.courseName || req.body.courseCode,
       courseCode: req.body.courseCode,
-      department: req.body.department,
+      department: req.body.department || req.body.courseCode.match(/^[a-zA-Z]+/)[0],
       school: schoolId,
-      promptTemplates: [],
+      promptTemplates: req.body.promptTemplates || [],
     });
 
     const savedCourse = await newCourse.save();

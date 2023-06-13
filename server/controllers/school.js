@@ -4,10 +4,10 @@ async function createSchool(req, res) {
   try {
     const newSchool = new School({
       name: req.body.name,
-      location: req.body.location,
-      type: req.body.type,
-      website: req.body.website ? req.body.website : '',
-      logo: req.body.logo ? req.body.logo : '',
+      location: req.body.location || '',
+      type: req.body.type || "University",
+      website: req.body.website || '',
+      logo: req.body.logo || '',
       courses: [],
     });
 

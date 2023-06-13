@@ -63,7 +63,7 @@ const schoolsSlice = createSlice({
     setUserSchool: (state, action) => {
       state.userSchool = action.payload;
     },
-    setError: (state, action) => {
+    setSchoolsError: (state, action) => {
       state.error = action.payload;
     }
   },
@@ -94,7 +94,7 @@ const schoolsSlice = createSlice({
 
 
 
-export const { setUserSchool, setError } = schoolsSlice.actions;
+export const { setUserSchool, setSchoolsError } = schoolsSlice.actions;
 export default schoolsSlice.reducer;
 
 /**

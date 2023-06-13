@@ -10,7 +10,7 @@ export const userFavoriteCoursesSelector = createSelector(
 
     for (const courseId of userFavourites) {
       if (courses[courseId]) {
-        favoriteCourses[courseId] = courses[courseId];
+        favoriteCourses[courseId] = { ...courses[courseId] };
       }
     }
 

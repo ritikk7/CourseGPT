@@ -16,44 +16,44 @@ import {
   InputGroup,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, setError } from '../../redux/authSlice';
+import { loginUser, setAuthError } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FaGoogle } from 'react-icons/fa';
+import { clearUser } from "../../redux/userSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
-  const user = useSelector(state => state.auth.userId);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const authError = useSelector(state => state.auth.error);
+
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = e => {
-    dispatch(setError(null));
+    if(authError) dispatch(setAuthError(null));
     setCredentials(state => ({ ...state, [e.target.name]: e.target.value }));
   };
-
   const handleSubmit = e => {
     e.preventDefault();
+    if(authError) dispatch(setAuthError(null));
     dispatch(loginUser(credentials));
   };
-
   const handleGoogleLogin = () => {
-    dispatch(setError(null));
+    if(authError) dispatch(setAuthError(null));
     window.location.href = baseUrl + '/auth/google';
   };
   const navigateToRegister = () => {
-    dispatch(setError(null));
+    if(authError) dispatch(setAuthError(null));
     navigate('/register');
   };
-
   useEffect(() => {
-    if (user) {
+    if (isAuthenticated) {
       navigate('/');
     }
-  }, [user, navigate]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.800'}>

@@ -13,6 +13,7 @@ function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -24,13 +25,12 @@ function Home() {
 
   const loginAndLoadUserData = async () => {
     try {
-      await dispatch(fetchUser()).then(async response => {
-        if (!isAuthenticated) {
-          navigate("/login");
-        } else {
-          await loadData();
-        }
-      });
+      await dispatch(fetchUser());
+      if (isAuthenticated) {
+        loadData();
+      } else {
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -38,15 +38,16 @@ function Home() {
 
   const loadData = async () => {
     try {
-      await dispatch(fetchAllSchools);
-      await dispatch(fetchAllCourses);
-      await dispatch(fetchUserChats);
+      await dispatch(fetchAllSchools());
+      await dispatch(fetchAllCourses());
+      await dispatch(fetchUserChats());
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (!isAuthenticated) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="App">

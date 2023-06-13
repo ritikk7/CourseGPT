@@ -8,8 +8,8 @@ export const activeChatWithMessagesSelector = createSelector(
   (activeChat, messages) => {
     const activeChatWithMessages = {...activeChat , messages: {}};
 
-    for (const message of activeChat.messages) {
-      activeChatWithMessages.messages[message._id] = messages[message._id];
+    for (const messageId of activeChat.messages) {
+      activeChatWithMessages.messages[messageId] = { ...messages[messageId] };
     }
 
     return activeChatWithMessages;

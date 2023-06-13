@@ -43,17 +43,17 @@ function setupExpress(app) {
 }
 
 function setupRoutes(app) {
-  app.use("/api", getAllRoutes)
-  app.use('/api/auth', authRoutes);
-  app.use('/api/users', userRoutes);
-  app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
-  app.use('/api/users/:userId/chats', chatRoutes);
   app.use(
     '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedbacks',
     feedbackRoutes
   );
+  app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
+  app.use('/api/users/:userId/chats', chatRoutes);
   app.use('/api/schools/:schoolId/courses', courseRoutes);
+  app.use('/api/auth', authRoutes);
+  app.use('/api/users', userRoutes);
   app.use('/api/schools', schoolRoutes);
+  app.use("/api", getAllRoutes)
 }
 
 function serveBuild(app) {

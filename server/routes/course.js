@@ -5,7 +5,7 @@ const {
 } = require('../controllers/course');
 const { validateToken } = require('../controllers/auth');
 
-router.use(validateToken);
+// router.use(validateToken);
 
 router.get('/:courseId', getSchoolCourse);
 
