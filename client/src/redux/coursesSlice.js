@@ -119,6 +119,6 @@ export default coursesSlice.reducer;
  * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
  * - https://redux.js.org/usage/deriving-data-selectors
  * - Other general Redux docs
- * - Chat GPT
+ * - ChatSection GPT
  * - Stack Overflow / Google
  */

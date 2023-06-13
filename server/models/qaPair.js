@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const QAPairSchema = new Schema(
   {
-    chat: { type: Schema.Types.ObjectId, ref: 'Chat' },
+    chat: { type: Schema.Types.ObjectId, ref: 'ChatSection' },
     course: { type: Schema.Types.ObjectId, ref: 'Course' },
     question: { type: Schema.Types.ObjectId, ref: 'Message' },
     answer: { type: Schema.Types.ObjectId, ref: 'Message' },

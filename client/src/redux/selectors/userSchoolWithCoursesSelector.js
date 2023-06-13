@@ -5,7 +5,7 @@ const schools = state => state.schools.schools;
 
 const courses = state => state.courses.courses
 
-export const userSchoolSelector = createSelector(
+export const userSchoolWithCoursesSelector = createSelector(
   [userSchool, schools, courses],
   (userSchool, schools, courses) => {
     const userSchoolObject = userSchool ? schools[userSchool] : null;

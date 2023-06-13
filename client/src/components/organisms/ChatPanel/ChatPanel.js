@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './ChatPanel.module.css';
-import ChatSection from '../../molecules/Chat/ChatSection';
 import { activeChatWithMessagesSelector } from "../../../redux/selectors/activeChatWithMessagesSelector";
+import ChatSection from "../../molecules/ChatSection/ChatSection";
 
-const ExistingChatPanel = () => {
+const ChatPanel = () => {
   const scrollRef = useRef(null);
   const activeChat = useSelector(activeChatWithMessagesSelector);
 
@@ -35,4 +35,4 @@ const ExistingChatPanel = () => {
   );
 };
 
-export default ExistingChatPanel;
+export default ChatPanel;

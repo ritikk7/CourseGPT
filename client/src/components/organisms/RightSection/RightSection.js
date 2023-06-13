@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styles from './RightSection.module.css';
 import InfoPanel from '../InfoPanel/InfoPanel';
-import ExistingChatPanel from '../ChatPanel/ExistingChatPanel';
+import ChatPanel from '../ChatPanel/ChatPanel';
 import { useDispatch, useSelector } from "react-redux";
 import { createMessageAndGetGptResponseInActiveChat, setCurrentUserInput } from "../../../redux/messagesSlice";
 import { setActivePanelChat } from "../../../redux/userSlice";
@@ -44,7 +44,7 @@ const RightSection = () => {
   };
 
   const mainPanel = activePanel === 'CHAT'
-    ? <ExistingChatPanel />
+    ? <ChatPanel />
     : <InfoPanel setInputText={setInputText} />;
 
   return (

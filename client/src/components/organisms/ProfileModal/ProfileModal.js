@@ -21,14 +21,14 @@ import {
 import { updateUser } from "../../../redux/userSlice";
 import { schoolsWithCoursesSelector } from "../../../redux/selectors/schoolsWithCoursesSelector";
 import { userFavoriteCoursesSelector } from "../../../redux/selectors/userFavoriteCoursesSelector";
-import { userSchoolSelector } from "../../../redux/selectors/userSchoolSelector";
+import { userSchoolWithCoursesSelector } from "../../../redux/selectors/userSchoolWithCoursesSelector";
 
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
   const userFavoriteCourses = useSelector(userFavoriteCoursesSelector);
-  const userSchool = useSelector(userSchoolSelector);
+  const userSchool = useSelector(userSchoolWithCoursesSelector);
 
   const [userInfo, setUserInfo] = useState({
     email: user.email,

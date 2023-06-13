@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema(
   {
-    chat: { type: Schema.Types.ObjectId, ref: 'Chat' },
+    chat: { type: Schema.Types.ObjectId, ref: 'ChatSection' },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     senderType: { type: String, enum: ['User', 'CourseGPT'] },
     content: { type: String },

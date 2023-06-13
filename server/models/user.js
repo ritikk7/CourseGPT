@@ -14,7 +14,7 @@ const UserSchema = new Schema(
     profilePicture: { type: String, default: '' },
     firstName: { type: String , default: '' },
     lastName: { type: String , default: '' },
-    chats: [{ type: Schema.Types.ObjectId, ref: 'Chat' }],
+    chats: [{ type: Schema.Types.ObjectId, ref: 'ChatSection' }],
     school: { type: Schema.Types.ObjectId, ref: 'School' },
     favourites: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
   },
