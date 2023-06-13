@@ -22,7 +22,7 @@ import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice'
 import { setActivePanelInfo } from "../../../redux/userSlice";
 
 
-const SidePanel = ({ setMainPanel }) => {
+const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userFavouriteCourses = useSelector((state) => state.courses.userFavourites);
