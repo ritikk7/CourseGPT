@@ -12,6 +12,7 @@ const handlePending = (state) => {
 }
 const handleFulfilledActiveUser = (state, action) => {
   state.userId = action.payload._id;
+  state.isAuthenticated = true;
   handleLoading(state, false);
 };
 const handleRejected = (state, action) => {
@@ -69,6 +70,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     userId: null, // string id
+    isAuthenticated: false, // boolean
     loading: false,
     error: null // string message
   },
@@ -88,6 +90,7 @@ const authSlice = createSlice({
       .addCase(logoutUser.pending, handlePending)
       .addCase(logoutUser.fulfilled, state => {
         state.userId = null;
+        state.isAuthenticated = false;
         handleLoading(state, false);
       })
       .addCase(logoutUser.rejected, handleRejected)

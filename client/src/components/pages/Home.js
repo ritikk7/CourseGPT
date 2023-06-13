@@ -5,34 +5,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchUser } from "../../redux/authSlice";
 import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
-import { fetchAllSchools, fetchSchools, fetchUserSchool } from "../../redux/schoolsSlice";
-import { fetchUserChats } from "../../redux/chatsSlice";
-import { fetchChatMessages } from "../../redux/messagesSlice";
-import { fetchAllCourses, fetchSchoolCourses, fetchUserFavouriteCourses } from "../../redux/coursesSlice";
+import { fetchAllSchools, } from "../../redux/schoolsSlice";
+import { fetchAllCourses, } from "../../redux/coursesSlice";
 
 function Home() {
-  const authenticatedUserId = useSelector(state => state.auth.userId);
-  const [isLoading, setIsLoading] = useState(true);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const [mainPanel, setMainPanel] = useState("INFO");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authenticatedUserId) {
-      setIsLoading(true);
+    if (!isAuthenticated) {
       loginAndLoadUserData();
     } else {
-      loadSchoolData();
+      loadData();
     }
-  }, [authenticatedUserId, dispatch]);
+  }, [isAuthenticated, dispatch]);
 
   const loginAndLoadUserData = async () => {
     try {
       await dispatch(fetchUser()).then(async response => {
-        if (!response.payload) {
+        if (!isAuthenticated) {
           navigate("/login");
         } else {
-          await loadSchoolData();
+          await loadData();
         }
       });
     } catch (error) {
@@ -40,17 +36,16 @@ function Home() {
     }
   };
 
-  const loadSchoolData = async () => {
+  const loadData = async () => {
     try {
       await dispatch(fetchAllSchools);
       await dispatch(fetchAllCourses);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  if (!isAuthenticated) return <LoadingSpinner />;
 
   return (
     <div className="App">
