@@ -22,8 +22,8 @@ const handleRequestError = (error) => {
 };
 
 // Async Functions
-export const fetchChats = createAsyncThunk(
-  "chats/fetchChats",
+export const fetchUserChats = createAsyncThunk(
+  "chats/fetchUserChats",
   async (_, { getState }) => {
     try {
       const userId = getState().auth.userId;
@@ -92,12 +92,12 @@ const chatsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChats.pending, handlePending)
-      .addCase(fetchChats.fulfilled, (state, action) => {
+      .addCase(fetchUserChats.pending, handlePending)
+      .addCase(fetchUserChats.fulfilled, (state, action) => {
         state.userChats = action.payload;
         handleLoading(state, false);
       })
-      .addCase(fetchChats.rejected, handleRejected)
+      .addCase(fetchUserChats.rejected, handleRejected)
       .addCase(fetchChat.pending, handlePending)
       .addCase(fetchChat.fulfilled, (state, action) => {
         state.userChats[action.payload._id] = action.payload;

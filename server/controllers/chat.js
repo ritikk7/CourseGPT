@@ -23,6 +23,7 @@ async function createChat(req, res) {
   const userId = req.params.userId;
   try {
     const chat = new Chat({
+      title: "Example 3 word summary of chat",
       user: userId,
       messages: [],
       course: req.body.course,

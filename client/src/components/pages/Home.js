@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchUser } from "../../redux/authSlice";
 import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
-import { fetchSchools, fetchUserSchool } from "../../redux/schoolsSlice";
-import { fetchChats } from "../../redux/chatsSlice";
+import { fetchAllSchools, fetchSchools, fetchUserSchool } from "../../redux/schoolsSlice";
+import { fetchUserChats } from "../../redux/chatsSlice";
 import { fetchChatMessages } from "../../redux/messagesSlice";
-import { fetchSchoolCourses, fetchUserFavouriteCourses } from "../../redux/coursesSlice";
+import { fetchAllCourses, fetchSchoolCourses, fetchUserFavouriteCourses } from "../../redux/coursesSlice";
 
 function Home() {
   const authenticatedUserId = useSelector(state => state.auth.userId);
@@ -22,7 +22,7 @@ function Home() {
       setIsLoading(true);
       loginAndLoadUserData();
     } else {
-      loadUserData();
+      loadSchoolData();
     }
   }, [authenticatedUserId, dispatch]);
 
@@ -32,7 +32,7 @@ function Home() {
         if (!response.payload) {
           navigate("/login");
         } else {
-          await loadUserData();
+          await loadSchoolData();
         }
       });
     } catch (error) {
@@ -40,44 +40,15 @@ function Home() {
     }
   };
 
-  const loadUserData = async () => {
+  const loadSchoolData = async () => {
     try {
-      const schoolsResponse = await dispatch(fetchSchools());
-      await dispatch(fetchUserSchool());
-      await dispatch(fetchUserFavouriteCourses());
-      for (let schoolId of Object.keys(schoolsResponse.payload)) {
-        await dispatch(fetchSchoolCourses(schoolId));
-      }
-
-      const chatsResponse = await dispatch(fetchChats());
-
-      if(chatsResponse.payload) {
-        for (let chatId of Object.keys(chatsResponse.payload)) {
-          await dispatch(fetchChatMessages(chatId));
-        }
-      }
-
+      await dispatch(fetchAllSchools);
+      await dispatch(fetchAllCourses);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-
-
-
-  const userFavourites = useSelector(state => state.user.favourites);
-  const userSchool = useSelector(state => state.user.school);
-
-  useEffect(() => {
-    if (userSchool && !isLoading) {
-      dispatch(fetchSchoolCourses(userSchool));
-    }
-  }, [userSchool, dispatch]);
-  useEffect(() => {
-    if (userSchool && !isLoading) {
-      dispatch(fetchUserFavouriteCourses());
-    }
-  }, [userFavourites, dispatch]);
 
   if (isLoading) return <LoadingSpinner />;
 
