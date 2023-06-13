@@ -19,3 +19,19 @@ export const schoolsWithCoursesSelector = createSelector(
     return schoolsWithCourses;
   }
 );
+
+// example output:
+// {
+//   schoolId1: {
+//     _id: schoolId1,
+//     name: UBC,
+//     location: Vancouver,
+//     type: University,
+//     website: www,
+//     logo: www,
+//     courses: {
+//       courseId1: coursesObject1,
+//       courseId2: coursesObject2
+//     }
+//   }
+// }
