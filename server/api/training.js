@@ -1,18 +1,6 @@
-// ****** Script to spawn a python child process in node.js ******
-// var spawn = require('child_process').spawn;
-// const process = spawn('python', ['script.py', text]);
-// process.stdout.on('data', (data) => {
-//   test = data.toString();
-// });
-// process.stderr.on('data', (data) => {
-//   console.log('err results: %j', data.toString('utf8'))
-// });
-// process.stdout.on('end', function(){
-//   console.log('Test Data', test);
-// });
-
 // ****** set up ******
 const fs = require('fs');
+const scipy = require('scipy');
 const {encode, decode} = require('gpt-3-encoder');
 const { Configuration, OpenAIApi } = require('openai');
 
@@ -27,7 +15,7 @@ const openai = new OpenAIApi(configuration);
 
 const trainingFilesPath = "./Course Website TXT/";
 /**
- * Return a list of all file content sections in a given training files folder path.
+ * Return a list of all file content sections  in a given training files folder path.
  * 
  * Each section is a list, where:
  *  - the first element is a list of parent subtitles, starting with "<filename> - <section heading>"
@@ -98,7 +86,7 @@ function numTokens(text){
 // Split a string in two, on a delimiter, trying to balance tokens on each side.
 function halvedByDelimiter(string, delimiter = "\n") {
     const chunks = string.split(delimiter);
-  
+
     if (chunks.length === 1) {
         return [string, ""]; // no delimiter found
     } else if (chunks.length === 2) {
@@ -191,30 +179,34 @@ const EMBEDDING_MODEL = "text-embedding-ada-002"; // OpenAI's best embeddings as
 const BATCH_SIZE = 1000; // you can submit up to 2048 embedding inputs per request
 const GPT_MODEL = "gpt-3.5-turbo"; // you can submit up to 2048 embedding inputs per request
 
-const embeddings = [];
-for (let batchStart = 0; batchStart < courseStrings.length; batchStart += BATCH_SIZE) {
-    const batchEnd = batchStart + BATCH_SIZE;
-    const batch = courseStrings.slice(batchStart, batchEnd);
-    console.log(`Batch ${batchStart} to ${batchEnd - 1}`);
-    const response = openai.Embedding.create({ model: EMBEDDING_MODEL, input: batch });
-
-    for (let i = 0; i < response.data.length; i++) {
-        const be = response.data[i];
-        assert(i === be.index); // double check embeddings are in the same order as input
+async function createEmbeddings(courseStrings) {
+    const embeddings = [];
+    for (let batchStart = 0; batchStart < courseStrings.length; batchStart += BATCH_SIZE) {
+        const batchEnd = batchStart + BATCH_SIZE;
+        const batch = courseStrings.slice(batchStart, batchEnd);
+        console.log(`Batch ${batchStart} to ${batchEnd - 1}`);
+        const response = await openai.createEmbedding({ model: EMBEDDING_MODEL, input: batch });
+    
+        for (let i = 0; i < response.data.length; i++) {
+            const be = response.data[i];
+            assert(i === be.index); // double check embeddings are in the same order as input
+        }
+    
+        const batchEmbeddings = response.data.map((e) => e.embedding);
+        embeddings.push(...batchEmbeddings);
     }
-
-    const batchEmbeddings = response.data.map((e) => e.embedding);
-    embeddings.push(...batchEmbeddings);
+    
+    const df = new pd.DataFrame({ text: courseStrings, embedding: embeddings });
+    
+    const SAVE_PATH = "data/cspc455withEmbeddings_0606.csv";
+    
+    df.to_csv(SAVE_PATH, { index: false });
 }
 
-const df = new pd.DataFrame({ text: courseStrings, embedding: embeddings });
-
-const SAVE_PATH = "data/cspc455withEmbeddings_0606.csv";
-
-df.to_csv(SAVE_PATH, { index: false });
 
 // search
-function stringsRankedByRelatedness(query, df, relatednessFn = (x, y) => 1 - spatial.distance.cosine(x, y), topN = 100) {
+//Returns a list of strings and relatednesses, sorted from most related to least.
+function stringsRankedByRelatedness(query, df, relatednessFn = (x, y) => 1 - scipy.spatial.distance.cosine(x, y), topN = 100) {
     const queryEmbeddingResponse = openai.Embedding.create({ model: EMBEDDING_MODEL, input: query });
     const queryEmbedding = queryEmbeddingResponse.data[0].embedding;
     const stringsAndRelatednesses = df.iterrows().map((row) => {
@@ -226,7 +218,8 @@ function stringsRankedByRelatedness(query, df, relatednessFn = (x, y) => 1 - spa
     const [strings, relatednesses] = zip(...stringsAndRelatednesses);
     return [strings.slice(0, topN), relatednesses.slice(0, topN)];
 }
-  
+
+// Return a message for GPT, with relevant source texts pulled from a dataframe.
 function queryMessage(query, df, model, tokenBudget) {
     const [strings, relatednesses] = stringsRankedByRelatedness(query, df);
     const introduction = 'Use the below information on the University of British Columbia CPSC455 - Applied Industry Practices course to answer the subsequent question. If the answer cannot be found in the articles, write "I could not find an answer."';
