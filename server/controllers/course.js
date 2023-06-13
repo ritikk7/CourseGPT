@@ -1,10 +1,10 @@
 const Course = require('../models/course');
 const School = require('../models/school');
 
-async function getCourse(req, res) {
+async function getSchoolCourse(req, res) {
   try {
     const courseId = req.params.courseId;
-    const course = await Course.find({ _id: courseId });
+    const course = await Course.findById(courseId);
 
     res.status(200).json({ course });
   } catch (error) {
@@ -12,10 +12,20 @@ async function getCourse(req, res) {
   }
 }
 
-async function getCourses(req, res) {
+async function getSchoolCourses(req, res) {
   try {
     const schoolId = req.params.schoolId;
     const courses = await Course.find({ school: schoolId });
+
+    res.status(200).json({ courses });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function getAllCourses(req, res) {
+  try {
+    const courses = await Course.find({});
 
     res.status(200).json({ courses });
   } catch (error) {
@@ -46,7 +56,8 @@ async function createCourse(req, res) {
 }
 
 module.exports = {
-  getCourse,
-  getCourses,
+  getSchoolCourse,
+  getSchoolCourses,
+  getAllCourses,
   createCourse,
 };

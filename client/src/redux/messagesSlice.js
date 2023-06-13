@@ -1,25 +1,64 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 
-const handleRequestError = (error) => {
-  throw error.response?.data?.error ? error.response.data.error : error.message;
+// State Handlers
+const handleLoading = (state, loadingStatus) => {
+  state.loading = loadingStatus;
+  state.error = null;
+};
+const handlePending = (state) => {
+  handleLoading(state, true);
+}
+const handleRejected = (state, action) => {
+  state.error = action.error.message;
+  state.loading = false;
 };
 
-export const fetchMessages = createAsyncThunk(
-  'messages/fetchMessages',
+// Helpers
+const handleRequestError = (error) => {
+  throw error.response?.data?.error || error.message;
+};
+
+// Async Functions
+export const fetchChatMessages = createAsyncThunk(
+  'messages/fetchChatMessages',
   async (chatId, { getState }) => {
     try {
       const userId = getState().auth.userId;
       const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
-      return response.data.messages;
+      const msgs = response.data.messages;
+      const msgsById = {};
+      for (let msg of msgs) {
+        msgsById[msg._id] = msg;
+      }
+      return msgsById;
     } catch (error) {
       handleRequestError(error);
     }
   }
 );
 
-export const createMessageInActiveChat = createAsyncThunk(
-  'messages/createMessageInActiveChat',
+export const fetchActiveChatMessages = createAsyncThunk(
+  'messages/fetchActiveChatMessages',
+  async (chatId, { getState }) => {
+    try {
+      const chatId = getState().chats.activeChat._id;
+      const userId = getState().auth.userId;
+      const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
+      const msgs = response.data.messages;
+      const msgsById = {};
+      for (let msg of msgs) {
+        msgsById[msg._id] = msg;
+      }
+      return msgsById;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
+export const createMessageAndGetGptResponseInActiveChat = createAsyncThunk(
+  'messages/createMessageAndGetGptResponseInActiveChat',
   async (newMessage, { getState }) => {
     try {
       const userId = getState().auth.userId;
@@ -38,9 +77,9 @@ export const createMessageInActiveChat = createAsyncThunk(
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: {
-    // The `data` object maps `chatId` keys to arrays of messages.
-    // Example: { "chatId1": [messageObject1, messageObject2], "chatId2": [messageObject3, messageObject4] }
-    data: {},
+    // The `messages` object maps each `messageId` key to a message object.
+    // Example: { "messageId1": messageObject1, "messageId2": messageObject2}
+    messages: {},
     loading: false,
     error: null // string message
   },
@@ -51,40 +90,32 @@ const messagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(fetchChatMessages.pending, handlePending)
+      .addCase(fetchChatMessages.fulfilled, (state, action) => {
+        state.messages = { ...state.messages, ...action.payload };
+        handleLoading(state, false);
       })
-      .addCase(fetchMessages.fulfilled, (state, action) => {
-        state.loading = false;
-        const chatId = action.payload[0]?.chat;
-        if (chatId) state.data[chatId] = action.payload;
+      .addCase(fetchChatMessages.rejected, handleRejected)
+      .addCase(fetchActiveChatMessages.pending, handlePending)
+      .addCase(fetchActiveChatMessages.fulfilled, (state, action) => {
+        state.messages = { ...state.messages, ...action.payload };
+        handleLoading(state, false);
       })
-      .addCase(fetchMessages.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+      .addCase(fetchActiveChatMessages.rejected, handleRejected)
+      .addCase(createMessageAndGetGptResponseInActiveChat.pending, handlePending)
+      .addCase(createMessageAndGetGptResponseInActiveChat.fulfilled, (state, action) => {
+        const newMessages = {
+          [action.payload.userMessage._id] : action.payload.userMessage,
+          [action.payload.gptResponse._id] : action.payload.gptResponse
+        }
+        state.messages = { ...state.messages, ...newMessages };
+        handleLoading(state, false);
       })
-      .addCase(createMessageInActiveChat.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
-        state.loading = false;
-        const chatId = action.payload.userMessage.chat;
-        if(!state.data[chatId]) state.data[chatId] = [];
-        state.data[chatId].push(action.payload.userMessage);
-        state.data[chatId].push(action.payload.gptResponse);
-      })
-      .addCase(createMessageInActiveChat.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
+      .addCase(createMessageAndGetGptResponseInActiveChat.rejected, handleRejected)
   },
 });
 
-
-
-export const {  setError } = messagesSlice.actions;
+export const { setError } = messagesSlice.actions;
 export default messagesSlice.reducer;
 
 
@@ -93,6 +124,7 @@ export default messagesSlice.reducer;
  * Helped with understanding:
  * - https://redux-toolkit.js.org/api/createAsyncThunk
  * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - https://redux.js.org/usage/deriving-messages-selectors
  * - Other general Redux docs
  * - Chat GPT
  * - Stack Overflow / Google

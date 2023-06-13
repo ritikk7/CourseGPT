@@ -2,14 +2,39 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { updateUser } from "./userSlice";
 
-const handleRequestError = (error) => {
-  throw error.response?.data?.error ? error.response.data.error : error.message;
+// State Handlers
+const handleLoading = (state, loadingStatus) => {
+  state.loading = loadingStatus;
+  state.error = null;
+};
+const handlePending = (state) => {
+  handleLoading(state, true);
+}
+const handleRejected = (state, action) => {
+  state.error = action.error.message;
+  state.loading = false;
 };
 
+// Helpers
+const handleRequestError = (error) => {
+  throw error.response?.data?.error || error.message;
+};
 
-// Async
-export const fetchSchools = createAsyncThunk(
-  "schools/fetchSchools",
+// Async Functions
+export const fetchSchool = createAsyncThunk(
+  "schools/fetchSchool",
+  async (schoolId, { getState }) => {
+    try {
+      const response = await api.get(`/schools/${schoolId}`);
+      return response.data.school;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
+export const fetchAllSchools = createAsyncThunk(
+  "schools/fetchAllSchools",
   async (_, { getState }) => {
     try {
       const response = await api.get("/schools");
@@ -25,45 +50,12 @@ export const fetchSchools = createAsyncThunk(
   }
 );
 
-export const fetchUserSchool = createAsyncThunk(
-  "schools/fetchUserSchool",
-  async (_, { getState }) => {
-    try {
-      const schoolId = getState().user.school;
-      const response = await api.get(`/schools/${schoolId}`);
-
-      return response.data.school;
-    } catch (error) {
-      handleRequestError(error);
-    }
-  }
-);
-
-// Helpers
-export const fetchSchool = createAsyncThunk(
-  "schools/fetchSchool",
-  async (schoolId, { getState }) => {
-    try {
-      const response = await api.get(`/schools/${schoolId}`);
-      return response.data.school;
-    } catch (error) {
-      handleRequestError(error);
-    }
-  }
-);
-
-const updateStateLoading = (state, loadingStatus) => {
-  state.loading = loadingStatus;
-  state.error = null;
-};
-
 const schoolsSlice = createSlice({
-  name: "school",
+  name: "schools",
   initialState: {
-    // The `school` object maps `schoolId` keys to a school.
-    // Example: { "schoolId1": schoolObject1, "schoolId2": schoolObject2, }
+    // The `schools` object maps each `schoolId` key to a school object.
+    // Example: { "schoolId1": schoolObject1, "schoolId2": schoolObject2}
     schools: {},
-    userSchool: null, // school object
     loading: false,
     error: null // string error
   },
@@ -77,33 +69,21 @@ const schoolsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchSchools.pending, (state) => updateStateLoading(state, true))
-      .addCase(fetchSchools.fulfilled, (state, action) => {
-        state.schools = action.payload;
-        updateStateLoading(state, false);
-      })
-      .addCase(fetchSchools.rejected, (state, action) => {
-        state.error = action.error.message;
-        updateStateLoading(state, false);
-      })
-      .addCase(fetchUserSchool.pending, (state) => updateStateLoading(state, true))
-      .addCase(fetchUserSchool.fulfilled, (state, action) => {
-        state.userSchool = action.payload;
-        updateStateLoading(state, false);
-      })
-      .addCase(fetchUserSchool.rejected, (state, action) => {
-        state.error = action.error.message;
-        updateStateLoading(state, false);
-      })
-      .addCase(fetchSchool.pending, (state) => updateStateLoading(state, true))
+
+      .addCase(fetchSchool.pending, handlePending)
       .addCase(fetchSchool.fulfilled, (state, action) => {
         state.schools[action.payload._id] = action.payload;
-        updateStateLoading(state, false);
+        handleLoading(state, false);
       })
-      .addCase(fetchSchool.rejected, (state, action) => {
-        state.error = action.error.message;
-        updateStateLoading(state, false);
+      .addCase(fetchSchool.rejected, handleRejected)
+      .addCase(fetchAllSchools.pending, handlePending)
+      .addCase(fetchAllSchools.fulfilled, (state, action) => {
+        state.schools = action.payload;
+        handleLoading(state, false);
       })
+      .addCase(fetchAllSchools.rejected, handleRejected)
+
+      // userSlice actions
       .addCase(updateUser.fulfilled, (state, action) => {
         if (action.payload.school) {
           state.userSchool = state.schools[action.payload.school] || null;
@@ -122,6 +102,7 @@ export default schoolsSlice.reducer;
  * Helped with understanding:
  * - https://redux-toolkit.js.org/api/createAsyncThunk
  * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - https://redux.js.org/usage/deriving-data-selectors
  * - Other general Redux docs
  * - Chat GPT
  * - Stack Overflow / Google

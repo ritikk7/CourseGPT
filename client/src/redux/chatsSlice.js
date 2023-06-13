@@ -1,26 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
-import { handleRequestError } from "./reduxUtil";
-import { createMessageInActiveChat } from "./messagesSlice";
+import { createMessageAndGetGptResponseInActiveChat } from "./messagesSlice";
 
 
-// Helpers
-
+// State Handlers
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => handleLoading(state, true);
-const handleFulfilled = (state, action) => {
-  state.userChats[action.payload._id] = action.payload;
-  handleLoading(state, false);
-};
+const handlePending = (state) => {
+  handleLoading(state, true);
+}
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
 
+// Helpers
+const handleRequestError = (error) => {
+  throw error.response?.data?.error || error.message;
+};
 
+// Async Functions
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
   async (_, { getState }) => {
@@ -52,10 +53,11 @@ export const fetchChat = createAsyncThunk(
   }
 );
 
-export const createChat = createAsyncThunk(
-  "chats/createChat",
-  async (courseId, { getState }) => {
+export const createChatWithSelectedDropdownCourse = createAsyncThunk(
+  "chats/createChatWithSelectedDropdownCourse",
+  async (_, { getState }) => {
     try {
+      const courseId = getState().courses.currentlySelectedDropdownCourse._id
       const userId = getState().auth.userId;
       const response = await api.post(`/users/${userId}/chats`, { course: courseId });
       return response.data.chat;
@@ -77,7 +79,12 @@ const chatsSlice = createSlice({
   },
   reducers: {
     setActiveChat: (state, action) => {
-      state.activeChat = action.payload;
+      // Payload must be a string (chatId) or chat object
+      if (typeof action.payload === 'string') {
+        state.activeChat = state.userChats[action.payload];
+      } else {
+        state.activeChat = action.payload;
+      }
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -92,20 +99,23 @@ const chatsSlice = createSlice({
       })
       .addCase(fetchChats.rejected, handleRejected)
       .addCase(fetchChat.pending, handlePending)
-      .addCase(fetchChat.fulfilled, handleFulfilled)
-      .addCase(fetchChat.rejected, handleRejected)
-      .addCase(createChat.pending, handlePending)
-      .addCase(createChat.fulfilled,(state, action) => {
-        state.activeChat = action.payload
-        handleFulfilled(state, action);
+      .addCase(fetchChat.fulfilled, (state, action) => {
+        state.userChats[action.payload._id] = action.payload;
+        handleLoading(state, false);
       })
-      .addCase(createChat.rejected, handleRejected)
-      .addCase(createMessageInActiveChat.fulfilled, (state, action) => {
+      .addCase(fetchChat.rejected, handleRejected)
+      .addCase(createChatWithSelectedDropdownCourse.pending, handlePending)
+      .addCase(createChatWithSelectedDropdownCourse.fulfilled,(state, action) => {
+        state.activeChat = action.payload
+        handleLoading(state, false);
+      })
+      .addCase(createChatWithSelectedDropdownCourse.rejected, handleRejected)
+
+      // messagesSlice actions
+      .addCase(createMessageAndGetGptResponseInActiveChat.fulfilled, (state, action) => {
         const activeChatId = state.activeChat._id;
-        if(!state.userChats[activeChatId].messages) state.userChats[activeChatId].messages = [];
         state.userChats[activeChatId].messages.push(action.payload.userMessage._id);
         state.userChats[activeChatId].messages.push(action.payload.gptResponse._id);
-        state.activeChat = state.userChats[activeChatId];
     })
   }
 });
@@ -114,11 +124,13 @@ const chatsSlice = createSlice({
 export const { setActiveChat, setError } = chatsSlice.actions;
 export default chatsSlice.reducer;
 
+
 /**
  * All code written by team.
  * Helped with understanding:
  * - https://redux-toolkit.js.org/api/createAsyncThunk
  * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - https://redux.js.org/usage/deriving-data-selectors
  * - Other general Redux docs
  * - Chat GPT
  * - Stack Overflow / Google

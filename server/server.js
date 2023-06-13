@@ -10,6 +10,7 @@ const chatRoutes = require('./routes/chat');
 const feedbackRoutes = require('./routes/feedback');
 const courseRoutes = require('./routes/course');
 const schoolRoutes = require('./routes/school');
+const getAllRoutes = require('./routes/all');
 const passport = require('./config/passport');
 const cookieParser = require('cookie-parser');
 
@@ -42,6 +43,7 @@ function setupExpress(app) {
 }
 
 function setupRoutes(app) {
+  app.use("/api", getAllRoutes)
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);
   app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);

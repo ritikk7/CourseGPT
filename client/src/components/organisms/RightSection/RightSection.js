@@ -4,7 +4,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ExistingChatPanel from '../ChatPanel/ExistingChatPanel';
 import { useDispatch } from "react-redux";
-import { createMessageInActiveChat } from '../../../redux/messagesSlice';
+import { createMessageAndGetGptResponseInActiveChat } from '../../../redux/messagesSlice';
 
 const RightSection = ({
   mainPanel,
@@ -15,7 +15,7 @@ const RightSection = ({
 
   const updateChatMessages = newPrompt => {
     if (newPrompt) {
-      dispatch(createMessageInActiveChat(newPrompt))
+      dispatch(createMessageAndGetGptResponseInActiveChat(newPrompt))
       
     }
   };

@@ -7,7 +7,7 @@ import { fetchUser } from "../../redux/authSlice";
 import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
 import { fetchSchools, fetchUserSchool } from "../../redux/schoolsSlice";
 import { fetchChats } from "../../redux/chatsSlice";
-import { fetchMessages } from "../../redux/messagesSlice";
+import { fetchChatMessages } from "../../redux/messagesSlice";
 import { fetchSchoolCourses, fetchUserFavouriteCourses } from "../../redux/coursesSlice";
 
 function Home() {
@@ -53,7 +53,7 @@ function Home() {
 
       if(chatsResponse.payload) {
         for (let chatId of Object.keys(chatsResponse.payload)) {
-          await dispatch(fetchMessages(chatId));
+          await dispatch(fetchChatMessages(chatId));
         }
       }
 

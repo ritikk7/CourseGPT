@@ -1,66 +1,76 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { loginUser, registerUser, fetchUser, logoutUser } from "./authSlice";
-import { createChat, fetchChats } from "./chatsSlice";
+import { createChatWithSelectedDropdownCourse } from "./chatsSlice";
 
-// Helpers
+// State Handlers
 const updateUserData = (state, action) => {
-  Object.keys(state).forEach((key) => {
-    if (key in action.payload) {
-      state[key] = action.payload[key];
-    }
-  });
+  const userFields =
+    ['profilePicture',
+      'firstName',
+      'lastName',
+      'email',
+      'dateOfBirth',
+      'chats',
+      'school',
+      'favourites',
+      'type'];
+  for(const field of userFields) {
+    state[field] = action.payload[field] || null;
+  }
   handleLoading(state, false);
 };
 
 const clearUserData = (state) => {
-  handleLoading(state, false);
-  ['profilePicture', 'firstName', 'lastName', 'email', 'dateOfBirth', 'chats', 'school', 'favourites', 'type'].forEach(field => {
-    state[field] = null;
-  });
+  updateUserData(state, {payload: {}});
 };
 
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = state => handleLoading(state, true);
-
+const handlePending = (state) => {
+  handleLoading(state, true);
+}
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
+
+// Helpers
 const handleRequestError = (error) => {
-  throw error.response?.data?.error ? error.response.data.error : error.message;
+  throw error.response?.data?.error || error.message;
 };
 
-// Async
-export const updateUser = createAsyncThunk(
-  "user/updateUser",
-  async (updates, { getState }) => {
+// Async Functions
+const createUserRequest = (name, requestType, path) => {
+  return createAsyncThunk(`user/${name}`, async (payload = null, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const response = await api.patch(`/users/${userId}`, updates);
+      const response = await api[requestType](`${path}/${userId}`, payload);
       return response.data.user;
     } catch (error) {
       handleRequestError(error);
     }
-  }
+  });
+};
+
+export const updateUser = createUserRequest(
+  "updateUser",
+  "patch",
+  "/users"
+  // payload = {all target user fields to update according to the exact user schema}
+  // Example: {firstName: "John", lastName: "Doe", email: "efpyi@example.com"}
 );
 
-export const deleteUser = createAsyncThunk(
-  "user/deleteUser",
-  async (_, { getState }) => {
-    try {
-      const userId = getState().auth.userId;
-      const response = await api.delete(`/users/${userId}`);
-      return response.data.user;
-    } catch (error) {
-      handleRequestError(error);
-    }
-  }
+export const deleteUser = createUserRequest(
+  "deleteUser",
+  "delete",
+  "/users"
+  // payload = null
 );
 
+// User Slice
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -74,22 +84,26 @@ const userSlice = createSlice({
     favourites: [],
     type: null,
     loading: false,
-    error: null
+    error: null // string message
   },
   reducers: {
-    clearUser: clearUserData,
+    clearUser: (state) => {
+      clearUserData(state);
+    },
     setError: (state, action) => {
       state.error = action.payload;
     }
   },
   extraReducers: builder => {
     builder
+      .addCase(updateUser.pending, handlePending)
       .addCase(updateUser.fulfilled, updateUserData)
       .addCase(updateUser.rejected, handleRejected)
-      .addCase(updateUser.pending, handlePending)
       .addCase(deleteUser.pending, handlePending)
       .addCase(deleteUser.fulfilled, clearUserData)
       .addCase(deleteUser.rejected, handleRejected)
+
+      // authSlice actions
       .addCase(loginUser.pending, handlePending)
       .addCase(loginUser.fulfilled, updateUserData)
       .addCase(loginUser.rejected, handleRejected)
@@ -102,15 +116,13 @@ const userSlice = createSlice({
       .addCase(logoutUser.pending, handlePending)
       .addCase(logoutUser.fulfilled, clearUserData)
       .addCase(logoutUser.rejected, handleRejected)
-      .addCase(createChat.fulfilled, (state, action) => {
+
+      // chatSlice actions
+      .addCase(createChatWithSelectedDropdownCourse.fulfilled, (state, action) => {
         state.chats.push(action.payload._id);
       })
-      .addCase(fetchChats.fulfilled, (state, action) => {
-        state.chats.push(action.payload._id);
-      });
   }
 });
-
 
 export const { clearUser, setError } = userSlice.actions;
 export default userSlice.reducer;
@@ -120,6 +132,7 @@ export default userSlice.reducer;
  * Helped with understanding:
  * - https://redux-toolkit.js.org/api/createAsyncThunk
  * - https://www.youtube.com/playlist?list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+ * - https://redux.js.org/usage/deriving-data-selectors
  * - Other general Redux docs
  * - Chat GPT
  * - Stack Overflow / Google

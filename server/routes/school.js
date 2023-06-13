@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getSchool,
-  getSchools,
+  getAllSchools,
 } = require('../controllers/school');
 const { validateToken } = require('../controllers/auth');
 
@@ -10,6 +10,6 @@ router.use(validateToken);
 
 router.get('/:schoolId', getSchool);
 
-router.get('/', getSchools);
+router.get('/', getAllSchools);
 
 module.exports = router;
