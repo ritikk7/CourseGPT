@@ -20,18 +20,32 @@ export const schoolsWithCoursesSelector = createSelector(
   }
 );
 
-// example output:
-// {
-//   schoolId1: {
-//     _id: schoolId1,
-//     name: UBC,
-//     location: Vancouver,
-//     type: University,
-//     website: www,
-//     logo: www,
-//     courses: {
-//       courseId1: coursesObject1,
-//       courseId2: coursesObject2
-//     }
-//   }
-// }
+/*
+Example Output:
+{
+  schoolId1: {
+    _id: schoolId1,
+    name: UBC,
+    location: Vancouver,
+    type: University,
+    website: www,
+    logo: www,
+    courses: {
+      courseId1: coursesObject1,
+      courseId2: coursesObject2
+    }
+  },
+    schoolId2: {
+    _id: schoolId2,
+    name: KPU,
+    location: Vancouver,
+    type: College? University? Wtf are they?,
+    website: www,
+    logo: www,
+    courses: {
+      courseId3: coursesObject3,
+      courseId4: coursesObject4
+    }
+  }
+}
+*/

@@ -19,3 +19,30 @@ export const userSchoolWithCoursesSelector = createSelector(
     return null;
   }
 );
+/*
+Example Output:
+{
+  _id: userSchoolId,
+  name: UBC,
+  location: Vancouver,
+  type: University,
+  website: www,
+  logo: www,
+  courses: {
+    courseId1: {
+      _id: courseId1,
+      name: CSXX1,
+      instructor: Prof. Smith,
+      school: UBC,
+      ...otherCourseProperties
+    },
+    courseId2: {
+      _id: courseId2,
+      name: CSXX2,
+      instructor: Dr. Doe,
+      school: UBC,
+      ...otherCourseProperties
+    }
+  }
+}
+*/

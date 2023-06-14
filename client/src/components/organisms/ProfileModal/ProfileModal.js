@@ -20,14 +20,14 @@ import {
 } from "@chakra-ui/react";
 import { updateUser } from "../../../redux/userSlice";
 import { schoolsWithCoursesSelector } from "../../../redux/selectors/schoolsWithCoursesSelector";
-import { userFavoriteCoursesSelector } from "../../../redux/selectors/userFavoriteCoursesSelector";
+import { userFavouriteCoursesSelector } from "../../../redux/selectors/userFavouriteCoursesSelector";
 import { userSchoolWithCoursesSelector } from "../../../redux/selectors/userSchoolWithCoursesSelector";
 
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
-  const userFavoriteCourses = useSelector(userFavoriteCoursesSelector);
+  const userFavoriteCourses = useSelector(userFavouriteCoursesSelector);
   const userSchool = useSelector(userSchoolWithCoursesSelector);
 
   const [userInfo, setUserInfo] = useState({

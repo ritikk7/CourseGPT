@@ -19,3 +19,36 @@ export const chatsWithMessagesSelector = createSelector(
     return chatsWithMessages;
   }
 );
+/*
+Example output:
+{
+  chatId1: {
+    _id: chatId1,
+    title: Chat1,
+    user: userId1,
+    course: courseId1,
+    deleted: false,
+    messages: {
+      messageId1: {
+        _id: messageId1,
+        chat: chatId1,
+        user: userId1,
+        senderType: User,
+        content: Hello,
+        ...otherMessageProperties
+      },
+      messageId2: {
+        _id: messageId2,
+        chat: chatId1,
+        user: userId1,
+        senderType: CourseGPT,
+        content: Hi,
+        ...otherMessageProperties
+      }
+    }
+  },
+  chatId2: {
+    ...all chatObjectProperties
+  }
+}
+*/

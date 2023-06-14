@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./SidePanel.module.css";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import { setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
-import { userFavoriteCoursesSelector } from "../../../redux/selectors/userFavoriteCoursesSelector";
+import { userFavouriteCoursesSelector } from "../../../redux/selectors/userFavouriteCoursesSelector";
 import { createChatWithSelectedDropdownCourse } from "../../../redux/chatsSlice";
 import { setActivePanelInfo } from "../../../redux/userSlice";
 import { logoutUser } from "../../../redux/authSlice";
@@ -14,7 +14,7 @@ import CreateNewChatSection from "../../molecules/CreateNewChatSection/CreateNew
 const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const favouriteCourses = useSelector(userFavoriteCoursesSelector);
+  const favouriteCourses = useSelector(userFavouriteCoursesSelector);
   const selectedCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(null);
