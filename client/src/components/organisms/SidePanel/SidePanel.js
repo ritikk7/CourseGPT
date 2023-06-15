@@ -22,22 +22,6 @@ const SidePanel = () => {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);
-  const [chatTitles, setChatTitles] = useState([]);
-
-  useEffect(() => {
-    console.log(
-      'existingChats',
-      existingChats,
-      Object.values(existingChats).length
-    );
-    if (existingChats && Object.values(existingChats).length > 0) {
-      const updatedChatTitles = Object.values(existingChats).map(
-        chat => chat.title
-      );
-      setChatTitles(updatedChatTitles);
-      console.log('chatTitles', updatedChatTitles);
-    }
-  }, [existingChats]);
 
   useEffect(() => {
     const firstCourse =
@@ -85,9 +69,11 @@ const SidePanel = () => {
           handleNewChat={handleNewChat}
         />
         <div style={{ marginTop: 16 }}>
-          {chatTitles.map((title, index) => (
-            <ExistingChat key={index} title={title} />
-          ))}
+          {Object.values(existingChats) &&
+            Object.values(existingChats).length > 0 &&
+            Object.values(existingChats).map(chatObj => (
+              <ExistingChat id={chatObj._id} title={chatObj.title} />
+            ))}
         </div>
       </div>
       <div className={styles.profile}>
