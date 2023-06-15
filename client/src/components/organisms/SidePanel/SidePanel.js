@@ -18,7 +18,7 @@ const SidePanel = () => {
   const favouriteCourses = useSelector(userFavouriteCoursesSelector);
   const selectedCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
-  const [defaultDropdownValue, setDefaultDropdownValue] = useState(null);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
 
   useEffect(() => {
     const firstCourse = favouriteCourses && (Object.values(favouriteCourses)[0] || null);
