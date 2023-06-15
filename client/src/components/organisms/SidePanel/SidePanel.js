@@ -84,7 +84,7 @@ const SidePanel = () => {
           defaultDropdownValue={defaultDropdownValue}
           handleNewChat={handleNewChat}
         />
-        <div style={{ marginTop: 16, paddingLeft: 4 }}>
+        <div style={{ marginTop: 16 }}>
           {chatTitles.map((title, index) => (
             <ExistingChat key={index} title={title} />
           ))}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ChatIcon } from '@chakra-ui/icons';
 import styles from './ExistingChat.module.css';
-import { Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 
 const ExistingChat = ({ title }) => {
   const truncateTitle = () => {
@@ -11,14 +11,16 @@ const ExistingChat = ({ title }) => {
     }
   };
   return (
-    <div className={styles.existingChat}>
-      <div>
-        <ChatIcon />
+    <Button width="100%" bg="transparent" _hover={{ bg: 'rgb(61, 61, 61)' }}>
+      <div className={styles.existingChat}>
+        <div>
+          <ChatIcon />
+        </div>
+        <Text fontSize="sm" fontWeight="normal" pl={2} my="auto">
+          {truncateTitle(title)}
+        </Text>
       </div>
-      <Text fontSize="sm" fontWeight="normal" pl={2} my="auto">
-        {truncateTitle(title)}
-      </Text>
-    </div>
+    </Button>
   );
 };
 
