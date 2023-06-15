@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styles from './RightSection.module.css';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ChatPanel from '../ChatPanel/ChatPanel';
@@ -59,11 +59,9 @@ const RightSection = () => {
   };
 
   const mainPanel =
-    activePanel === 'CHAT' ? (
-      <ChatPanel />
-    ) : (
-      <InfoPanel setInputText={setInputText} />
-    );
+    activePanel === 'CHAT' ?
+      <ChatPanel /> :
+      <InfoPanel setInputText={setInputText} />;
 
   return (
     <div className={styles.container}>
