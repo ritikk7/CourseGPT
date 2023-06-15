@@ -10,6 +10,7 @@ import { setActivePanelInfo } from "../../../redux/userSlice";
 import { logoutUser } from "../../../redux/authSlice";
 import SidePanelUserMenu from "../../molecules/SidePanelUserMenu/SidePanelUserMenu";
 import CreateNewChatSection from "../../molecules/CreateNewChatSection/CreateNewChatSection";
+import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 
 const SidePanel = () => {
   const dispatch = useDispatch();
@@ -54,12 +55,27 @@ const SidePanel = () => {
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        <CreateNewChatSection favouriteCourses={favouriteCourses} handleCourseChange={handleCourseChange}
-                              defaultDropdownValue={defaultDropdownValue} handleNewChat={handleNewChat} />
+        <CreateNewChatSection
+          favouriteCourses={favouriteCourses}
+          handleCourseChange={handleCourseChange}
+          defaultDropdownValue={defaultDropdownValue}
+          handleNewChat={handleNewChat}
+        />
+        <div style={{ marginTop: 16, paddingLeft: 4 }}>
+          <ExistingChat /> <ExistingChat />
+        </div>
       </div>
       <div className={styles.profile}>
-        <SidePanelUserMenu handleLogout={handleLogout} setSettingsOpen={setSettingsOpen} />
-        {isSettingsOpen && <ProfileModal isOpen={isSettingsOpen} handleClose={() => setSettingsOpen(false)} />}
+        <SidePanelUserMenu
+          handleLogout={handleLogout}
+          setSettingsOpen={setSettingsOpen}
+        />
+        {isSettingsOpen && (
+          <ProfileModal
+            isOpen={isSettingsOpen}
+            handleClose={() => setSettingsOpen(false)}
+          />
+        )}
       </div>
     </div>
   );
