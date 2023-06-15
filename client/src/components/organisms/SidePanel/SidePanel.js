@@ -7,8 +7,8 @@ import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice'
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
   createChatWithSelectedDropdownCourse,
-  setActiveChat,
-} from '../../../redux/chatsSlice';
+  setActiveChat, softDeleteSelectedDropdownCourseChats
+} from "../../../redux/chatsSlice";
 import {
   setActivePanelChat,
   setActivePanelInfo,
@@ -60,6 +60,11 @@ const SidePanel = () => {
     await dispatch(setActivePanelChat());
   };
 
+  const handleClearConversations = () => {
+    console.log("handleClearConversations");
+    dispatch(softDeleteSelectedDropdownCourseChats());
+  };
+
   useEffect(() => {
     if (selectedCourse) {
       setDefaultDropdownValue(selectedCourse._id);
@@ -72,6 +77,7 @@ const SidePanel = () => {
     }
   }, [selectedCourse, favouriteCourses]);
 
+  let chats = Object.values(existingChats);
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
@@ -82,9 +88,11 @@ const SidePanel = () => {
           handleNewChat={handleNewChat}
         />
         <div className={styles.chatsPanel}>
-          {Object.values(existingChats) &&
-            Object.values(existingChats).length > 0 &&
-            Object.values(existingChats).map(chatObj => (
+          {chats &&
+            chats.length > 0 &&
+            chats
+              .filter(chatObj => !chatObj.deleted)
+              .map(chatObj => (
               <ExistingChat
                 key={chatObj._id}
                 id={chatObj._id}
@@ -98,6 +106,7 @@ const SidePanel = () => {
         <SidePanelUserMenu
           handleLogout={handleLogout}
           setSettingsOpen={setSettingsOpen}
+          handleClearConversations={handleClearConversations}
         />
         {isSettingsOpen && (
           <ProfileModal

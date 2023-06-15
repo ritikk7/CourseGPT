@@ -11,7 +11,7 @@ async function getChat(req, res) {
 async function getChats(req, res) {
   try {
     const userId = req.params.userId;
-    const chats = await Chat.find({ user: userId });
+    const chats = await Chat.find({ user: userId , deleted: false });
     res.send({ chats});
   } catch (error) {
     res.status(500).send({ error: error.message });
@@ -41,6 +41,19 @@ async function createChat(req, res) {
   }
 }
 
+async function updateChats(req, res) {
+  const filter = req.body.filter;
+  const updates = req.body.updates;
+
+  try {
+    await Chat.updateMany(filter, updates);
+    const chats = await Chat.find(filter);
+    res.status(200).send({ chats });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+}
+
 async function updateChat(req, res) {
   const chatId = req.params.chatId;
   const updates = req.body;
@@ -65,5 +78,6 @@ module.exports = {
   getChat,
   createChat,
   updateChat,
-  getChats
+  getChats,
+  updateChats,
 };
