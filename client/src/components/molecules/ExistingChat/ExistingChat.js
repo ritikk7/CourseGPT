@@ -6,10 +6,12 @@ import { Button, Text } from '@chakra-ui/react';
 
 const ExistingChat = ({ title, handleExistingChatClick, id }) => {
   const truncateTitle = () => {
-    if (title.length > 22) {
-      return title.slice(0, 22) + '...';
+    if (title.length > 20) {
+      return title.slice(0, 20) + '...';
     }
+    return title;
   };
+
   return (
     <Button
       width="100%"

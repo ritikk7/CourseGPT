@@ -1,4 +1,6 @@
 .existingChat {
   display: flex;
-  padding: 8px 4px;
+  padding: 8px 0;
+  width: 100%;
+  overflow: hidden;
 }
