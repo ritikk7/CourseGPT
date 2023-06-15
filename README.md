@@ -1,5 +1,7 @@
 # CourseGPT
+
 [CourseGPT](https://course-gpt.herokuapp.com/)
+
 ## Project Progress 1
 
 ### Group Members
@@ -47,7 +49,7 @@ and fields necessary to complete the stretch goals.
 
 They will be able to select a school and a course that they are interested in
 learning about and begin asking questions to CourseGPT. They will also be able
-to view their chat history, delete chats or messages, and copy and paste the
+to view their chat history, delete chatIds or messages, and copy and paste the
 chat messages to share with friends. Additionally, they can report errors and
 give feedback on CourseGPT responses so that developers can improve the
 model. They can also change their user profile by editing their email and
@@ -76,7 +78,7 @@ and time constraints.
      receive answers for at least one supported course so that I can understand
      the course content better.
 3. **Chat history (view)**
-   - As a student user, I want to be able to view my past chats so
+   - As a student user, I want to be able to view my past chatIds so
      that I can review the information that I've learned.
 
 #### Standard Requirements
@@ -99,7 +101,7 @@ and time constraints.
    - As a student user, I want to have suggested prompts based on
      my selected course so that I can get ideas for what questions to ask or
      topics to explore.
-5. **Profile changes**
+5. **ProfileSettings changes**
    - As a user, I want to be able to edit my email and password in my profile
      settings so that I can keep my account information up to date.
 
@@ -137,9 +139,9 @@ and time constraints.
      about all the courses I am taking, rather than just one.
 7. **Chat Search Functionality**
    - As a student user, I want to be able to access a search bar to search
-     through all of my chats to easily locate information so that I can
+     through all of my chatIds to easily locate information so that I can
      efficiently find the information I need without having to scroll through
-     all my chats.
+     all my chatIds.
 
 ### Task Breakdown
 
@@ -161,11 +163,11 @@ and time constraints.
 #### Being able to ask questions (1 course supported)
 
 - **"Chat" page**
-  - Design and implement the frontend page for course chats. This should
+  - Design and implement the frontend page for course chatIds. This should
     include a user input field and a conversation-like interface.
 - **Set up Chat and Message API**
   - Set up endpoints in the backend to handle chat and chat message requests.
-  - Implement the logic for responding with CourseGPT and storing the chats
+  - Implement the logic for responding with CourseGPT and storing the chatIds
     and messages in the database.
 - **Set up Chat and Message schemas**
   - Define the ChatSchema and MessageSchema for MongoDB.

@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-
+import { useSelector } from 'react-redux';
 import styles from './ChatPanel.module.css';
-import ChatSection from '../../Chat/ChatSection';
+import { activeChatWithMessagesSelector } from "../../../redux/selectors/activeChatWithMessagesSelector";
+import ChatSection from "../../molecules/ChatSection/ChatSection";
 
-const ChatPanel = ({ chatHistory }) => {
+const ChatPanel = () => {
   const scrollRef = useRef(null);
+  const activeChat = useSelector(activeChatWithMessagesSelector);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -14,14 +16,14 @@ const ChatPanel = ({ chatHistory }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [chatHistory]);
+  }, [activeChat]);
 
   return (
     <>
       <div className={styles.chatPanel}>
-        {chatHistory &&
-          chatHistory.map((msg, index) => (
-            <ChatSection key={index} index={index} message={msg} />
+        {Object.values(activeChat.messages).length > 0 &&
+          Object.values(activeChat.messages)?.map((msg, i) => (
+            <ChatSection key={i} message={msg} />
           ))}
         <div
           id="dummy-div"

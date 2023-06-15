@@ -1,11 +1,32 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
-const { login, register, validateToken, getAuthorizedUser, logout, signAndRedirect} = require("../controllers/auth");
-const passport = require("passport");
+const router = express.Router({ mergeParams: true });
+const {
+  login,
+  register,
+  validateToken,
+  getAuthorizedUser,
+  logout,
+  signAndRedirect,
+} = require('../controllers/auth');
+const passport = require('passport');
 
-router.get('/google', passport.authenticate('google', {session: false, scope: ['profile', 'email']}))
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email'],
+    failureRedirect: '/login',
+  })
+);
 
-router.get('/google/callback', passport.authenticate('google', {session: false, failureRedirect: '/login'}), signAndRedirect);
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: '/login',
+  }),
+  signAndRedirect
+);
 
 router.post('/register', register);
 
