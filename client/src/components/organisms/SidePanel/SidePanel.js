@@ -81,7 +81,7 @@ const SidePanel = () => {
           defaultDropdownValue={defaultDropdownValue}
           handleNewChat={handleNewChat}
         />
-        <div style={{ marginTop: 16 }}>
+        <div className={styles.chatsPanel}>
           {Object.values(existingChats) &&
             Object.values(existingChats).length > 0 &&
             Object.values(existingChats).map(chatObj => (
