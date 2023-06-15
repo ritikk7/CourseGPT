@@ -5,12 +5,19 @@ import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
-import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
-import { setActivePanelInfo } from '../../../redux/userSlice';
+import {
+  createChatWithSelectedDropdownCourse,
+  setActiveChat,
+} from '../../../redux/chatsSlice';
+import {
+  setActivePanelChat,
+  setActivePanelInfo,
+} from '../../../redux/userSlice';
 import { logoutUser } from '../../../redux/authSlice';
 import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
 import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
+import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 
 const SidePanel = () => {
   const dispatch = useDispatch();
@@ -47,6 +54,12 @@ const SidePanel = () => {
     dispatch(setCurrentlySelectedDropdownCourse(newCourse));
   };
 
+  const handleExistingChatClick = async chatId => {
+    await dispatch(setActiveChat(chatId));
+    await dispatch(fetchActiveChatMessages());
+    await dispatch(setActivePanelChat());
+  };
+
   useEffect(() => {
     if (selectedCourse) {
       setDefaultDropdownValue(selectedCourse._id);
@@ -72,7 +85,12 @@ const SidePanel = () => {
           {Object.values(existingChats) &&
             Object.values(existingChats).length > 0 &&
             Object.values(existingChats).map(chatObj => (
-              <ExistingChat id={chatObj._id} title={chatObj.title} />
+              <ExistingChat
+                key={chatObj._id}
+                id={chatObj._id}
+                title={chatObj.title}
+                handleExistingChatClick={handleExistingChatClick}
+              />
             ))}
         </div>
       </div>
