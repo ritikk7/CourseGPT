@@ -29,12 +29,18 @@ const SidePanel = () => {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);
+  const [filteredChatsToShow, setFilteredChatsToShow] = useState(existingChats);
 
   useEffect(() => {
-    const firstCourse =
-      favouriteCourses && (Object.values(favouriteCourses)[0] || null);
-    dispatch(setCurrentlySelectedDropdownCourse(firstCourse));
-  }, [favouriteCourses, dispatch]);
+    if (selectedCourse) {
+      const filteredChats = Object.values(existingChats).filter(chat => {
+        return chat.course == selectedCourse._id;
+      });
+      setFilteredChatsToShow(filteredChats);
+    } else {
+      setFilteredChatsToShow(existingChats);
+    }
+  }, [selectedCourse]);
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
@@ -50,8 +56,13 @@ const SidePanel = () => {
 
   const handleCourseChange = event => {
     const newCourseId = event.target.value;
-    const newCourse = favouriteCourses[newCourseId];
-    dispatch(setCurrentlySelectedDropdownCourse(newCourse));
+    if (newCourseId === 'Select a course') {
+      dispatch(setCurrentlySelectedDropdownCourse(null));
+      setFilteredChatsToShow([]);
+    } else {
+      const newCourse = favouriteCourses[newCourseId];
+      dispatch(setCurrentlySelectedDropdownCourse(newCourse));
+    }
   };
 
   const handleExistingChatClick = async chatId => {
@@ -61,14 +72,11 @@ const SidePanel = () => {
   };
 
   useEffect(() => {
+    if (selectedCourse === null) {
+      setDefaultDropdownValue('Select a course');
+    }
     if (selectedCourse) {
       setDefaultDropdownValue(selectedCourse._id);
-    } else if (
-      favouriteCourses &&
-      Object.values(favouriteCourses)[0] &&
-      Object.values(favouriteCourses)[0]._id
-    ) {
-      setDefaultDropdownValue(Object.values(favouriteCourses)[0]._id);
     }
   }, [selectedCourse, favouriteCourses]);
 
@@ -82,9 +90,9 @@ const SidePanel = () => {
           handleNewChat={handleNewChat}
         />
         <div className={styles.chatsPanel}>
-          {Object.values(existingChats) &&
-            Object.values(existingChats).length > 0 &&
-            Object.values(existingChats).map(chatObj => (
+          {Object.values(filteredChatsToShow) &&
+            Object.values(filteredChatsToShow).length > 0 &&
+            Object.values(filteredChatsToShow).map(chatObj => (
               <ExistingChat
                 key={chatObj._id}
                 id={chatObj._id}

@@ -1,5 +1,5 @@
-import { Select } from "@chakra-ui/react";
-import React from "react";
+import { Select } from '@chakra-ui/react';
+import React from 'react';
 
 const NewChatCourseSelector = ({ courses, onChange, defaultValue }) => {
   return (
@@ -7,10 +7,15 @@ const NewChatCourseSelector = ({ courses, onChange, defaultValue }) => {
       _hover={{ bg: 'rgb(61, 61, 61)' }}
       borderColor="rgb(100, 100, 102)"
       value={defaultValue}
-      onChange={(e) => onChange(e)}
+      onChange={e => onChange(e)}
     >
+      {
+        <option key={0} value="Select a course">
+          Select a course
+        </option>
+      }
       {Object.values(courses)?.map((course, i) => (
-        <option key={i} value={course._id}>
+        <option key={i + 1} value={course._id}>
           {course.courseCode}
         </option>
       ))}
