@@ -46,10 +46,11 @@ const RightSection = () => {
     state => state.courses.currentlySelectedDropdownCourse
   );
   const renderInput = activePanel === 'CHAT' || selectedCourse;
+  const createNewChat = selectedCourse && activePanel === 'INFO';
 
   const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
-    if (renderInput) {
+    if (createNewChat) {
       await dispatch(createChatWithSelectedDropdownCourse(selectedCourse._id));
     }
     dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
