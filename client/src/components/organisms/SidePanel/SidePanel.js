@@ -23,6 +23,7 @@ const SidePanel = () => {
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
+  const [disableNewChatButton, setDisableNewChatButton] = useState(false);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);
@@ -54,9 +55,11 @@ const SidePanel = () => {
       dispatch(setCurrentlySelectedDropdownCourse(null));
       setFilteredChatsToShow([]);
       dispatch(setActivePanelInfo());
+      setDisableNewChatButton(true);
     } else {
       const newCourse = favouriteCourses[newCourseId];
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
+      setDisableNewChatButton(false);
     }
   };
 
@@ -83,6 +86,7 @@ const SidePanel = () => {
           handleCourseChange={handleCourseChange}
           defaultDropdownValue={defaultDropdownValue}
           handleNewChat={handleNewChat}
+          disableNewChatButton={disableNewChatButton}
         />
         <div className={styles.chatsPanel}>
           {Object.values(filteredChatsToShow) &&

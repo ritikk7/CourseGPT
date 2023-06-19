@@ -1,16 +1,21 @@
-import React from "react";
-import { Button } from "@chakra-ui/react";
+import React from 'react';
+import { Button } from '@chakra-ui/react';
 
-const NewChatButton = ({ handleNewChat }) => {
+const NewChatButton = ({ handleNewChat, disable }) => {
   return (
     <Button
       mt={4}
       width="100%"
       bg="transparent"
-      _hover={{ bg: 'rgb(61, 61, 61)' }}
+      _hover={disable ? '' : { bg: 'rgb(61, 61, 61)' }}
       border="1px"
       borderColor="rgb(100, 100, 102)"
-      onClick={handleNewChat}
+      onClick={() => {
+        if (!disable) {
+          handleNewChat();
+        }
+      }}
+      style={disable ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
     >
       + New Chat
     </Button>
