@@ -53,6 +53,7 @@ const SidePanel = () => {
     if (newCourseId === '') {
       dispatch(setCurrentlySelectedDropdownCourse(null));
       setFilteredChatsToShow([]);
+      dispatch(setActivePanelInfo());
     } else {
       const newCourse = favouriteCourses[newCourseId];
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
