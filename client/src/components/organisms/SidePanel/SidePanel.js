@@ -23,7 +23,7 @@ const SidePanel = () => {
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
-  const [disableNewChatButton, setDisableNewChatButton] = useState(false);
+  const [disableNewChatButton, setDisableNewChatButton] = useState(true);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);

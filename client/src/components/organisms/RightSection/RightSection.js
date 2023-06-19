@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './RightSection.module.css';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ChatPanel from '../ChatPanel/ChatPanel';
@@ -11,7 +11,12 @@ import { setActivePanelChat } from '../../../redux/userSlice';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
 
-const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
+const InputArea = ({
+  currentUserInput,
+  setInputText,
+  onInputSubmit,
+  inputRef,
+}) => (
   <div className={styles.inputSection}>
     <div className={styles.inputArea}>
       <input
@@ -20,6 +25,7 @@ const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
         value={currentUserInput || ''}
         onChange={e => setInputText(e.target.value)}
         onKeyDown={onInputSubmit}
+        ref={inputRef}
       />
       <button
         className={styles.sendBtn}
@@ -47,6 +53,7 @@ const RightSection = () => {
   );
   const renderInput = activePanel === 'CHAT' || selectedCourse;
   const createNewChat = selectedCourse && activePanel === 'INFO';
+  const inputRef = useRef(null);
 
   const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
@@ -66,7 +73,7 @@ const RightSection = () => {
     activePanel === 'CHAT' ? (
       <ChatPanel />
     ) : (
-      <InfoPanel setInputText={setInputText} />
+      <InfoPanel setInputText={setInputText} inputRef={inputRef} />
     );
 
   return (
@@ -77,6 +84,7 @@ const RightSection = () => {
           currentUserInput={currentUserInput}
           setInputText={setInputText}
           onInputSubmit={onInputSubmit}
+          inputRef={inputRef}
         />
       )}
     </div>
