@@ -37,6 +37,3 @@ typings/
 
 # Ignore project .env files
 **/.env
-
-# Ignore wandb folder
-wandb/

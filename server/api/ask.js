@@ -1,9 +1,10 @@
 // imports
-require('../config/config');
 const {stringsRankedByRelatedness} = require('./embeddingBasedSearch');
 const {numTokens} = require('./generateEmbeddings');
 const { Configuration, OpenAIApi } = require('openai');
-
+if (process.env.OPENAI_API_KEY == undefined) {
+    throw "Cannot find OPENAI_API_KEY in environment variable";
+}
 const configuration = new Configuration({
     organization: 'org-Ctm9a6WpVYabY1qbocCED6NW',
     apiKey: process.env.OPENAI_API_KEY,
@@ -45,16 +46,6 @@ async function ask(query, tokenBudget = 4096 - 500, printMessage = false) {
     const responseMessage = response.data.choices[0].message.content;
     return responseMessage;
 }
-  
-// console.log(ask('How are students evaluated in CPSC455?'));
-
-// queryMessage('How are students evaluated in CPSC455?', GPT_MODEL, 4096 - 500).then((message) => {
-//     console.log(message);
-// });
-
-ask('Who are the instructors in CPSC455?').then((response) => {
-    console.log(response);
-}).catch(err => {console.log(err)}) ;
 
 
 module.exports = { ask };  
