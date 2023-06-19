@@ -44,10 +44,8 @@ const SidePanel = () => {
     navigate('/login');
   };
 
-  const handleNewChat = () => {
-    if (selectedCourse) {
-      dispatch(setActivePanelInfo());
-    }
+  const handleHome = () => {
+    dispatch(setActivePanelInfo());
   };
 
   const handleCourseChange = event => {
@@ -83,7 +81,7 @@ const SidePanel = () => {
           favouriteCourses={favouriteCourses}
           handleCourseChange={handleCourseChange}
           defaultDropdownValue={defaultDropdownValue}
-          handleNewChat={handleNewChat}
+          handleHome={handleHome}
         />
         <div className={styles.chatsPanel}>
           {Object.values(filteredChatsToShow) &&

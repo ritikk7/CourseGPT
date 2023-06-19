@@ -42,6 +42,9 @@ const RightSection = () => {
   const currentUserInput = useSelector(
     state => state.messages.currentUserInput
   );
+  const selectedCourse = useSelector(
+    state => state.courses.currentlySelectedDropdownCourse
+  );
 
   const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
@@ -66,11 +69,13 @@ const RightSection = () => {
   return (
     <div className={styles.container}>
       {mainPanel}
-      <InputArea
-        currentUserInput={currentUserInput}
-        setInputText={setInputText}
-        onInputSubmit={onInputSubmit}
-      />
+      {selectedCourse && (
+        <InputArea
+          currentUserInput={currentUserInput}
+          setInputText={setInputText}
+          onInputSubmit={onInputSubmit}
+        />
+      )}
     </div>
   );
 };

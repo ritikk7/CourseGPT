@@ -1,7 +1,7 @@
-import React from "react";
-import { Button } from "@chakra-ui/react";
+import React from 'react';
+import { Button } from '@chakra-ui/react';
 
-const NewChatButton = ({ handleNewChat }) => {
+const NewChatButton = ({ handleHome }) => {
   return (
     <Button
       mt={4}
@@ -10,9 +10,9 @@ const NewChatButton = ({ handleNewChat }) => {
       _hover={{ bg: 'rgb(61, 61, 61)' }}
       border="1px"
       borderColor="rgb(100, 100, 102)"
-      onClick={handleNewChat}
+      onClick={handleHome}
     >
-      + New Chat
+      Home
     </Button>
   );
 };
