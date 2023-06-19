@@ -1,11 +1,12 @@
 // imports
+require('../config/config');
 const {stringsRankedByRelatedness} = require('./embeddingBasedSearch');
 const {numTokens} = require('./generateEmbeddings');
 const { Configuration, OpenAIApi } = require('openai');
 
 const configuration = new Configuration({
-  organization: 'org-Ctm9a6WpVYabY1qbocCED6NW',
-  apiKey: process.env.OPENAI_API_KEY,
+    organization: 'org-Ctm9a6WpVYabY1qbocCED6NW',
+    apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -14,9 +15,9 @@ const EMBEDDING_MODEL = "text-embedding-ada-002"; // OpenAI's best embeddings as
 const GPT_MODEL = "gpt-3.5-turbo"; // you can submit up to 2048 embedding inputs per request
 
 // Return a message for GPT, with relevant source texts pulled from a dataframe.
-function queryMessage(query, model, tokenBudget) {
-    const [strings, relatednesses] = stringsRankedByRelatedness(openai, EMBEDDING_MODEL, query);
-    const introduction = 'Use the below information on the University of British Columbia CPSC455 - Applied Industry Practices course to answer the subsequent question. If the answer cannot be found in the articles, write "I could not find an answer."';
+async function queryMessage(query, model, tokenBudget) {
+    const strings = await stringsRankedByRelatedness(EMBEDDING_MODEL, query, openai);
+    const introduction = 'Use the below information on the University of British Columbia CPSC455 - Applied Industry Practices course to answer the subsequent question. If the answer cannot be found in the provided information, write "I could not find an answer."';
     const question = `\n\nQuestion: ${query}`;
     let message = introduction;
     for (const string of strings) {
@@ -31,12 +32,12 @@ function queryMessage(query, model, tokenBudget) {
 }
   
 async function ask(query, tokenBudget = 4096 - 500, printMessage = false) {
-    const message = queryMessage(query, GPT_MODEL, tokenBudget);
+    const message = await queryMessage(query, GPT_MODEL, tokenBudget);
     if (printMessage) {
       console.log(message);
     }
     const messages = [
-      { role: "system", content: "You answer questions about the University of British Columbia CPSC455 - Applied Industry Practices course'." },
+      { role: "system", content: "You answer questions about the University of British Columbia CPSC455 - Applied Industry Practices course." },
       { role: "user", content: message },
     ];
 
@@ -45,5 +46,15 @@ async function ask(query, tokenBudget = 4096 - 500, printMessage = false) {
     return responseMessage;
 }
   
-// ask('How are students evaluated in CPSC455?');
+// console.log(ask('How are students evaluated in CPSC455?'));
+
+// queryMessage('How are students evaluated in CPSC455?', GPT_MODEL, 4096 - 500).then((message) => {
+//     console.log(message);
+// });
+
+ask('Who are the instructors in CPSC455?').then((response) => {
+    console.log(response);
+}).catch(err => {console.log(err)}) ;
+
+
 module.exports = { ask };  
