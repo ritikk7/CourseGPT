@@ -11,7 +11,7 @@ const NewChatCourseSelector = ({ courses, onChange, defaultValue }) => {
     >
       {
         <option key={0} value="">
-          Select a course
+          All chats
         </option>
       }
       {Object.values(courses)?.map((course, i) => (
