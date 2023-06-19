@@ -9,7 +9,7 @@ import {
 } from '../../../redux/messagesSlice';
 import { setActivePanelChat } from '../../../redux/userSlice';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { createChatWithSelectedDropdownCourse } from "../../../redux/chatsSlice";
+import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
 
 const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
   <div className={styles.inputSection}>
@@ -39,16 +39,14 @@ const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
 const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
-  const activeChat = useSelector(state => state.chats.activeChat);
   const currentUserInput = useSelector(
     state => state.messages.currentUserInput
   );
 
   const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
-    if (!activeChat) {
-      await dispatch(createChatWithSelectedDropdownCourse());
-    }
+
+    await dispatch(createChatWithSelectedDropdownCourse());
     dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
     dispatch(setCurrentUserInput(''));
     dispatch(setActivePanelChat());
@@ -59,9 +57,11 @@ const RightSection = () => {
   };
 
   const mainPanel =
-    activePanel === 'CHAT' ?
-      <ChatPanel /> :
-      <InfoPanel setInputText={setInputText} />;
+    activePanel === 'CHAT' ? (
+      <ChatPanel />
+    ) : (
+      <InfoPanel setInputText={setInputText} />
+    );
 
   return (
     <div className={styles.container}>

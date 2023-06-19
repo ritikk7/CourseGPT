@@ -10,7 +10,7 @@ const NewChatCourseSelector = ({ courses, onChange, defaultValue }) => {
       onChange={e => onChange(e)}
     >
       {
-        <option key={0} value="Select a course">
+        <option key={0} value="">
           Select a course
         </option>
       }

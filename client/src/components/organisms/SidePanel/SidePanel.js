@@ -5,10 +5,7 @@ import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
-import {
-  createChatWithSelectedDropdownCourse,
-  setActiveChat,
-} from '../../../redux/chatsSlice';
+import { setActiveChat } from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
   setActivePanelInfo,
@@ -40,7 +37,7 @@ const SidePanel = () => {
     } else {
       setFilteredChatsToShow(existingChats);
     }
-  }, [selectedCourse]);
+  }, [selectedCourse, existingChats]);
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
@@ -49,14 +46,13 @@ const SidePanel = () => {
 
   const handleNewChat = () => {
     if (selectedCourse) {
-      dispatch(createChatWithSelectedDropdownCourse(selectedCourse._id));
       dispatch(setActivePanelInfo());
     }
   };
 
   const handleCourseChange = event => {
     const newCourseId = event.target.value;
-    if (newCourseId === 'Select a course') {
+    if (newCourseId === '') {
       dispatch(setCurrentlySelectedDropdownCourse(null));
       setFilteredChatsToShow([]);
     } else {
@@ -73,7 +69,7 @@ const SidePanel = () => {
 
   useEffect(() => {
     if (selectedCourse === null) {
-      setDefaultDropdownValue('Select a course');
+      setDefaultDropdownValue('');
     }
     if (selectedCourse) {
       setDefaultDropdownValue(selectedCourse._id);
