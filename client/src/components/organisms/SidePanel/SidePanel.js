@@ -7,8 +7,9 @@ import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice'
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
   createChatWithSelectedDropdownCourse,
-  setActiveChat, softDeleteSelectedDropdownCourseChats
-} from "../../../redux/chatsSlice";
+  setActiveChat,
+  softDeleteSelectedDropdownCourseChats,
+} from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
   setActivePanelInfo,
@@ -61,7 +62,6 @@ const SidePanel = () => {
   };
 
   const handleClearConversations = () => {
-    console.log("handleClearConversations");
     dispatch(softDeleteSelectedDropdownCourseChats());
   };
 
@@ -93,13 +93,13 @@ const SidePanel = () => {
             chats
               .filter(chatObj => !chatObj.deleted)
               .map(chatObj => (
-              <ExistingChat
-                key={chatObj._id}
-                id={chatObj._id}
-                title={chatObj.title}
-                handleExistingChatClick={handleExistingChatClick}
-              />
-            ))}
+                <ExistingChat
+                  key={chatObj._id}
+                  id={chatObj._id}
+                  title={chatObj.title}
+                  handleExistingChatClick={handleExistingChatClick}
+                />
+              ))}
         </div>
       </div>
       <div className={styles.profile}>
