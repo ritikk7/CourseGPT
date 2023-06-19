@@ -45,11 +45,13 @@ const RightSection = () => {
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
+  const renderInput = activePanel === 'CHAT' || selectedCourse;
 
   const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
-
-    await dispatch(createChatWithSelectedDropdownCourse());
+    if (renderInput) {
+      await dispatch(createChatWithSelectedDropdownCourse(selectedCourse._id));
+    }
     dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
     dispatch(setCurrentUserInput(''));
     dispatch(setActivePanelChat());
@@ -69,7 +71,7 @@ const RightSection = () => {
   return (
     <div className={styles.container}>
       {mainPanel}
-      {selectedCourse && (
+      {renderInput && (
         <InputArea
           currentUserInput={currentUserInput}
           setInputText={setInputText}
