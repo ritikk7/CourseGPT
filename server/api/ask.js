@@ -32,13 +32,27 @@ async function queryMessage(query, model, tokenBudget) {
     return message + question;
 }
   
-async function ask(query, tokenBudget = 4096 - 500, printMessage = false) {
-    const message = await queryMessage(query, GPT_MODEL, tokenBudget);
+async function ask(query, courseId, tokenBudget = 4096 - 500, printMessage = false) {
+    let message;
+    let systemContext;
+    // checking if the message belongs to a CPSC 455 chat
+    if (courseId == "6492222f349939b24dc08c90"){
+      console.log("querying CPSC 455 model");
+      systemContext = "the University of British Columbia CPSC455 - Applied Industry Practices course.";
+      message = await queryMessage(query, GPT_MODEL, tokenBudget);
+    } else {
+      console.log("querying original chatGPT model");
+      systemContext = "university courses.";
+      message = query;
+      // returning a default message for now, remove this line to have it ask the original chatGPT model directly.
+      // This is a temporary solution during development to prevent extensive use of tokens which cost money
+      return "Sorry, we don't support this course yet.";
+    }
     if (printMessage) {
       console.log(message);
     }
     const messages = [
-      { role: "system", content: "You answer questions about the University of British Columbia CPSC455 - Applied Industry Practices course." },
+      { role: "system", content: `You answer questions about ${systemContext}` },
       { role: "user", content: message },
     ];
 

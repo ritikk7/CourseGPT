@@ -31,10 +31,12 @@ async function createUserMessage(req, res) {
     });
     const newUserMessage = await message.save();
     
+    const chat = await Chat.findById(chatId);
+
     // TODO: implement proper error handling and return proper meesages
     let chatGPTResponse = "Hello this is CourseGPT!";
     try{
-      chatGPTResponse = await ask(userInputMessage);
+      chatGPTResponse = await ask(userInputMessage, chat.course._id);
     } catch (error) { // poor error handling here, just for debugging purposes for now
       if (error.response) {
         console.log(error.response.status + error.response.data);
@@ -50,8 +52,6 @@ async function createUserMessage(req, res) {
       content: chatGPTResponse,
     });
     const newGptMessage = await gptMessage.save();
-
-    const chat = await Chat.findById(chatId);
 
     chat.messages.push(newUserMessage._id);
     chat.messages.push(newGptMessage._id);
