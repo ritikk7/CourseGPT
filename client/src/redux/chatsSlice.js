@@ -1,30 +1,29 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../api/axiosInstance";
-import { createMessageAndGetGptResponseInActiveChat } from "./messagesSlice";
-import buildObjectMapFromArray from "../util/buildObjectMapFromArray";
-
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../api/axiosInstance';
+import { createMessageAndGetGptResponseInActiveChat } from './messagesSlice';
+import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => {
+const handlePending = state => {
   handleLoading(state, true);
-}
+};
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
 
 // Helpers
-const handleRequestError = (error) => {
+const handleRequestError = error => {
   throw error.response?.data?.error || error.message;
 };
 
 // Async Functions
 export const fetchUserChats = createAsyncThunk(
-  "chats/fetchUserChats",
+  'chats/fetchUserChats',
   async (_, { getState }) => {
     try {
       const userId = getState().auth.userId;
@@ -37,7 +36,7 @@ export const fetchUserChats = createAsyncThunk(
 );
 
 export const fetchChat = createAsyncThunk(
-  "chats/fetchChat",
+  'chats/fetchChat',
   async (chatId, { getState }) => {
     try {
       const userId = getState().auth.userId;
@@ -50,12 +49,14 @@ export const fetchChat = createAsyncThunk(
 );
 
 export const createChatWithSelectedDropdownCourse = createAsyncThunk(
-  "chats/createChatWithSelectedDropdownCourse",
+  'chats/createChatWithSelectedDropdownCourse',
   async (_, { getState }) => {
     try {
-      const courseId = getState().courses.currentlySelectedDropdownCourse._id
+      const courseId = getState().courses.currentlySelectedDropdownCourse._id;
       const userId = getState().auth.userId;
-      const response = await api.post(`/users/${userId}/chats`, { course: courseId });
+      const response = await api.post(`/users/${userId}/chats`, {
+        course: courseId,
+      });
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);
@@ -64,13 +65,20 @@ export const createChatWithSelectedDropdownCourse = createAsyncThunk(
 );
 
 export const softDeleteSelectedDropdownCourseChats = createAsyncThunk(
-  "chats/softDeleteSelectedDropdownCourseChats",
+  'chats/softDeleteSelectedDropdownCourseChats',
   async (_, { getState }) => {
     try {
-      const courseId = getState().courses.currentlySelectedDropdownCourse._id
+      const courseId = getState().courses.currentlySelectedDropdownCourse
+        ? getState().courses.currentlySelectedDropdownCourse._id
+        : null;
       const userId = getState().auth.userId;
-      const filter = { course: courseId, user: userId };
-      const updates = { $set: { deleted : true } };
+      let filter;
+      if (courseId) {
+        filter = { course: courseId, user: userId };
+      } else {
+        filter = { user: userId };
+      }
+      const updates = { $set: { deleted: true } };
       const body = { filter, updates };
       const response = await api.patch(`/users/${userId}/chats`, body);
       return buildObjectMapFromArray(response.data.chats);
@@ -81,14 +89,14 @@ export const softDeleteSelectedDropdownCourseChats = createAsyncThunk(
 );
 
 const chatsSlice = createSlice({
-  name: "chats",
+  name: 'chats',
   initialState: {
     // The `userChats` object maps `chatId` keys to a chat object.
     // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
     activeChat: null, // chat object
     loading: false,
-    error: null // string message
+    error: null, // string message
   },
   reducers: {
     setActiveChat: (state, action) => {
@@ -101,9 +109,9 @@ const chatsSlice = createSlice({
     },
     setChatsError: (state, action) => {
       state.error = action.payload;
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(fetchUserChats.pending, handlePending)
       .addCase(fetchUserChats.fulfilled, (state, action) => {
@@ -118,33 +126,44 @@ const chatsSlice = createSlice({
       })
       .addCase(fetchChat.rejected, handleRejected)
       .addCase(createChatWithSelectedDropdownCourse.pending, handlePending)
-      .addCase(createChatWithSelectedDropdownCourse.fulfilled,(state, action) => {
-        state.userChats[action.payload._id] = action.payload;
-        state.activeChat = action.payload
-        handleLoading(state, false);
-      })
+      .addCase(
+        createChatWithSelectedDropdownCourse.fulfilled,
+        (state, action) => {
+          state.userChats[action.payload._id] = action.payload;
+          state.activeChat = action.payload;
+          handleLoading(state, false);
+        }
+      )
       .addCase(createChatWithSelectedDropdownCourse.rejected, handleRejected)
       .addCase(softDeleteSelectedDropdownCourseChats.pending, handlePending)
-      .addCase(softDeleteSelectedDropdownCourseChats.fulfilled,(state, action) => {
-        state.userChats = {...state.userChats, ...action.payload}
-        handleLoading(state, false);
-      })
+      .addCase(
+        softDeleteSelectedDropdownCourseChats.fulfilled,
+        (state, action) => {
+          state.userChats = { ...state.userChats, ...action.payload };
+          handleLoading(state, false);
+        }
+      )
       .addCase(softDeleteSelectedDropdownCourseChats.rejected, handleRejected)
 
       // messagesSlice actions
-      .addCase(createMessageAndGetGptResponseInActiveChat.fulfilled, (state, action) => {
-        const activeChatId = state.activeChat._id;
-        state.userChats[activeChatId].messages.push(action.payload.userMessage._id);
-        state.userChats[activeChatId].messages.push(action.payload.gptResponse._id);
-        state.activeChat = state.userChats[activeChatId];
-    })
-  }
+      .addCase(
+        createMessageAndGetGptResponseInActiveChat.fulfilled,
+        (state, action) => {
+          const activeChatId = state.activeChat._id;
+          state.userChats[activeChatId].messages.push(
+            action.payload.userMessage._id
+          );
+          state.userChats[activeChatId].messages.push(
+            action.payload.gptResponse._id
+          );
+          state.activeChat = state.userChats[activeChatId];
+        }
+      );
+  },
 });
-
 
 export const { setActiveChat, setChatsError } = chatsSlice.actions;
 export default chatsSlice.reducer;
-
 
 /**
  * All code written by team.
