@@ -5,7 +5,10 @@ import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
-import { setActiveChat, softDeleteSelectedDropdownCourseChats } from '../../../redux/chatsSlice';
+import {
+  setActiveChat,
+  softDeleteSelectedDropdownCourseChats,
+} from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
   setActivePanelInfo,
@@ -82,7 +85,7 @@ const SidePanel = () => {
     }
   }, [selectedCourse, favouriteCourses]);
 
-  let chats = Object.values(filteredChats);
+  let chats = Object.values(filteredChatsToShow);
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
