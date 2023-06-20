@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './PromptButton.module.css';
 import { Text, Button } from '@chakra-ui/react';
 
-const PromptButton = ({ promptText, setInputText }) => {
+const PromptButton = ({ promptText, setInputText, inputRef }) => {
   return (
     <Button
       width="33%"
@@ -14,7 +14,13 @@ const PromptButton = ({ promptText, setInputText }) => {
       whiteSpace="normal"
       blockSize="auto"
       px={8}
-      onClick={() => setInputText(promptText)}
+      onClick={() => {
+        setInputText(promptText);
+        if (inputRef.current) {
+          console.log('focus');
+          inputRef.current.focus();
+        }
+      }}
     >
       <Text
         key={promptText}
