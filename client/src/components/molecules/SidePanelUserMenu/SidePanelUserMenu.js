@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Image, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
-const SidePanelUserMenu = ({setSettingsOpen, handleLogout}) => {
+const SidePanelUserMenu = ({setSettingsOpen, handleLogout, handleClearConversations}) => {
   return (
     <Menu>
       <MenuButton
@@ -29,7 +29,9 @@ const SidePanelUserMenu = ({setSettingsOpen, handleLogout}) => {
           Profile
         </MenuItem>
         <MenuDivider borderColor="rgb(100, 100, 102)" />
-        <MenuItem bg="black">Clear conversations</MenuItem>
+        <MenuItem bg="black" onClick={handleClearConversations}>
+          Clear conversations
+        </MenuItem>
         <MenuDivider borderColor="rgb(100, 100, 102)" />
         <MenuItem bg="black" onClick={handleLogout}>
           Logout

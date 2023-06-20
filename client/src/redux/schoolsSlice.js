@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { updateUser } from "./userSlice";
+import buildObjectMapFromArray from "../util/buildObjectMapFromArray";
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -38,12 +39,7 @@ export const fetchAllSchools = createAsyncThunk(
   async (_, { getState }) => {
     try {
       const response = await api.get("/schools");
-      const schools = response.data.schools;
-      const schoolsById = {};
-      for (let school of schools) {
-        schoolsById[school._id] = school;
-      }
-      return schoolsById;
+      return buildObjectMapFromArray(response.data.schools)
     } catch (error) {
       handleRequestError(error);
     }

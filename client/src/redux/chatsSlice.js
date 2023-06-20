@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
 import { createMessageAndGetGptResponseInActiveChat } from "./messagesSlice";
+import buildObjectMapFromArray from "../util/buildObjectMapFromArray";
 
 
 // State Handlers
@@ -28,12 +29,7 @@ export const fetchUserChats = createAsyncThunk(
     try {
       const userId = getState().auth.userId;
       const response = await api.get(`/users/${userId}/chats`);
-      const chats = response.data.chats;
-      const chatsById = {};
-      for (let chat of chats) {
-        chatsById[chat._id] = chat;
-      }
-      return chatsById;
+      return buildObjectMapFromArray(response.data.chats);
     } catch (error) {
       handleRequestError(error);
     }
@@ -61,6 +57,23 @@ export const createChatWithSelectedDropdownCourse = createAsyncThunk(
       const userId = getState().auth.userId;
       const response = await api.post(`/users/${userId}/chats`, { course: courseId });
       return response.data.chat;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
+export const softDeleteSelectedDropdownCourseChats = createAsyncThunk(
+  "chats/softDeleteSelectedDropdownCourseChats",
+  async (_, { getState }) => {
+    try {
+      const courseId = getState().courses.currentlySelectedDropdownCourse._id
+      const userId = getState().auth.userId;
+      const filter = { course: courseId, user: userId };
+      const updates = { $set: { deleted : true } };
+      const body = { filter, updates };
+      const response = await api.patch(`/users/${userId}/chats`, body);
+      return buildObjectMapFromArray(response.data.chats);
     } catch (error) {
       handleRequestError(error);
     }
@@ -111,6 +124,12 @@ const chatsSlice = createSlice({
         handleLoading(state, false);
       })
       .addCase(createChatWithSelectedDropdownCourse.rejected, handleRejected)
+      .addCase(softDeleteSelectedDropdownCourseChats.pending, handlePending)
+      .addCase(softDeleteSelectedDropdownCourseChats.fulfilled,(state, action) => {
+        state.userChats = {...state.userChats, ...action.payload}
+        handleLoading(state, false);
+      })
+      .addCase(softDeleteSelectedDropdownCourseChats.rejected, handleRejected)
 
       // messagesSlice actions
       .addCase(createMessageAndGetGptResponseInActiveChat.fulfilled, (state, action) => {

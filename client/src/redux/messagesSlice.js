@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
+import buildObjectMapFromArray from "../util/buildObjectMapFromArray";
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -22,12 +23,7 @@ const handleRequestError = (error) => {
 // Async Functions
 const fetchMessages = async (chatId, userId) => {
   const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
-  const msgs = response.data.messages;
-  const msgsById = {};
-  for (let msg of msgs) {
-    msgsById[msg._id] = msg;
-  }
-  return msgsById;
+  return buildObjectMapFromArray(response.data.messages);
 };
 
 export const fetchChatMessages = createAsyncThunk(

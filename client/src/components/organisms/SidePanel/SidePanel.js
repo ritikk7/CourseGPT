@@ -5,7 +5,7 @@ import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
-import { setActiveChat } from '../../../redux/chatsSlice';
+import { setActiveChat, softDeleteSelectedDropdownCourseChats } from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
   setActivePanelInfo,
@@ -69,6 +69,10 @@ const SidePanel = () => {
     await dispatch(setActivePanelChat());
   };
 
+  const handleClearConversations = () => {
+    dispatch(softDeleteSelectedDropdownCourseChats());
+  };
+
   useEffect(() => {
     if (selectedCourse === null) {
       setDefaultDropdownValue('');
@@ -78,6 +82,7 @@ const SidePanel = () => {
     }
   }, [selectedCourse, favouriteCourses]);
 
+  let chats = Object.values(filteredChats);
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
@@ -89,22 +94,25 @@ const SidePanel = () => {
           disableNewChatButton={disableNewChatButton}
         />
         <div className={styles.chatsPanel}>
-          {Object.values(filteredChatsToShow) &&
-            Object.values(filteredChatsToShow).length > 0 &&
-            Object.values(filteredChatsToShow).map(chatObj => (
-              <ExistingChat
-                key={chatObj._id}
-                id={chatObj._id}
-                title={chatObj.title}
-                handleExistingChatClick={handleExistingChatClick}
-              />
-            ))}
+          {chats &&
+            chats.length > 0 &&
+            chats
+              .filter(chatObj => !chatObj.deleted)
+              .map(chatObj => (
+                <ExistingChat
+                  key={chatObj._id}
+                  id={chatObj._id}
+                  title={chatObj.title}
+                  handleExistingChatClick={handleExistingChatClick}
+                />
+              ))}
         </div>
       </div>
       <div className={styles.profile}>
         <SidePanelUserMenu
           handleLogout={handleLogout}
           setSettingsOpen={setSettingsOpen}
+          handleClearConversations={handleClearConversations}
         />
         {isSettingsOpen && (
           <ProfileModal
