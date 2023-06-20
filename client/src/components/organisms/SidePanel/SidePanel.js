@@ -8,6 +8,7 @@ import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavou
 import {
   createChatWithSelectedDropdownCourse,
   setActiveChat,
+  softDeleteSelectedDropdownCourseChats,
 } from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
@@ -60,6 +61,10 @@ const SidePanel = () => {
     await dispatch(setActivePanelChat());
   };
 
+  const handleClearConversations = () => {
+    dispatch(softDeleteSelectedDropdownCourseChats());
+  };
+
   useEffect(() => {
     if (selectedCourse) {
       setDefaultDropdownValue(selectedCourse._id);
@@ -72,6 +77,7 @@ const SidePanel = () => {
     }
   }, [selectedCourse, favouriteCourses]);
 
+  let chats = Object.values(existingChats);
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
@@ -82,22 +88,25 @@ const SidePanel = () => {
           handleNewChat={handleNewChat}
         />
         <div className={styles.chatsPanel}>
-          {Object.values(existingChats) &&
-            Object.values(existingChats).length > 0 &&
-            Object.values(existingChats).map(chatObj => (
-              <ExistingChat
-                key={chatObj._id}
-                id={chatObj._id}
-                title={chatObj.title}
-                handleExistingChatClick={handleExistingChatClick}
-              />
-            ))}
+          {chats &&
+            chats.length > 0 &&
+            chats
+              .filter(chatObj => !chatObj.deleted)
+              .map(chatObj => (
+                <ExistingChat
+                  key={chatObj._id}
+                  id={chatObj._id}
+                  title={chatObj.title}
+                  handleExistingChatClick={handleExistingChatClick}
+                />
+              ))}
         </div>
       </div>
       <div className={styles.profile}>
         <SidePanelUserMenu
           handleLogout={handleLogout}
           setSettingsOpen={setSettingsOpen}
+          handleClearConversations={handleClearConversations}
         />
         {isSettingsOpen && (
           <ProfileModal
