@@ -1,5 +1,6 @@
 const Chat = require('../models/chat');
 const Message = require('../models/message');
+const qaPair = require('./qaPair');
 
 async function getAllMessages(req, res) {
   // TODO
@@ -38,10 +39,11 @@ async function createUserMessage(req, res) {
 
     const chat = await Chat.findById(chatId);
 
-
     chat.messages.push(newUserMessage._id);
     chat.messages.push(newGptMessage._id);
     await chat.save();
+    
+    await qaPair.createQaPair({course: chat.course, chat: chatId, question: newUserMessage._id, answer: newGptMessage._id})
 
     res.status(201).json({ userMessage: newUserMessage, gptResponse: newGptMessage });
   } catch (error) {
