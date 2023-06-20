@@ -1,32 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import styles from "./SidePanel.module.css";
-import ProfileModal from "../ProfileModal/ProfileModal";
-import { setCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
-import { userFavouriteCoursesSelector } from "../../../redux/selectors/userFavouriteCoursesSelector";
-import { createChatWithSelectedDropdownCourse } from "../../../redux/chatsSlice";
-import { setActivePanelInfo } from "../../../redux/userSlice";
-import { logoutUser } from "../../../redux/authSlice";
-import SidePanelUserMenu from "../../molecules/SidePanelUserMenu/SidePanelUserMenu";
-import CreateNewChatSection from "../../molecules/CreateNewChatSection/CreateNewChatSection";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styles from './SidePanel.module.css';
+import ProfileModal from '../ProfileModal/ProfileModal';
+import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
+import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
+import {
+  createChatWithSelectedDropdownCourse,
+  setActiveChat,
+} from '../../../redux/chatsSlice';
+import {
+  setActivePanelChat,
+  setActivePanelInfo,
+} from '../../../redux/userSlice';
+import { logoutUser } from '../../../redux/authSlice';
+import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
+import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
+import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
+import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 
 const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const favouriteCourses = useSelector(userFavouriteCoursesSelector);
-  const selectedCourse = useSelector((state) => state.courses.currentlySelectedDropdownCourse);
+  const selectedCourse = useSelector(
+    state => state.courses.currentlySelectedDropdownCourse
+  );
   const [isSettingsOpen, setSettingsOpen] = useState(false);
-  const [defaultDropdownValue, setDefaultDropdownValue] = useState(null);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
+  const existingChats = useSelector(state => state.chats.userChats);
 
   useEffect(() => {
-    const firstCourse = favouriteCourses && (Object.values(favouriteCourses)[0] || null);
+    const firstCourse =
+      favouriteCourses && (Object.values(favouriteCourses)[0] || null);
     dispatch(setCurrentlySelectedDropdownCourse(firstCourse));
   }, [favouriteCourses, dispatch]);
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    navigate("/login");
+    navigate('/login');
   };
 
   const handleNewChat = () => {
@@ -36,30 +48,63 @@ const SidePanel = () => {
     }
   };
 
-  const handleCourseChange = (event) => {
+  const handleCourseChange = event => {
     const newCourseId = event.target.value;
     const newCourse = favouriteCourses[newCourseId];
     dispatch(setCurrentlySelectedDropdownCourse(newCourse));
   };
 
+  const handleExistingChatClick = async chatId => {
+    await dispatch(setActiveChat(chatId));
+    await dispatch(fetchActiveChatMessages());
+    await dispatch(setActivePanelChat());
+  };
+
   useEffect(() => {
     if (selectedCourse) {
       setDefaultDropdownValue(selectedCourse._id);
-    } else if (favouriteCourses && Object.values(favouriteCourses)[0] && Object.values(favouriteCourses)[0]._id) {
+    } else if (
+      favouriteCourses &&
+      Object.values(favouriteCourses)[0] &&
+      Object.values(favouriteCourses)[0]._id
+    ) {
       setDefaultDropdownValue(Object.values(favouriteCourses)[0]._id);
     }
   }, [selectedCourse, favouriteCourses]);
 
-
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        <CreateNewChatSection favouriteCourses={favouriteCourses} handleCourseChange={handleCourseChange}
-                              defaultDropdownValue={defaultDropdownValue} handleNewChat={handleNewChat} />
+        <CreateNewChatSection
+          favouriteCourses={favouriteCourses}
+          handleCourseChange={handleCourseChange}
+          defaultDropdownValue={defaultDropdownValue}
+          handleNewChat={handleNewChat}
+        />
+        <div className={styles.chatsPanel}>
+          {Object.values(existingChats) &&
+            Object.values(existingChats).length > 0 &&
+            Object.values(existingChats).map(chatObj => (
+              <ExistingChat
+                key={chatObj._id}
+                id={chatObj._id}
+                title={chatObj.title}
+                handleExistingChatClick={handleExistingChatClick}
+              />
+            ))}
+        </div>
       </div>
       <div className={styles.profile}>
-        <SidePanelUserMenu handleLogout={handleLogout} setSettingsOpen={setSettingsOpen} />
-        {isSettingsOpen && <ProfileModal isOpen={isSettingsOpen} handleClose={() => setSettingsOpen(false)} />}
+        <SidePanelUserMenu
+          handleLogout={handleLogout}
+          setSettingsOpen={setSettingsOpen}
+        />
+        {isSettingsOpen && (
+          <ProfileModal
+            isOpen={isSettingsOpen}
+            handleClose={() => setSettingsOpen(false)}
+          />
+        )}
       </div>
     </div>
   );

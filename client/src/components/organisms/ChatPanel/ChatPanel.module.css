@@ -2,3 +2,11 @@
   height: 100vh;
   overflow-y: scroll;
 }
+
+.chatPanel::-webkit-scrollbar {
+  width: 8px;
+}
+.chatPanel::-webkit-scrollbar-thumb {
+  background: var(--placeholder);
+  border-radius: 4px;
+}

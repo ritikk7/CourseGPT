@@ -1,11 +1,15 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styles from './RightSection.module.css';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ChatPanel from '../ChatPanel/ChatPanel';
-import { useDispatch, useSelector } from "react-redux";
-import { createMessageAndGetGptResponseInActiveChat, setCurrentUserInput } from "../../../redux/messagesSlice";
-import { setActivePanelChat } from "../../../redux/userSlice";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createMessageAndGetGptResponseInActiveChat,
+  setCurrentUserInput,
+} from '../../../redux/messagesSlice';
+import { setActivePanelChat } from '../../../redux/userSlice';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { createChatWithSelectedDropdownCourse } from "../../../redux/chatsSlice";
 
 const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
   <div className={styles.inputSection}>
@@ -19,7 +23,12 @@ const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
       />
       <button
         className={styles.sendBtn}
-        onClick={onInputSubmit}
+        onClick={e => {
+          if (currentUserInput.trim()) onInputSubmit(e);
+        }}
+        style={
+          currentUserInput.trim() ? {} : { cursor: 'not-allowed', opacity: 0.5 }
+        }
       >
         <ArrowForwardIcon />
       </button>
@@ -30,22 +39,29 @@ const InputArea = ({ currentUserInput, setInputText, onInputSubmit }) => (
 const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
-  const currentUserInput = useSelector(state => state.messages.currentUserInput);
+  const activeChat = useSelector(state => state.chats.activeChat);
+  const currentUserInput = useSelector(
+    state => state.messages.currentUserInput
+  );
 
-  const onInputSubmit = (e) => {
+  const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
+    if (!activeChat) {
+      await dispatch(createChatWithSelectedDropdownCourse());
+    }
     dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
     dispatch(setCurrentUserInput(''));
     dispatch(setActivePanelChat());
   };
 
-  const setInputText = (value) => {
+  const setInputText = value => {
     dispatch(setCurrentUserInput(value));
   };
 
-  const mainPanel = activePanel === 'CHAT'
-    ? <ChatPanel />
-    : <InfoPanel setInputText={setInputText} />;
+  const mainPanel =
+    activePanel === 'CHAT' ?
+      <ChatPanel /> :
+      <InfoPanel setInputText={setInputText} />;
 
   return (
     <div className={styles.container}>
