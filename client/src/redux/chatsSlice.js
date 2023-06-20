@@ -95,6 +95,7 @@ const chatsSlice = createSlice({
     // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
     activeChat: null, // chat object
+    focusedChat: null, // chat id
     loading: false,
     error: null, // string message
   },
@@ -106,6 +107,9 @@ const chatsSlice = createSlice({
       } else {
         state.activeChat = action.payload;
       }
+    },
+    setFocusedChat: (state, action) => {
+      state.focusedChat = action.payload;
     },
     setChatsError: (state, action) => {
       state.error = action.payload;
@@ -162,7 +166,8 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { setActiveChat, setChatsError } = chatsSlice.actions;
+export const { setActiveChat, setFocusedChat, setChatsError } =
+  chatsSlice.actions;
 export default chatsSlice.reducer;
 
 /**

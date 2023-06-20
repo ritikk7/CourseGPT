@@ -7,6 +7,7 @@ import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice'
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
   setActiveChat,
+  setFocusedChat,
   softDeleteSelectedDropdownCourseChats,
 } from '../../../redux/chatsSlice';
 import {
@@ -68,6 +69,7 @@ const SidePanel = () => {
 
   const handleExistingChatClick = async chatId => {
     await dispatch(setActiveChat(chatId));
+    await dispatch(setFocusedChat(chatId));
     await dispatch(fetchActiveChatMessages());
     await dispatch(setActivePanelChat());
   };
