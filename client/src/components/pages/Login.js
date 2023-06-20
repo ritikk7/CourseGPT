@@ -21,7 +21,6 @@ import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FaGoogle } from 'react-icons/fa';
-import { clearUser } from "../../redux/userSlice";
 
 export default function Login() {
   const dispatch = useDispatch();

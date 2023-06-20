@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/axiosInstance";
-import { loginUser, registerUser, fetchUser, logoutUser } from "./authSlice";
+import { loginUser, registerUser, fetchUser } from "./authSlice";
 import { createChatWithSelectedDropdownCourse } from "./chatsSlice";
 
 // State Handlers
