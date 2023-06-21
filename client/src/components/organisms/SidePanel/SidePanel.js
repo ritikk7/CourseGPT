@@ -83,9 +83,10 @@ const SidePanel = () => {
     dispatch(setShouldFocusChatInput(true));
   };
 
-  const deleteSingleChat = id => {
-    dispatch(softDeleteSingleChat(id));
-    dispatch(fetchUserChats());
+  const handleChatDelete = async id => {
+    await dispatch(setActivePanelInfo());
+    await dispatch(softDeleteSingleChat(id));
+    await dispatch(fetchUserChats());
   };
 
   const handleClearConversations = () => {
@@ -123,7 +124,7 @@ const SidePanel = () => {
                   id={chatObj._id}
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
-                  handleChatDelete={deleteSingleChat}
+                  handleChatDelete={handleChatDelete}
                 />
               ))}
         </div>

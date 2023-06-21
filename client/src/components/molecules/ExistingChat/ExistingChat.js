@@ -27,27 +27,36 @@ const ExistingChat = ({
   };
 
   return (
-    <Button
-      width="100%"
-      bg={isFocused ? 'rgb(61, 61, 61)' : 'transparent'}
-      _hover={isFocused ? { bg: 'rgb(61, 61, 61)' } : { bg: 'rgb(47, 47, 47)' }}
-      onClick={() => handleExistingChatClick(id)}
-      pl={3}
-    >
-      <div className={styles.existingChat}>
-        <div>
-          <ChatIcon />
-        </div>
-        <Text fontSize="sm" fontWeight="normal" pl={2} my="auto">
-          {truncateTitle(title)}
-        </Text>
-        {isFocused && (
-          <div className={styles.actions} onClick={() => handleChatDelete(id)}>
-            <DeleteIcon fontSize="small" />
+    <div style={{ position: 'relative' }}>
+      <Button
+        width="100%"
+        bg={isFocused ? 'rgb(61, 61, 61)' : 'transparent'}
+        _hover={
+          isFocused ? { bg: 'rgb(61, 61, 61)' } : { bg: 'rgb(47, 47, 47)' }
+        }
+        onClick={() => handleExistingChatClick(id)}
+        pl={3}
+      >
+        <div className={styles.existingChat}>
+          <div>
+            <ChatIcon />
           </div>
-        )}
-      </div>
-    </Button>
+          <Text fontSize="sm" fontWeight="normal" pl={2} my="auto">
+            {truncateTitle(title)}
+          </Text>
+        </div>
+      </Button>
+      {isFocused && (
+        <div
+          className={styles.actions}
+          onClick={() => {
+            handleChatDelete(id);
+          }}
+        >
+          <DeleteIcon fontSize="small" style={{ margin: 'auto' }} />
+        </div>
+      )}
+    </div>
   );
 };
 

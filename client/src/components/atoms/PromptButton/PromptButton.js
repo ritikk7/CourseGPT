@@ -17,7 +17,6 @@ const PromptButton = ({ promptText, setInputText, inputRef }) => {
       onClick={() => {
         setInputText(promptText);
         if (inputRef.current) {
-          console.log('focus');
           inputRef.current.focus();
         }
       }}

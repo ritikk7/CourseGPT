@@ -197,8 +197,12 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { setActiveChat, setFocusedChat, setChatsError, setWaitingFirstMessage } =
-  chatsSlice.actions;
+export const {
+  setActiveChat,
+  setFocusedChat,
+  setChatsError,
+  setWaitingFirstMessage,
+} = chatsSlice.actions;
 export default chatsSlice.reducer;
 
 /**

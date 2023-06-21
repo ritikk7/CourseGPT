@@ -4,14 +4,16 @@
   width: 100%;
   overflow: hidden;
   position: relative;
+  cursor: auto;
 }
 
 .actions {
   position: absolute;
-  right: -8px;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
   margin: auto;
-  padding: 2px 4px 0 4px;
+  padding: 4px 12px 0 12px;
   background: rgb(61, 61, 61);
+  cursor: pointer;
 }
