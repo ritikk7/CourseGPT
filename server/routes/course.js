@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams to access schoolId (ie parent route)
 const {
-  createCourse, getSchoolCourse, getSchoolCourses,
+  createCourse,
+  getSchoolCourse,
+  getSchoolCourses,
 } = require('../controllers/course');
 const { validateToken } = require('../controllers/auth');
 

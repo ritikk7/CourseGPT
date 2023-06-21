@@ -1,3 +1,4 @@
+const { ask } = require('../api/ask');
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 
@@ -20,32 +21,47 @@ async function createUserMessage(req, res) {
   try {
     const chatId = req.params.chatId;
     const userId = req.params.userId;
+    const userInputMessage = req.body.content;
     const message = new Message({
       chat: chatId,
       user: userId,
       senderType: 'User',
-      content: req.body.content,
+      content: userInputMessage,
     });
     const newUserMessage = await message.save();
+
+    const chat = await Chat.findById(chatId);
+
+    // TODO: implement proper error handling and return proper meesages
+    let chatGPTResponse = 'Hello this is CourseGPT!';
+    try {
+      chatGPTResponse = await ask(userInputMessage, chat.course._id);
+    } catch (error) {
+      // poor error handling here, just for debugging purposes for now
+      if (error.response) {
+        console.log(error.response.status + error.response.data);
+      } else {
+        console.log(error.message);
+      }
+    }
 
     const gptMessage = new Message({
       chat: chatId,
       user: userId,
       senderType: 'CourseGPT',
-      content: 'hello my name is GPT',
+      content: chatGPTResponse,
     });
     const newGptMessage = await gptMessage.save();
-
-    const chat = await Chat.findById(chatId);
-
 
     chat.messages.push(newUserMessage._id);
     chat.messages.push(newGptMessage._id);
     await chat.save();
 
-    res.status(201).json({ userMessage: newUserMessage, gptResponse: newGptMessage });
+    res
+      .status(201)
+      .json({ userMessage: newUserMessage, gptResponse: newGptMessage });
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong' });
+    res.status(500).json({ error: 'Something went wrong' + error.message });
   }
 }
 

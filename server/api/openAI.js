@@ -12,3 +12,21 @@ async function listModels() {
   const response = await openai.listModels();
   console.log(response);
 }
+
+// example call to use a fine-tuned model
+async function getTrainedModelResponse(model, prompt) {
+  const response = await openai.createCompletion({
+    model: model,
+    prompt: prompt,
+  });
+  console.log(response);
+}
+
+async function createCompletion(prompt) {
+  const completion = await openai.createCompletion({
+    model: 'text-davinci-003',
+    prompt: prompt,
+  });
+  let response = completion.data.choices[0].text;
+  return response;
+}

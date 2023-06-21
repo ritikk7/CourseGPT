@@ -84,11 +84,9 @@ async function validateToken(req, res, next) {
 
   const blacklistedToken = await BlacklistedToken.findOne({ token });
   if (blacklistedToken) {
-    return res
-      .status(401)
-      .json({
-        error: 'Token is blacklisted. Presumably because user logged out.',
-      });
+    return res.status(401).json({
+      error: 'Token is blacklisted. Presumably because user logged out.',
+    });
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {

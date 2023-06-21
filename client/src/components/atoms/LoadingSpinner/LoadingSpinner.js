@@ -1,9 +1,14 @@
-import React from "react";
-import { Box, Spinner } from "@chakra-ui/react";
+import React from 'react';
+import { Box, Spinner } from '@chakra-ui/react';
 
 const LoadingSpinner = () => {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+    >
       <Spinner
         thickness="4px"
         speed="0.65s"

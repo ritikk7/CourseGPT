@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-  Link,
-  Button,
-  Heading,
-  Text,
   Alert,
   AlertIcon,
-  InputRightElement,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
   InputGroup,
+  InputRightElement,
+  Link,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, setAuthError } from '../../redux/authSlice';
@@ -32,20 +32,20 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = e => {
-    if(authError) dispatch(setAuthError(null));
+    if (authError) dispatch(setAuthError(null));
     setCredentials(state => ({ ...state, [e.target.name]: e.target.value }));
   };
   const handleSubmit = e => {
     e.preventDefault();
-    if(authError) dispatch(setAuthError(null));
+    if (authError) dispatch(setAuthError(null));
     dispatch(loginUser(credentials));
   };
   const handleGoogleLogin = () => {
-    if(authError) dispatch(setAuthError(null));
+    if (authError) dispatch(setAuthError(null));
     window.location.href = baseUrl + '/auth/google';
   };
   const navigateToRegister = () => {
-    if(authError) dispatch(setAuthError(null));
+    if (authError) dispatch(setAuthError(null));
     navigate('/register');
   };
   useEffect(() => {

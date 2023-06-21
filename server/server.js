@@ -53,7 +53,7 @@ function setupRoutes(app) {
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);
   app.use('/api/schools', schoolRoutes);
-  app.use("/api", getAllRoutes)
+  app.use('/api', getAllRoutes);
 }
 
 function serveBuild(app) {

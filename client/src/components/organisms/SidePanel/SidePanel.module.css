@@ -29,6 +29,7 @@
   width: 6px;
   background-color: var(--gray1);
 }
+
 .chatsPanel::-webkit-scrollbar-thumb {
   background: var(--placeholder);
   border-radius: 4px;

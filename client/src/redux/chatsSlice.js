@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import { createMessageAndGetGptResponseInActiveChat } from './messagesSlice';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
+import { setCurrentlySelectedDropdownCourse } from './coursesSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -113,6 +114,7 @@ const chatsSlice = createSlice({
     // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
     userChats: {},
     activeChat: null, // chat object
+    waitingFirstMessage: false,
     focusedChat: null, // chat id
     loading: false,
     error: null, // string message
@@ -125,12 +127,16 @@ const chatsSlice = createSlice({
       } else {
         state.activeChat = action.payload;
       }
+      state.waitingFirstMessage = false;
     },
     setFocusedChat: (state, action) => {
       state.focusedChat = action.payload;
     },
     setChatsError: (state, action) => {
       state.error = action.payload;
+    },
+    setWaitingFirstMessage: (state, action) => {
+      state.waitingFirstMessage = action.payload;
     },
   },
   extraReducers: builder => {
@@ -163,6 +169,7 @@ const chatsSlice = createSlice({
         (state, action) => {
           state.userChats = { ...state.userChats, ...action.payload };
           handleLoading(state, false);
+          state.waitingFirstMessage = false;
         }
       )
       .addCase(softDeleteSelectedDropdownCourseChats.rejected, handleRejected)
@@ -180,11 +187,17 @@ const chatsSlice = createSlice({
           );
           state.activeChat = state.userChats[activeChatId];
         }
-      );
+      )
+
+      // courseSlice actions
+      .addCase(setCurrentlySelectedDropdownCourse, (state, action) => {
+        state.activeChat = null;
+        state.waitingFirstMessage = false;
+      });
   },
 });
 
-export const { setActiveChat, setFocusedChat, setChatsError } =
+export const { setActiveChat, setFocusedChat, setChatsError, setWaitingFirstMessage } =
   chatsSlice.actions;
 export default chatsSlice.reducer;
 

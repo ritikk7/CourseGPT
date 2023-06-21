@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {
   getSchool,
-  getAllSchools, createSchool,
+  getAllSchools,
+  createSchool,
 } = require('../controllers/school');
 const { validateToken } = require('../controllers/auth');
 
