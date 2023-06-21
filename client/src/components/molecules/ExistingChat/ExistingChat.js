@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-
 import { ChatIcon } from '@chakra-ui/icons';
 import styles from './ExistingChat.module.css';
 import { Button, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 const ExistingChat = ({
   title,
   handleExistingChatClick,
@@ -13,19 +13,10 @@ const ExistingChat = ({
 }) => {
   const focusedChat = useSelector(state => state.chats.focusedChat);
   const [isFocused, setIsFocused] = useState(false);
-  const maxCharLength = 21;
 
   useEffect(() => {
     setIsFocused(focusedChat == id);
   }, [focusedChat]);
-
-  const truncateTitle = () => {
-    if (title.length > maxCharLength) {
-      return title.slice(0, maxCharLength) + '...';
-    }
-    return title;
-  };
-
   return (
     <div style={{ position: 'relative' }}>
       <Button
@@ -41,10 +32,11 @@ const ExistingChat = ({
           <div>
             <ChatIcon />
           </div>
-          <Text fontSize="sm" fontWeight="normal" pl={2} my="auto">
-            {truncateTitle(title)}
+          <Text fontSize="sm" fontWeight="normal" pl={2} my="auto" maxW="90%">
+            {title}
           </Text>
         </div>
+        {!isFocused && <div className={styles.gradient} />}
       </Button>
       {isFocused && (
         <div
