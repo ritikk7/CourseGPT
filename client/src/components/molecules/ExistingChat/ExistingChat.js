@@ -42,16 +42,9 @@ const ExistingChat = ({
           {truncateTitle(title)}
         </Text>
         {isFocused && (
-          <Button
-            bg="rgb(61, 61, 61)"
-            _hover={{ bg: 'rgb(61, 61, 61)' }}
-            position="absolute"
-            right={-2}
-            top={-0.5}
-            onClick={() => handleChatDelete(id)}
-          >
+          <div className={styles.actions} onClick={() => handleChatDelete(id)}>
             <DeleteIcon fontSize="small" />
-          </Button>
+          </div>
         )}
       </div>
     </Button>

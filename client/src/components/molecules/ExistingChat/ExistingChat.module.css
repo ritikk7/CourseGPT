@@ -5,3 +5,13 @@
   overflow: hidden;
   position: relative;
 }
+
+.actions {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: auto;
+  padding: 2px 4px 0 4px;
+  background: rgb(61, 61, 61);
+}

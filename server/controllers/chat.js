@@ -64,12 +64,10 @@ async function updateChat(req, res) {
     if (!chat) {
       res.status(404).send({ error: 'ChatSection not found' });
     }
-    console.log('updates', updates);
 
     const updatedChat = await Chat.findByIdAndUpdate(chatId, updates, {
       new: true,
     });
-    console.log(' updatedChat', updatedChat);
 
     res.status(200).send({ chat: updatedChat });
   } catch (error) {
