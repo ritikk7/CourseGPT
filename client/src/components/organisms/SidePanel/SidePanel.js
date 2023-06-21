@@ -70,6 +70,7 @@ const SidePanel = () => {
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
       setDisableNewChatButton(false);
     }
+    dispatch(setFocusedChat(null));
     dispatch(setActivePanelInfo());
     dispatch(setWaitingFirstMessage(true));
     dispatch(setShouldFocusChatInput(true));
