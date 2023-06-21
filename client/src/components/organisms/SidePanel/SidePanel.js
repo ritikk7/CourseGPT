@@ -9,6 +9,7 @@ import {
   setActiveChat,
   setFocusedChat,
   softDeleteSelectedDropdownCourseChats,
+  softDeleteSingleChat,
 } from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
@@ -74,6 +75,10 @@ const SidePanel = () => {
     await dispatch(setActivePanelChat());
   };
 
+  const deleteSingleChat = id => {
+    dispatch(softDeleteSingleChat(id));
+  };
+
   const handleClearConversations = () => {
     dispatch(softDeleteSelectedDropdownCourseChats());
   };
@@ -109,6 +114,7 @@ const SidePanel = () => {
                   id={chatObj._id}
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
+                  handleChatDelete={deleteSingleChat}
                 />
               ))}
         </div>

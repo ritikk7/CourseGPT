@@ -5,7 +5,12 @@ import styles from './ExistingChat.module.css';
 import { Button, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-const ExistingChat = ({ title, handleExistingChatClick, id }) => {
+const ExistingChat = ({
+  title,
+  handleExistingChatClick,
+  id,
+  handleChatDelete,
+}) => {
   const focusedChat = useSelector(state => state.chats.focusedChat);
   const [isFocused, setIsFocused] = useState(false);
   const maxCharLength = 21;
@@ -43,6 +48,7 @@ const ExistingChat = ({ title, handleExistingChatClick, id }) => {
             position="absolute"
             right={-2}
             top={-0.5}
+            onClick={() => handleChatDelete(id)}
           >
             <DeleteIcon fontSize="small" />
           </Button>
