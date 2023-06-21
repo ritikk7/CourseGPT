@@ -1,22 +1,22 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
-import buildObjectMapFromArray from "../util/buildObjectMapFromArray";
+import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => {
+const handlePending = state => {
   handleLoading(state, true);
-}
+};
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
 
 // Helpers
-const handleRequestError = (error) => {
+const handleRequestError = error => {
   throw error.response?.data?.error || error.message;
 };
 
@@ -58,7 +58,10 @@ export const createMessageAndGetGptResponseInActiveChat = createAsyncThunk(
       const newMessage = message || getState().messages.currentUserInput;
       const userId = getState().auth.userId;
       const chatId = getState().chats.activeChat?._id;
-      const response = await api.post(`/users/${userId}/chats/${chatId}/messages`, { content: newMessage});
+      const response = await api.post(
+        `/users/${userId}/chats/${chatId}/messages`,
+        { content: newMessage }
+      );
       return {
         userMessage: response.data.userMessage,
         gptResponse: response.data.gptResponse,
@@ -77,7 +80,7 @@ const messagesSlice = createSlice({
     messages: {},
     currentUserInput: '',
     loading: false,
-    error: null // string message
+    error: null, // string message
   },
   reducers: {
     setMessagesError: (state, action) => {
@@ -85,9 +88,9 @@ const messagesSlice = createSlice({
     },
     setCurrentUserInput: (state, action) => {
       state.currentUserInput = action.payload;
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(fetchChatMessages.pending, handlePending)
       .addCase(fetchChatMessages.fulfilled, (state, action) => {
@@ -101,22 +104,30 @@ const messagesSlice = createSlice({
         handleLoading(state, false);
       })
       .addCase(fetchActiveChatMessages.rejected, handleRejected)
-      .addCase(createMessageAndGetGptResponseInActiveChat.pending, handlePending)
-      .addCase(createMessageAndGetGptResponseInActiveChat.fulfilled, (state, action) => {
-        const newMessages = {
-          [action.payload.userMessage._id] : action.payload.userMessage,
-          [action.payload.gptResponse._id] : action.payload.gptResponse
+      .addCase(
+        createMessageAndGetGptResponseInActiveChat.pending,
+        handlePending
+      )
+      .addCase(
+        createMessageAndGetGptResponseInActiveChat.fulfilled,
+        (state, action) => {
+          const newMessages = {
+            [action.payload.userMessage._id]: action.payload.userMessage,
+            [action.payload.gptResponse._id]: action.payload.gptResponse,
+          };
+          state.messages = { ...state.messages, ...newMessages };
+          handleLoading(state, false);
         }
-        state.messages = { ...state.messages, ...newMessages };
-        handleLoading(state, false);
-      })
-      .addCase(createMessageAndGetGptResponseInActiveChat.rejected, handleRejected)
+      )
+      .addCase(
+        createMessageAndGetGptResponseInActiveChat.rejected,
+        handleRejected
+      );
   },
 });
 
-export const { setMessagesError , setCurrentUserInput} = messagesSlice.actions;
+export const { setMessagesError, setCurrentUserInput } = messagesSlice.actions;
 export default messagesSlice.reducer;
-
 
 /**
  * All code written by team.

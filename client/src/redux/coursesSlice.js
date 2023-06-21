@@ -1,32 +1,34 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import api from "../api/axiosInstance";
-import buildObjectMapFromArray from "../util/buildObjectMapFromArray";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../api/axiosInstance';
+import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => {
+const handlePending = state => {
   handleLoading(state, true);
-}
+};
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
 
 // Helpers
-const handleRequestError = (error) => {
+const handleRequestError = error => {
   throw error.response?.data?.error || error.message;
 };
 
 // Async Functions
 export const fetchSchoolCourse = createAsyncThunk(
-  "courses/fetchSchoolCourse",
-  async ({schoolId, courseId}, { getState }) => {
+  'courses/fetchSchoolCourse',
+  async ({ schoolId, courseId }, { getState }) => {
     try {
-      const response = await api.get(`/schools/${schoolId}/courses/${courseId}`);
-      return response.data.course
+      const response = await api.get(
+        `/schools/${schoolId}/courses/${courseId}`
+      );
+      return response.data.course;
     } catch (error) {
       handleRequestError(error);
     }
@@ -34,7 +36,7 @@ export const fetchSchoolCourse = createAsyncThunk(
 );
 
 export const fetchSchoolCourses = createAsyncThunk(
-  "courses/fetchSchoolCourses",
+  'courses/fetchSchoolCourses',
   async (schoolId, { getState }) => {
     try {
       const response = await api.get(`/schools/${schoolId}/courses`);
@@ -46,7 +48,7 @@ export const fetchSchoolCourses = createAsyncThunk(
 );
 
 export const fetchAllCourses = createAsyncThunk(
-  "courses/fetchAllCourses",
+  'courses/fetchAllCourses',
   async (_, { getState }) => {
     try {
       const response = await api.get(`/courses`);
@@ -58,14 +60,14 @@ export const fetchAllCourses = createAsyncThunk(
 );
 
 const coursesSlice = createSlice({
-  name: "courses",
+  name: 'courses',
   initialState: {
     // The `courses` object maps each `courseId` key to a course object.
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2}
     courses: {},
     currentlySelectedDropdownCourse: null, // course object
     loading: false,
-    error: null // string message
+    error: null, // string message
   },
   reducers: {
     setCoursesError: (state, action) => {
@@ -73,9 +75,9 @@ const coursesSlice = createSlice({
     },
     setCurrentlySelectedDropdownCourse: (state, action) => {
       state.currentlySelectedDropdownCourse = action.payload;
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(fetchSchoolCourse.pending, handlePending)
       .addCase(fetchSchoolCourse.fulfilled, (state, action) => {
@@ -94,14 +96,13 @@ const coursesSlice = createSlice({
         state.courses = action.payload;
         handleLoading(state, false);
       })
-      .addCase(fetchAllCourses.rejected, handleRejected)
-  }
+      .addCase(fetchAllCourses.rejected, handleRejected);
+  },
 });
 
-export const { setCoursesError, setCurrentlySelectedDropdownCourse } = coursesSlice.actions;
+export const { setCoursesError, setCurrentlySelectedDropdownCourse } =
+  coursesSlice.actions;
 export default coursesSlice.reducer;
-
-
 
 /**
  * All code written by team.

@@ -5,7 +5,7 @@ async function createSchool(req, res) {
     const newSchool = new School({
       name: req.body.name,
       location: req.body.location || '',
-      type: req.body.type || "University",
+      type: req.body.type || 'University',
       website: req.body.website || '',
       logo: req.body.logo || '',
       courses: [],
@@ -21,9 +21,9 @@ async function createSchool(req, res) {
 async function getSchool(req, res) {
   try {
     const schoolId = req.params.schoolId;
-    const school = await School.findById( schoolId );
+    const school = await School.findById(schoolId);
 
-    res.status(200).json({school});
+    res.status(200).json({ school });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -38,7 +38,6 @@ async function getAllSchools(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
-
 
 module.exports = {
   getSchool,

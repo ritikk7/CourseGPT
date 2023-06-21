@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './PromptButton.module.css';
-import { Text, Button } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 
 const PromptButton = ({ promptText, setInputText, inputRef }) => {
   return (

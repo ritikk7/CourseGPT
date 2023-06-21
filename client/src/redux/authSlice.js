@@ -1,15 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../api/axiosInstance";
-
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../api/axiosInstance';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => {
+const handlePending = state => {
   handleLoading(state, true);
-}
+};
 const handleFulfilledActiveUser = (state, action) => {
   state.userId = action.payload._id;
   state.isAuthenticated = true;
@@ -21,7 +20,7 @@ const handleRejected = (state, action) => {
 };
 
 // Helpers
-const handleRequestError = (error) => {
+const handleRequestError = error => {
   throw error.response?.data?.error || error.message;
 };
 
@@ -38,46 +37,46 @@ const createUserRequest = (name, requestType, path) => {
 };
 
 export const registerUser = createUserRequest(
-  "registerUser",
-  "post",
-  "/auth/register",
+  'registerUser',
+  'post',
+  '/auth/register'
   // payload = {firstName: "John", lastName: "Doe", email: "efpyi@example.com", password: "password"}
 );
 
 export const loginUser = createUserRequest(
-  "loginUser",
-  "post",
-  "/auth/login",
+  'loginUser',
+  'post',
+  '/auth/login'
   // payload = {email: "efpyi@example.com", password: "password"}
 );
 
 export const logoutUser = createUserRequest(
-  "logoutUser",
-  "post",
-  "/auth/logout",
+  'logoutUser',
+  'post',
+  '/auth/logout'
   // payload = null
 );
 
 export const fetchUser = createUserRequest(
-  "fetchUser",
-  "get",
-  "/auth/get-auth-user",
+  'fetchUser',
+  'get',
+  '/auth/get-auth-user'
   // payload = null
 );
 
 // Auth Slice
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     userId: null, // string id
     isAuthenticated: false, // boolean
     loading: false,
-    error: null // string message
+    error: null, // string message
   },
   reducers: {
     setAuthError: (state, action) => {
       state.error = action.payload;
-    }
+    },
   },
   extraReducers: builder => {
     builder
@@ -100,12 +99,11 @@ const authSlice = createSlice({
         state.error = null; // Lazy way to prevent displaying "No Token Provided" message on login page.
         state.loading = false;
       });
-  }
+  },
 });
 
 export const { setAuthError } = authSlice.actions;
 export default authSlice.reducer;
-
 
 /**
  * All code written by team.

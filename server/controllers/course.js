@@ -39,7 +39,8 @@ async function createCourse(req, res) {
     const newCourse = new Course({
       courseName: req.body.courseName || req.body.courseCode,
       courseCode: req.body.courseCode,
-      department: req.body.department || req.body.courseCode.match(/^[a-zA-Z]+/)[0],
+      department:
+        req.body.department || req.body.courseCode.match(/^[a-zA-Z]+/)[0],
       school: schoolId,
       promptTemplates: req.body.promptTemplates || [],
     });
