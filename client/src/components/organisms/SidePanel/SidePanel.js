@@ -6,6 +6,7 @@ import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
+  fetchUserChats,
   setActiveChat,
   setFocusedChat,
   softDeleteSelectedDropdownCourseChats,
@@ -77,6 +78,7 @@ const SidePanel = () => {
 
   const deleteSingleChat = id => {
     dispatch(softDeleteSingleChat(id));
+    dispatch(fetchUserChats());
   };
 
   const handleClearConversations = () => {
