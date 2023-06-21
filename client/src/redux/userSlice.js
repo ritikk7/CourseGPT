@@ -1,78 +1,85 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../api/axiosInstance";
-import { loginUser, registerUser, fetchUser } from "./authSlice";
-import { createChatWithSelectedDropdownCourse } from "./chatsSlice";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../api/axiosInstance';
+import { fetchUser, loginUser, registerUser } from './authSlice';
+import {
+  createChatWithSelectedDropdownCourse,
+  setActiveChat,
+} from './chatsSlice';
 
 // State Handlers
 const updateUserData = (state, action) => {
-  const userFields =
-    ['profilePicture',
-      'firstName',
-      'lastName',
-      'email',
-      'dateOfBirth',
-      'chats',
-      'school',
-      'favourites',
-      'type'];
-  for(const field of userFields) {
+  const userFields = [
+    'profilePicture',
+    'firstName',
+    'lastName',
+    'email',
+    'dateOfBirth',
+    'chats',
+    'school',
+    'favourites',
+    'type',
+  ];
+  for (const field of userFields) {
     state[field] = action.payload[field] || null;
   }
   handleLoading(state, false);
 };
 
-const clearUserData = (state) => {
-  updateUserData(state, {payload: {}});
+const clearUserData = state => {
+  updateUserData(state, { payload: {} });
 };
 
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => {
+const handlePending = state => {
   handleLoading(state, true);
-}
+};
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
 
 // Helpers
-const handleRequestError = (error) => {
+const handleRequestError = error => {
   throw error.response?.data?.error || error.message;
 };
 
 // Async Functions
 const createUserRequest = (name, requestType, path) => {
-  return createAsyncThunk(`user/${name}`, async (payload = null, { getState }) => {
-    try {
-      const userId = getState().auth.userId;
-      const response = await api[requestType](`${path}/${userId}`, payload);
-      return response.data.user;
-    } catch (error) {
-      handleRequestError(error);
+  return createAsyncThunk(
+    `user/${name}`,
+    async (payload = null, { getState }) => {
+      try {
+        const userId = getState().auth.userId;
+        const response = await api[requestType](`${path}/${userId}`, payload);
+        return response.data.user;
+      } catch (error) {
+        handleRequestError(error);
+      }
     }
-  });
+  );
 };
 
 export const updateUser = createUserRequest(
-  "updateUser",
-  "patch",
-  "/users"
+  'updateUser',
+  'patch',
+  '/users'
   // payload = {all target user fields to update according to the exact user schema}
   // Example: {firstName: "John", lastName: "Doe", email: "efpyi@example.com"}
 );
 
 export const deleteUser = createUserRequest(
-  "deleteUser",
-  "delete",
-  "/users"
+  'deleteUser',
+  'delete',
+  '/users'
   // payload = null
 );
 
 // User Slice
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     profilePicture: null,
     firstName: null,
@@ -86,21 +93,25 @@ const userSlice = createSlice({
     loading: false,
     error: null, // string message
 
-    activePanel: "INFO" // "CHAT", "INFO"
+    activePanel: 'INFO', // "CHAT", "INFO"
+    shouldFocusChatInput: false,
   },
   reducers: {
-    clearUser: (state) => {
+    clearUser: state => {
       clearUserData(state);
     },
     setUserError: (state, action) => {
       state.error = action.payload;
     },
     setActivePanelInfo: (state, action) => {
-      state.activePanel = "INFO";
+      state.activePanel = 'INFO';
     },
     setActivePanelChat: (state, action) => {
-      state.activePanel = "CHAT";
-    }
+      state.activePanel = 'CHAT';
+    },
+    setShouldFocusChatInput: (state, action) => {
+      state.shouldFocusChatInput = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -117,13 +128,26 @@ const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, updateUserData)
 
       // chatSlice actions
-      .addCase(createChatWithSelectedDropdownCourse.fulfilled, (state, action) => {
-        state.chats.push(action.payload._id);
-      })
-  }
+      .addCase(
+        createChatWithSelectedDropdownCourse.fulfilled,
+        (state, action) => {
+          state.chats.push(action.payload._id);
+          state.shouldFocusChatInput = true;
+        }
+      )
+      .addCase(setActiveChat, (state, action) => {
+        state.shouldFocusChatInput = true;
+      });
+  },
 });
 
-export const { clearUser, setUserError, setActivePanelChat, setActivePanelInfo } = userSlice.actions;
+export const {
+  clearUser,
+  setUserError,
+  setActivePanelChat,
+  setActivePanelInfo,
+  setShouldFocusChatInput,
+} = userSlice.actions;
 export default userSlice.reducer;
 
 /**

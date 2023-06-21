@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
@@ -7,11 +7,13 @@ import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice'
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
   setActiveChat,
+  setWaitingFirstMessage,
   softDeleteSelectedDropdownCourseChats,
 } from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
   setActivePanelInfo,
+  setShouldFocusChatInput,
 } from '../../../redux/userSlice';
 import { logoutUser } from '../../../redux/authSlice';
 import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
@@ -35,7 +37,7 @@ const SidePanel = () => {
   useEffect(() => {
     if (selectedCourse) {
       const filteredChats = Object.values(existingChats).filter(chat => {
-        return chat.course == selectedCourse._id;
+        return chat.course === selectedCourse._id;
       });
       setFilteredChatsToShow(filteredChats);
     } else {
@@ -50,6 +52,8 @@ const SidePanel = () => {
 
   const handleNewChat = () => {
     dispatch(setActivePanelInfo());
+    dispatch(setWaitingFirstMessage(true));
+    dispatch(setShouldFocusChatInput(true));
   };
 
   const handleCourseChange = event => {
@@ -57,19 +61,22 @@ const SidePanel = () => {
     if (newCourseId === '') {
       dispatch(setCurrentlySelectedDropdownCourse(null));
       setFilteredChatsToShow([]);
-      dispatch(setActivePanelInfo());
       setDisableNewChatButton(true);
     } else {
       const newCourse = favouriteCourses[newCourseId];
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
       setDisableNewChatButton(false);
     }
+    dispatch(setActivePanelInfo());
+    dispatch(setWaitingFirstMessage(true));
+    dispatch(setShouldFocusChatInput(true));
   };
 
   const handleExistingChatClick = async chatId => {
     await dispatch(setActiveChat(chatId));
     await dispatch(fetchActiveChatMessages());
     await dispatch(setActivePanelChat());
+    dispatch(setShouldFocusChatInput(true));
   };
 
   const handleClearConversations = () => {

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './RightSection.module.css';
 import InfoPanel from '../InfoPanel/InfoPanel';
 import ChatPanel from '../ChatPanel/ChatPanel';
@@ -7,7 +7,10 @@ import {
   createMessageAndGetGptResponseInActiveChat,
   setCurrentUserInput,
 } from '../../../redux/messagesSlice';
-import { setActivePanelChat } from '../../../redux/userSlice';
+import {
+  setActivePanelChat,
+  setShouldFocusChatInput,
+} from '../../../redux/userSlice';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
 
@@ -51,13 +54,21 @@ const RightSection = () => {
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
-  const renderInput = activePanel === 'CHAT' || selectedCourse;
-  const createNewChat = selectedCourse && activePanel === 'INFO';
+  const waitingFirstMessage = useSelector(
+    state => state.chats.waitingFirstMessage
+  );
+  const activeChat = useSelector(state => state.chats.activeChat);
+  const renderInput =
+    (activePanel === 'CHAT' || selectedCourse) &&
+    (activeChat || waitingFirstMessage);
   const inputRef = useRef(null);
+  const shouldFocusChatInput = useSelector(
+    state => state.user.shouldFocusChatInput
+  );
 
   const onInputSubmit = async e => {
     if (e.type === 'keydown' && e.key !== 'Enter') return;
-    if (createNewChat) {
+    if (!activeChat) {
       await dispatch(createChatWithSelectedDropdownCourse(selectedCourse._id));
     }
     dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
@@ -68,6 +79,13 @@ const RightSection = () => {
   const setInputText = value => {
     dispatch(setCurrentUserInput(value));
   };
+
+  useEffect(() => {
+    if (shouldFocusChatInput) {
+      inputRef.current && inputRef.current.focus();
+      dispatch(setShouldFocusChatInput(false));
+    }
+  }, [shouldFocusChatInput, dispatch]);
 
   const mainPanel =
     activePanel === 'CHAT' ? (

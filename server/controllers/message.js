@@ -2,7 +2,6 @@ const { ask } = require('../api/ask');
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 
-
 async function getAllMessages(req, res) {
   // TODO
   const chatId = req.params.chatId;
@@ -30,14 +29,15 @@ async function createUserMessage(req, res) {
       content: userInputMessage,
     });
     const newUserMessage = await message.save();
-    
+
     const chat = await Chat.findById(chatId);
 
     // TODO: implement proper error handling and return proper meesages
-    let chatGPTResponse = "Hello this is CourseGPT!";
-    try{
+    let chatGPTResponse = 'Hello this is CourseGPT!';
+    try {
       chatGPTResponse = await ask(userInputMessage, chat.course._id);
-    } catch (error) { // poor error handling here, just for debugging purposes for now
+    } catch (error) {
+      // poor error handling here, just for debugging purposes for now
       if (error.response) {
         console.log(error.response.status + error.response.data);
       } else {
@@ -57,7 +57,9 @@ async function createUserMessage(req, res) {
     chat.messages.push(newGptMessage._id);
     await chat.save();
 
-    res.status(201).json({ userMessage: newUserMessage, gptResponse: newGptMessage });
+    res
+      .status(201)
+      .json({ userMessage: newUserMessage, gptResponse: newGptMessage });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' + error.message });
   }

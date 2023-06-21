@@ -5,13 +5,14 @@ async function updateUser(req, res) {
   const updates = req.body;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+    });
     res.send({ user: updatedUser });
   } catch (error) {
     res.status(500).send({ error: 'Failed to update user' });
   }
 }
-
 
 async function deleteUser(req, res) {
   // TODO

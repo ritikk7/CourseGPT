@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import SidePanel from "../organisms/SidePanel/SidePanel";
-import RightSection from "../organisms/RightSection/RightSection";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { fetchUser } from "../../redux/authSlice";
-import LoadingSpinner from "../atoms/LoadingSpinner/LoadingSpinner";
-import { fetchAllSchools, } from "../../redux/schoolsSlice";
-import { fetchAllCourses, } from "../../redux/coursesSlice";
-import { fetchUserChats } from "../../redux/chatsSlice";
+import React, { useEffect, useState } from 'react';
+import SidePanel from '../organisms/SidePanel/SidePanel';
+import RightSection from '../organisms/RightSection/RightSection';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { fetchUser } from '../../redux/authSlice';
+import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
+import { fetchAllSchools } from '../../redux/schoolsSlice';
+import { fetchAllCourses } from '../../redux/coursesSlice';
+import { fetchUserChats } from '../../redux/chatsSlice';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -29,7 +29,7 @@ function Home() {
       if (isAuthenticated) {
         loadData();
       } else {
-        navigate("/login");
+        navigate('/login');
       }
     } catch (error) {
       console.log(error);
@@ -51,8 +51,8 @@ function Home() {
 
   return (
     <div className="App">
-      <SidePanel/>
-      <RightSection/>
+      <SidePanel />
+      <RightSection />
     </div>
   );
 }

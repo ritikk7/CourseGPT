@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
 const chatsSelector = state => state.chats.chats;
 const messagesSelector = state => state.messages.messages;
