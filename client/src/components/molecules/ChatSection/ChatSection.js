@@ -23,7 +23,15 @@ const ChatSection = ({ message }) => {
     <div className={styles.chatComponent} style={{ backgroundColor }}>
       <div className={styles.chatContent}>
         {message && ProfileIcon}
-        {message && message.content}
+        {<div className={styles.blinkingCursor}>text</div>}
+        {/* {message && (
+          <div className={styles.blinkingCursor}>{message.content}</div>
+        )} */}
+        {/* {message ? (
+          message.content
+        ) : (
+          <div className={styles.blinkingCursor}></div>
+        )} */}
       </div>
     </div>
   );
