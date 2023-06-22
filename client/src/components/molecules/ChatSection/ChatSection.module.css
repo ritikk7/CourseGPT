@@ -25,7 +25,7 @@ https://www.amitmerchant.com/simple-blinking-cursor-animation-using-css/ */
 .blinkingCursor::after {
   content: '';
   width: 8px;
-  height: 20px;
+  height: 18px;
   background: #dbdbdb;
   display: inline-block;
   animation: blink 1s step-end infinite;

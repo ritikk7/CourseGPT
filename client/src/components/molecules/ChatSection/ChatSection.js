@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,18 @@ const ChatSection = ({ message }) => {
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
   const userImage = 'https://bit.ly/dan-abramov';
+  const [chatMessage, setChatMessage] = useState('');
+  const isAnimationFinished = message.content === chatMessage;
+
+  useEffect(() => {
+    if (!isAnimationFinished) {
+      const timeout = setTimeout(() => {
+        setChatMessage(message.content.slice(0, chatMessage.length + 1));
+      }, 50);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [message, chatMessage]);
 
   const ProfileIcon = isSenderUser ? (
     <ChatSenderImage
@@ -23,15 +35,14 @@ const ChatSection = ({ message }) => {
     <div className={styles.chatComponent} style={{ backgroundColor }}>
       <div className={styles.chatContent}>
         {message && ProfileIcon}
-        {<div className={styles.blinkingCursor}>text</div>}
-        {/* {message && (
-          <div className={styles.blinkingCursor}>{message.content}</div>
-        )} */}
-        {/* {message ? (
+        {/* {<div className={styles.blinkingCursor} />} */}
+        {isSenderUser ? (
           message.content
         ) : (
-          <div className={styles.blinkingCursor}></div>
-        )} */}
+          <div className={isAnimationFinished ? null : styles.blinkingCursor}>
+            {chatMessage}
+          </div>
+        )}
       </div>
     </div>
   );
