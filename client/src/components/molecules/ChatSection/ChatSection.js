@@ -11,17 +11,15 @@ const ChatSection = ({ message }) => {
   const courseGptImage = './coursegptLogo.png';
 
   const userImage = 'https://bit.ly/dan-abramov';
-  const [renderAnimation, setRenderAnimation] = useState(false);
+  const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
 
+  // Credit to chatGPT
   function isTimestampLessThan5SecondsAgo(createdAt) {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
     return createdAtTimestamp >= currentTime - 5;
   }
-  useEffect(() => {
-    setRenderAnimation(isTimestampLessThan5SecondsAgo(message.createdAt));
-  }, [message.createdAt]);
 
   const ProfileIcon = isSenderUser ? (
     <ChatSenderImage
