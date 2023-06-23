@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
 import Typewriter from 'typewriter-effect';
+import { Box } from '@chakra-ui/react';
+import Feedback from '../FeedbackPanel/FeedbackPanel';
 
 const ChatSection = ({ message }) => {
   const user = useSelector(state => state.user);
@@ -29,6 +31,16 @@ const ChatSection = ({ message }) => {
   ) : (
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const renderBotAnswer = () => {
     if (!renderAnimation) {
@@ -63,12 +75,32 @@ const ChatSection = ({ message }) => {
   };
 
   return (
-    <div className={styles.chatComponent} style={{ backgroundColor }}>
-      <div className={styles.chatContent}>
-        {message && ProfileIcon}
-        {isSenderUser ? message.content : renderBotAnswer()}
-      </div>
-    </div>
+    <>
+      {!isSenderUser ? (
+        <Box
+          className={styles['message-container']}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className={styles.chatComponent} style={{ backgroundColor }}>
+            <div className={styles.chatContent}>
+              {message && ProfileIcon}
+              {message && message.content}
+            </div>
+            <div className={styles.chatFeedback}>
+              {isHovered && <Feedback message={message._id} />}
+            </div>
+          </div>
+        </Box>
+      ) : (
+        <div className={styles.chatComponent} style={{ backgroundColor }}>
+          <div className={styles.chatContent}>
+            {message && ProfileIcon}
+            {isSenderUser ? message.content : renderBotAnswer()}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

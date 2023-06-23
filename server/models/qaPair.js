@@ -7,7 +7,7 @@ const QAPairSchema = new Schema(
     course: { type: Schema.Types.ObjectId, ref: 'Course' },
     question: { type: Schema.Types.ObjectId, ref: 'Message' },
     answer: { type: Schema.Types.ObjectId, ref: 'Message' },
-    keywords: [{ type: String }],
+    keywords: { type: [String] , default: [] },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
