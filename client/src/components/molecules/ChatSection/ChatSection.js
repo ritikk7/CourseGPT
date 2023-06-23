@@ -14,6 +14,7 @@ const ChatSection = ({ message }) => {
 
   const userImage = 'https://bit.ly/dan-abramov';
   const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
+  const isLongPassageLength = 300;
 
   // Credit to chatGPT
   function isTimestampLessThan5SecondsAgo(createdAt) {
@@ -50,7 +51,7 @@ const ChatSection = ({ message }) => {
       return (
         <Typewriter
           options={{
-            delay: message.content.length > 300 ? 10 : 20,
+            delay: message.content.length > isLongPassageLength ? 10 : 20,
           }}
           onInit={typewriter => {
             typewriter
