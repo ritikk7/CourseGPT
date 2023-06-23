@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const FeedbackSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    message: { type: Schema.Types.ObjectId, ref: 'Message' },
-    rating: { type: Number, required: true, min: 1, max: 5 },
+    qaPair: { type: Schema.Types.ObjectId, ref: 'QAPair' },
+    rating: { type: Boolean, required: true },
     comment: { type: String, default: '' },
   },
   {
