@@ -45,6 +45,13 @@
   color: var(--placeholder);
 }
 
+.message {
+  font-size: 11px;
+  margin-top: 10px;
+  text-align: center;
+  color: rgb(194, 194, 194);
+}
+
 .sendBtn {
   background: transparent;
   position: absolute;
