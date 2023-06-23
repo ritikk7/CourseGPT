@@ -6,9 +6,12 @@ import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
+  fetchUserChats,
   setActiveChat,
+  setFocusedChat,
   setWaitingFirstMessage,
   softDeleteSelectedDropdownCourseChats,
+  softDeleteSingleChat,
 } from '../../../redux/chatsSlice';
 import {
   setActivePanelChat,
@@ -67,6 +70,7 @@ const SidePanel = () => {
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
       setDisableNewChatButton(false);
     }
+    dispatch(setFocusedChat(null));
     dispatch(setActivePanelInfo());
     dispatch(setWaitingFirstMessage(true));
     dispatch(setShouldFocusChatInput(true));
@@ -74,9 +78,16 @@ const SidePanel = () => {
 
   const handleExistingChatClick = async chatId => {
     await dispatch(setActiveChat(chatId));
+    await dispatch(setFocusedChat(chatId));
     await dispatch(fetchActiveChatMessages());
     await dispatch(setActivePanelChat());
     dispatch(setShouldFocusChatInput(true));
+  };
+
+  const handleChatDelete = async id => {
+    await dispatch(setActivePanelInfo());
+    await dispatch(softDeleteSingleChat(id));
+    await dispatch(fetchUserChats());
   };
 
   const handleClearConversations = () => {
@@ -114,6 +125,7 @@ const SidePanel = () => {
                   id={chatObj._id}
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
+                  handleChatDelete={handleChatDelete}
                 />
               ))}
         </div>

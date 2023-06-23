@@ -89,6 +89,24 @@ export const softDeleteSelectedDropdownCourseChats = createAsyncThunk(
   }
 );
 
+export const softDeleteSingleChat = createAsyncThunk(
+  'chats/softDeleteSingleChat',
+  async (chatId, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+
+      const body = { deleted: true };
+      const response = await api.patch(
+        `/users/${userId}/chats/${chatId}`,
+        body
+      );
+      return response.data.chat;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
 const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
@@ -97,6 +115,7 @@ const chatsSlice = createSlice({
     userChats: {},
     activeChat: null, // chat object
     waitingFirstMessage: false,
+    focusedChat: null, // chat id
     loading: false,
     error: null, // string message
   },
@@ -109,6 +128,9 @@ const chatsSlice = createSlice({
         state.activeChat = action.payload;
       }
       state.waitingFirstMessage = false;
+    },
+    setFocusedChat: (state, action) => {
+      state.focusedChat = action.payload;
     },
     setChatsError: (state, action) => {
       state.error = action.payload;
@@ -175,8 +197,12 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { setActiveChat, setChatsError, setWaitingFirstMessage } =
-  chatsSlice.actions;
+export const {
+  setActiveChat,
+  setFocusedChat,
+  setChatsError,
+  setWaitingFirstMessage,
+} = chatsSlice.actions;
 export default chatsSlice.reducer;
 
 /**
