@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
+import Typewriter from 'typewriter-effect';
 import { Box } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 
@@ -10,7 +11,18 @@ const ChatSection = ({ message }) => {
   const isSenderUser = message.senderType === 'User';
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
+
   const userImage = 'https://bit.ly/dan-abramov';
+  const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
+  const isLongPassageLength = 300;
+
+  // Credit to chatGPT
+  function isTimestampLessThan5SecondsAgo(createdAt) {
+    const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
+    const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
+
+    return createdAtTimestamp >= currentTime - 5;
+  }
 
   const ProfileIcon = isSenderUser ? (
     <ChatSenderImage
@@ -21,41 +33,73 @@ const ChatSection = ({ message }) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
-    const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-    const handleMouseEnter = () => {
-      setIsHovered(true);
-    };
-  
-    const handleMouseLeave = () => {
-      setIsHovered(false);
-    };
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const renderBotAnswer = () => {
+    if (!renderAnimation) {
+      return message.content;
+    }
+    if (message.content) {
+      return (
+        <Typewriter
+          options={{
+            delay: message.content.length > isLongPassageLength ? 10 : 20,
+          }}
+          onInit={typewriter => {
+            typewriter
+              .typeString(message.content)
+              .callFunction(() => {
+                document.querySelector('.Typewriter__cursor').remove();
+              })
+              .start();
+          }}
+        />
+      );
+    }
+    return (
+      <Typewriter
+        options={{
+          autoStart: true,
+          loop: true,
+          strings: [''],
+        }}
+      />
+    );
+  };
 
   return (
     <>
-    {!isSenderUser ? (
-      <Box
-        className={styles['message-container']}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      {!isSenderUser ? (
+        <Box
+          className={styles['message-container']}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className={styles.chatComponent} style={{ backgroundColor }}>
+            <div className={styles.chatContent}>
+              {message && ProfileIcon}
+              {message && message.content}
+            </div>
+            <div className={styles.chatFeedback}>
+              {isHovered && <Feedback message={message._id} />}
+            </div>
+          </div>
+        </Box>
+      ) : (
         <div className={styles.chatComponent} style={{ backgroundColor }}>
           <div className={styles.chatContent}>
             {message && ProfileIcon}
-            {message && message.content}
-          </div>
-          <div className={styles.chatFeedback}>
-            {isHovered && <Feedback message={message._id} />}
+            {isSenderUser ? message.content : renderBotAnswer()}
           </div>
         </div>
-      </Box>
-    ) : (
-        <div className={styles.chatComponent} style={{ backgroundColor }}>
-        <div className={styles.chatContent}>
-          {message && ProfileIcon}
-          {message && message.content}
-        </div>
-      </div>
       )}
     </>
   );
