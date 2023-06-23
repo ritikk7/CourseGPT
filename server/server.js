@@ -44,7 +44,7 @@ function setupExpress(app) {
 
 function setupRoutes(app) {
   app.use(
-    '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedbacks',
+    '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedback',
     feedbackRoutes
   );
   app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
