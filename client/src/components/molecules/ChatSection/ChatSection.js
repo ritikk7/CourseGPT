@@ -38,7 +38,7 @@ const ChatSection = ({ message }) => {
       return (
         <Typewriter
           options={{
-            delay: 20,
+            delay: message.content.length > 300 ? 10 : 20,
           }}
           onInit={typewriter => {
             typewriter
