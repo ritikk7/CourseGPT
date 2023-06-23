@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
 const userFavouritesSelector = state => state.user.favourites;
 const coursesSelector = state => state.courses.courses;

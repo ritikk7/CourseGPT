@@ -1,16 +1,28 @@
-import React from "react";
-import { Button, Image, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import React from 'react';
+import {
+  Button,
+  Image,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 
-const SidePanelUserMenu = ({setSettingsOpen, handleLogout}) => {
+const SidePanelUserMenu = ({
+  setSettingsOpen,
+  handleLogout,
+  handleClearConversations,
+}) => {
   return (
     <Menu>
       <MenuButton
         as={Button}
         bg="transparent"
-        _hover={{ bg: "rgb(61, 61, 61)" }}
-        _focus={{ bg: "rgb(61, 61, 61)" }}
-        _expanded={{ bg: "rgb(61, 61, 61)" }}
+        _hover={{ bg: 'rgb(61, 61, 61)' }}
+        _focus={{ bg: 'rgb(61, 61, 61)' }}
+        _expanded={{ bg: 'rgb(61, 61, 61)' }}
         leftIcon={
           <Image
             borderRadius="full"
@@ -29,7 +41,9 @@ const SidePanelUserMenu = ({setSettingsOpen, handleLogout}) => {
           Profile
         </MenuItem>
         <MenuDivider borderColor="rgb(100, 100, 102)" />
-        <MenuItem bg="black">Clear conversations</MenuItem>
+        <MenuItem bg="black" onClick={handleClearConversations}>
+          Clear conversations
+        </MenuItem>
         <MenuDivider borderColor="rgb(100, 100, 102)" />
         <MenuItem bg="black" onClick={handleLogout}>
           Logout

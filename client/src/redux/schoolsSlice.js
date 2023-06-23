@@ -1,28 +1,29 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../api/axiosInstance";
-import { updateUser } from "./userSlice";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../api/axiosInstance';
+import { updateUser } from './userSlice';
+import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
   state.loading = loadingStatus;
   state.error = null;
 };
-const handlePending = (state) => {
+const handlePending = state => {
   handleLoading(state, true);
-}
+};
 const handleRejected = (state, action) => {
   state.error = action.error.message;
   state.loading = false;
 };
 
 // Helpers
-const handleRequestError = (error) => {
+const handleRequestError = error => {
   throw error.response?.data?.error || error.message;
 };
 
 // Async Functions
 export const fetchSchool = createAsyncThunk(
-  "schools/fetchSchool",
+  'schools/fetchSchool',
   async (schoolId, { getState }) => {
     try {
       const response = await api.get(`/schools/${schoolId}`);
@@ -34,16 +35,11 @@ export const fetchSchool = createAsyncThunk(
 );
 
 export const fetchAllSchools = createAsyncThunk(
-  "schools/fetchAllSchools",
+  'schools/fetchAllSchools',
   async (_, { getState }) => {
     try {
-      const response = await api.get("/schools");
-      const schools = response.data.schools;
-      const schoolsById = {};
-      for (let school of schools) {
-        schoolsById[school._id] = school;
-      }
-      return schoolsById;
+      const response = await api.get('/schools');
+      return buildObjectMapFromArray(response.data.schools);
     } catch (error) {
       handleRequestError(error);
     }
@@ -51,13 +47,13 @@ export const fetchAllSchools = createAsyncThunk(
 );
 
 const schoolsSlice = createSlice({
-  name: "schools",
+  name: 'schools',
   initialState: {
     // The `schools` object maps each `schoolId` key to a school object.
     // Example: { "schoolId1": schoolObject1, "schoolId2": schoolObject2}
     schools: {},
     loading: false,
-    error: null // string error
+    error: null, // string error
   },
   reducers: {
     setUserSchool: (state, action) => {
@@ -65,9 +61,9 @@ const schoolsSlice = createSlice({
     },
     setSchoolsError: (state, action) => {
       state.error = action.payload;
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
 
       .addCase(fetchSchool.pending, handlePending)
@@ -89,10 +85,8 @@ const schoolsSlice = createSlice({
           state.userSchool = state.schools[action.payload.school] || null;
         }
       });
-  }
+  },
 });
-
-
 
 export const { setUserSchool, setSchoolsError } = schoolsSlice.actions;
 export default schoolsSlice.reducer;

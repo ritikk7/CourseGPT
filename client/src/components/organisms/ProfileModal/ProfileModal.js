@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button,
   Box,
-  VStack,
-  Image,
-  Input,
-  Text,
-  Stack,
-  Select,
+  Button,
+  Checkbox,
   FormControl,
   FormLabel,
+  Image,
+  Input,
   Modal,
-  ModalOverlay,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalCloseButton,
-  Checkbox
-} from "@chakra-ui/react";
-import { updateUser } from "../../../redux/userSlice";
-import { schoolsWithCoursesSelector } from "../../../redux/selectors/schoolsWithCoursesSelector";
-import { userFavouriteCoursesSelector } from "../../../redux/selectors/userFavouriteCoursesSelector";
-import { userSchoolWithCoursesSelector } from "../../../redux/selectors/userSchoolWithCoursesSelector";
+  ModalOverlay,
+  Select,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { updateUser } from '../../../redux/userSlice';
+import { schoolsWithCoursesSelector } from '../../../redux/selectors/schoolsWithCoursesSelector';
+import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
+import { userSchoolWithCoursesSelector } from '../../../redux/selectors/userSchoolWithCoursesSelector';
 
 const ProfileModal = ({ isOpen, handleClose }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const user = useSelector(state => state.user);
   const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
   const userFavoriteCourses = useSelector(userFavouriteCoursesSelector);
   const userSchool = useSelector(userSchoolWithCoursesSelector);
@@ -35,28 +35,29 @@ const ProfileModal = ({ isOpen, handleClose }) => {
     //password: user.password,
     firstName: user.firstName,
     lastName: user.lastName,
-    type: user.type
+    type: user.type,
   });
 
   const [selectedSchool, setSelectedSchool] = useState(userSchool);
   const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
 
-  const handleSchoolChange = (e) => {
+  const handleSchoolChange = e => {
     setSelectedSchool(schoolsWithCourses[e.target.value]);
   };
 
   useEffect(() => {
-    if(selectedSchool && userSchool && selectedSchool._id === userSchool._id) {
+    if (selectedSchool && userSchool && selectedSchool._id === userSchool._id) {
       setSelectedCourses(userFavoriteCourses);
     } else {
       setSelectedCourses({});
     }
-  },[selectedSchool])
+  }, [selectedSchool]);
 
-  const handleCourseChange = (course) => {
-    setSelectedCourses((prevCourses) => {
+  const handleCourseChange = course => {
+    setSelectedCourses(prevCourses => {
       if (prevCourses[course._id]) {
-        const { [course._id]: deletedCourse, ...remainingCourses } = prevCourses;
+        const { [course._id]: deletedCourse, ...remainingCourses } =
+          prevCourses;
         return remainingCourses;
       } else {
         return { ...prevCourses, [course._id]: course };
@@ -70,7 +71,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
     const updatedUser = {
       ...userInfo,
       school,
-      favourites
+      favourites,
     };
     dispatch(updateUser(updatedUser));
     handleClose();
@@ -85,7 +86,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
   };
 
   const renderCourses = () => {
-    if(selectedSchool) {
+    if (selectedSchool) {
       return Object.values(selectedSchool.courses).map((course, i) => (
         <Checkbox
           key={i}
@@ -94,7 +95,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         >
           {course.courseCode}
         </Checkbox>
-      ))
+      ));
     }
   };
 
@@ -121,7 +122,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
                 <Input
                   placeholder="First name"
                   value={userInfo.firstName}
-                  onChange={(e) => setUserInfo({...userInfo, firstName: e.target.value })}
+                  onChange={e =>
+                    setUserInfo({ ...userInfo, firstName: e.target.value })
+                  }
                 />
               </FormControl>
               <FormControl>
@@ -129,7 +132,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
                 <Input
                   placeholder="Last name"
                   value={userInfo.lastName}
-                  onChange={(e) => setUserInfo({...userInfo, lastName: e.target.value })}
+                  onChange={e =>
+                    setUserInfo({ ...userInfo, lastName: e.target.value })
+                  }
                 />
               </FormControl>
             </Stack>
@@ -138,14 +143,18 @@ const ProfileModal = ({ isOpen, handleClose }) => {
               <Input
                 placeholder="Email address"
                 value={userInfo.email}
-                onChange={(e) => setUserInfo({...userInfo, email: e.target.value })}
+                onChange={e =>
+                  setUserInfo({ ...userInfo, email: e.target.value })
+                }
               />
             </FormControl>
             <FormControl>
               <FormLabel>Account Type</FormLabel>
               <Select
                 value={userInfo.type}
-                onChange={(e) => setUserInfo({...userInfo, type: e.target.value })}
+                onChange={e =>
+                  setUserInfo({ ...userInfo, type: e.target.value })
+                }
               >
                 <option value="Student">Student</option>
                 <option value="Professor">Teacher</option>

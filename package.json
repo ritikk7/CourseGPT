@@ -6,6 +6,7 @@
   "scripts": {
     "client:dev": "cd client && npm run start:dev",
     "server:dev": "cd server && npm run start:dev",
+    "prestart:dev": "npm run format",
     "start:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "start:staging": "cd client && npm run build:staging && cd .. && cd server && npm run start:staging",
     "start": "npm run server:prod",
@@ -16,7 +17,7 @@
     "format": "prettier --write .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --check .",
-    "lint-and-format": "npm run lint:fix && npm run format"
+    "lint-and-format": "npm run format && npm run lint:fix"
   },
   "author": "",
   "license": "ISC",
