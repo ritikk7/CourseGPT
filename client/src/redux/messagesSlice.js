@@ -126,7 +126,7 @@ const messagesSlice = createSlice({
       })
       .addCase(createUserMessageInActiveChat.rejected, handleRejected)
       .addCase(getGptResponseInActiveChat.pending, (state, action) => {
-        state.gptLoading = true
+        state.gptLoading = true;
       })
       .addCase(getGptResponseInActiveChat.fulfilled, (state, action) => {
         state.messages[action.payload._id] = action.payload;
@@ -134,7 +134,7 @@ const messagesSlice = createSlice({
       })
       .addCase(getGptResponseInActiveChat.rejected, (state, action) => {
         state.gptLoading = false;
-      })
+      });
   },
 });
 

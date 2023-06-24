@@ -26,18 +26,18 @@ const ChatPanel = () => {
 
   const renderMessages = () => {
     const messagesToDisplay = Object.values(activeChat.messages);
-    if(isGptLoading) {
+    if (isGptLoading) {
       const gptPlaceholder = {
         createAt: new Date(),
-        senderType: "CourseGPT",
-        isGptPlaceholder: true
-      }
+        senderType: 'CourseGPT',
+        isGptPlaceholder: true,
+      };
       messagesToDisplay.push(gptPlaceholder);
     }
-    return renderChatMessages &&
-      messagesToDisplay.map((msg, i) => (
-        <ChatSection key={i} message={msg} />
-      ));
+    return (
+      renderChatMessages &&
+      messagesToDisplay.map((msg, i) => <ChatSection key={i} message={msg} />)
+    );
   };
 
   return (

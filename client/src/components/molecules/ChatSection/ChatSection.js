@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ const ChatSection = ({ message }) => {
   const userImage = 'https://bit.ly/dan-abramov';
   const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
-  const [typingAnimation, setTypingAnimation] = useState(".");
+  const [typingAnimation, setTypingAnimation] = useState('.');
 
   // Credit to chatGPT
   function isTimestampLessThan5SecondsAgo(createdAt) {
@@ -28,7 +28,7 @@ const ChatSection = ({ message }) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTypingAnimation((prev) => (prev.length < 3 ? prev + "." : "."));
+      setTypingAnimation(prev => (prev.length < 3 ? prev + '.' : '.'));
     }, 500);
 
     return () => clearInterval(timer);
@@ -102,7 +102,9 @@ const ChatSection = ({ message }) => {
               {message && ProfileIcon}
               {message && renderGptPlaceholder()}
               {message && !messageIsGptPlaceholder && renderBotAnswer()}
-              {message && !messageIsGptPlaceholder && isHovered && <Feedback message={message._id} />}
+              {message && !messageIsGptPlaceholder && isHovered && (
+                <Feedback message={message._id} />
+              )}
             </div>
           </div>
         </Box>

@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
-import { createUserMessageInActiveChat, getGptResponseInActiveChat } from "./messagesSlice";
+import {
+  createUserMessageInActiveChat,
+  getGptResponseInActiveChat,
+} from './messagesSlice';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 import { setCurrentlySelectedDropdownCourse } from './coursesSlice';
 
@@ -178,16 +181,12 @@ const chatsSlice = createSlice({
       // messagesSlice actions
       .addCase(createUserMessageInActiveChat.fulfilled, (state, action) => {
         const activeChatId = state.activeChat._id;
-        state.userChats[activeChatId].messages.push(
-          action.payload._id
-        );
+        state.userChats[activeChatId].messages.push(action.payload._id);
         state.activeChat = state.userChats[activeChatId];
       })
       .addCase(getGptResponseInActiveChat.fulfilled, (state, action) => {
         const activeChatId = state.activeChat._id;
-        state.userChats[activeChatId].messages.push(
-          action.payload._id
-        );
+        state.userChats[activeChatId].messages.push(action.payload._id);
         state.activeChat = state.userChats[activeChatId];
       })
 
