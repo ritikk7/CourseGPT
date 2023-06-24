@@ -4,7 +4,8 @@ import InfoPanel from '../InfoPanel/InfoPanel';
 import ChatPanel from '../ChatPanel/ChatPanel';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  createMessageAndGetGptResponseInActiveChat,
+  createUserMessageInActiveChat,
+  getGptResponseInActiveChat,
   setCurrentUserInput,
 } from '../../../redux/messagesSlice';
 import {
@@ -78,9 +79,13 @@ const RightSection = () => {
     if (!activeChat) {
       await dispatch(createChatWithSelectedDropdownCourse(selectedCourse._id));
     }
-    dispatch(createMessageAndGetGptResponseInActiveChat(currentUserInput));
     dispatch(setCurrentUserInput(''));
     dispatch(setActivePanelChat());
+    dispatch(createUserMessageInActiveChat(currentUserInput)).then(
+      newMessagePayload => {
+        dispatch(getGptResponseInActiveChat(newMessagePayload.payload));
+      }
+    );
   };
 
   const setInputText = value => {

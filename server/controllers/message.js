@@ -17,7 +17,6 @@ async function getMessage(req, res) {
   res.send({ data: `Hello get  msg ${msgId} from chat ${chatId}` });
 }
 
-// TODO: make endpoint for coursegpt later
 async function createUserMessage(req, res) {
   try {
     const chatId = req.params.chatId;
@@ -32,13 +31,28 @@ async function createUserMessage(req, res) {
     const newUserMessage = await message.save();
 
     const chat = await Chat.findById(chatId);
+    chat.messages.push(newUserMessage._id);
+    await chat.save();
 
-    // TODO: implement proper error handling and return proper meesages
+    res.status(201).json({ message: newUserMessage });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' + error.message });
+  }
+}
+
+async function getGptResponse(req, res) {
+  try {
+    const chatId = req.params.chatId;
+    const userId = req.params.userId;
+    const userMessageObject = req.body;
+
+    const chat = await Chat.findById(chatId);
     let chatGPTResponse = 'Hello this is CourseGPT!';
+
     try {
-      chatGPTResponse = await ask(userInputMessage, chat.course._id);
+      console.log(userMessageObject);
+      chatGPTResponse = await ask(userMessageObject.content, chat.course._id);
     } catch (error) {
-      // poor error handling here, just for debugging purposes for now
       if (error.response) {
         console.log(error.response.status + error.response.data);
       } else {
@@ -52,22 +66,19 @@ async function createUserMessage(req, res) {
       senderType: 'CourseGPT',
       content: chatGPTResponse,
     });
-    const newGptMessage = await gptMessage.save();
 
-    chat.messages.push(newUserMessage._id);
+    const newGptMessage = await gptMessage.save();
     chat.messages.push(newGptMessage._id);
     await chat.save();
 
     await qaPair.createQaPair({
       course: chat.course,
       chat: chatId,
-      question: newUserMessage._id,
+      question: userMessageObject._id,
       answer: newGptMessage._id,
     });
 
-    res
-      .status(201)
-      .json({ userMessage: newUserMessage, gptResponse: newGptMessage });
+    res.status(201).json({ message: newGptMessage });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' + error.message });
   }
@@ -93,4 +104,5 @@ module.exports = {
   updateMessage,
   deleteMessage,
   getAllMessages,
+  getGptResponse,
 };

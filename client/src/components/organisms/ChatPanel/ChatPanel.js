@@ -7,6 +7,7 @@ import ChatSection from '../../molecules/ChatSection/ChatSection';
 const ChatPanel = () => {
   const scrollRef = useRef(null);
   const activeChat = useSelector(activeChatWithMessagesSelector);
+  const isGptLoading = useSelector(state => state.messages.gptLoading);
   const renderChatMessages =
     activeChat &&
     Object.values(activeChat) &&
@@ -23,13 +24,26 @@ const ChatPanel = () => {
     scrollToBottom();
   }, [activeChat]);
 
+  const renderMessages = () => {
+    const messagesToDisplay = Object.values(activeChat.messages);
+    if (isGptLoading) {
+      const gptPlaceholder = {
+        createAt: new Date(),
+        senderType: 'CourseGPT',
+        isGptPlaceholder: true,
+      };
+      messagesToDisplay.push(gptPlaceholder);
+    }
+    return (
+      renderChatMessages &&
+      messagesToDisplay.map((msg, i) => <ChatSection key={i} message={msg} />)
+    );
+  };
+
   return (
     <>
       <div className={styles.chatPanel}>
-        {renderChatMessages &&
-          Object.values(activeChat.messages)?.map((msg, i) => (
-            <ChatSection key={i} message={msg} />
-          ))}
+        {renderMessages()}
         <div
           id="dummy-div"
           ref={scrollRef}

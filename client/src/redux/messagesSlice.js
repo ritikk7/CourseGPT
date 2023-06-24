@@ -51,8 +51,8 @@ export const fetchActiveChatMessages = createAsyncThunk(
   }
 );
 
-export const createMessageAndGetGptResponseInActiveChat = createAsyncThunk(
-  'messages/createMessageAndGetGptResponseInActiveChat',
+export const createUserMessageInActiveChat = createAsyncThunk(
+  'messages/createUserMessageInActiveChat',
   async (message, { getState }) => {
     try {
       const newMessage = message || getState().messages.currentUserInput;
@@ -62,10 +62,24 @@ export const createMessageAndGetGptResponseInActiveChat = createAsyncThunk(
         `/users/${userId}/chats/${chatId}/messages`,
         { content: newMessage }
       );
-      return {
-        userMessage: response.data.userMessage,
-        gptResponse: response.data.gptResponse,
-      };
+      return response.data.message;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
+export const getGptResponseInActiveChat = createAsyncThunk(
+  'messages/getGptResponseInActiveChat',
+  async (userMessageObject, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      const chatId = getState().chats.activeChat?._id;
+      const response = await api.post(
+        `/users/${userId}/chats/${chatId}/messages/gpt-response`,
+        userMessageObject
+      );
+      return response.data.message;
     } catch (error) {
       handleRequestError(error);
     }
@@ -80,6 +94,7 @@ const messagesSlice = createSlice({
     messages: {},
     currentUserInput: '',
     loading: false,
+    gptLoading: false,
     error: null, // string message
   },
   reducers: {
@@ -104,25 +119,22 @@ const messagesSlice = createSlice({
         handleLoading(state, false);
       })
       .addCase(fetchActiveChatMessages.rejected, handleRejected)
-      .addCase(
-        createMessageAndGetGptResponseInActiveChat.pending,
-        handlePending
-      )
-      .addCase(
-        createMessageAndGetGptResponseInActiveChat.fulfilled,
-        (state, action) => {
-          const newMessages = {
-            [action.payload.userMessage._id]: action.payload.userMessage,
-            [action.payload.gptResponse._id]: action.payload.gptResponse,
-          };
-          state.messages = { ...state.messages, ...newMessages };
-          handleLoading(state, false);
-        }
-      )
-      .addCase(
-        createMessageAndGetGptResponseInActiveChat.rejected,
-        handleRejected
-      );
+      .addCase(createUserMessageInActiveChat.pending, handlePending)
+      .addCase(createUserMessageInActiveChat.fulfilled, (state, action) => {
+        state.messages[action.payload._id] = action.payload;
+        handleLoading(state, false);
+      })
+      .addCase(createUserMessageInActiveChat.rejected, handleRejected)
+      .addCase(getGptResponseInActiveChat.pending, (state, action) => {
+        state.gptLoading = true;
+      })
+      .addCase(getGptResponseInActiveChat.fulfilled, (state, action) => {
+        state.messages[action.payload._id] = action.payload;
+        state.gptLoading = false;
+      })
+      .addCase(getGptResponseInActiveChat.rejected, (state, action) => {
+        state.gptLoading = false;
+      });
   },
 });
 
