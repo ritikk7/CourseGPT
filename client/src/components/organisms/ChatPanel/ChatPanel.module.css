@@ -1,6 +1,6 @@
 .chatPanel {
-  height: 100vh;
-  overflow-y: scroll;
+  height: 85vh;
+  overflow-y: auto;
 }
 
 .chatPanel::-webkit-scrollbar {

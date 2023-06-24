@@ -4,7 +4,7 @@ import styles from './FeedbackPanel.module.css';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import FeedbackModal from '../FeedbackModal/FeedbackModal';
 
-const Feedback = ({message}) => {
+const Feedback = ({ message }) => {
   const [currentFeedbackModal, setCurrentFeedbackModal] = useState(null);
 
   const handleThumbsUpClick = () => {
@@ -19,11 +19,10 @@ const Feedback = ({message}) => {
     setCurrentFeedbackModal(null);
   };
 
-
   return (
     <Box className={styles.message}>
       <Flex justifyContent="space-between" alignItems="right">
-      {currentFeedbackModal === 'positive' && (
+        {currentFeedbackModal === 'positive' && (
           <FeedbackModal
             isOpen={true}
             onClose={handleCloseModal}
@@ -54,8 +53,6 @@ const Feedback = ({message}) => {
       </Flex>
     </Box>
   );
-
-  
 };
 
 export default Feedback;
