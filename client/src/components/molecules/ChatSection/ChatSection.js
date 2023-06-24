@@ -87,8 +87,6 @@ const ChatSection = ({ message }) => {
             <div className={styles.chatContent}>
               {message && ProfileIcon}
               {message && message.content}
-            </div>
-            <div className={styles.chatFeedback}>
               {isHovered && <Feedback message={message._id} />}
             </div>
           </div>

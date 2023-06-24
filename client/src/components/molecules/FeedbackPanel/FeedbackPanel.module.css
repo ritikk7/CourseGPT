@@ -1,14 +1,3 @@
-/* 
-  .message {
-    position: relative;
-  }
-  
-  .feedback-button {
-    right: 0;
-    display: flex;
-  }
-  
-  .message-container:hover .feedback-button {
-    display: block;
-  }
-   */
+.message {
+  padding-left: 10px;
+}

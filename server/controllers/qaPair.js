@@ -1,11 +1,11 @@
-const QAPair = require("../models/qaPair");
+const QAPair = require('../models/qaPair');
 
 async function getQaPair(qaId) {
   try {
     const QAPair = QAPair.findById(qaId);
     return QAPair;
   } catch (error) {
-    throw new Error("got error for some reason")
+    throw new Error('got error for some reason');
   }
   // TODO
   // const qaPairId = req.params.qaPairId;
@@ -24,7 +24,7 @@ async function createQaPair(data) {
     const savedPair = await qaPair.save();
     return savedPair;
   } catch (e) {
-    throw new Error(e.message)
+    throw new Error(e.message);
   }
   // TODO
   // const courseId = req.params.courseId;

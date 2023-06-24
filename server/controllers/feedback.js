@@ -1,14 +1,13 @@
-const Feedback = require("../models/feedback");
-const QAPair = require("../models/qaPair");
+const Feedback = require('../models/feedback');
+const QAPair = require('../models/qaPair');
 
 async function getFeedback(req, res) {
   try {
-    const feedback = await Feedback.findById( req.params.feedbackId); 
+    const feedback = await Feedback.findById(req.params.feedbackId);
     if (!feedback) {
-      throw new Error('oh no')
+      throw new Error('oh no');
     }
     res.status(201).send({ feedback: feedback });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -18,9 +17,9 @@ async function getFeedback(req, res) {
 async function createFeedback(req, res) {
   try {
     const messageId = req.params.messageId;
-    const qaPair = await QAPair.findOne({ answer: messageId }).select('_id'); 
+    const qaPair = await QAPair.findOne({ answer: messageId }).select('_id');
     if (!qaPair) {
-      throw new Error('no qa pair!!!')
+      throw new Error('no qa pair!!!');
     }
     const feedback = new Feedback({
       user: req.params.userId,
@@ -30,7 +29,6 @@ async function createFeedback(req, res) {
     });
     const newFeedback = await feedback.save();
     res.status(201).send({ feedback: newFeedback });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -38,13 +36,16 @@ async function createFeedback(req, res) {
 
 async function updateFeedback(req, res) {
   try {
-    const updatedFeedback = await Feedback.findByIdAndUpdate( req.params.feedbackId, req.body, { new: true}); 
+    const updatedFeedback = await Feedback.findByIdAndUpdate(
+      req.params.feedbackId,
+      req.body,
+      { new: true }
+    );
     if (!updatedFeedback) {
-      throw new Error("no feedback")
+      throw new Error('no feedback');
     }
 
     res.status(201).send({ feedback: updatedFeedback });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -52,9 +53,12 @@ async function updateFeedback(req, res) {
 
 async function deleteFeedback(req, res) {
   try {
-    const deletedFeedback = await Feedback.findByIdAndDelete( req.params.feedbackId, req.body, { new: true}); 
+    const deletedFeedback = await Feedback.findByIdAndDelete(
+      req.params.feedbackId,
+      req.body,
+      { new: true }
+    );
     res.status(201).send({ deletedFeedback: deletedFeedback });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
