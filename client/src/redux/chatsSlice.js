@@ -136,6 +136,7 @@ const chatsSlice = createSlice({
       state.error = action.payload;
     },
     setWaitingFirstMessage: (state, action) => {
+      state.activeChat = null;
       state.waitingFirstMessage = action.payload;
     },
   },
