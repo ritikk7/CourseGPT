@@ -6,6 +6,7 @@ const {
   updateMessage,
   deleteMessage,
   getAllMessages,
+  getGptResponse,
 } = require('../controllers/message');
 const { validateToken } = require('../controllers/auth');
 
@@ -16,6 +17,7 @@ router.get('/:messageId', getMessage);
 router.get('/', getAllMessages);
 
 router.post('/', createUserMessage);
+router.post('/gpt-response', getGptResponse);
 
 router.put('/:messageId', updateMessage);
 

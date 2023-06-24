@@ -11,6 +11,7 @@ const ChatSection = ({ message }) => {
   const isSenderUser = message.senderType === 'User';
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
+  const gptLoading = useSelector((state) => state.messages.gptLoading);
 
   const userImage = 'https://bit.ly/dan-abramov';
   const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);

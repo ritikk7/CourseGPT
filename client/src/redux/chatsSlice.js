@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
-import { createMessageAndGetGptResponseInActiveChat } from './messagesSlice';
+import { createUserMessageInActiveChat, getGptResponseInActiveChat } from "./messagesSlice";
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 import { setCurrentlySelectedDropdownCourse } from './coursesSlice';
 
@@ -176,19 +176,20 @@ const chatsSlice = createSlice({
       .addCase(softDeleteSelectedDropdownCourseChats.rejected, handleRejected)
 
       // messagesSlice actions
-      .addCase(
-        createMessageAndGetGptResponseInActiveChat.fulfilled,
-        (state, action) => {
-          const activeChatId = state.activeChat._id;
-          state.userChats[activeChatId].messages.push(
-            action.payload.userMessage._id
-          );
-          state.userChats[activeChatId].messages.push(
-            action.payload.gptResponse._id
-          );
-          state.activeChat = state.userChats[activeChatId];
-        }
-      )
+      .addCase(createUserMessageInActiveChat.fulfilled, (state, action) => {
+        const activeChatId = state.activeChat._id;
+        state.userChats[activeChatId].messages.push(
+          action.payload._id
+        );
+        state.activeChat = state.userChats[activeChatId];
+      })
+      .addCase(getGptResponseInActiveChat.fulfilled, (state, action) => {
+        const activeChatId = state.activeChat._id;
+        state.userChats[activeChatId].messages.push(
+          action.payload._id
+        );
+        state.activeChat = state.userChats[activeChatId];
+      })
 
       // courseSlice actions
       .addCase(setCurrentlySelectedDropdownCourse, (state, action) => {
