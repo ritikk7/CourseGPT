@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
@@ -11,11 +11,12 @@ const ChatSection = ({ message }) => {
   const isSenderUser = message.senderType === 'User';
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
-  const gptLoading = useSelector((state) => state.messages.gptLoading);
+  const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
   const userImage = 'https://bit.ly/dan-abramov';
   const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
+  const [typingAnimation, setTypingAnimation] = useState(".");
 
   // Credit to chatGPT
   function isTimestampLessThan5SecondsAgo(createdAt) {
@@ -24,6 +25,14 @@ const ChatSection = ({ message }) => {
 
     return createdAtTimestamp >= currentTime - 5;
   }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTypingAnimation((prev) => (prev.length < 3 ? prev + "." : "."));
+    }, 500);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const ProfileIcon = isSenderUser ? (
     <ChatSenderImage
@@ -76,6 +85,10 @@ const ChatSection = ({ message }) => {
     );
   };
 
+  const renderGptPlaceholder = () => {
+    return messageIsGptPlaceholder ? <span>{typingAnimation}</span> : null;
+  };
+
   return (
     <>
       {!isSenderUser ? (
@@ -87,8 +100,9 @@ const ChatSection = ({ message }) => {
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
-              {message && message.content}
-              {isHovered && <Feedback message={message._id} />}
+              {message && renderGptPlaceholder()}
+              {message && !messageIsGptPlaceholder && renderBotAnswer()}
+              {message && !messageIsGptPlaceholder && isHovered && <Feedback message={message._id} />}
             </div>
           </div>
         </Box>
@@ -96,7 +110,7 @@ const ChatSection = ({ message }) => {
         <div className={styles.chatComponent} style={{ backgroundColor }}>
           <div className={styles.chatContent}>
             {message && ProfileIcon}
-            {isSenderUser ? message.content : renderBotAnswer()}
+            {message && message.content}
           </div>
         </div>
       )}
