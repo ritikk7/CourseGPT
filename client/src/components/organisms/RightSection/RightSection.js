@@ -48,7 +48,7 @@ const InputArea = ({
         <ArrowForwardIcon />
       </button>
     </div>
-    <Message value={"CourseGPT may produce inaccurate information about people, places, or facts. [CourseGPT June 30 Version]"}/>
+    <Message value={"CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]"}/>
   </div>
 );
 
