@@ -72,28 +72,69 @@ async function splitSectionsAndAddToCourseStrings(
 
 async function generateTitleForSection(sectionContent) {
   const NUM_ATTEMPTS = 2;
+
   for (let i = 0; i < NUM_ATTEMPTS; i++) {
     try {
-      await sleep(2000); // Wait for 2 seconds before trying
-      const content = `Please provide a concise and descriptive title for the given text. Make sure not to use any quotation marks in your response:\n"${sectionContent}"`;
+      await sleep(3000); // client-side request throttling
+      const keywords = await extractKeywords(sectionContent);
+      await sleep(3000); // client-side request throttling
+      let content = '';
+      if (keywords.length > 0) {
+        content = `Consider the course and the keywords [${keywords.join(', ')}] from the section content provided. Reflect deeply and create a concise, relevant title that is optimized for an embedding-based search: \n"${sectionContent}"`;
+      } else {
+        content = `Considering the course and the section content provided, create a concise, relevant title that is optimized for an embedding-based search: \n"${sectionContent}"`;
+      }
+
       const response = await openAI.createChatCompletion({
         model: process.env.OPENAI_GPT_MODEL,
         messages: [{ role: 'user', content: content }],
         temperature: 0.5,
+        max_tokens: 60,
+        top_p: 0.9,
       });
-      console.log(
-        'Title generated: ',
-        response.data.choices[0].message.content.trim()
-      );
 
-      return response.data.choices[0].message.content.trim();
+      const rawTitle = response.data.choices[0].message.content;
+      const sanitizedTitle = rawTitle.trim().replace(/["']/g, '');
+      return sanitizedTitle;
     } catch (err) {
       console.error(err);
-      await sleep(10000); // Wait for 10 seconds before retrying
+      await sleep(10000);  // client-side request throttling
     }
   }
   return 'Default Title';
 }
+
+async function extractKeywords(sectionContent) {
+  try {
+    const content = `Review the following text deeply. What are the key topics, entities, keywords, or themes it covers? Please list them as comma-separated values:\n"${sectionContent}"`;
+
+    const response = await openAI.createChatCompletion({
+      model: process.env.OPENAI_GPT_MODEL,
+      messages: [{ role: 'user', content: content }],
+      temperature: 0.5,
+      max_tokens: 60,
+      top_p: 0.9,
+    });
+
+    const rawKeywords = response.data.choices[0].message.content;
+
+    let keywords = [];
+    if (rawKeywords.includes(',')) {
+      keywords = rawKeywords.split(',').map(keyword => keyword.trim());
+    } else {
+      keywords = rawKeywords.split(' ').map(keyword => keyword.trim());
+    }
+
+    return keywords;
+
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+
+
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -114,7 +155,8 @@ async function addContentToCourseTrainingData(course, content) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  const filePath = path.join(outputDir, `${randomFilename}-data.txt`);
+  const filePath = path.join(outputDir, `${betterCourseCode}_${randomFilename}-data.txt`);
+  console.log(filePath);
 
   fs.writeFileSync(filePath, content);
 }

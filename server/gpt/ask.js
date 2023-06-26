@@ -30,12 +30,16 @@ async function queryMessage(query, course, openai, tokenBudget) {
     course,
     openai
   );
+  if (strings.length === 0) {
+    return null;
+  }
 
   for (const string of strings) {
     const nextArticle = `\n\nCourse Information:\n"""\n${string}\n"""`;
     if (countTokens(message + nextArticle + question) > tokenBudget) {
       break;
     }
+    console.log(nextArticle);
     message += nextArticle;
   }
 
@@ -49,12 +53,12 @@ async function ask(query, chatId, tokenBudget = 4096 - 500) {
   if (!chat) throw new Error('Invalid chat ID');
   const course = chat.course;
   if (!course) throw new Error('Invalid course ID');
-  if (course.courseCode != 'CPSC 455')
-    return 'We do not support this course yet.';
 
   const openai = getOpenAIInstance();
 
   const message = await queryMessage(query, course, openai, tokenBudget);
+  if (!message)
+    return 'Sorry, we do not support this course yet. Please try again later.';
 
   const recentChatMessages = await getMaximumMessageHistoryWithinTokenBudget(
     message,
