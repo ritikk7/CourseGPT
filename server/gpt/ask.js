@@ -13,8 +13,8 @@ const { DataFrame } = require('dataframe-js');
 
 async function queryMessage(query, course, tokenBudget) {
   course.school = await School.findById(course.school);
-  const introduction = `Use the below information on the course ${course.courseCode} to answer the subsequent question. If the answer cannot be found in the provided information, write "I could not find an answer."`;
-  const question = `\n\nQuestion: ${query}`;
+  const introduction = `I need to answer a question about the course ${course.courseCode}. If the necessary information is not provided, my response will be "I could not find an answer." Here is the question and the relevant course information: `;
+  const question = `\nQuestion: ${query}\n\nCourse Information:`;
   let message = introduction;
 
   const strings = await stringsRankedByRelatedness(query, course);
@@ -23,7 +23,7 @@ async function queryMessage(query, course, tokenBudget) {
   }
 
   for (const string of strings) {
-    const nextArticle = `\n\nCourse Information:\n"""\n${string}\n"""`;
+    const nextArticle = `\n\n${string}`;
     if (countTokens(message + nextArticle + question) > tokenBudget) {
       break;
     }
@@ -32,6 +32,7 @@ async function queryMessage(query, course, tokenBudget) {
 
   return message + question;
 }
+
 
 async function ask(query, chatId, tokenBudget = 4096 - 500) {
   const chat = await Chat.findById(chatId)
