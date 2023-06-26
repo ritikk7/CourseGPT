@@ -2,6 +2,7 @@ const { Configuration, OpenAIApi } = require('openai');
 const Chat = require('../models/chat');
 const { stringsRankedByRelatedness } = require('./embeddingBasedSearch');
 const { encode } = require('gpt-3-encoder');
+const School = require('../models/school');
 
 const openAI = getOpenAIInstance();
 function getOpenAIInstance() {
@@ -18,6 +19,7 @@ function countTokens(text) {
 }
 
 async function queryMessage(query, course, openai, tokenBudget) {
+  course.school = await School.findById(course.school);
   const introduction = `Use the below information on the course ${course.courseCode} to answer the subsequent question. If the answer cannot be found in the provided information, write "I could not find an answer."`;
   const question = `\n\nQuestion: ${query}`;
   let message = introduction;

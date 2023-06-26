@@ -1,14 +1,12 @@
 require('dotenv').config();
-const { encode, decode } = require('gpt-3-encoder');
+const { encode } = require('gpt-3-encoder');
 const fs = require('fs');
 const path = require('path');
 const { openAI } = require('./ask');
 
 const EMBEDDING_MODEL = process.env.EMBEDDING_MODEL;
 const BATCH_SIZE = process.env.BATCH_SIZE || 1000;
-const MAX_TOKENS = process.env.MAX_TOKENS || 1600;
-
-let courseStrings = [];
+const MAX_TOKENS = 500;
 
 // String manipulation and utility functions
 function countTokens(text) {
@@ -20,6 +18,7 @@ function removeSpacesAndLowercase(str) {
 }
 
 function splitStringToChunks(text, maxTokens, delimiter = '.') {
+  text = text.replace(/["']/g, '');
   const sentences = text.split(delimiter);
   let chunks = [];
   let chunk = '';
@@ -42,194 +41,106 @@ function splitStringToChunks(text, maxTokens, delimiter = '.') {
   return chunks;
 }
 
-function truncateString(string, maxTokens, printWarning = true) {
-  const encodedString = encode(string);
-  const truncatedString = decode(encodedString.slice(0, maxTokens));
-
-  if (printWarning && encodedString.length > maxTokens) {
-    console.log(
-      `Warning: Truncated string from ${encodedString.length} tokens to ${maxTokens} tokens.`
-    );
-  }
-
-  return truncatedString;
-}
-
-function halveByDelimiter(string, delimiter = '\n') {
-  const chunks = string.split(delimiter);
-  if (chunks.length === 1) {
-    return [string, ''];
-  } else if (chunks.length === 2) {
-    return chunks;
-  } else {
-    const totalTokens = countTokens(string);
-    const halfway = Math.floor(totalTokens / 2);
-    let bestDiff = halfway;
-    let i = 0;
-
-    for (; i < chunks.length; i++) {
-      const left = chunks.slice(0, i + 1).join(delimiter);
-      const leftTokens = countTokens(left);
-      const diff = Math.abs(halfway - leftTokens);
-
-      if (diff >= bestDiff) {
-        break;
-      } else {
-        bestDiff = diff;
-      }
-    }
-
-    const left = chunks.slice(0, i).join(delimiter);
-    const right = chunks.slice(i).join(delimiter);
-    return [left, right];
-  }
-}
-
-function splitSectionsToChunks(
-  section,
-  maxTokens = MAX_TOKENS,
-  maxRecursion = 10
-) {
-  const sectionString = section.join('\n\n');
-  const numTokensInString = countTokens(sectionString);
-
-  if (numTokensInString <= maxTokens) {
-    return [sectionString];
-  } else if (maxRecursion === 0) {
-    return [truncateString(sectionString, maxTokens)];
-  } else {
-    for (const delimiter of ['\n\n', '\n', '. ']) {
-      const [left, right] = halveByDelimiter(section[1], delimiter);
-
-      if (!(left === '' || right === '')) {
-        const results = [];
-        const leftSection = [section[0], left];
-        const rightSection = [section[0], right];
-        const leftStrings = splitSectionsToChunks(
-          leftSection,
-          maxTokens,
-          maxRecursion - 1
-        );
-        const rightStrings = splitSectionsToChunks(
-          rightSection,
-          maxTokens,
-          maxRecursion - 1
-        );
-        results.push(...leftStrings, ...rightStrings);
-        return results;
-      }
-    }
-
-    return [truncateString(sectionString, maxTokens)];
-  }
-}
 // File and directory processing functions
-async function splitFileToSections(filename, fileContent, delimiter) {
-  const sectionTitlePrefix = filename + delimiter;
-  const sections = fileContent.split(sectionTitlePrefix);
+async function splitFileToSections(filepath) {
+  const filename = path.basename(filepath).slice(0, -4);
+  const fileContent = fs.readFileSync(filepath, 'utf8');
   const resultSections = [];
-
-  if (sections.length === 1) {
-    // raw file, without sections.
-    const fileChunks = splitStringToChunks(fileContent, 300);
-    for (const chunk of fileChunks) {
-      const chatGptTitle = await generateTitleForSection(chunk);
-      resultSections.push([chatGptTitle, chunk]);
-    }
-  } else {
-    for (let i = 1; i < sections.length; i++) {
-      const [sectionHeading, ...sectionTextArray] = sections[i].split('\n');
-      const sectionText = sectionTextArray.join('\n');
-      const sectionTitle = sectionTitlePrefix + sectionHeading;
-      resultSections.push([sectionTitle, sectionText]);
-    }
+  const fileChunks = splitStringToChunks(fileContent, MAX_TOKENS);
+  for (const chunk of fileChunks) {
+    const chatGptTitle = await generateTitleForSection(chunk);
+    resultSections.push([chatGptTitle, chunk]);
   }
-
   console.log(`Found ${resultSections.length} sections in ${filename}.txt`);
   return resultSections;
 }
 
-async function splitFilesToSections(dirPath, delimiter) {
-  const allSections = [];
-  const files = fs.readdirSync(dirPath);
-
-  for (const filename of files) {
-    const fileContent = fs.readFileSync(`${dirPath}/${filename}`, 'utf8');
-    const sections = await splitFileToSections(
-      filename.slice(0, -4),
-      fileContent,
-      delimiter
-    );
-    allSections.push(...sections);
-  }
-
-  return allSections;
-}
-
 async function splitSectionsAndAddToCourseStrings(
-  dirPath,
-  delimiter,
-  maxTokens = MAX_TOKENS
+  filePath,
+  courseStrings = []
 ) {
-  let sectionsList = await splitFilesToSections(dirPath, delimiter);
+  const sectionsList = await splitFileToSections(filePath);
   for (const section of sectionsList) {
-    courseStrings.push(...splitSectionsToChunks(section, maxTokens));
+    courseStrings.push(section.join('\n\n'));
   }
 
   console.log(
     `${sectionsList.length} sections split into ${courseStrings.length} strings.`
   );
+  return courseStrings;
 }
 
 async function generateTitleForSection(sectionContent) {
-  try {
-    const content = `Please provide a concise and descriptive title for the given text. Make sure not to use any quotation marks in your response:\n"${sectionContent}"`;
-    const response = await openAI.createChatCompletion({
-      model: process.env.OPENAI_GPT_MODEL,
-      messages: [{ role: 'user', content: content }],
-      temperature: 0.5,
-    });
+  const NUM_ATTEMPTS = 2;
+  for (let i = 0; i < NUM_ATTEMPTS; i++) {
+    try {
+      await sleep(2000); // Wait for 2 seconds before trying
+      const content = `Please provide a concise and descriptive title for the given text. Make sure not to use any quotation marks in your response:\n"${sectionContent}"`;
+      const response = await openAI.createChatCompletion({
+        model: process.env.OPENAI_GPT_MODEL,
+        messages: [{ role: 'user', content: content }],
+        temperature: 0.5,
+      });
+      console.log(
+        'Title generated: ',
+        response.data.choices[0].message.content.trim()
+      );
 
-    return response.data.choices[0].message.content.trim();
-  } catch (err) {
-    console.error(err);
+      return response.data.choices[0].message.content.trim();
+    } catch (err) {
+      console.error(err);
+      await sleep(10000); // Wait for 10 seconds before retrying
+    }
   }
+  return 'Default Title';
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function addContentToCourseTrainingData(course, content) {
   const randomFilename = Math.floor(Math.random() * 10000);
+  const betterSchoolCode = removeSpacesAndLowercase(course.school.name);
   const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
-  const filePath = path.join(
+  const outputDir = path.join(
     __dirname,
-    '..',
-    'gpt',
     'rawdata',
-    `${betterCourseCode}`,
-    `${randomFilename}-data.txt`
+    `${betterSchoolCode}`,
+    `${betterCourseCode}`
   );
+
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const filePath = path.join(outputDir, `${randomFilename}-data.txt`);
 
   fs.writeFileSync(filePath, content);
 }
 
-async function createEmbeddings(course, delimiter = ' - ') {
-  const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
-  const inputDir = path.join(
-    __dirname,
-    '..',
-    'gpt',
-    'rawdata',
-    `${betterCourseCode}`
+async function createEmbeddingForFile(inputFile, betterCourseCode, outputDir) {
+  const filenameWithoutExtension = path.basename(
+    inputFile,
+    path.extname(inputFile)
   );
+  const sanitizedFilename = filenameWithoutExtension
+    .replace(/[^a-z0-9]/gi, '_')
+    .toLowerCase();
   const outputFile = path.join(
-    __dirname,
-    '..',
-    'gpt',
-    'embeddings',
-    `${betterCourseCode}withEmbeddings.csv`
+    outputDir,
+    `${betterCourseCode}_${sanitizedFilename}withEmbeddings.csv`
   );
-  await splitSectionsAndAddToCourseStrings(inputDir, delimiter);
-  const embeddings = [];
+  if (fs.existsSync(outputFile)) {
+    console.log(
+      `Output file "${outputFile}" already exists. Skipping embedding creation.`
+    );
+    return 0;
+  }
 
+  let courseStrings = await splitSectionsAndAddToCourseStrings(inputFile);
+
+  const embeddings = [];
   for (
     let batchStart = 0;
     batchStart < courseStrings.length;
@@ -237,7 +148,6 @@ async function createEmbeddings(course, delimiter = ' - ') {
   ) {
     const batchEnd = batchStart + BATCH_SIZE;
     const batch = courseStrings.slice(batchStart, batchEnd);
-    console.log(`Batch ${batchStart} to ${batchEnd - 1}`);
     const response = await openAI.createEmbedding({
       model: EMBEDDING_MODEL,
       input: batch,
@@ -254,13 +164,50 @@ async function createEmbeddings(course, delimiter = ' - ') {
 
   let csvContent = 'text,embedding\n';
   csvContent += csvData.map(row => row.join(',')).join('\n');
-  fs.writeFileSync(outputFile, csvContent, 'utf8');
 
-  return { text: courseStrings, embedding: embeddings };
+  fs.writeFileSync(outputFile, csvContent, 'utf8');
+  console.log(`Created embeddings for ${outputFile}`);
+  return 1;
+}
+
+async function createEmbeddingsForAllFiles(course) {
+  const betterSchoolCode = removeSpacesAndLowercase(course.school.name);
+  const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
+  const outputDir = path.join(
+    __dirname,
+    'embeddings',
+    `${betterSchoolCode}`,
+    `${betterCourseCode}`
+  );
+  const inputDir = path.join(
+    __dirname,
+    'rawdata',
+    `${betterSchoolCode}`,
+    `${betterCourseCode}`
+  );
+
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const inputFiles = fs
+    .readdirSync(inputDir)
+    .map(file => path.join(inputDir, file));
+
+  let numCreated = 0;
+  for (const inputFile of inputFiles) {
+    numCreated += await createEmbeddingForFile(
+      inputFile,
+      betterCourseCode,
+      outputDir
+    );
+  }
+  console.log(
+    `Created embeddings for ${numCreated} out of the total ${inputFiles.length} data files`
+  );
 }
 
 module.exports = {
-  createEmbeddings,
-  countTokens,
+  createEmbeddingsForAllFiles,
   addContentToCourseTrainingData,
 };
