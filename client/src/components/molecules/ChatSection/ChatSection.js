@@ -8,7 +8,7 @@ import Feedback from '../FeedbackPanel/FeedbackPanel';
 
 const ChatSection = ({ message }) => {
   const user = useSelector(state => state.user);
-  const isSenderUser = message.senderType === 'User';
+  const isSenderUser = message.role === 'user';
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
   const messageIsGptPlaceholder = message?.isGptPlaceholder;

@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
-import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
+import {
+  setCurrentlySelectedDropdownCourse,
+  trainCurrentlySelectedDropdownCourse,
+} from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
   fetchUserChats,
@@ -24,9 +27,34 @@ import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNew
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 
+const SimpleCourseTrainingPopup = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+  const [text, setText] = useState('');
+  const onSubmit = () => {
+    dispatch(trainCurrentlySelectedDropdownCourse(text));
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div>
+      <textarea
+        className={styles.textareaStyle}
+        value={text}
+        onChange={e => setText(e.target.value)}
+      />
+      <button onClick={() => onSubmit(text)}>Submit</button>
+      <button onClick={onClose}>Close</button>
+    </div>
+  );
+};
+
 const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showSimpleCourseTrainingPopup, setShowSimpleCourseTrainingPopup] =
+    useState(false);
+  const userType = useSelector(state => state.user.type);
   const favouriteCourses = useSelector(userFavouriteCoursesSelector);
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
@@ -107,6 +135,19 @@ const SidePanel = () => {
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
+        {userType === 'Developer' && (
+          <button
+            onClick={() =>
+              setShowSimpleCourseTrainingPopup(!showSimpleCourseTrainingPopup)
+            }
+          >
+            Train Selected Course
+          </button>
+        )}
+        <SimpleCourseTrainingPopup
+          isOpen={showSimpleCourseTrainingPopup}
+          onClose={() => setShowSimpleCourseTrainingPopup(false)}
+        />
         <CreateNewChatSection
           favouriteCourses={favouriteCourses}
           handleCourseChange={handleCourseChange}

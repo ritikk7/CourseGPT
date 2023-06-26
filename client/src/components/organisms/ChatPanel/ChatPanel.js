@@ -29,7 +29,7 @@ const ChatPanel = () => {
     if (isGptLoading) {
       const gptPlaceholder = {
         createAt: new Date(),
-        senderType: 'CourseGPT',
+        role: 'system',
         isGptPlaceholder: true,
       };
       messagesToDisplay.push(gptPlaceholder);

@@ -9,6 +9,10 @@
   display: flex;
 }
 
+.textareaStyle {
+  color: black;
+}
+
 .courseSelect {
   width: 90%;
   margin: auto;

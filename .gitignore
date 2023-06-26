@@ -4,6 +4,12 @@
 # Ignore build directories
 **/dist
 
+# Ignore all .txt data files
+*.txt
+
+# Ignore all .csv embedding files
+*.csv
+
 # Ignore IDE specific files
 .idea/
 .vscode/

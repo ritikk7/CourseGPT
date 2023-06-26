@@ -35,6 +35,27 @@ export const fetchSchoolCourse = createAsyncThunk(
   }
 );
 
+export const trainCurrentlySelectedDropdownCourse = createAsyncThunk(
+  'courses/trainCurrentlySelectedDropdownCourse',
+  async (content, { getState }) => {
+    try {
+      const schoolId =
+        getState().courses.currentlySelectedDropdownCourse?.school;
+      const courseId = getState().courses.currentlySelectedDropdownCourse?._id;
+      console.log(content);
+
+      const response = await api.put(
+        `/schools/${schoolId}/courses/${courseId}/improve-model`,
+        { content }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
 export const fetchSchoolCourses = createAsyncThunk(
   'courses/fetchSchoolCourses',
   async (schoolId, { getState }) => {
