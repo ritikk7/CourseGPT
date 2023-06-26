@@ -12,16 +12,16 @@ const openAI = new OpenAIApi(
 async function createCourseGptCompletion(
   enableThrottling,
   messages,
-  temperature = 0.5,
+  temperature = 0.5
 ) {
-  if (enableThrottling) await sleep(5000);
+  if (enableThrottling) await sleep(3000);
   const NUM_ATTEMPTS = 2;
   for (let i = 0; i < NUM_ATTEMPTS; i++) {
     try {
       const response = await openAI.createChatCompletion({
         model: process.env.OPENAI_GPT_MODEL,
         messages: messages,
-        temperature: temperature
+        temperature: temperature,
       });
       return response.data.choices[0].message.content;
     } catch (err) {

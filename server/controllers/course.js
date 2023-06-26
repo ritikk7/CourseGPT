@@ -1,7 +1,6 @@
 const Course = require('../models/course');
 const School = require('../models/school');
 const {
-  createEmbeddings,
   addContentToCourseTrainingData,
   createEmbeddingsForAllFiles,
 } = require('../gpt/createEmbeddings');
