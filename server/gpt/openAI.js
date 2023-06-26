@@ -1,32 +1,67 @@
 const { Configuration, OpenAIApi } = require('openai');
+const { encode } = require('gpt-3-encoder');
+const similarity = require('compute-cosine-similarity');
 
-const configuration = new Configuration({
-  organization: 'org-Ctm9a6WpVYabY1qbocCED6NW',
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+const openAI = new OpenAIApi(
+  new Configuration({
+    organization: process.env.OPENAI_ORG_ID,
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+);
 
-// example call. follow the listModels() function to see the remaining list of available functions.
-// They are pretty much a one to one mapping with the OpenAI API listed here  https://platform.openai.com/docs/api-reference/
-async function listModels() {
-  const response = await openai.listModels();
-  console.log(response);
+async function createCourseGptCompletion(
+  enableThrottling,
+  messages,
+  temperature = 0.5,
+) {
+  if (enableThrottling) await sleep(5000);
+  const NUM_ATTEMPTS = 2;
+  for (let i = 0; i < NUM_ATTEMPTS; i++) {
+    try {
+      const response = await openAI.createChatCompletion({
+        model: process.env.OPENAI_GPT_MODEL,
+        messages: messages,
+        temperature: temperature
+      });
+      return response.data.choices[0].message.content;
+    } catch (err) {
+      await sleep(2000);
+      console.log(err);
+    }
+  }
+  return 'Sorry, something went wrong.';
 }
 
-// example call to use a fine-tuned model
-async function getTrainedModelResponse(model, prompt) {
-  const response = await openai.createCompletion({
-    model: model,
-    prompt: prompt,
+async function createCourseGptEmbedding(input) {
+  const response = await openAI.createEmbedding({
+    model: process.env.EMBEDDING_MODEL,
+    input: input,
   });
-  console.log(response);
+  return response.data.data;
 }
 
-async function createCompletion(prompt) {
-  const completion = await openai.createCompletion({
-    model: 'text-davinci-003',
-    prompt: prompt,
-  });
-  let response = completion.data.choices[0].text;
-  return response;
+// Helper Functions
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function countTokens(text) {
+  return encode(text).length;
+}
+
+function removeSpacesAndLowercase(str) {
+  return str.replace(/\s/g, '').toLowerCase();
+}
+
+function getRelatedness(x, y) {
+  return similarity(x, y);
+}
+
+module.exports = {
+  getRelatedness,
+  createCourseGptEmbedding,
+  createCourseGptCompletion,
+  countTokens,
+  removeSpacesAndLowercase,
+};

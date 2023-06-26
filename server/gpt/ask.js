@@ -1,35 +1,23 @@
-const { Configuration, OpenAIApi } = require('openai');
-const Chat = require('../models/chat');
-const { stringsRankedByRelatedness } = require('./embeddingBasedSearch');
-const { encode } = require('gpt-3-encoder');
+const {
+  getRelatedness,
+  createCourseGptEmbedding,
+  removeSpacesAndLowercase,
+  countTokens,
+  createCourseGptCompletion,
+} = require('./openAI');
 const School = require('../models/school');
+const Chat = require('../models/chat');
+const path = require('path');
+const fs = require('fs');
+const { DataFrame } = require('dataframe-js');
 
-const openAI = getOpenAIInstance();
-function getOpenAIInstance() {
-  const configuration = new Configuration({
-    organization: process.env.OPENAI_ORG_ID,
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-
-  return new OpenAIApi(configuration);
-}
-
-function countTokens(text) {
-  return encode(text).length;
-}
-
-async function queryMessage(query, course, openai, tokenBudget) {
+async function queryMessage(query, course, tokenBudget) {
   course.school = await School.findById(course.school);
   const introduction = `Use the below information on the course ${course.courseCode} to answer the subsequent question. If the answer cannot be found in the provided information, write "I could not find an answer."`;
   const question = `\n\nQuestion: ${query}`;
   let message = introduction;
 
-  const strings = await stringsRankedByRelatedness(
-    process.env.EMBEDDING_MODEL,
-    query,
-    course,
-    openai
-  );
+  const strings = await stringsRankedByRelatedness(query, course);
   if (strings.length === 0) {
     return null;
   }
@@ -39,7 +27,6 @@ async function queryMessage(query, course, openai, tokenBudget) {
     if (countTokens(message + nextArticle + question) > tokenBudget) {
       break;
     }
-    console.log(nextArticle);
     message += nextArticle;
   }
 
@@ -54,43 +41,70 @@ async function ask(query, chatId, tokenBudget = 4096 - 500) {
   const course = chat.course;
   if (!course) throw new Error('Invalid course ID');
 
-  const openai = getOpenAIInstance();
-
-  const message = await queryMessage(query, course, openai, tokenBudget);
+  const message = await queryMessage(query, course, tokenBudget);
   if (!message)
     return 'Sorry, we do not support this course yet. Please try again later.';
-
-  const recentChatMessages = await getMaximumMessageHistoryWithinTokenBudget(
-    message,
-    chat,
-    tokenBudget
-  );
 
   const newMessage = {
     role: 'user',
     content: message,
   };
 
-  const messages = [...recentChatMessages, newMessage];
+  const messages = [newMessage];
 
-  const response = await openai.createChatCompletion({
-    model: process.env.OPENAI_GPT_MODEL,
-    messages: messages,
-    temperature: 0.5,
+  return await createCourseGptCompletion(false, messages);
+}
+
+async function readEmbeddingsCSV(absolutePath) {
+  return await DataFrame.fromCSV(absolutePath);
+}
+
+async function readEmbeddingsFromDirectory(schoolCode, courseCode) {
+  const directoryPath = path.resolve(
+    __dirname,
+    'embeddings/',
+    schoolCode,
+    courseCode
+  );
+  const files = fs.readdirSync(directoryPath);
+  const dataFrames = await Promise.all(
+    files.map(file => readEmbeddingsCSV(`${directoryPath}/${file}`))
+  );
+  const firstDf = dataFrames[0];
+  return dataFrames.reduce((df1, df2) => df1.union(df2), firstDf);
+}
+
+async function stringsRankedByRelatedness(query, course, topN = 100) {
+  const betterSchoolCode = removeSpacesAndLowercase(course.school.name);
+  const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
+  const queryEmbeddingResponse = await createCourseGptEmbedding(query);
+  const queryEmbedding = queryEmbeddingResponse[0].embedding;
+  let df;
+  try {
+    console.log(
+      `Reading embeddings for ${betterSchoolCode}/${betterCourseCode}`
+    );
+    df = await readEmbeddingsFromDirectory(betterSchoolCode, betterCourseCode);
+  } catch (error) {
+    console.error(`Failed to read embeddings: ${error}`);
+    return [];
+  }
+
+  let relatednessDataframe = df.map(row => {
+    try {
+      const embedding = JSON.parse(row.get('embedding'));
+      const relatedness = getRelatedness(queryEmbedding, embedding);
+      return row.set('embedding', relatedness);
+    } catch (error) {
+      console.error(error);
+    }
   });
 
-  return response.data.choices[0].message.content;
+  let sortedRelatednessDataframe = relatednessDataframe
+    .sortBy('embedding', true)
+    .slice(0, topN);
+
+  return sortedRelatednessDataframe.toArray('text');
 }
 
-async function getMaximumMessageHistoryWithinTokenBudget(
-  newMessage,
-  chat,
-  tokenBudget
-) {
-  return [];
-  // TODO IDEA -- unsure of the value, as just simply including the most possible embeddings could be a better idea
-  // TODO . Could get chat gpt to summarize the chat history, and try to include it in the prompt if there is enough token room
-  //const messages = chat.messages.sort({ createdAt: -1 });
-}
-
-module.exports = { ask, openAI };
+module.exports = { ask };
