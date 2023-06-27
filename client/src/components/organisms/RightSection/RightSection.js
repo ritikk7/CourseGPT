@@ -13,7 +13,10 @@ import {
   setShouldFocusChatInput,
 } from '../../../redux/userSlice';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
+import {
+  createChatWithSelectedDropdownCourse,
+  fetchChat,
+} from '../../../redux/chatsSlice';
 
 const Message = ({ value }) => (
   <div className={styles.message}>
@@ -85,9 +88,10 @@ const RightSection = () => {
     }
     dispatch(setCurrentUserInput(''));
     dispatch(setActivePanelChat());
-    dispatch(createUserMessageInActiveChat(currentUserInput)).then(
-      newMessagePayload => {
-        dispatch(getGptResponseInActiveChat(newMessagePayload.payload));
+    await dispatch(createUserMessageInActiveChat(currentUserInput)).then(
+      async newMessagePayload => {
+        await dispatch(getGptResponseInActiveChat(newMessagePayload.payload));
+        dispatch(fetchChat(newMessagePayload.payload.chat));
       }
     );
   };

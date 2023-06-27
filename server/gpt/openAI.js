@@ -26,7 +26,7 @@ async function createCourseGptCompletion(
       return response.data.choices[0].message.content;
     } catch (err) {
       await sleep(2000);
-      console.log(err);
+      console.error(err);
     }
   }
   return 'Sorry, something went wrong.';
@@ -42,6 +42,18 @@ async function createCourseGptEmbedding(input) {
 
 // Helper Functions
 
+async function generateChatTitle(userInput, gptResponse) {
+  const prompt = `${userInput}\n${gptResponse}\n3-5 Word Title: `;
+  const messages = [
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: prompt },
+  ];
+
+  let title = await createCourseGptCompletion(false, messages, 0.5);
+  title = title.split(' ').slice(0, 5).join(' ');
+  return title;
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -49,11 +61,6 @@ function sleep(ms) {
 function countTokens(text) {
   return encode(text).length;
 }
-
-function removeSpacesAndLowercase(str) {
-  return str.replace(/\s/g, '').toLowerCase();
-}
-
 function getRelatedness(x, y) {
   return similarity(x, y);
 }
@@ -63,5 +70,5 @@ module.exports = {
   createCourseGptEmbedding,
   createCourseGptCompletion,
   countTokens,
-  removeSpacesAndLowercase,
+  generateChatTitle,
 };

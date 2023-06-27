@@ -1,13 +1,8 @@
 const User = require('../models/user');
-const Course = require('../models/course');
-const { createEmbeddings } = require('../gpt/createEmbeddings');
 
 async function updateUser(req, res) {
   const userId = req.params.userId;
   const updates = req.body;
-
-  const course = await Course.findOne({ courseCode: 'CPSC 455' });
-  await createEmbeddings(course);
 
   try {
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {

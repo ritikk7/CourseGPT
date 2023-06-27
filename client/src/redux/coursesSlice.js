@@ -42,13 +42,11 @@ export const trainCurrentlySelectedDropdownCourse = createAsyncThunk(
       const schoolId =
         getState().courses.currentlySelectedDropdownCourse?.school;
       const courseId = getState().courses.currentlySelectedDropdownCourse?._id;
-      console.log(content);
 
       const response = await api.put(
         `/schools/${schoolId}/courses/${courseId}/improve-model`,
         { content }
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       handleRequestError(error);

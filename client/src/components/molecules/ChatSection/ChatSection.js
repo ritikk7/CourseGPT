@@ -23,7 +23,7 @@ const ChatSection = ({ message }) => {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
-    return createdAtTimestamp >= currentTime - 5;
+    return createdAtTimestamp >= currentTime - 10;
   }
 
   useEffect(() => {

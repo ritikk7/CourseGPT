@@ -2,6 +2,7 @@ const Chat = require('../models/chat');
 const Message = require('../models/message');
 const qaPair = require('./qaPair');
 const { ask } = require('../gpt/ask');
+const { generateChatTitle } = require('../gpt/openAI');
 
 async function getAllMessages(req, res) {
   // TODO
@@ -57,11 +58,17 @@ async function getGptResponse(req, res) {
 
     const newGptMessage = await gptMessage.save();
 
-    let chat = await Chat.findByIdAndUpdate(
-      chatId,
-      { $push: { messages: newGptMessage._id } },
-      { new: true }
-    );
+    let chat = await Chat.findById(chatId);
+    chat.messages.push(newGptMessage._id);
+
+    if (!chat.title) {
+      chat.title = await generateChatTitle(
+        userMessageObject.content,
+        chatGPTResponse
+      );
+    }
+
+    await chat.save();
 
     await qaPair.createQaPair({
       course: chat.course,

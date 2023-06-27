@@ -1,15 +1,12 @@
 const {
   getRelatedness,
-  createCourseGptEmbedding,
-  removeSpacesAndLowercase,
   countTokens,
   createCourseGptCompletion,
+  createCourseGptEmbedding,
 } = require('./openAI');
 const School = require('../models/school');
 const Chat = require('../models/chat');
-const path = require('path');
-const fs = require('fs');
-const { DataFrame } = require('dataframe-js');
+const { EmbeddingCache } = require('../models/embedding');
 
 async function queryMessage(query, course, tokenBudget) {
   course.school = await School.findById(course.school);
@@ -33,7 +30,6 @@ async function queryMessage(query, course, tokenBudget) {
   return message + question;
 }
 
-
 async function ask(query, chatId, tokenBudget = 4096 - 500) {
   const chat = await Chat.findById(chatId)
     .populate('messages')
@@ -56,56 +52,35 @@ async function ask(query, chatId, tokenBudget = 4096 - 500) {
   return await createCourseGptCompletion(false, messages);
 }
 
-async function readEmbeddingsCSV(absolutePath) {
-  return await DataFrame.fromCSV(absolutePath);
-}
-
-async function readEmbeddingsFromDirectory(schoolCode, courseCode) {
-  const directoryPath = path.resolve(
-    __dirname,
-    'embeddings/',
-    schoolCode,
-    courseCode
-  );
-  const files = fs.readdirSync(directoryPath);
-  const dataFrames = await Promise.all(
-    files.map(file => readEmbeddingsCSV(`${directoryPath}/${file}`))
-  );
-  const firstDf = dataFrames[0];
-  return dataFrames.reduce((df1, df2) => df1.union(df2), firstDf);
-}
-
 async function stringsRankedByRelatedness(query, course, topN = 100) {
-  const betterSchoolCode = removeSpacesAndLowercase(course.school.name);
-  const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
   const queryEmbeddingResponse = await createCourseGptEmbedding(query);
   const queryEmbedding = queryEmbeddingResponse[0].embedding;
-  let df;
+
+  let embeddings;
   try {
-    console.log(
-      `Reading embeddings for ${betterSchoolCode}/${betterCourseCode}`
-    );
-    df = await readEmbeddingsFromDirectory(betterSchoolCode, betterCourseCode);
+    console.log(`Reading embeddings for course ${course.courseCode}`);
+    embeddings = await EmbeddingCache.getAllByCourse(course._id);
   } catch (error) {
     console.error(`Failed to read embeddings: ${error}`);
     return [];
   }
 
-  let relatednessDataframe = df.map(row => {
+  const relatednessData = embeddings.map(embeddingRecord => {
     try {
-      const embedding = JSON.parse(row.get('embedding'));
+      const embedding = embeddingRecord.embedding;
       const relatedness = getRelatedness(queryEmbedding, embedding);
-      return row.set('embedding', relatedness);
+      return {
+        text: embeddingRecord.text,
+        embedding: relatedness,
+      };
     } catch (error) {
       console.error(error);
     }
   });
 
-  let sortedRelatednessDataframe = relatednessDataframe
-    .sortBy('embedding', true)
-    .slice(0, topN);
+  relatednessData.sort((a, b) => b.embedding - a.embedding);
 
-  return sortedRelatednessDataframe.toArray('text');
+  return relatednessData.slice(0, topN).map(record => record.text);
 }
 
 module.exports = { ask };

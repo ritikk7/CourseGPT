@@ -1,18 +1,17 @@
 const {
   countTokens,
   createCourseGptCompletion,
-  removeSpacesAndLowercase,
   createCourseGptEmbedding,
 } = require('./openAI');
-const path = require('path');
-const fs = require('fs');
+const crypto = require('crypto');
+const { EmbeddingCache } = require('../models/embedding');
 
 const BATCH_SIZE = process.env.BATCH_SIZE || 1000;
 const CHUNK_SIZE = process.env.CHUNK_SIZE || 500;
 
-function splitStringToChunks(text, delimiter = '.') {
-  text = text.replace(/["']/g, '');
-  const sentences = text.split(delimiter);
+function splitStringToChunks(rawData, delimiter = '.') {
+  rawData = rawData.replace(/["']/g, '');
+  const sentences = rawData.split(delimiter);
   let chunks = [];
   let chunk = '';
 
@@ -34,36 +33,20 @@ function splitStringToChunks(text, delimiter = '.') {
   return chunks;
 }
 
-// File and directory processing functions
-async function splitFileToSections(filepath) {
-  const filename = path.basename(filepath).slice(0, -4);
-  const fileContent = fs.readFileSync(filepath, 'utf8');
-  const resultSections = [];
-  const fileChunks = splitStringToChunks(fileContent);
-  for (const chunk of fileChunks) {
-    const chatGptTitle = await generateTitleForSection(chunk);
-    resultSections.push([chatGptTitle, chunk]);
-  }
-  console.log(`Found ${resultSections.length} sections in ${filename}.txt`);
-  return resultSections;
-}
-
-async function splitSectionsAndAddToCourseStrings(
-  filePath,
-  courseStrings = []
+async function getCompletionWithoutQuotes(
+  enableThrottling,
+  userPrompt,
+  temperature
 ) {
-  const sectionsList = await splitFileToSections(filePath);
-  for (const section of sectionsList) {
-    courseStrings.push(section.join('\n\n'));
-  }
-
-  console.log(
-    `${sectionsList.length} sections split into ${courseStrings.length} strings.`
+  const rawOutput = await createCourseGptCompletion(
+    enableThrottling,
+    [{ role: 'user', content: userPrompt }],
+    temperature
   );
-  return courseStrings;
+  return rawOutput.trim().replace(/["']/g, '');
 }
 
-async function generateTitleForSection(sectionContent) {
+async function generateSectionTitle(sectionContent) {
   const keywords = await extractKeywords(sectionContent);
 
   let content = '';
@@ -75,23 +58,14 @@ async function generateTitleForSection(sectionContent) {
     content = `Considering the course and the section content provided, create a concise, relevant title that is optimized for an embedding-based search: \n"${sectionContent}"`;
   }
 
-  const rawTitle = await createCourseGptCompletion(
-    true,
-    [{ role: 'user', content: content }],
-    0.5
-  );
-  return rawTitle.trim().replace(/["']/g, '');
+  return getCompletionWithoutQuotes(true, content, 0.5);
 }
 
 async function extractKeywords(sectionContent) {
   try {
     const content = `Review the following text deeply. What are the key topics, entities, keywords, or themes it covers? Please list them as comma-separated values:\n"${sectionContent}"`;
 
-    const rawKeywords = await createCourseGptCompletion(
-      true,
-      [{ role: 'user', content: content }],
-      0.5
-    );
+    const rawKeywords = await getCompletionWithoutQuotes(true, content, 0.5);
 
     if (rawKeywords.includes(',')) {
       return rawKeywords.split(',').map(keyword => keyword.trim());
@@ -104,113 +78,70 @@ async function extractKeywords(sectionContent) {
   }
 }
 
-async function addContentToCourseTrainingData(course, content) {
-  const randomFilename = Math.floor(Math.random() * 10000);
-  const betterSchoolCode = removeSpacesAndLowercase(course.school.name);
-  const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
-  const outputDir = path.join(
-    __dirname,
-    'rawdata',
-    `${betterSchoolCode}`,
-    `${betterCourseCode}`
-  );
-
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
-
-  const filePath = path.join(
-    outputDir,
-    `${betterCourseCode}_${randomFilename}-data.txt`
-  );
-
-  fs.writeFileSync(filePath, content);
+async function splitRawDataIntoSections(rawData) {
+  const resultSections = [];
+  const fileChunks = splitStringToChunks(rawData);
+  for (const chunk of fileChunks) {
+    const sectionTitle = await generateSectionTitle(chunk);
+    resultSections.push([sectionTitle, chunk]);
+  }
+  return resultSections;
 }
 
-async function createEmbeddingForFile(inputFile, betterCourseCode, outputDir) {
-  const filenameWithoutExtension = path.basename(
-    inputFile,
-    path.extname(inputFile)
-  );
-  const sanitizedFilename = filenameWithoutExtension
-    .replace(/[^a-z0-9]/gi, '_')
-    .toLowerCase();
-  const outputFile = path.join(
-    outputDir,
-    `${betterCourseCode}_${sanitizedFilename}withEmbeddings.csv`
-  );
-  if (fs.existsSync(outputFile)) {
-    console.log(
-      `Output file "${outputFile}" already exists. Skipping embedding creation.`
-    );
-    return 0;
+async function processDataIntoTrainingStrings(rawData, courseStrings = []) {
+  const sectionsList = await splitRawDataIntoSections(rawData);
+  for (const section of sectionsList) {
+    courseStrings.push(section.join('\n\n'));
   }
+  return courseStrings;
+}
 
-  let courseStrings = await splitSectionsAndAddToCourseStrings(inputFile);
-
+async function createCourseEmbeddings(trainingStrings) {
   const embeddings = [];
   for (
     let batchStart = 0;
-    batchStart < courseStrings.length;
+    batchStart < trainingStrings.length;
     batchStart += BATCH_SIZE
   ) {
     const batchEnd = batchStart + BATCH_SIZE;
-    const batch = courseStrings.slice(batchStart, batchEnd);
+    const batch = trainingStrings.slice(batchStart, batchEnd);
     const response = await createCourseGptEmbedding(batch);
-
     const batchEmbeddings = response.map(e => e.embedding);
     embeddings.push(...batchEmbeddings);
   }
-
-  const csvData = courseStrings.map((text, index) => [
-    `"${text}"`,
-    `"${JSON.stringify(embeddings[index])}"`,
-  ]);
-
-  let csvContent = 'text,embedding\n';
-  csvContent += csvData.map(row => row.join(',')).join('\n');
-
-  fs.writeFileSync(outputFile, csvContent, 'utf8');
-  console.log(`Created embeddings for ${outputFile}`);
-  return 1;
+  return embeddings;
 }
 
-async function createEmbeddingsForAllFiles(course) {
-  const betterSchoolCode = removeSpacesAndLowercase(course.school.name);
-  const betterCourseCode = removeSpacesAndLowercase(course.courseCode);
-  const outputDir = path.join(
-    __dirname,
-    'embeddings',
-    `${betterSchoolCode}`,
-    `${betterCourseCode}`
-  );
-  const inputDir = path.join(
-    __dirname,
-    'rawdata',
-    `${betterSchoolCode}`,
-    `${betterCourseCode}`
-  );
-
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+async function storeEmbeddingsInMongoAndCache(
+  userId,
+  course,
+  courseStrings,
+  embeddings
+) {
+  const submissionId = crypto.randomUUID();
+  for (let i = 0; i < courseStrings.length; i++) {
+    const embedding = {
+      course: course._id,
+      text: courseStrings[i],
+      embedding: embeddings[i].map(Number),
+      submissionId: submissionId,
+      submittedBy: userId,
+    };
+    await EmbeddingCache.create(embedding);
   }
+}
 
-  const inputFiles = fs
-    .readdirSync(inputDir)
-    .map(file => path.join(inputDir, file));
-
-  let numCreated = 0;
-  for (const inputFile of inputFiles) {
-    numCreated += await createEmbeddingForFile(
-      inputFile,
-      betterCourseCode,
-      outputDir
-    );
-  }
-  console.log(
-    `Created embeddings for ${numCreated} out of the total ${inputFiles.length} data files`
+async function createEmbeddingForNewData(userId, course, content) {
+  let trainingStrings = await processDataIntoTrainingStrings(content);
+  const embeddings = await createCourseEmbeddings(trainingStrings);
+  await storeEmbeddingsInMongoAndCache(
+    userId,
+    course,
+    trainingStrings,
+    embeddings
   );
 }
 
 module.exports = {
-  createEmbeddingsForAllFiles,
-  addContentToCourseTrainingData,
+  createEmbeddingForNewData,
 };
