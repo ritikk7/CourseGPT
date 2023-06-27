@@ -1,6 +1,7 @@
 const { Configuration, OpenAIApi } = require('openai');
 const { encode } = require('gpt-3-encoder');
 const similarity = require('compute-cosine-similarity');
+const { Logger } = require('../util/Logger');
 
 const openAI = new OpenAIApi(
   new Configuration({
@@ -14,6 +15,7 @@ async function createCourseGptCompletion(
   messages,
   temperature = 0.5
 ) {
+  Logger.logEnter();
   if (enableThrottling) await sleep(3000);
   const NUM_ATTEMPTS = 2;
   for (let i = 0; i < NUM_ATTEMPTS; i++) {
@@ -23,26 +25,33 @@ async function createCourseGptCompletion(
         messages: messages,
         temperature: temperature,
       });
+      Logger.logExit();
       return response.data.choices[0].message.content;
     } catch (err) {
       await sleep(2000);
-      console.error(err);
+      Logger.error('Error creating completion' + err);
     }
   }
+  Logger.warn(
+    `Failed createCourseGptCompletion after ${NUM_ATTEMPTS} failed attempts`
+  );
   return 'Sorry, something went wrong.';
 }
 
 async function createCourseGptEmbedding(input) {
+  Logger.logEnter();
   const response = await openAI.createEmbedding({
     model: process.env.EMBEDDING_MODEL,
     input: input,
   });
+  Logger.logExit();
   return response.data.data;
 }
 
 // Helper Functions
 
 async function generateChatTitle(userInput, gptResponse) {
+  Logger.logEnter();
   const prompt = `${userInput}\n${gptResponse}\n3-5 Word Title: `;
   const messages = [
     { role: 'system', content: 'You are a helpful assistant.' },
@@ -51,6 +60,7 @@ async function generateChatTitle(userInput, gptResponse) {
 
   let title = await createCourseGptCompletion(false, messages, 0.5);
   title = title.split(' ').slice(0, 5).join(' ');
+  Logger.logExit();
   return title;
 }
 

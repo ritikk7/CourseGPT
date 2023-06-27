@@ -39,13 +39,14 @@ export const trainCurrentlySelectedDropdownCourse = createAsyncThunk(
   'courses/trainCurrentlySelectedDropdownCourse',
   async (content, { getState }) => {
     try {
+      const userId = getState().auth.userId;
       const schoolId =
         getState().courses.currentlySelectedDropdownCourse?.school;
       const courseId = getState().courses.currentlySelectedDropdownCourse?._id;
 
       const response = await api.put(
         `/schools/${schoolId}/courses/${courseId}/improve-model`,
-        { content }
+        { content, userId }
       );
       return response.data;
     } catch (error) {

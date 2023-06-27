@@ -6,9 +6,11 @@ const {
 } = require('./openAI');
 const School = require('../models/school');
 const Chat = require('../models/chat');
-const { EmbeddingCache } = require('../models/embedding');
+const { Logger } = require('../util/Logger');
+const { EmbeddingCache } = require('../util/EmbeddingCache');
 
 async function queryMessage(query, course, tokenBudget) {
+  Logger.logEnter();
   course.school = await School.findById(course.school);
   const introduction = `I need to answer a question about the course ${course.courseCode}. If the necessary information is not provided, my response will be "I could not find an answer." Here is the question and the relevant course information: `;
   const question = `\nQuestion: ${query}\n\nCourse Information:`;
@@ -16,6 +18,7 @@ async function queryMessage(query, course, tokenBudget) {
 
   const strings = await stringsRankedByRelatedness(query, course);
   if (strings.length === 0) {
+    Logger.warn('stringsRankedByRelatedness array is empty');
     return null;
   }
 
@@ -27,10 +30,12 @@ async function queryMessage(query, course, tokenBudget) {
     message += nextArticle;
   }
 
+  Logger.logExit();
   return message + question;
 }
 
 async function ask(query, chatId, tokenBudget = 4096 - 500) {
+  Logger.logEnter();
   const chat = await Chat.findById(chatId)
     .populate('messages')
     .populate('course');
@@ -39,8 +44,10 @@ async function ask(query, chatId, tokenBudget = 4096 - 500) {
   if (!course) throw new Error('Invalid course ID');
 
   const message = await queryMessage(query, course, tokenBudget);
-  if (!message)
+  if (!message) {
+    Logger.warn('queryMessage is null');
     return 'Sorry, we do not support this course yet. Please try again later.';
+  }
 
   const newMessage = {
     role: 'user',
@@ -49,19 +56,20 @@ async function ask(query, chatId, tokenBudget = 4096 - 500) {
 
   const messages = [newMessage];
 
+  Logger.logExit();
   return await createCourseGptCompletion(false, messages);
 }
 
 async function stringsRankedByRelatedness(query, course, topN = 100) {
+  Logger.logEnter();
   const queryEmbeddingResponse = await createCourseGptEmbedding(query);
   const queryEmbedding = queryEmbeddingResponse[0].embedding;
 
   let embeddings;
   try {
-    console.log(`Reading embeddings for course ${course.courseCode}`);
     embeddings = await EmbeddingCache.getAllByCourse(course._id);
   } catch (error) {
-    console.error(`Failed to read embeddings: ${error}`);
+    Logger.error(`Error in retrieving embeddings for ${course.courseCode}`);
     return [];
   }
 
@@ -74,12 +82,13 @@ async function stringsRankedByRelatedness(query, course, topN = 100) {
         embedding: relatedness,
       };
     } catch (error) {
-      console.error(error);
+      Logger.error('Error in calculating relatedness');
     }
   });
 
   relatednessData.sort((a, b) => b.embedding - a.embedding);
 
+  Logger.logExit();
   return relatednessData.slice(0, topN).map(record => record.text);
 }
 

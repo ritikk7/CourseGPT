@@ -16,38 +16,4 @@ const EmbeddingSchema = new Schema(
 
 const Embedding = mongoose.model('Embedding', EmbeddingSchema);
 
-let EmbeddingCache = {
-  cache: {},
-  lastUpdated: null,
-
-  getAllByCourse: async function (courseId) {
-    const now = new Date();
-    let found = Object.values(this.cache).filter(
-      embedding => String(embedding.course) === String(courseId)
-    );
-
-    if (
-      !found.length ||
-      (this.lastUpdated && this.lastUpdated < found[0].updatedAt)
-    ) {
-      found = await Embedding.find({ course: courseId });
-      for (const embedding of found) {
-        this.cache[embedding._id] = embedding;
-      }
-      this.lastUpdated = now;
-    }
-
-    return found;
-  },
-
-  create: async function (embeddingData) {
-    const newEmbedding = new Embedding(embeddingData);
-    await newEmbedding.save();
-    this.cache[newEmbedding._id] = new Embedding(embeddingData);
-    this.lastUpdated = new Date();
-
-    return newEmbedding;
-  },
-};
-
-module.exports = { Embedding, EmbeddingCache };
+module.exports = Embedding;
