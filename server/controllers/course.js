@@ -4,6 +4,7 @@ const {
   addContentToCourseTrainingData,
   createEmbeddingsForAllFiles,
 } = require('../gpt/createEmbeddings');
+const { createEmbeddingForNewData } = require("../gpt/createEmbeddingsMongo");
 
 async function getSchoolCourse(req, res) {
   try {
@@ -62,11 +63,11 @@ async function createCourse(req, res) {
 
 async function improveModel(req, res) {
   try {
+    const userId = req.user.id;
     const courseId = req.params.courseId;
     const course = await Course.findById(courseId).populate('school');
 
-    await addContentToCourseTrainingData(course, req.body.content);
-    await createEmbeddingsForAllFiles(course);
+    await createEmbeddingForNewData(userId, course, req.body.content)
 
     res.status(200).json({ course });
   } catch (error) {
