@@ -6,8 +6,8 @@ const {
 } = require('./openAI');
 const School = require('../models/school');
 const Chat = require('../models/chat');
-const { Logger } = require('../util/Logger');
 const { EmbeddingCache } = require('../util/EmbeddingCache');
+const { Logger } = require('../util/Logger');
 
 async function queryMessage(query, course, tokenBudget) {
   Logger.logEnter();
@@ -36,9 +36,7 @@ async function queryMessage(query, course, tokenBudget) {
 
 async function ask(query, chatId, tokenBudget = 4096 - 500) {
   Logger.logEnter();
-  const chat = await Chat.findById(chatId)
-    .populate('messages')
-    .populate('course');
+  const chat = await Chat.findById(chatId).populate('course');
   if (!chat) throw new Error('Invalid chat ID');
   const course = chat.course;
   if (!course) throw new Error('Invalid course ID');
@@ -49,15 +47,13 @@ async function ask(query, chatId, tokenBudget = 4096 - 500) {
     return 'Sorry, we do not support this course yet. Please try again later.';
   }
 
-  const newMessage = {
-    role: 'user',
-    content: message,
-  };
-
-  const messages = [newMessage];
-
   Logger.logExit();
-  return await createCourseGptCompletion(false, messages);
+  return await createCourseGptCompletion([
+    {
+      role: 'user',
+      content: message,
+    },
+  ]);
 }
 
 async function stringsRankedByRelatedness(query, course, topN = 100) {

@@ -14,16 +14,16 @@ const ChatSection = ({ message }) => {
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
   const userImage = 'https://bit.ly/dan-abramov';
-  const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
+  const renderAnimation = isTimestampLessThan15SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
   const [typingAnimation, setTypingAnimation] = useState('.');
 
   // Credit to chatGPT
-  function isTimestampLessThan5SecondsAgo(createdAt) {
+  function isTimestampLessThan15SecondsAgo(createdAt) {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
-    return createdAtTimestamp >= currentTime - 10;
+    return createdAtTimestamp >= currentTime - 15;
   }
 
   useEffect(() => {

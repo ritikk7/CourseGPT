@@ -1,84 +1,60 @@
+const chalk = require('chalk');
+
 class Logger {
-  // isProduction;
-  // logFlag;
   constructor() {
     this.isProduction = process.env.NODE_ENV === 'production';
-    this.logFlag = true; // manual flag for logging to console
-    this.colors = {
-      // colors copied from GPT
-      reset: '\x1b[0m',
-      bright: '\x1b[1m',
-      dim: '\x1b[2m',
-      underscore: '\x1b[4m',
-      blink: '\x1b[5m',
-      reverse: '\x1b[7m',
-      hidden: '\x1b[8m',
-      black: '\x1b[30m',
-      red: '\x1b[31m',
-      green: '\x1b[32m',
-      yellow: '\x1b[33m',
-      blue: '\x1b[34m',
-      magenta: '\x1b[35m',
-      cyan: '\x1b[36m',
-      white: '\x1b[37m',
-    };
+    this.logFlag = true;
   }
 
   log(...messages) {
-    if (this.isProduction && this.logFlag) {
+    if (!this.isProduction && this.logFlag) {
       const stackInfo = this.getSimpleCurrentStackInfo();
-      console.log(...messages, '-', stackInfo, this.colors.reset);
+      console.log(...messages, '-', stackInfo);
+    }
+  }
+
+  happyLog(...messages) {
+    if (!this.isProduction && this.logFlag) {
+      const stackInfo = this.getSimpleCurrentStackInfo();
+      console.log(chalk.green(...messages, '-', stackInfo));
     }
   }
 
   logEnter() {
     if (!this.isProduction && this.logFlag) {
       const stackInfo = this.getSimpleCurrentStackInfo();
-      console.log(this.colors.dim, 'Entering:', stackInfo, this.colors.reset);
+      console.log(chalk.dim('Entering:', stackInfo));
     }
   }
 
   logExit() {
     if (!this.isProduction && this.logFlag) {
       const stackInfo = this.getSimpleCurrentStackInfo();
-      console.log(this.colors.dim, 'Exiting:', stackInfo, this.colors.reset);
+      console.log(chalk.dim('Exiting:', stackInfo));
     }
   }
 
   error(...messages) {
     if (!this.isProduction && this.logFlag) {
-      console.error(this.colors.red, ...messages, this.colors.reset);
+      console.error(chalk.red(...messages));
     }
   }
 
   warn(...messages) {
-    const stackInfo = this.getSimpleCurrentStackInfo();
     if (!this.isProduction && this.logFlag) {
-      console.warn(
-        this.colors.yellow,
-        ...messages,
-        '- ',
-        stackInfo,
-        this.colors.reset
-      );
+      const stackInfo = this.getSimpleCurrentStackInfo();
+      console.warn(chalk.yellow(...messages, '-', stackInfo));
     }
   }
 
   debug(...messages) {
-    const stackInfo = this.getSimpleCurrentStackInfo();
     if (!this.isProduction && this.logFlag) {
-      console.debug(
-        this.colors.cyan,
-        ...messages,
-        '- ',
-        stackInfo,
-        this.colors.reset
-      );
+      const stackInfo = this.getSimpleCurrentStackInfo();
+      console.debug(chalk.cyan(...messages, '-', stackInfo));
     }
   }
 
   getSimpleCurrentStackInfo() {
-    // function written entirely by GPT
     const error = new Error();
     const stackTrace = error.stack;
     const stackLines = stackTrace.split('\n');

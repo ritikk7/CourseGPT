@@ -6,36 +6,37 @@ class EmbeddingCache {
 
   constructor() {
     this.cache = {};
-    this.lastUpdated = null;
+    this.lastUpdated = {};
   }
 
   async getAllByCourse(courseId) {
     const now = new Date();
-    let found = Object.values(this.cache).filter(
-      embedding => String(embedding.course) === String(courseId)
-    );
 
     if (
-      !found.length ||
-      (this.lastUpdated && this.lastUpdated < found[0].updatedAt)
+      !this.cache[courseId] ||
+      (this.lastUpdated[courseId] &&
+        this.lastUpdated[courseId] < this.cache[courseId][0].updatedAt)
     ) {
-      found = await Embedding.find({ course: courseId });
-      for (const embedding of found) {
-        this.cache[embedding._id] = embedding;
-      }
-      this.lastUpdated = now;
+      this.cache[courseId] = await Embedding.find({ course: courseId });
+      this.lastUpdated[courseId] = now;
     }
 
-    return found;
+    return this.cache[courseId];
   }
 
   async create(embeddingData) {
     const newEmbedding = new Embedding(embeddingData);
     await newEmbedding.save();
-    this.cache[newEmbedding._id] = new Embedding(embeddingData);
-    this.lastUpdated = new Date();
+
+    if (!this.cache[newEmbedding.course]) {
+      this.cache[newEmbedding.course] = [];
+    }
+
+    this.cache[newEmbedding.course].push(newEmbedding);
+    this.lastUpdated[newEmbedding.course] = new Date();
 
     return newEmbedding;
   }
 }
+
 module.exports = { EmbeddingCache: new EmbeddingCache() };

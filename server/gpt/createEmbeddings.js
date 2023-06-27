@@ -4,15 +4,18 @@ const {
   createCourseGptEmbedding,
 } = require('./openAI');
 const crypto = require('crypto');
-const { Logger } = require('../util/Logger');
 const { EmbeddingCache } = require('../util/EmbeddingCache');
+const { Logger } = require('../util/Logger');
+const stopwords = require('stopword');
+const natural = require('natural');
+const stemmer = natural.PorterStemmer;
 
 const BATCH_SIZE = process.env.BATCH_SIZE || 1000;
 const CHUNK_SIZE = process.env.CHUNK_SIZE || 500;
+let currCourse = null;
 
 function splitStringToChunks(rawData, delimiter = '.') {
   Logger.logEnter();
-  rawData = rawData.replace(/["']/g, '');
   const sentences = rawData.split(delimiter);
   let chunks = [];
   let chunk = '';
@@ -36,44 +39,60 @@ function splitStringToChunks(rawData, delimiter = '.') {
   return chunks;
 }
 
-async function getCompletionWithoutQuotes(
-  enableThrottling,
-  userPrompt,
-  temperature
-) {
+async function normalizeAndCleanText(rawText) {
   Logger.logEnter();
-  const rawOutput = await createCourseGptCompletion(
-    enableThrottling,
-    [{ role: 'user', content: userPrompt }],
-    temperature
-  );
+  // According to Chat GPTs suggestion we should optimize the text for embeddings by:
+  // - Converting all the text to lowercase
+  // - Removing all special characters
+  // - Removing all numbers
+  // - Removing extra white spaces
+  // - Removing stop words
+  // - Applying stemming to reduce each word to its root form
+  let cleanedText = rawText.toLowerCase();
+  cleanedText = cleanedText.replace(/[^a-zA-Z0-9\s]/g, '');
+  cleanedText = cleanedText.replace(/\d+/g, '');
+  cleanedText = cleanedText.replace(/\s\s+/g, ' ');
+  const words = cleanedText.split(' ');
+  const cleanedWords = stopwords.removeStopwords(words);
+  const stemmedWords = cleanedWords.map(word => stemmer.stem(word));
+  cleanedText = stemmedWords.join(' ');
   Logger.logExit();
-  return rawOutput.trim().replace(/["']/g, '');
+  return cleanedText.trim();
 }
 
 async function generateSectionTitle(sectionContent) {
   Logger.logEnter();
-  const keywords = await extractKeywords(sectionContent);
+  const cleanedSectionContent = await normalizeAndCleanText(sectionContent);
+  const keywords = await extractKeywords(cleanedSectionContent);
 
   let content = '';
   if (keywords.length > 0) {
-    content = `Consider the course and the keywords [${keywords.join(
+    content = `Given the keywords [${keywords.join(
       ', '
-    )}] from the section content provided. Reflect deeply and create a concise, relevant title that is optimized for an embedding-based search: \n"${sectionContent}"`;
+    )}] from the cleaned section content of course ${
+      currCourse.courseCode
+    }, think carefully and generate a short, relevant title optimized for embedding-based search.\n\nHere is the section content:\n"${cleanedSectionContent}"`;
   } else {
-    content = `Considering the course and the section content provided, create a concise, relevant title that is optimized for an embedding-based search: \n"${sectionContent}"`;
+    content = `Given the cleaned section content of course ${currCourse.courseCode}, think carefully and create a short, relevant title optimized for embedding-based search.\n\nHere is the section content:\n"${cleanedSectionContent}"`;
   }
+  let generatedTitle = await createCourseGptCompletion(
+    [{ role: 'system', content: content }],
+    0.5
+  );
+  generatedTitle = generatedTitle.replace(/['"]+/g, '');
 
   Logger.logExit('generateSectionTitle');
-  return getCompletionWithoutQuotes(true, content, 0.5);
+  return generatedTitle;
 }
 
 async function extractKeywords(sectionContent) {
   Logger.logEnter();
   try {
-    const content = `Review the following text deeply. What are the key topics, entities, keywords, or themes it covers? Please list them as comma-separated values:\n"${sectionContent}"`;
+    const content = `From the following course section content, identify and list the key topics, entities, keywords, or themes it covers. Please list them as comma-separated values:\n"${sectionContent}"`;
 
-    const rawKeywords = await getCompletionWithoutQuotes(true, content, 0.5);
+    const rawKeywords = await createCourseGptCompletion([
+      { role: 'system', content: content },
+    ]);
 
     if (rawKeywords.includes(',')) {
       return rawKeywords.split(',').map(keyword => keyword.trim());
@@ -90,9 +109,11 @@ async function splitRawDataIntoSections(rawData) {
   Logger.logEnter();
   const resultSections = [];
   const fileChunks = splitStringToChunks(rawData);
-  for (const chunk of fileChunks) {
-    const sectionTitle = await generateSectionTitle(chunk);
-    resultSections.push([sectionTitle, chunk]);
+  const titles = await Promise.all(
+    fileChunks.map(chunk => generateSectionTitle(chunk))
+  );
+  for (let i = 0; i < fileChunks.length; i++) {
+    resultSections.push([titles[i], fileChunks[i]]);
   }
   Logger.logExit();
   return resultSections;
@@ -134,21 +155,24 @@ async function storeEmbeddingsInMongoAndCache(
 ) {
   Logger.logEnter();
   const submissionId = crypto.randomUUID();
-  for (let i = 0; i < courseStrings.length; i++) {
-    const embedding = {
-      course: course._id,
-      text: courseStrings[i],
-      embedding: embeddings[i].map(Number),
-      submissionId: submissionId,
-      submittedBy: submitterId,
-    };
-    await EmbeddingCache.create(embedding);
-  }
+  await Promise.all(
+    courseStrings.map(async (_, i) => {
+      const embedding = {
+        course: course._id,
+        text: courseStrings[i],
+        embedding: embeddings[i].map(Number),
+        submissionId: submissionId,
+        submittedBy: submitterId,
+      };
+      await EmbeddingCache.create(embedding);
+    })
+  );
   Logger.logExit();
 }
 
 async function createEmbeddingForNewData(submitterId, course, content) {
   Logger.logEnter();
+  currCourse = course;
   let trainingStrings = await processDataIntoTrainingStrings(content);
   const embeddings = await createCourseEmbeddings(trainingStrings);
   await storeEmbeddingsInMongoAndCache(
@@ -158,6 +182,7 @@ async function createEmbeddingForNewData(submitterId, course, content) {
     embeddings
   );
   Logger.logExit();
+  Logger.happyLog('Finished creating embedding for new data');
 }
 
 module.exports = {

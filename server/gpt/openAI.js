@@ -10,16 +10,12 @@ const openAI = new OpenAIApi(
   })
 );
 
-async function createCourseGptCompletion(
-  enableThrottling,
-  messages,
-  temperature = 0.5
-) {
+async function createCourseGptCompletion(messages, temperature = 0.5) {
   Logger.logEnter();
-  if (enableThrottling) await sleep(3000);
   const NUM_ATTEMPTS = 2;
   for (let i = 0; i < NUM_ATTEMPTS; i++) {
     try {
+      validateInput(messages, temperature);
       const response = await openAI.createChatCompletion({
         model: process.env.OPENAI_GPT_MODEL,
         messages: messages,
@@ -28,7 +24,7 @@ async function createCourseGptCompletion(
       Logger.logExit();
       return response.data.choices[0].message.content;
     } catch (err) {
-      await sleep(2000);
+      await sleep(1000); // wait to retry
       Logger.error('Error creating completion' + err);
     }
   }
@@ -58,7 +54,7 @@ async function generateChatTitle(userInput, gptResponse) {
     { role: 'user', content: prompt },
   ];
 
-  let title = await createCourseGptCompletion(false, messages, 0.5);
+  let title = await createCourseGptCompletion(messages, 0.5);
   title = title.split(' ').slice(0, 5).join(' ');
   Logger.logExit();
   return title;
@@ -73,6 +69,18 @@ function countTokens(text) {
 }
 function getRelatedness(x, y) {
   return similarity(x, y);
+}
+
+function validateInput(messages, temperature) {
+  if (!Array.isArray(messages) || messages.length === 0) {
+    throw new Error("Invalid 'messages' input: Expected a non-empty array.");
+  }
+
+  if (typeof temperature !== 'number' || temperature < 0 || temperature > 1) {
+    throw new Error(
+      "Invalid 'temperature' input: Expected a number between 0 and 1."
+    );
+  }
 }
 
 module.exports = {

@@ -14,6 +14,8 @@ const EmbeddingSchema = new Schema(
   }
 );
 
+EmbeddingSchema.index({ course: 1 });
+
 const Embedding = mongoose.model('Embedding', EmbeddingSchema);
 
 module.exports = Embedding;
