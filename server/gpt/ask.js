@@ -10,7 +10,7 @@ const { Logger } = require('../util/Logger');
 
 async function queryMessage(query, course, tokenBudget) {
   Logger.logEnter();
-  const MAX_EMBEDDINGS_TO_INCLUDE = 10;
+  const MAX_EMBEDDINGS_TO_INCLUDE = 100;
 
   const strings = await stringsRankedByRelatedness(query, course);
   if (strings.length === 0) {
@@ -18,7 +18,7 @@ async function queryMessage(query, course, tokenBudget) {
     return null;
   }
 
-  let message = `Think carefully and read all of the course ${course.courseCode} information provided below. I need to answer a question about the course ${course.courseCode} information provided below. If the necessary information is not provided, my response will be "I could not find an answer." Here is the question and the relevant course information: \n\n Question: ${query} \n\n`;
+  let message = `Think carefully and read all of the course ${course.courseCode} information provided below. I need a detailed answer a question about the course ${course.courseCode}. If the necessary information is not provided, respond with "I could not find an answer." Here is the question and the relevant course information: \n\n Question: ${query} \n\n`;
 
   let tempContextStrings = [];
   let tokensInMessageSoFar = countTokens(message);
@@ -32,7 +32,7 @@ async function queryMessage(query, course, tokenBudget) {
     tempContextStrings.push(nextEmbeddingString);
   }
 
-  tempContextStrings.reverse(); // I found providing the most relevant information (related embedding) at the bottom provided better results
+  //tempContextStrings.reverse(); // I found providing the most relevant information (related embedding) at the bottom provided better results
   tempContextStrings.forEach(item => {
     message += item;
   });
