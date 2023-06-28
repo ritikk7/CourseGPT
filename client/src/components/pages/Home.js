@@ -8,9 +8,11 @@ import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
 import { fetchAllCourses } from '../../redux/coursesSlice';
 import { fetchUserChats } from '../../redux/chatsSlice';
+import RegisterUserDetails from './RegisterUserDetails';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -51,8 +53,12 @@ function Home() {
 
   return (
     <div className="App">
-      <SidePanel />
-      <RightSection />
+      {!user.type ? 
+      <><RegisterUserDetails /></> :
+      <>
+        <SidePanel />
+        <RightSection />
+      </>}
     </div>
   );
 }

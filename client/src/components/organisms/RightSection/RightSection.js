@@ -15,7 +15,7 @@ import {
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
 
-const Message = ({value}) => (
+const Message = ({ value }) => (
   <div className={styles.message}>
     <p>{value}</p>
   </div>
@@ -49,7 +49,11 @@ const InputArea = ({
         <ArrowForwardIcon />
       </button>
     </div>
-    <Message value={"CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]"}/>
+    <Message
+      value={
+        'CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]'
+      }
+    />
   </div>
 );
 
