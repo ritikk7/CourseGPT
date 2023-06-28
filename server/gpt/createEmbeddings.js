@@ -81,7 +81,7 @@ async function generateSectionTitle(sectionContent) {
   );
   generatedTitle = generatedTitle.replace(/['"]+/g, '');
 
-  Logger.logExit('generateSectionTitle');
+  Logger.logExit();
   return generatedTitle;
 }
 

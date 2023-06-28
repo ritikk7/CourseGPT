@@ -34,7 +34,11 @@ async function queryMessage(query, course, tokenBudget) {
   return message + question;
 }
 
-async function ask(query, chatId, tokenBudget = 4096 - 500) {
+async function ask(
+  query,
+  chatId,
+  tokenBudget = process.env.TOKEN_LIMIT - 500
+) {
   Logger.logEnter();
   const chat = await Chat.findById(chatId).populate('course');
   if (!chat) throw new Error('Invalid chat ID');
