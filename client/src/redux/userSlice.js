@@ -13,7 +13,6 @@ const updateUserData = (state, action) => {
     'firstName',
     'lastName',
     'email',
-    'dateOfBirth',
     'chats',
     'school',
     'favourites',

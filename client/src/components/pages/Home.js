@@ -18,6 +18,7 @@ function Home() {
   const persistedDropdownCourse = useSelector(
     state => state.user.selectedCourse
   );
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -63,8 +64,12 @@ function Home() {
 
   return (
     <div className="App">
-      <SidePanel />
-      <RightSection />
+      {!user.type ? 
+      <><RegisterUserDetails /></> :
+      <>
+        <SidePanel />
+        <RightSection />
+      </>}
     </div>
   );
 }

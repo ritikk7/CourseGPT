@@ -44,9 +44,9 @@ export default function Login() {
     if (authError) dispatch(setAuthError(null));
     window.location.href = baseUrl + '/auth/google';
   };
-  const navigateToRegister = () => {
+  const navigateToSignUp = () => {
     if (authError) dispatch(setAuthError(null));
-    navigate('/register');
+    navigate('/signup');
   };
   useEffect(() => {
     if (isAuthenticated) {
@@ -133,7 +133,7 @@ export default function Login() {
           <Stack justify="center" mt={4}>
             <Text align={'center'} color={'white'}>
               Don't have an account?{' '}
-              <Link onClick={navigateToRegister} color={'blue.400'}>
+              <Link onClick={navigateToSignUp} color={'blue.400'}>
                 Create one!
               </Link>
             </Text>
