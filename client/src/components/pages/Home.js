@@ -52,19 +52,18 @@ function Home() {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="App">
-      {!user.type ? (
-        <>
+    !user.type ? (
+        <div className="App">
           <RegisterUserDetails />
-        </>
-      ) : (
-        <>
-          <SidePanel />
-          <RightSection />
-        </>
-      )}
-    </div>
+        </div>
+    ) : (
+      <div className="App">
+        <SidePanel />
+        <RightSection />
+      </div>
+    )
   );
 }
+
 
 export default Home;
