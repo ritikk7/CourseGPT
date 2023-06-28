@@ -10,38 +10,33 @@ const { Logger } = require('../util/Logger');
 
 async function queryMessage(query, course, tokenBudget) {
   Logger.logEnter();
-  const MAX_EMBEDDINGS_TO_INCLUDE = 100;
 
+  const MAX_EMBEDDINGS_TO_INCLUDE = 100;
   const strings = await stringsRankedByRelatedness(query, course);
+
   if (strings.length === 0) {
     Logger.warn('stringsRankedByRelatedness array is empty');
     return null;
   }
 
   let message = `Think carefully and read all of the course ${course.courseCode} information provided below. I need a detailed answer a question about the course ${course.courseCode}. If the necessary information is not provided, respond with "I could not find an answer." Here is the question and the relevant course information: \n\n Question: ${query} \n\n`;
-
-  let tempContextStrings = [];
   let tokensInMessageSoFar = countTokens(message);
 
   for (let i = 0; i < MAX_EMBEDDINGS_TO_INCLUDE && i < strings.length; i++) {
     const nextEmbeddingString = `${course.courseCode} Information:\n${strings[i]}\n`;
     tokensInMessageSoFar += countTokens(nextEmbeddingString);
+
     if (tokensInMessageSoFar > tokenBudget) {
       break;
     }
-    tempContextStrings.push(nextEmbeddingString);
+
+    message += nextEmbeddingString;
   }
-
-  //tempContextStrings.reverse(); // I found providing the most relevant information (related embedding) at the bottom provided better results
-  tempContextStrings.forEach(item => {
-    message += item;
-  });
-
-  Logger.debug(message);
 
   Logger.logExit();
   return message;
 }
+
 
 async function ask(query, chatId, tokenBudget = process.env.TOKEN_LIMIT - 500) {
   Logger.logEnter();
