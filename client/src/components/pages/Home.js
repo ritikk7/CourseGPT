@@ -53,12 +53,16 @@ function Home() {
 
   return (
     <div className="App">
-      {!user.type ? 
-      <><RegisterUserDetails /></> :
-      <>
-        <SidePanel />
-        <RightSection />
-      </>}
+      {!user.type ? (
+        <>
+          <RegisterUserDetails />
+        </>
+      ) : (
+        <>
+          <SidePanel />
+          <RightSection />
+        </>
+      )}
     </div>
   );
 }
