@@ -54,6 +54,8 @@ const SidePanel = () => {
   const navigate = useNavigate();
   const [showSimpleCourseTrainingPopup, setShowSimpleCourseTrainingPopup] =
     useState(false);
+  const userFirst = useSelector(state => state.user.firstName);
+  const userLast = useSelector(state => state.user.lastName);
   const userType = useSelector(state => state.user.type);
   const favouriteCourses = useSelector(userFavouriteCoursesSelector);
   const selectedCourse = useSelector(
@@ -176,6 +178,7 @@ const SidePanel = () => {
           handleLogout={handleLogout}
           setSettingsOpen={setSettingsOpen}
           handleClearConversations={handleClearConversations}
+          username={userFirst + ' ' + userLast}
         />
         {isSettingsOpen && (
           <ProfileModal

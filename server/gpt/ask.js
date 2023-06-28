@@ -37,7 +37,6 @@ async function queryMessage(query, course, tokenBudget) {
   return message;
 }
 
-
 async function ask(query, chatId, tokenBudget = process.env.TOKEN_LIMIT - 500) {
   Logger.logEnter();
   const chat = await Chat.findById(chatId).populate('course');

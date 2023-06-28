@@ -14,6 +14,7 @@ const SidePanelUserMenu = ({
   setSettingsOpen,
   handleLogout,
   handleClearConversations,
+  username,
 }) => {
   return (
     <Menu>
@@ -34,7 +35,7 @@ const SidePanelUserMenu = ({
         rightIcon={<HamburgerIcon />}
         width="100%"
       >
-        Username
+        {username}
       </MenuButton>
       <MenuList bg="black" border="none">
         <MenuItem bg="black" onClick={() => setSettingsOpen(true)}>
