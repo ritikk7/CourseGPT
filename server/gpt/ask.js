@@ -11,10 +11,8 @@ const { Logger } = require('../util/Logger');
 
 async function queryMessage(query, course, tokenBudget) {
   Logger.logEnter();
+  const MAX_EMBEDDINGS_TO_INCLUDE = 10;
   course.school = await School.findById(course.school);
-  const introduction = `I need to answer a question about the course ${course.courseCode}. If the necessary information is not provided, my response will be "I could not find an answer." Here is the question and the relevant course information: `;
-  const question = `\nQuestion: ${query}\n\nCourse Information:`;
-  let message = introduction;
 
   const strings = await stringsRankedByRelatedness(query, course);
   if (strings.length === 0) {
@@ -22,17 +20,31 @@ async function queryMessage(query, course, tokenBudget) {
     return null;
   }
 
-  for (const string of strings) {
-    const nextArticle = `\n\n${string}`;
-    if (countTokens(message + nextArticle + question) > tokenBudget) {
+  let message = `Think carefully and read all of the course ${course.courseCode} information provided below. I need to answer a question about the course ${course.courseCode} information provided below. If the necessary information is not provided, my response will be "I could not find an answer." Here is the question and the relevant course information: \n\n Question: ${query} \n\n`;
+
+  let tempContextStrings = [];
+  let tokensInMessageSoFar = countTokens(message);
+
+  for (let i = 0; i < MAX_EMBEDDINGS_TO_INCLUDE && i < strings.length; i++) {
+    const nextEmbeddingString = `${course.courseCode} Information:\n${strings[i]}\n`;
+    tokensInMessageSoFar += countTokens(nextEmbeddingString);
+    if (tokensInMessageSoFar > tokenBudget) {
       break;
     }
-    message += nextArticle;
+    tempContextStrings.push(nextEmbeddingString);
   }
 
+  tempContextStrings.reverse();// I found providing the most relevant information (related embedding) at the bottom provided better results
+  tempContextStrings.forEach(item => {
+    message += item;
+  });
+
+  Logger.debug(message);
+
   Logger.logExit();
-  return message + question;
+  return message;
 }
+
 
 async function ask(
   query,
@@ -60,7 +72,7 @@ async function ask(
   ]);
 }
 
-async function stringsRankedByRelatedness(query, course, topN = 100) {
+async function stringsRankedByRelatedness(query, course) {
   Logger.logEnter();
   const queryEmbeddingResponse = await createCourseGptEmbedding(query);
   const queryEmbedding = queryEmbeddingResponse[0].embedding;
@@ -89,7 +101,7 @@ async function stringsRankedByRelatedness(query, course, topN = 100) {
   relatednessData.sort((a, b) => b.embedding - a.embedding);
 
   Logger.logExit();
-  return relatednessData.slice(0, topN).map(record => record.text);
+  return relatednessData.map(record => record.text);
 }
 
 module.exports = { ask };
