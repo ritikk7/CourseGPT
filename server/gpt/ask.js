@@ -4,7 +4,6 @@ const {
   createCourseGptCompletion,
   createCourseGptEmbedding,
 } = require('./openAI');
-const School = require('../models/school');
 const Chat = require('../models/chat');
 const { EmbeddingCache } = require('../util/EmbeddingCache');
 const { Logger } = require('../util/Logger');
@@ -12,7 +11,6 @@ const { Logger } = require('../util/Logger');
 async function queryMessage(query, course, tokenBudget) {
   Logger.logEnter();
   const MAX_EMBEDDINGS_TO_INCLUDE = 10;
-  course.school = await School.findById(course.school);
 
   const strings = await stringsRankedByRelatedness(query, course);
   if (strings.length === 0) {
@@ -34,7 +32,7 @@ async function queryMessage(query, course, tokenBudget) {
     tempContextStrings.push(nextEmbeddingString);
   }
 
-  tempContextStrings.reverse();// I found providing the most relevant information (related embedding) at the bottom provided better results
+  tempContextStrings.reverse(); // I found providing the most relevant information (related embedding) at the bottom provided better results
   tempContextStrings.forEach(item => {
     message += item;
   });
@@ -45,12 +43,7 @@ async function queryMessage(query, course, tokenBudget) {
   return message;
 }
 
-
-async function ask(
-  query,
-  chatId,
-  tokenBudget = process.env.TOKEN_LIMIT - 500
-) {
+async function ask(query, chatId, tokenBudget = process.env.TOKEN_LIMIT - 500) {
   Logger.logEnter();
   const chat = await Chat.findById(chatId).populate('course');
   if (!chat) throw new Error('Invalid chat ID');
