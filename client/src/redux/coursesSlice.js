@@ -123,7 +123,15 @@ const coursesSlice = createSlice({
         state.courses = action.payload;
         handleLoading(state, false);
       })
-      .addCase(fetchAllCourses.rejected, handleRejected);
+      .addCase(fetchAllCourses.rejected, handleRejected)
+      .addCase(trainCurrentlySelectedDropdownCourse.pending, handlePending)
+      .addCase(
+        trainCurrentlySelectedDropdownCourse.fulfilled,
+        (state, action) => {
+          handleLoading(state, false);
+        }
+      )
+      .addCase(trainCurrentlySelectedDropdownCourse.rejected, handleRejected);
   },
 });
 

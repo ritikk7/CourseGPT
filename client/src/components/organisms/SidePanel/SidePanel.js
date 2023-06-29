@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
-import {
-  setCurrentlySelectedDropdownCourse,
-} from '../../../redux/coursesSlice';
+import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
   fetchUserChats,
@@ -26,7 +24,7 @@ import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMe
 import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
-import TrainCourseModal from "../TrainCourseModal/TrainCourseModal";
+import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
 
 const SidePanel = () => {
   const dispatch = useDispatch();
@@ -156,6 +154,7 @@ const SidePanel = () => {
         <TrainCourseModal
           isOpen={isTrainCourseModalOpen}
           handleClose={() => setTrainCourseModalOpen(false)}
+          selectedCourseName={selectedCourse?.courseCode}
         />
       </div>
     </div>

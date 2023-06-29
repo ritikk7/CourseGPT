@@ -9,8 +9,8 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { trainCurrentlySelectedDropdownCourse } from "../../../redux/coursesSlice";
-import { useDispatch } from "react-redux";
+import { trainCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
+import { useDispatch } from 'react-redux';
 
 const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
   const [textAreaValue, setTextAreaValue] = useState('');
@@ -20,7 +20,9 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
   };
 
   function onTrain() {
-    dispatch(trainCurrentlySelectedDropdownCourse(textAreaValue))
+    dispatch(trainCurrentlySelectedDropdownCourse(textAreaValue));
+    setTextAreaValue('');
+    handleClose();
   }
 
   return (
@@ -40,10 +42,26 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
           />
         </VStack>
         <ModalFooter>
-          <Button bg="blue.600" color="white" _hover={{bg: 'blue.700'}} mr={3} onClick={onTrain}>
+          <Button
+            bg="blue.600"
+            color="white"
+            _hover={{ bg: 'blue.700' }}
+            mr={3}
+            onClick={onTrain}
+          >
             Train {selectedCourseName}
           </Button>
-          <Button bg="red.600" color="white" _hover={{bg: 'red.700'}} onClick={handleClose}>Cancel</Button>
+          <Button
+            bg="red.600"
+            color="white"
+            _hover={{ bg: 'red.700' }}
+            onClick={() => {
+              setTextAreaValue('');
+              handleClose();
+            }}
+          >
+            Cancel
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
