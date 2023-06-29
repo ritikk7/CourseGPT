@@ -19,8 +19,8 @@ import {
 import {
   setActivePanelChat,
   setActivePanelInfo,
-  setShouldFocusChatInput,
-} from '../../../redux/userSlice';
+  setShouldFocusChatInput, updateUser
+} from "../../../redux/userSlice";
 import { logoutUser } from '../../../redux/authSlice';
 import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
 import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
@@ -93,11 +93,13 @@ const SidePanel = () => {
     const newCourseId = event.target.value;
     if (newCourseId === '') {
       dispatch(setCurrentlySelectedDropdownCourse(null));
+      dispatch(updateUser({selectedCourse: null}));
       setFilteredChatsToShow([]);
       setDisableNewChatButton(true);
     } else {
       const newCourse = favouriteCourses[newCourseId];
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
+      dispatch(updateUser({selectedCourse: newCourseId}));
       setDisableNewChatButton(false);
     }
     dispatch(setFocusedChat(null));

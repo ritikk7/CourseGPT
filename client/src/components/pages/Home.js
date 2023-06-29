@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
 import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
-import { fetchAllCourses } from '../../redux/coursesSlice';
+import { fetchAllCourses, setCurrentlySelectedDropdownCourse } from "../../redux/coursesSlice";
 import { fetchUserChats } from '../../redux/chatsSlice';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const persistedDropdownCourse = useSelector(state => state.user.selectedCourse);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,7 @@ function Home() {
     try {
       await dispatch(fetchAllSchools());
       await dispatch(fetchAllCourses());
+      dispatch(setCurrentlySelectedDropdownCourse(persistedDropdownCourse))
       await dispatch(fetchUserChats());
       setIsLoading(false);
     } catch (error) {

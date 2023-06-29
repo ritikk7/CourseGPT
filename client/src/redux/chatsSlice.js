@@ -5,7 +5,6 @@ import {
   getGptResponseInActiveChat,
 } from './messagesSlice';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
-import { setCurrentlySelectedDropdownCourse } from './coursesSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -188,12 +187,6 @@ const chatsSlice = createSlice({
         const activeChatId = state.activeChat._id;
         state.userChats[activeChatId].messages.push(action.payload._id);
         state.activeChat = state.userChats[activeChatId];
-      })
-
-      // courseSlice actions
-      .addCase(setCurrentlySelectedDropdownCourse, (state, action) => {
-        state.activeChat = null;
-        state.waitingFirstMessage = false;
       });
   },
 });

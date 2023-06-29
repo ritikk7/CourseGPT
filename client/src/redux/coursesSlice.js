@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
+import { fetchUser, loginUser, registerUser } from "./authSlice";
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -85,7 +86,7 @@ const coursesSlice = createSlice({
     // The `courses` object maps each `courseId` key to a course object.
     // Example: { "courseId1": courseObject1, "courseId2": courseObject2}
     courses: {},
-    currentlySelectedDropdownCourse: null, // course object
+    currentlySelectedDropdownCourse: null, // course object, null if allChats
     loading: false,
     error: null, // string message
   },
@@ -94,7 +95,13 @@ const coursesSlice = createSlice({
       state.error = action.payload;
     },
     setCurrentlySelectedDropdownCourse: (state, action) => {
-      state.currentlySelectedDropdownCourse = action.payload;
+      if(!action.payload || action.payload._id) {
+        // if the payload is a course object or null, then simply update the selectedDropdownCourse
+        state.currentlySelectedDropdownCourse = action.payload;
+      } else {
+        // else its a course id. index and update
+        state.currentlySelectedDropdownCourse = state.courses[action.payload];
+      }
     },
   },
   extraReducers: builder => {
@@ -116,7 +123,7 @@ const coursesSlice = createSlice({
         state.courses = action.payload;
         handleLoading(state, false);
       })
-      .addCase(fetchAllCourses.rejected, handleRejected);
+      .addCase(fetchAllCourses.rejected, handleRejected)
   },
 });
 
