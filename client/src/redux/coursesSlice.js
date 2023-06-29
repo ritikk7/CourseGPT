@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
-import { fetchUser, loginUser, registerUser } from "./authSlice";
+import { fetchUser, loginUser, registerUser } from './authSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -95,7 +95,7 @@ const coursesSlice = createSlice({
       state.error = action.payload;
     },
     setCurrentlySelectedDropdownCourse: (state, action) => {
-      if(!action.payload || action.payload._id) {
+      if (!action.payload || action.payload._id) {
         // if the payload is a course object or null, then simply update the selectedDropdownCourse
         state.currentlySelectedDropdownCourse = action.payload;
       } else {
@@ -123,7 +123,7 @@ const coursesSlice = createSlice({
         state.courses = action.payload;
         handleLoading(state, false);
       })
-      .addCase(fetchAllCourses.rejected, handleRejected)
+      .addCase(fetchAllCourses.rejected, handleRejected);
   },
 });
 

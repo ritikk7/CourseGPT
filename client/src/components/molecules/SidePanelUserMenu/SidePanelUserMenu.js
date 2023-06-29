@@ -9,13 +9,18 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import { useSelector } from 'react-redux';
 
 const SidePanelUserMenu = ({
   setSettingsOpen,
   handleLogout,
   handleClearConversations,
+  setTrainCourseModalOpen,
   username,
 }) => {
+  const userType = useSelector(state => state.user.type);
+  const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
+
   return (
     <Menu>
       <MenuButton
@@ -45,6 +50,14 @@ const SidePanelUserMenu = ({
         <MenuItem bg="black" onClick={handleClearConversations}>
           Clear conversations
         </MenuItem>
+        {usersAllowedToTrain.includes(userType) ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={() => setTrainCourseModalOpen(true)}>
+              Train Selected Course
+            </MenuItem>{' '}
+          </>
+        ) : null}
         <MenuDivider borderColor="rgb(100, 100, 102)" />
         <MenuItem bg="black" onClick={handleLogout}>
           Logout

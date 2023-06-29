@@ -5,7 +5,6 @@ import styles from './SidePanel.module.css';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import {
   setCurrentlySelectedDropdownCourse,
-  trainCurrentlySelectedDropdownCourse,
 } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
@@ -19,50 +18,28 @@ import {
 import {
   setActivePanelChat,
   setActivePanelInfo,
-  setShouldFocusChatInput, updateUser
-} from "../../../redux/userSlice";
+  setShouldFocusChatInput,
+  updateUser,
+} from '../../../redux/userSlice';
 import { logoutUser } from '../../../redux/authSlice';
 import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
 import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
-
-const SimpleCourseTrainingPopup = ({ isOpen, onClose }) => {
-  const dispatch = useDispatch();
-  const [text, setText] = useState('');
-  const onSubmit = () => {
-    dispatch(trainCurrentlySelectedDropdownCourse(text));
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div>
-      <textarea
-        className={styles.textareaStyle}
-        value={text}
-        onChange={e => setText(e.target.value)}
-      />
-      <button onClick={() => onSubmit(text)}>Submit</button>
-      <button onClick={onClose}>Close</button>
-    </div>
-  );
-};
+import TrainCourseModal from "../TrainCourseModal/TrainCourseModal";
 
 const SidePanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showSimpleCourseTrainingPopup, setShowSimpleCourseTrainingPopup] =
-    useState(false);
   const userFirst = useSelector(state => state.user.firstName);
   const userLast = useSelector(state => state.user.lastName);
-  const userType = useSelector(state => state.user.type);
   const favouriteCourses = useSelector(userFavouriteCoursesSelector);
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
   const [disableNewChatButton, setDisableNewChatButton] = useState(true);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isTrainCourseModalOpen, setTrainCourseModalOpen] = useState(false);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);
   const [filteredChatsToShow, setFilteredChatsToShow] = useState(existingChats);
@@ -93,13 +70,13 @@ const SidePanel = () => {
     const newCourseId = event.target.value;
     if (newCourseId === '') {
       dispatch(setCurrentlySelectedDropdownCourse(null));
-      dispatch(updateUser({selectedCourse: null}));
+      dispatch(updateUser({ selectedCourse: null }));
       setFilteredChatsToShow([]);
       setDisableNewChatButton(true);
     } else {
       const newCourse = favouriteCourses[newCourseId];
       dispatch(setCurrentlySelectedDropdownCourse(newCourse));
-      dispatch(updateUser({selectedCourse: newCourseId}));
+      dispatch(updateUser({ selectedCourse: newCourseId }));
       setDisableNewChatButton(false);
     }
     dispatch(setFocusedChat(null));
@@ -139,19 +116,6 @@ const SidePanel = () => {
   return (
     <div className={styles.sidepanel}>
       <div className={styles.courseSelect}>
-        {userType === 'Developer' && (
-          <button
-            onClick={() =>
-              setShowSimpleCourseTrainingPopup(!showSimpleCourseTrainingPopup)
-            }
-          >
-            Train Selected Course
-          </button>
-        )}
-        <SimpleCourseTrainingPopup
-          isOpen={showSimpleCourseTrainingPopup}
-          onClose={() => setShowSimpleCourseTrainingPopup(false)}
-        />
         <CreateNewChatSection
           favouriteCourses={favouriteCourses}
           handleCourseChange={handleCourseChange}
@@ -180,6 +144,7 @@ const SidePanel = () => {
           handleLogout={handleLogout}
           setSettingsOpen={setSettingsOpen}
           handleClearConversations={handleClearConversations}
+          setTrainCourseModalOpen={setTrainCourseModalOpen}
           username={userFirst + ' ' + userLast}
         />
         {isSettingsOpen && (
@@ -188,6 +153,10 @@ const SidePanel = () => {
             handleClose={() => setSettingsOpen(false)}
           />
         )}
+        <TrainCourseModal
+          isOpen={isTrainCourseModalOpen}
+          handleClose={() => setTrainCourseModalOpen(false)}
+        />
       </div>
     </div>
   );
