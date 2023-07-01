@@ -8,7 +8,7 @@ import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
 import { fetchAllCourses } from '../../redux/coursesSlice';
 import { fetchUserChats } from '../../redux/chatsSlice';
-import RegisterUserDetails from './RegisterUserDetails';
+import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -52,18 +52,17 @@ function Home() {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    !user.type ? (
-        <div className="App">
-          <RegisterUserDetails />
-        </div>
-    ) : (
-      <div className="App">
-        <SidePanel />
-        <RightSection />
-      </div>
-    )
+    <div className="App">
+      {!user.type ? (
+        <RegisterUserDetails />
+      ) : (
+        <>
+          <SidePanel />
+          <RightSection />
+        </>
+      )}
+    </div>
   );
 }
-
 
 export default Home;
