@@ -9,29 +9,29 @@ import {
   FormControl,
   FormLabel,
   Select,
+  SimpleGrid,
   Stack,
   VStack,
+  Text,
   useRadioGroup,
   useCheckboxGroup,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { useToast } from '@chakra-ui/react';
 import {
   SingleSelectButtons,
   MultiSelectButtons,
-} from '../atoms/SignUp/SelectionButtonGroup';
-import { updateUser } from '../../redux/userSlice';
-import { schoolsWithCoursesSelector } from '../../redux/selectors/schoolsWithCoursesSelector';
-import { userFavouriteCoursesSelector } from '../../redux/selectors/userFavouriteCoursesSelector';
-import { userSchoolWithCoursesSelector } from '../../redux/selectors/userSchoolWithCoursesSelector';
-import { fetchAllSchools } from '../../redux/schoolsSlice';
-import { fetchAllCourses } from '../../redux/coursesSlice';
+} from '../../atoms/RadioAndCheckboxBtnGroups/SelectionButtonGroup';
+import { updateUser } from '../../../redux/userSlice';
+import { schoolsWithCoursesSelector } from '../../../redux/selectors/schoolsWithCoursesSelector';
+import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
+import { userSchoolWithCoursesSelector } from '../../../redux/selectors/userSchoolWithCoursesSelector';
+import { fetchAllSchools } from '../../../redux/schoolsSlice';
+import { fetchAllCourses } from '../../../redux/coursesSlice';
 
 export default function RegisterUserDetails() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const toast = useToast();
   const user = useSelector(state => state.user);
 
@@ -57,7 +57,9 @@ export default function RegisterUserDetails() {
   const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
 
   const handleSchoolChange = e => {
+    // reset courses to empty array 
     setSelectedSchool(schoolsWithCourses[e.target.value]);
+    setSelectedCourses({});
     dispatch(fetchAllCourses());
   };
 
@@ -68,18 +70,6 @@ export default function RegisterUserDetails() {
       setSelectedCourses({});
     }
   }, [selectedSchool]);
-
-  const handleCourseChange = course => {
-    setSelectedCourses(prevCourses => {
-      if (prevCourses[course._id]) {
-        const { [course._id]: deletedCourse, ...remainingCourses } =
-          prevCourses;
-        return remainingCourses;
-      } else {
-        return { ...prevCourses, [course._id]: course };
-      }
-    });
-  };
 
   const handleSubmit = () => {
     const favourites = Object.keys(selectedCourses);
@@ -104,20 +94,11 @@ export default function RegisterUserDetails() {
 
   const renderCourses = () => {
     if (selectedSchool) {
-      // let courseCodes = Object.values(selectedSchool.courses).map((course) => course.courseCode);
-      // console.log(JSON.stringify(courseCodes));
-      // return <CourseSelectButtons options={courseCodes}
-      //     onChange={value => handleCourseChange(value)}/>
-      return Object.values(selectedSchool.courses).map((course, i) => (
-        <Checkbox
-          key={i}
-          isChecked={!!selectedCourses[course._id]}
-          onChange={() => handleCourseChange(course)}
-          p={3}
-        >
-          {course.courseCode}
-        </Checkbox>
-      ));
+      let courseCodes = Object.values(selectedSchool.courses).map((course) => course.courseCode);
+      return (
+        <CourseSelectButtons options={courseCodes}
+          handleChange={coursesSelected => setSelectedCourses(coursesSelected)}/>
+      );
     }
   };
 
@@ -134,14 +115,15 @@ export default function RegisterUserDetails() {
           rounded="lg"
           bg={'gray.700'}
           shadow="1px 1px 3px rgba(0,0,0,0.3)"
-          maxWidth={800}
+          maxWidth={1000}
+          minWidth={500}
           p={8}
           m="10px auto"
         >
           {!userInfo.type && (
             <UserTypeSelectButtons
               value={userInfo.type}
-              onChange={value => handleUserSelection(value)}
+              handleChange={value => handleUserSelection(value)}
             />
           )}
           {userInfo.type && (
@@ -162,8 +144,12 @@ export default function RegisterUserDetails() {
                   {renderSchools()}
                 </Select>
               </FormControl>
+
               <FormLabel color={'white'}>Courses</FormLabel>
-              {renderCourses()}
+
+              <SimpleGrid minChildWidth='120px' spacing='5px'>
+                {renderCourses()}
+              </SimpleGrid>
 
               <ButtonGroup mt="5%" w="100%">
                 <Flex w="100%" justifyContent="space-between">
@@ -184,16 +170,7 @@ export default function RegisterUserDetails() {
                     w="7rem"
                     colorScheme="red"
                     variant="solid"
-                    onClick={() => {
-                      // toast({
-                      //     title: 'Account created.',
-                      //     description: "We've created your account for you.",
-                      //     status: 'success',
-                      //     duration: 3000,
-                      //     isClosable: true,
-                      // });
-                      handleSubmit();
-                    }}
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>
@@ -207,14 +184,10 @@ export default function RegisterUserDetails() {
   );
 }
 
-function UserTypeSelectButtons({ onChange }) {
+function UserTypeSelectButtons({ handleChange }) {
   const options = ['Student', 'Professor'];
 
-  const handleChange = value => {
-    onChange(value);
-  };
-
-  const { value, getRadioProps } = useRadioGroup({
+  const { getRadioProps } = useRadioGroup({
     defaultValue: null,
     onChange: handleChange,
   });
@@ -233,27 +206,22 @@ function UserTypeSelectButtons({ onChange }) {
   );
 }
 
-function CourseSelectButtons({ options, onChange }) {
-  const handleChange = value => {
-    onChange(value);
-  };
-
-  const { value, getCheckboxProps } = useCheckboxGroup({
+function CourseSelectButtons({ options, handleChange }) {
+  const { getCheckboxProps } = useCheckboxGroup({
     defaultValue: [],
+    onChange: handleChange
   });
 
   return (
     //   <HStack {...options}>
     <>
-      {options.map(course => {
-        const option = getCheckboxProps({ course });
+      {/* <Text>The selected checkboxes are: {value.sort().join(' and ')}</Text> */}
+      {options.map(value => {
+        const option = getCheckboxProps({ value });
         return (
-          <>
-            {/* <Text>The selected checkboxes are: {value.sort().join(' and ')}</Text> */}
-            <MultiSelectButtons key={course} {...option}>
-              {course}
+            <MultiSelectButtons key={value} {...option}>
+              {value}
             </MultiSelectButtons>
-          </>
         );
       })}
     </>

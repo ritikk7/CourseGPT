@@ -1,16 +1,10 @@
 import {
   Box,
-  Flex,
-  HStack,
-  VStack,
-  Text,
   useCheckbox,
-  useCheckboxGroup,
   useRadio,
-  useRadioGroup,
 } from '@chakra-ui/react';
 
-// Component that consumes the `useCheckbox` hook
+// A button group that allow multiselect
 export function MultiSelectButtons(props) {
   const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
     useCheckbox(props);
@@ -20,7 +14,7 @@ export function MultiSelectButtons(props) {
 
   return (
     <Box as="label" w="100%">
-      <input {...input} />
+      <input {...input} hidden />
       <Box
         {...checkbox}
         cursor="pointer"
@@ -52,6 +46,7 @@ export function MultiSelectButtons(props) {
   );
 }
 
+// A button group that allow single select
 export function SingleSelectButtons(props) {
   const { getInputProps, getRadioProps } = useRadio(props);
 

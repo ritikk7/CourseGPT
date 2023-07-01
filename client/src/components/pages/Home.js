@@ -12,6 +12,9 @@ import {
 } from '../../redux/coursesSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
+import { fetchAllCourses } from '../../redux/coursesSlice';
+import { fetchUserChats } from '../../redux/chatsSlice';
+import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -63,18 +66,17 @@ function Home() {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    !user.type ? (
-        <div className="App">
-          <RegisterUserDetails />
-        </div>
-    ) : (
-      <div className="App">
-        <SidePanel />
-        <RightSection />
-      </div>
-    )
+    <div className="App">
+      {!user.type ? (
+        <RegisterUserDetails />
+      ) : (
+        <>
+          <SidePanel />
+          <RightSection />
+        </>
+      )}
+    </div>
   );
 }
-
 
 export default Home;
