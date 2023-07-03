@@ -6,18 +6,21 @@ import {
   Checkbox,
   FormControl,
   FormLabel,
+  Icon,
   Image,
   Input,
   Modal,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
   Select,
   Stack,
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { FaUser, FaSchool, FaLock } from 'react-icons/fa';
 import { updateUser } from '../../../redux/userSlice';
 import { schoolsWithCoursesSelector } from '../../../redux/selectors/schoolsWithCoursesSelector';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
@@ -38,6 +41,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
     type: user.type,
   });
 
+  const [selectedSetting, setSelectedSetting] = useState('Personal');
   const [selectedSchool, setSelectedSchool] = useState(userSchool);
   const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
 
@@ -99,22 +103,19 @@ const ProfileModal = ({ isOpen, handleClose }) => {
     }
   };
 
-  return (
-    <Modal isOpen={isOpen} onClose={handleClose} size="3xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalCloseButton />
-        <VStack p={5}>
-          <Stack direction="row">
-            <Box boxSize="150px">
-              <Image
-                borderRadius="full"
-                boxSize="150px"
-                src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
-                alt="Profile Picture"
-              />
-            </Box>
-          </Stack>
+  const renderUserSettings = () => {
+    return (
+      <Box w="600px">
+        <ModalHeader> User Settings </ModalHeader>
+        <Stack direction="row">
+          <Box w="300px">
+            <Image
+              borderRadius="full"
+              boxSize="150px"
+              src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
+              alt="Profile Picture"
+            />
+          </Box>
           <Box w="100%">
             <Stack direction="row" spacing={4}>
               <FormControl>
@@ -163,27 +164,97 @@ const ProfileModal = ({ isOpen, handleClose }) => {
               </Select>
             </FormControl>
           </Box>
-          <Box w="100%">
-            <FormControl>
-              <FormLabel>School</FormLabel>
-              <Select
-                placeholder="Select a school"
-                value={selectedSchool?._id}
-                onChange={handleSchoolChange}
+        </Stack>
+      </Box>
+    );
+  };
+
+  const renderSchoolSettings = () => {
+    return (
+      <Box w="600px">
+        <ModalHeader>School Settings</ModalHeader>
+        <FormControl>
+          <FormLabel>School</FormLabel>
+          <Select
+            placeholder="Select a school"
+            value={selectedSchool?._id}
+            onChange={handleSchoolChange}
+          >
+            {renderSchools()}
+          </Select>
+        </FormControl>
+        <Text fontSize="lg">Courses</Text>
+        {renderCourses()}
+      </Box>
+    );
+  };
+
+  const renderSettings = () => {
+    switch (selectedSetting) {
+      case 'Personal':
+        return renderUserSettings();
+      case 'School':
+        return renderSchoolSettings();
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={handleClose} size="4xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalCloseButton />
+        <Stack direction="row" height="400px">
+          <Box width="150px" borderRight="1px solid" borderColor="gray.200">
+            <VStack spacing={3} height="full" justify="space-around">
+              <Box
+                as="button"
+                w="100%"
+                flex="1"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                onClick={() => setSelectedSetting('Personal')}
               >
-                {renderSchools()}
-              </Select>
-            </FormControl>
-            <Text fontSize="lg">Courses</Text>
-            {renderCourses()}
+                <Icon as={FaUser} boxSize="24px" />
+              </Box>
+              <Box
+                as="button"
+                w="100%"
+                flex="1"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                borderTop="1px solid"
+                borderBottom="1px solid"
+                borderColor="gray.400"
+                onClick={() => setSelectedSetting('School')}
+              >
+                <Icon as={FaSchool} boxSize="24px" />
+              </Box>
+              <Box
+                as="button"
+                w="100%"
+                flex="1"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Icon as={FaLock} boxSize="24px" />
+              </Box>
+            </VStack>
           </Box>
-        </VStack>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
-            Save
-          </Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </ModalFooter>
+          <VStack p={5}>
+            {renderSettings()}
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={handleSave}>
+                Save
+              </Button>
+              <Button onClick={handleClose}>Cancel</Button>
+            </ModalFooter>
+          </VStack>
+        </Stack>
       </ModalContent>
     </Modal>
   );
