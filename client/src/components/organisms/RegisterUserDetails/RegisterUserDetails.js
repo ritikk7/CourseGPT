@@ -13,11 +13,9 @@ import {
   VStack,
   Text,
   useRadioGroup,
-  useCheckboxGroup
+  useCheckboxGroup,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { useToast } from '@chakra-ui/react';
 import {
   SingleSelectButtons,
   MultiSelectButtons,
@@ -55,27 +53,28 @@ export default function RegisterUserDetails() {
   const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
 
   const handleSchoolChange = e => {
-    // reset courses to empty array 
+    // reset courses to empty array
     setSelectedSchool(schoolsWithCourses[e.target.value]);
     setSelectedCourses({});
     dispatch(fetchAllCourses());
   };
 
-  const handleCourseChange = (userSelectedCourses) => {
+  const handleCourseChange = userSelectedCourses => {
     let selectedCoursesObj = {};
     for (let courseId of userSelectedCourses) {
       selectedCoursesObj[courseId] = selectedSchool.courses[courseId];
     }
     console.log(selectedCoursesObj);
     setSelectedCourses(selectedCoursesObj);
-  }
-  
+  };
+
   useEffect(() => {
     if (selectedSchool && userSchool && selectedSchool._id === userSchool._id) {
       setSelectedCourses(userFavoriteCourses);
     } else {
       setSelectedCourses({});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSchool]);
 
   const handleSubmit = () => {
@@ -105,7 +104,7 @@ export default function RegisterUserDetails() {
       return (
         <>
           <FormLabel color={'white'}>Courses</FormLabel>
-          <SimpleGrid minChildWidth='120px' spacing='7px'>
+          <SimpleGrid minChildWidth="120px" spacing="7px">
             <CourseSelectButtons
               courses={selectedSchool.courses}
               selected={selectedCourses}
@@ -119,8 +118,15 @@ export default function RegisterUserDetails() {
 
   return (
     <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.800'}>
-      <Stack align={'center'} spacing={8} mx={'auto'}  w={[300, 400, 500, 600]} py={12} px={6}>
-        <Stack >
+      <Stack
+        align={'center'}
+        spacing={8}
+        mx={'auto'}
+        w={[300, 400, 500, 600]}
+        py={12}
+        px={6}
+      >
+        <Stack>
           <Heading fontSize={'4xl'} color={'white'}>
             User Registration
           </Heading>
@@ -130,13 +136,15 @@ export default function RegisterUserDetails() {
           rounded="lg"
           bg={'gray.700'}
           shadow="1px 1px 3px rgba(0,0,0,0.3)"
-          w={[300, 400, 500, 600]} 
+          w={[300, 400, 500, 600]}
           p={8}
           m="10px auto"
         >
           {!userInfo.type && (
             <Stack spacing={4}>
-              <Heading fontSize={'xl'} py="20px">Welcome to CourseGPT {userInfo.firstName}!</Heading>
+              <Heading fontSize={'xl'} py="20px">
+                Welcome to CourseGPT {userInfo.firstName}!
+              </Heading>
               <UserTypeSelectButtons
                 value={userInfo.type}
                 handleChange={value => handleUserSelection(value)}
@@ -145,10 +153,12 @@ export default function RegisterUserDetails() {
           )}
           {userInfo.type && (
             <Stack spacing={4}>
-            <Heading align={'center'} fontSize={'xl'} color={'white'}>
-                  Registering as a {userInfo.type}
-                </Heading>
-              <Text fontSize={'lg'} py="10px">Please select your school and courses below:</Text>
+              <Heading align={'center'} fontSize={'xl'} color={'white'}>
+                Registering as a {userInfo.type}
+              </Heading>
+              <Text fontSize={'lg'} py="10px">
+                Please select your school and courses below:
+              </Text>
               <FormControl>
                 <FormLabel color={'white'}>School</FormLabel>
                 <Select
@@ -160,9 +170,7 @@ export default function RegisterUserDetails() {
                 </Select>
               </FormControl>
 
-              <FormControl>
-                {renderCourses()}
-              </FormControl>
+              <FormControl>{renderCourses()}</FormControl>
 
               <ButtonGroup mt="5%" w="100%">
                 <Flex w="100%" justifyContent="space-between">
@@ -222,23 +230,24 @@ function UserTypeSelectButtons({ handleChange }) {
 function CourseSelectButtons({ courses, selected, handleChange }) {
   const { value, setValue, getCheckboxProps } = useCheckboxGroup({
     defaultValue: Object.keys(selected),
-    onChange: (value) => { 
+    onChange: () => {
       handleChange(value);
-    }
+    },
   });
 
   useEffect(() => {
     setValue([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
   return (
     <>
       {Object.keys(courses).map(value => {
-        const option = getCheckboxProps({value});
+        const option = getCheckboxProps({ value });
         return (
-            <MultiSelectButtons key={value} {...option}>
-              {courses[value].courseCode}
-            </MultiSelectButtons>
+          <MultiSelectButtons key={value} {...option}>
+            {courses[value].courseCode}
+          </MultiSelectButtons>
         );
       })}
     </>
