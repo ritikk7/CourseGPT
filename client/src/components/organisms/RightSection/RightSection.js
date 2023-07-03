@@ -5,7 +5,7 @@ import ChatPanel from '../ChatPanel/ChatPanel';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createUserMessageInActiveChat,
-  getGptResponseInActiveChat,
+  getGptResponseInChat,
   setCurrentUserInput,
 } from '../../../redux/messagesSlice';
 import {
@@ -30,6 +30,7 @@ const InputArea = ({
   setInputText,
   onInputSubmit,
   inputRef,
+  disableInput,
 }) => (
   <div className={styles.inputSection}>
     <div className={styles.inputArea}>
@@ -47,8 +48,11 @@ const InputArea = ({
           if (currentUserInput.trim()) onInputSubmit(e);
         }}
         style={
-          currentUserInput.trim() ? {} : { cursor: 'not-allowed', opacity: 0.5 }
+          currentUserInput.trim() && !disableInput
+            ? {}
+            : { cursor: 'not-allowed', opacity: 0.5 }
         }
+        disabled={disableInput}
       >
         <ArrowForwardIcon />
       </button>
@@ -68,6 +72,7 @@ const RightSection = () => {
   const currentUserInput = useSelector(
     state => state.messages.currentUserInput
   );
+  const isGptLoading = useSelector(state => state.messages.gptLoading);
   const selectedCourse = useSelector(
     state => state.courses.currentlySelectedDropdownCourse
   );
@@ -113,7 +118,7 @@ const RightSection = () => {
     dispatch(setActivePanelChat());
     await dispatch(createUserMessageInActiveChat(currentUserInput)).then(
       async newMessagePayload => {
-        await dispatch(getGptResponseInActiveChat(newMessagePayload.payload));
+        await dispatch(getGptResponseInChat(newMessagePayload.payload));
         dispatch(fetchChat(newMessagePayload.payload.chat));
       }
     );
@@ -167,6 +172,7 @@ const RightSection = () => {
           setInputText={setInputText}
           onInputSubmit={onInputSubmit}
           inputRef={inputRef}
+          disableInput={isGptLoading}
         />
       )}
     </div>

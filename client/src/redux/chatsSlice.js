@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import {
   createUserMessageInActiveChat,
-  getGptResponseInActiveChat,
+  getGptResponseInChat,
 } from './messagesSlice';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
 
@@ -166,13 +166,18 @@ const chatsSlice = createSlice({
         }
       )
       .addCase(createChatWithSelectedDropdownCourse.rejected, handleRejected)
+      .addCase(softDeleteSingleChat.pending, handlePending)
+      .addCase(softDeleteSingleChat.fulfilled, (state, action) => {
+        state.userChats[action.payload._id] = action.payload;
+        handleLoading(state, false);
+      })
+      .addCase(softDeleteSingleChat.rejected, handleRejected)
       .addCase(softDeleteSelectedDropdownCourseChats.pending, handlePending)
       .addCase(
         softDeleteSelectedDropdownCourseChats.fulfilled,
         (state, action) => {
           state.userChats = { ...state.userChats, ...action.payload };
           handleLoading(state, false);
-          state.waitingFirstMessage = false;
         }
       )
       .addCase(softDeleteSelectedDropdownCourseChats.rejected, handleRejected)
@@ -183,10 +188,12 @@ const chatsSlice = createSlice({
         state.userChats[activeChatId].messages.push(action.payload._id);
         state.activeChat = state.userChats[activeChatId];
       })
-      .addCase(getGptResponseInActiveChat.fulfilled, (state, action) => {
-        const activeChatId = state.activeChat._id;
-        state.userChats[activeChatId].messages.push(action.payload._id);
-        state.activeChat = state.userChats[activeChatId];
+      .addCase(getGptResponseInChat.fulfilled, (state, action) => {
+        const chatId = action.payload.chat;
+        state.userChats[chatId].messages.push(action.payload._id);
+        if (state.activeChat._id === chatId) {
+          state.activeChat = state.userChats[chatId];
+        }
       });
   },
 });

@@ -10,7 +10,8 @@ import {
   fetchAllCourses,
   setCurrentlySelectedDropdownCourse,
 } from '../../redux/coursesSlice';
-import { fetchUserChats } from '../../redux/chatsSlice';
+import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
+import { setActivePanelInfo } from '../../redux/userSlice';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -47,6 +48,10 @@ function Home() {
       await dispatch(fetchAllSchools());
       await dispatch(fetchAllCourses());
       dispatch(setCurrentlySelectedDropdownCourse(persistedDropdownCourse));
+      if (persistedDropdownCourse) {
+        dispatch(setActivePanelInfo());
+        dispatch(setWaitingFirstMessage(true));
+      }
       await dispatch(fetchUserChats());
       setIsLoading(false);
     } catch (error) {

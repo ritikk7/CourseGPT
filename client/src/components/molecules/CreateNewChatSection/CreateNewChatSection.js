@@ -8,6 +8,7 @@ const CreateNewChatSection = ({
   defaultDropdownValue,
   handleNewChat,
   disableNewChatButton,
+  disabledNewChatCourseSelector,
 }) => {
   return favouriteCourses && Object.keys(favouriteCourses).length > 0 ? (
     <>
@@ -15,6 +16,7 @@ const CreateNewChatSection = ({
         courses={favouriteCourses}
         onChange={handleCourseChange}
         defaultValue={defaultDropdownValue}
+        disable={disabledNewChatCourseSelector}
       />
       <NewChatButton
         handleNewChat={handleNewChat}

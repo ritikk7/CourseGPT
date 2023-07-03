@@ -20,6 +20,7 @@ const SidePanelUserMenu = ({
 }) => {
   const userType = useSelector(state => state.user.type);
   const isTrainingCourse = useSelector(state => state.courses.loading);
+  const isGptLoading = useSelector(state => state.messages.gptLoading);
   const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
 
   return (
@@ -47,10 +48,14 @@ const SidePanelUserMenu = ({
         <MenuItem bg="black" onClick={() => setSettingsOpen(true)}>
           Profile
         </MenuItem>
-        <MenuDivider borderColor="rgb(100, 100, 102)" />
-        <MenuItem bg="black" onClick={handleClearConversations}>
-          Clear conversations
-        </MenuItem>
+        {!isGptLoading ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={handleClearConversations}>
+              Clear conversations
+            </MenuItem>
+          </>
+        ) : null}
         {usersAllowedToTrain.includes(userType) && !isTrainingCourse ? (
           <>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
