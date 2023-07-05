@@ -2,8 +2,7 @@ import { Box, useCheckbox, useRadio } from '@chakra-ui/react';
 
 // A button group that allow multiselect
 export function MultiSelectButtons(props) {
-  const { getCheckboxProps, getInputProps } =
-    useCheckbox(props);
+  const { getCheckboxProps, getInputProps } = useCheckbox(props);
 
   const input = getInputProps();
   const checkbox = getCheckboxProps();

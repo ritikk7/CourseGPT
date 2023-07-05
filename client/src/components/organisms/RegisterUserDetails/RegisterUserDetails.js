@@ -228,9 +228,9 @@ function UserTypeSelectButtons({ handleChange }) {
 }
 
 function CourseSelectButtons({ courses, selected, handleChange }) {
-  const { value, setValue, getCheckboxProps } = useCheckboxGroup({
+  const { setValue, getCheckboxProps } = useCheckboxGroup({
     defaultValue: Object.keys(selected),
-    onChange: () => {
+    onChange: value => {
       handleChange(value);
     },
   });
