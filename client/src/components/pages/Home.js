@@ -8,12 +8,10 @@ import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
 import {
   fetchAllCourses,
-  setCurrentlySelectedDropdownCourse,
-} from '../../redux/coursesSlice';
-import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
+  setCurrentlySelectedDropdownCourse
+} from "../../redux/coursesSlice";
 import { setActivePanelInfo } from '../../redux/userSlice';
-import { fetchAllCourses } from '../../redux/coursesSlice';
-import { fetchUserChats } from '../../redux/chatsSlice';
+import { fetchUserChats, setWaitingFirstMessage } from "../../redux/chatsSlice";
 import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 
 function Home() {
