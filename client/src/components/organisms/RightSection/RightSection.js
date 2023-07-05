@@ -12,10 +12,11 @@ import {
   setActivePanelChat,
   setShouldFocusChatInput,
 } from '../../../redux/userSlice';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { createChatWithSelectedDropdownCourse } from '../../../redux/chatsSlice';
+import { Button } from '@chakra-ui/react';
 
-const Message = ({value}) => (
+const Message = ({ value }) => (
   <div className={styles.message}>
     <p>{value}</p>
   </div>
@@ -49,11 +50,15 @@ const InputArea = ({
         <ArrowForwardIcon />
       </button>
     </div>
-    <Message value={"CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]"}/>
+    <Message
+      value={
+        'CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]'
+      }
+    />
   </div>
 );
 
-const RightSection = () => {
+const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
   const currentUserInput = useSelector(
@@ -107,7 +112,28 @@ const RightSection = () => {
     );
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={
+        isSidepanelVisible
+          ? { transition: '0.5s' }
+          : { width: '100%', transition: '0.5s' }
+      }
+    >
+      {!isSidepanelVisible && (
+        <div className={styles.toggleSidepanelBtn}>
+          <Button
+            ml={2}
+            bg="transparent"
+            _hover={{ bg: '#50505c' }}
+            border="1px solid white"
+            onClick={toggleSidePanelVisibility}
+          >
+            <ChevronRightIcon />
+          </Button>
+        </div>
+      )}
+
       {mainPanel}
       {renderInput && (
         <InputArea

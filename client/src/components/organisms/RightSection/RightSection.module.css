@@ -47,7 +47,7 @@
   font-size: 12px;
   margin-top: 10px;
   text-align: center;
-  color: rgb(197,197,210);
+  color: rgb(197, 197, 210);
 }
 
 .sendBtn {
@@ -58,4 +58,9 @@
   border: none;
   height: 48px;
   width: 66px;
+}
+
+.toggleSidepanelBtn {
+  position: absolute;
+  top: 10px;
 }

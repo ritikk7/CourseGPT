@@ -24,7 +24,7 @@ import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNew
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 
-const SidePanel = () => {
+const SidePanel = ({ toggleSidePanelVisibility, isSidepanelVisible }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const favouriteCourses = useSelector(userFavouriteCoursesSelector);
@@ -105,7 +105,18 @@ const SidePanel = () => {
 
   let chats = Object.values(filteredChatsToShow);
   return (
-    <div className={styles.sidepanel}>
+    <div
+      className={styles.sidepanel}
+      style={
+        isSidepanelVisible
+          ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
+          : {
+              transform: 'translateX(-100%)',
+              transition: '0.4s',
+              transitionTimingFunction: 'ease-in-out',
+            }
+      }
+    >
       <div className={styles.courseSelect}>
         <CreateNewChatSection
           favouriteCourses={favouriteCourses}
@@ -113,6 +124,7 @@ const SidePanel = () => {
           defaultDropdownValue={defaultDropdownValue}
           handleNewChat={handleNewChat}
           disableNewChatButton={disableNewChatButton}
+          toggleSidePanelVisibility={toggleSidePanelVisibility}
         />
         <div className={styles.chatsPanel}>
           {chats &&
