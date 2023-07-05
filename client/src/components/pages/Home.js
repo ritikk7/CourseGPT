@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
 import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
-import { fetchAllCourses } from '../../redux/coursesSlice';
-import { fetchUserChats } from '../../redux/chatsSlice';
 import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 import {
   fetchAllCourses,
@@ -15,11 +13,9 @@ import {
 } from "../../redux/coursesSlice";
 import { setActivePanelInfo } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from "../../redux/chatsSlice";
-import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const user = useSelector(state => state.user);
   const persistedDropdownCourse = useSelector(
     state => state.user.selectedCourse
   );
