@@ -17,6 +17,7 @@ const UserSchema = new Schema(
     chats: [{ type: Schema.Types.ObjectId, ref: 'ChatSection' }],
     school: { type: Schema.Types.ObjectId, ref: 'School' },
     favourites: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    selectedCourse: { type: Schema.Types.ObjectId, ref: 'Course' },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

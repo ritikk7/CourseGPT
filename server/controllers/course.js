@@ -1,6 +1,6 @@
 const Course = require('../models/course');
 const School = require('../models/school');
-
+const { createEmbeddingForNewData } = require('../gpt/createEmbeddings');
 async function getSchoolCourse(req, res) {
   try {
     const courseId = req.params.courseId;
@@ -56,9 +56,24 @@ async function createCourse(req, res) {
   }
 }
 
+async function improveModel(req, res) {
+  try {
+    const submitterId = req.body.userId;
+    const courseId = req.params.courseId;
+    const course = await Course.findById(courseId).populate('school');
+
+    await createEmbeddingForNewData(submitterId, course, req.body.content);
+
+    res.status(200).json({ course });
+  } catch (error) {
+    res.status(500).json({ error: error.message + error.stack });
+  }
+}
+
 module.exports = {
   getSchoolCourse,
   getSchoolCourses,
   getAllCourses,
   createCourse,
+  improveModel,
 };

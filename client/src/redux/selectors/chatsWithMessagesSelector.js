@@ -33,7 +33,7 @@ Example output:
         _id: messageId1,
         chat: chatId1,
         user: userId1,
-        senderType: User,
+        role: user,
         content: Hello,
         ...otherMessageProperties
       },
@@ -41,7 +41,7 @@ Example output:
         _id: messageId2,
         chat: chatId1,
         user: userId1,
-        senderType: CourseGPT,
+        role: system,
         content: Hi,
         ...otherMessageProperties
       }

@@ -9,12 +9,20 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import { useSelector } from 'react-redux';
 
 const SidePanelUserMenu = ({
   setSettingsOpen,
   handleLogout,
   handleClearConversations,
+  setTrainCourseModalOpen,
+  username,
 }) => {
+  const userType = useSelector(state => state.user.type);
+  const isTrainingCourse = useSelector(state => state.courses.loading);
+  const isGptLoading = useSelector(state => state.messages.gptLoading);
+  const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
+
   return (
     <Menu>
       <MenuButton
@@ -34,16 +42,28 @@ const SidePanelUserMenu = ({
         rightIcon={<HamburgerIcon />}
         width="100%"
       >
-        Username
+        {username}
       </MenuButton>
       <MenuList bg="black" border="none">
         <MenuItem bg="black" onClick={() => setSettingsOpen(true)}>
           Profile
         </MenuItem>
-        <MenuDivider borderColor="rgb(100, 100, 102)" />
-        <MenuItem bg="black" onClick={handleClearConversations}>
-          Clear conversations
-        </MenuItem>
+        {!isGptLoading ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={handleClearConversations}>
+              Clear conversations
+            </MenuItem>
+          </>
+        ) : null}
+        {usersAllowedToTrain.includes(userType) && !isTrainingCourse ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={() => setTrainCourseModalOpen(true)}>
+              Train Selected Course
+            </MenuItem>{' '}
+          </>
+        ) : null}
         <MenuDivider borderColor="rgb(100, 100, 102)" />
         <MenuItem bg="black" onClick={handleLogout}>
           Logout

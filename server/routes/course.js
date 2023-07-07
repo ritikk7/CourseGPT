@@ -4,6 +4,7 @@ const {
   createCourse,
   getSchoolCourse,
   getSchoolCourses,
+  improveModel,
 } = require('../controllers/course');
 const { validateToken } = require('../controllers/auth');
 
@@ -14,5 +15,6 @@ router.get('/:courseId', getSchoolCourse);
 router.get('/', getSchoolCourses);
 
 router.post('/', createCourse);
+router.put('/:courseId/improve-model', improveModel);
 
 module.exports = router;

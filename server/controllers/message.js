@@ -1,7 +1,8 @@
-const { ask } = require('../api/ask');
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 const qaPair = require('./qaPair');
+const { ask } = require('../gpt/ask');
+const { generateChatTitle } = require('../gpt/openAI');
 
 async function getAllMessages(req, res) {
   // TODO
@@ -25,7 +26,7 @@ async function createUserMessage(req, res) {
     const message = new Message({
       chat: chatId,
       user: userId,
-      senderType: 'User',
+      role: 'user',
       content: userInputMessage,
     });
     const newUserMessage = await message.save();
@@ -46,29 +47,27 @@ async function getGptResponse(req, res) {
     const userId = req.params.userId;
     const userMessageObject = req.body;
 
-    const chat = await Chat.findById(chatId);
-    let chatGPTResponse = 'Hello this is CourseGPT!';
-
-    try {
-      console.log(userMessageObject);
-      chatGPTResponse = await ask(userMessageObject.content, chat.course._id);
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.status + error.response.data);
-      } else {
-        console.log(error.message);
-      }
-    }
+    const chatGPTResponse = await ask(userMessageObject.content, chatId);
 
     const gptMessage = new Message({
       chat: chatId,
       user: userId,
-      senderType: 'CourseGPT',
+      role: 'system',
       content: chatGPTResponse,
     });
 
     const newGptMessage = await gptMessage.save();
+
+    let chat = await Chat.findById(chatId);
     chat.messages.push(newGptMessage._id);
+
+    if (!chat.title) {
+      chat.title = await generateChatTitle(
+        userMessageObject.content,
+        chatGPTResponse
+      );
+    }
+
     await chat.save();
 
     await qaPair.createQaPair({
@@ -80,7 +79,9 @@ async function getGptResponse(req, res) {
 
     res.status(201).json({ message: newGptMessage });
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong' + error.message });
+    res.status(500).json({
+      error: 'Something went wrong ' + error.message + error + error.stack,
+    });
   }
 }
 
