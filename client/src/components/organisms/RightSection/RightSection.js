@@ -13,9 +13,11 @@ import {
   setShouldFocusChatInput,
 } from '../../../redux/userSlice';
 import { ArrowForwardIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { createChatWithSelectedDropdownCourse, fetchChat } from '../../../redux/chatsSlice';
+import {
+  createChatWithSelectedDropdownCourse,
+  fetchChat,
+} from '../../../redux/chatsSlice';
 import { Button, Box, Spinner, Tooltip } from '@chakra-ui/react';
-
 
 const Message = ({ value }) => (
   <div className={styles.message}>
@@ -141,12 +143,14 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
     );
 
   return (
-    <div className={styles.container}  style={
-      isSidepanelVisible
-        ? { transition: '0.5s' }
-        : { width: '100%', transition: '0.5s' }
-    }>
-
+    <div
+      className={styles.container}
+      style={
+        isSidepanelVisible
+          ? { transition: '0.5s' }
+          : { width: '100%', transition: '0.5s' }
+      }
+    >
       {!isSidepanelVisible && (
         <div className={styles.toggleSidepanelBtn}>
           <Button
