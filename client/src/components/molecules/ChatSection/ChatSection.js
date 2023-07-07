@@ -8,22 +8,22 @@ import Feedback from '../FeedbackPanel/FeedbackPanel';
 
 const ChatSection = ({ message }) => {
   const user = useSelector(state => state.user);
-  const isSenderUser = message.senderType === 'User';
+  const isSenderUser = message.role === 'user';
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
   const userImage = 'https://bit.ly/dan-abramov';
-  const renderAnimation = isTimestampLessThan5SecondsAgo(message.createdAt);
+  const renderAnimation = isTimestampLessThan15SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
   const [typingAnimation, setTypingAnimation] = useState('.');
 
   // Credit to chatGPT
-  function isTimestampLessThan5SecondsAgo(createdAt) {
+  function isTimestampLessThan15SecondsAgo(createdAt) {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
-    return createdAtTimestamp >= currentTime - 5;
+    return createdAtTimestamp >= currentTime - 15;
   }
 
   useEffect(() => {

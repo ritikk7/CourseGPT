@@ -12,6 +12,7 @@ const ExistingChat = ({
   handleChatDelete,
 }) => {
   const focusedChat = useSelector(state => state.chats.focusedChat);
+  const isGptLoading = useSelector(state => state.messages.gptLoading);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const ExistingChat = ({
         }
         onClick={() => handleExistingChatClick(id)}
         pl={3}
+        isDisabled={isGptLoading}
       >
         <div className={styles.existingChat}>
           <div>

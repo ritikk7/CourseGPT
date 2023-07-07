@@ -69,12 +69,12 @@ export const createUserMessageInActiveChat = createAsyncThunk(
   }
 );
 
-export const getGptResponseInActiveChat = createAsyncThunk(
-  'messages/getGptResponseInActiveChat',
+export const getGptResponseInChat = createAsyncThunk(
+  'messages/getGptResponseInChat',
   async (userMessageObject, { getState }) => {
     try {
       const userId = getState().auth.userId;
-      const chatId = getState().chats.activeChat?._id;
+      const chatId = userMessageObject.chat;
       const response = await api.post(
         `/users/${userId}/chats/${chatId}/messages/gpt-response`,
         userMessageObject
@@ -125,14 +125,14 @@ const messagesSlice = createSlice({
         handleLoading(state, false);
       })
       .addCase(createUserMessageInActiveChat.rejected, handleRejected)
-      .addCase(getGptResponseInActiveChat.pending, (state, action) => {
+      .addCase(getGptResponseInChat.pending, (state, action) => {
         state.gptLoading = true;
       })
-      .addCase(getGptResponseInActiveChat.fulfilled, (state, action) => {
+      .addCase(getGptResponseInChat.fulfilled, (state, action) => {
         state.messages[action.payload._id] = action.payload;
         state.gptLoading = false;
       })
-      .addCase(getGptResponseInActiveChat.rejected, (state, action) => {
+      .addCase(getGptResponseInChat.rejected, (state, action) => {
         state.gptLoading = false;
       });
   },

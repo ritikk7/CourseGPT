@@ -5,7 +5,7 @@ const MessageSchema = new Schema(
   {
     chat: { type: Schema.Types.ObjectId, ref: 'ChatSection' },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    senderType: { type: String, enum: ['User', 'CourseGPT'] },
+    role: { type: String, enum: ['user', 'system'] },
     content: { type: String },
     deleted: { type: Boolean, default: false },
   },

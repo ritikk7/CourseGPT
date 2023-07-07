@@ -112,7 +112,7 @@ function signToken(userId, res) {
   const isProduction = process.env.NODE_ENV === 'production';
 
   const productionExpireDays = 5;
-  const expireMinutes = isProduction ? productionExpireDays * 24 * 60 : 20;
+  const expireMinutes = productionExpireDays * 24 * 60;
   const expireInMs = expireMinutes * 60 * 1000;
   const expireInS = expireMinutes * 60;
 
