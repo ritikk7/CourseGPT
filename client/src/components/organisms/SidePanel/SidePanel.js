@@ -6,7 +6,6 @@ import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
-  fetchUserChats,
   setActiveChat,
   setFocusedChat,
   setWaitingFirstMessage,
@@ -26,7 +25,11 @@ import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
 
-const SidePanel = ({ toggleSidePanelVisibility, isSidepanelVisible }) => {
+const SidePanel = ({
+  toggleSidePanelVisibility,
+  isSidepanelVisible,
+  setIsSidepanelVisible,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isGptLoading = useSelector(state => state.messages.gptLoading);
@@ -161,6 +164,7 @@ const SidePanel = ({ toggleSidePanelVisibility, isSidepanelVisible }) => {
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
                   handleChatDelete={handleChatDelete}
+                  setIsSidepanelVisible={setIsSidepanelVisible}
                 />
               ))}
         </div>

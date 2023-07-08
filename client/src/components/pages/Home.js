@@ -75,6 +75,7 @@ function Home() {
       <SidePanel
         toggleSidePanelVisibility={toggleSidePanelVisibility}
         isSidepanelVisible={isSidepanelVisible}
+        setIsSidepanelVisible={setIsSidepanelVisible}
       />
     </div>
   );
