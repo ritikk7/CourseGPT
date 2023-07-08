@@ -6,18 +6,20 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
 import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
+import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 import {
   fetchAllCourses,
-  setCurrentlySelectedDropdownCourse,
-} from '../../redux/coursesSlice';
-import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
+  setCurrentlySelectedDropdownCourse
+} from "../../redux/coursesSlice";
 import { setActivePanelInfo } from '../../redux/userSlice';
+import { fetchUserChats, setWaitingFirstMessage } from "../../redux/chatsSlice";
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const persistedDropdownCourse = useSelector(
     state => state.user.selectedCourse
   );
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -63,8 +65,14 @@ function Home() {
 
   return (
     <div className="App">
-      <SidePanel />
-      <RightSection />
+      {!user.type ? (
+        <RegisterUserDetails />
+      ) : (
+        <>
+          <SidePanel />
+          <RightSection />
+        </>
+      )}
     </div>
   );
 }

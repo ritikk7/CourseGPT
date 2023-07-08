@@ -65,7 +65,6 @@ const schoolsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-
       .addCase(fetchSchool.pending, handlePending)
       .addCase(fetchSchool.fulfilled, (state, action) => {
         state.schools[action.payload._id] = action.payload;

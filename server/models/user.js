@@ -8,8 +8,8 @@ const UserSchema = new Schema(
     googleId: { type: String },
     type: {
       type: String,
-      enum: ['Student', 'Professor', 'Admin', 'Developer'],
-      default: 'Student',
+      enum: ['Student', 'Professor', 'Admin', 'Developer', 'Tester', null],
+      default: null,
     },
     profilePicture: { type: String, default: '' },
     firstName: { type: String, default: '' },
