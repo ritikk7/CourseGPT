@@ -6,18 +6,20 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
 import LoadingSpinner from '../atoms/LoadingSpinner/LoadingSpinner';
 import { fetchAllSchools } from '../../redux/schoolsSlice';
+import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 import {
   fetchAllCourses,
   setCurrentlySelectedDropdownCourse,
 } from '../../redux/coursesSlice';
-import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
+import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const persistedDropdownCourse = useSelector(
     state => state.user.selectedCourse
   );
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -68,15 +70,21 @@ function Home() {
 
   return (
     <div className="App">
-      <RightSection
-        isSidepanelVisible={isSidepanelVisible}
-        toggleSidePanelVisibility={toggleSidePanelVisibility}
-      />
-      <SidePanel
-        toggleSidePanelVisibility={toggleSidePanelVisibility}
-        isSidepanelVisible={isSidepanelVisible}
-        setIsSidepanelVisible={setIsSidepanelVisible}
-      />
+      {!user.type ? (
+        <RegisterUserDetails />
+      ) : (
+        <>
+          <RightSection
+            isSidepanelVisible={isSidepanelVisible}
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+          />
+          <SidePanel
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+            isSidepanelVisible={isSidepanelVisible}
+            setIsSidepanelVisible={setIsSidepanelVisible}
+          />
+        </>
+      )}
     </div>
   );
 }
