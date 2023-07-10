@@ -10,18 +10,21 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const SidePanelUserMenu = ({
   setSettingsOpen,
   handleLogout,
   handleClearConversations,
   setTrainCourseModalOpen,
+  setFeedbackSectionOpen,
   username,
 }) => {
   const userType = useSelector(state => state.user.type);
   const isTrainingCourse = useSelector(state => state.courses.loading);
   const isGptLoading = useSelector(state => state.messages.gptLoading);
   const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
+  const navigate = useNavigate();
 
   return (
     <Menu>
@@ -64,6 +67,16 @@ const SidePanelUserMenu = ({
             </MenuItem>{' '}
           </>
         ) : null}
+        {/* {userType === 'Developer' && !isTrainingCourse ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={() => setFeedbackSectionOpen(true)}>
+            <MenuItem bg="black" onClick={navigate('/data')}>
+
+              View Feedback for Selected Course
+            </MenuItem>{' '}
+          </>
+        ) : null} */}
         <MenuDivider borderColor="rgb(100, 100, 102)" />
         <MenuItem bg="black" onClick={handleLogout}>
           Logout

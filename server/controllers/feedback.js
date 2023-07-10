@@ -1,5 +1,7 @@
 const Feedback = require('../models/feedback');
 const QAPair = require('../models/qaPair');
+const { getDatabaseFeedbackInfo } = require('../data/helpers');
+
 
 async function getFeedback(req, res) {
   try {
@@ -8,6 +10,18 @@ async function getFeedback(req, res) {
       throw new Error('oh no');
     }
     res.status(201).send({ feedback: feedback });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+// notes: need to do something with feedback here (make useful)
+async function getFeedbackAnalysis(req, res) {
+  try {
+    const feedbackData = await getDatabaseFeedbackInfo(req.body.courseId);
+    // do analysis work here
+    res.status(201).send({ feedbackData: feedbackData });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -69,4 +83,5 @@ module.exports = {
   createFeedback,
   updateFeedback,
   deleteFeedback,
+  getFeedbackAnalysis
 };

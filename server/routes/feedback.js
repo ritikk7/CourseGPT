@@ -12,6 +12,8 @@ router.use(validateToken);
 
 router.get('/:feedbackId', getFeedback);
 
+router.get('/', getFeedback);
+
 router.post('/', createFeedback);
 
 router.put('/:feedbackId', updateFeedback);
