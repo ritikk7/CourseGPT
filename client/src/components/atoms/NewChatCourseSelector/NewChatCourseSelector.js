@@ -1,13 +1,19 @@
 import { Select } from '@chakra-ui/react';
 import React from 'react';
 
-const NewChatCourseSelector = ({ courses, onChange, defaultValue }) => {
+const NewChatCourseSelector = ({
+  courses,
+  onChange,
+  defaultValue,
+  disable,
+}) => {
   return (
     <Select
       _hover={{ bg: 'rgb(61, 61, 61)' }}
       borderColor="rgb(100, 100, 102)"
       value={defaultValue}
       onChange={e => onChange(e)}
+      isDisabled={disable}
     >
       {
         <option key={0} value="">

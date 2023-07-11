@@ -8,8 +8,8 @@ const UserSchema = new Schema(
     googleId: { type: String },
     type: {
       type: String,
-      enum: ['Student', 'Professor', 'Admin', 'Developer'],
-      default: 'Student',
+      enum: ['Student', 'Professor', 'Admin', 'Developer', 'Tester', null],
+      default: null,
     },
     profilePicture: { type: String, default: '' },
     firstName: { type: String, default: '' },
@@ -17,6 +17,7 @@ const UserSchema = new Schema(
     chats: [{ type: Schema.Types.ObjectId, ref: 'ChatSection' }],
     school: { type: Schema.Types.ObjectId, ref: 'School' },
     favourites: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    selectedCourse: { type: Schema.Types.ObjectId, ref: 'Course' },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

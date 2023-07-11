@@ -7,6 +7,17 @@
   height: 100vh;
   flex-direction: column;
   display: flex;
+  min-width: 250px;
+}
+
+@media only screen and (max-width: 680px) {
+  .sidepanel {
+    width: 100%;
+  }
+}
+
+.textareaStyle {
+  color: black;
 }
 
 .courseSelect {

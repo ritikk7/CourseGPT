@@ -10,9 +10,16 @@ const ExistingChat = ({
   handleExistingChatClick,
   id,
   handleChatDelete,
+  setIsSidepanelVisible,
 }) => {
   const focusedChat = useSelector(state => state.chats.focusedChat);
+  const isGptLoading = useSelector(state => state.messages.gptLoading);
   const [isFocused, setIsFocused] = useState(false);
+  const [isScreenLarge, setIsScreenLarge] = useState(true);
+
+  useEffect(() => {
+    setIsScreenLarge(window.innerWidth > 680);
+  }, [window.innerWidth]);
 
   useEffect(() => {
     setIsFocused(focusedChat == id);
@@ -25,8 +32,14 @@ const ExistingChat = ({
         _hover={
           isFocused ? { bg: 'rgb(61, 61, 61)' } : { bg: 'rgb(47, 47, 47)' }
         }
-        onClick={() => handleExistingChatClick(id)}
+        onClick={() => {
+          handleExistingChatClick(id);
+          if (!isScreenLarge) {
+            setIsSidepanelVisible(false);
+          }
+        }}
         pl={3}
+        isDisabled={isGptLoading}
       >
         <div className={styles.existingChat}>
           <div>
