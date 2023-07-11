@@ -90,6 +90,8 @@ const ProfileSchoolSettings = ({ handleClose }) => {
       <FormControl paddingInlineStart={6}>
         <FormLabel>School</FormLabel>
         <Select
+          backgroundColor={'teal.600'}
+          color={'white'}
           placeholder="Select a school"
           value={selectedSchool?._id}
           onChange={handleSchoolChange}
@@ -106,7 +108,7 @@ const ProfileSchoolSettings = ({ handleClose }) => {
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button colorScheme="red" onClick={handleClose}>Cancel</Button>
       </ModalFooter>
     </Box>
   );

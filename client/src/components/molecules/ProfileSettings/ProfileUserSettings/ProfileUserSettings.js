@@ -10,10 +10,8 @@ import {
   FormControl,
   FormLabel,
   Image,
-  Input,
   ModalFooter,
   ModalHeader,
-  Select,
   Stack,
 } from '@chakra-ui/react';
 import { updateUser } from '../../../../redux/userSlice';
@@ -41,70 +39,75 @@ const ProfileUserSettings = ({ handleClose }) => {
     <Box w="600px">
       <ModalHeader> User Settings </ModalHeader>
       <Stack direction="row">
-        <Box w="300px">
+        <Box w="350px" mt={6} >
           <Image
             borderRadius="full"
-            boxSize="150px"
+            boxSize="180px"
             src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
             alt="Profile Picture"
           />
         </Box>
         <Box w="100%">
-          <Flex direction="row" spacing={4}>
-            <FormControl>
+          <Flex direction="row" spacing={5}>
+            <FormControl m={4}>
               <FormLabel>First name</FormLabel>
               <Editable
+                color={'white'}
+                backgroundColor={'teal.600'} borderRadius={10}
                 defaultValue={userInfo.firstName}
                 onSubmit={value =>
                   setUserInfo({ ...userInfo, firstName: value })
                 }
               >
-                <EditablePreview />
-                <EditableInput />
+                <EditablePreview px={2}/>
+                <EditableInput borderRadius={10} px={2}/>
               </Editable>
             </FormControl>
-            <FormControl>
+            <FormControl m={4}>
               <FormLabel>Last name</FormLabel>
               <Editable
+                color={'white'}
+                backgroundColor={'teal.600'} borderRadius={10}
                 defaultValue={userInfo.lastName}
                 onSubmit={value =>
                   setUserInfo({ ...userInfo, lastName: value })
                 }
               >
-                <EditablePreview />
-                <EditableInput />
+                <EditablePreview px={2}/>
+                <EditableInput borderRadius={10} px={2}/>
               </Editable>
             </FormControl>
           </Flex>
-          <FormControl>
+          <FormControl m={4} mt={0}>
             <FormLabel>Email address</FormLabel>
             <Editable
+              color={'white'}
+              backgroundColor={'teal.600'} borderRadius={10}
               defaultValue={userInfo.email}
               onSubmit={value => setUserInfo({ ...userInfo, email: value })}
             >
-              <EditablePreview />
-              <EditableInput />
+              <EditablePreview px={2}/>
+              <EditableInput borderRadius={10} px={2}/>
             </Editable>
           </FormControl>
-          <FormControl>
+          <FormControl m={4}>
             <FormLabel>Account Type</FormLabel>
-            <Select
-              value={userInfo.type}
-              onChange={e => setUserInfo({ ...userInfo, type: e.target.value })}
+            <Editable
+              color={'white'}
+              backgroundColor={'teal.600'} borderRadius={10}
+              defaultValue={userInfo.type}
             >
-              <option value="Student">Student</option>
-              <option value="Professor">Teacher</option>
-              <option value="Admin">Admin</option>
-              <option value="Developer">Developer</option>
-            </Select>
+              <EditablePreview px={2}/>
+              <EditableInput px={2}/>
+            </Editable>
           </FormControl>
         </Box>
       </Stack>
-      <ModalFooter>
+      <ModalFooter paddingInlineEnd={0} paddingTop={6}>
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button colorScheme="red" onClick={handleClose}>Cancel</Button>
       </ModalFooter>
     </Box>
   );

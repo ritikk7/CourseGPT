@@ -22,9 +22,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         width="150px"
         borderRight="1px solid"
         borderColor="gray.400"
-        backgroundColor="#84858c"
+        backgroundColor="gray.200"
       >
-        <VStack spacing={3} height="full" justify="space-around">
+        <VStack spacing={0} height="full" justify="space-around" p={1} m={-1}>
           <Box
             as="button"
             w="100%"
@@ -33,6 +33,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             alignItems="center"
             justifyContent="center"
             onClick={() => setSelectedSetting('Personal')}
+            _hover={{
+              background: 'gray.300'
+            }}
           >
             <Icon as={FaUser} boxSize="24px" />
           </Box>
@@ -43,10 +46,13 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            borderTop="1px solid"
-            borderBottom="1px solid"
+            borderTop="1px"
+            borderBottom="1px"
             borderColor="gray.400"
             onClick={() => setSelectedSetting('School')}
+            _hover={{
+              background: 'gray.300'
+            }}
           >
             <Icon as={FaSchool} boxSize="24px" />
           </Box>
@@ -57,6 +63,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            _hover={{
+              background: 'gray.300'
+            }}
           >
             <Icon as={FaLock} boxSize="24px" />
           </Box>
@@ -81,9 +90,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <Stack direction="row" height="450px">
+        <Stack direction="row" height="450px" backgroundColor={'gray.500'}>
           {renderSettingsSidePanel()}
-          <VStack p={5}>{renderSettings()}</VStack>
+          <VStack p={5} >{renderSettings()}</VStack>
         </Stack>
       </ModalContent>
     </Modal>
