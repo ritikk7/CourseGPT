@@ -3,19 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
   FormLabel,
   ModalFooter,
   ModalHeader,
   Select,
-  Text,
+  SimpleGrid,
 } from '@chakra-ui/react';
 
 import { updateUser } from '../../../../redux/userSlice';
 import { schoolsWithCoursesSelector } from '../../../../redux/selectors/schoolsWithCoursesSelector';
 import { userFavouriteCoursesSelector } from '../../../../redux/selectors/userFavouriteCoursesSelector';
 import { userSchoolWithCoursesSelector } from '../../../../redux/selectors/userSchoolWithCoursesSelector';
+
+import { MultiSelectButtons } from '../../../atoms/RadioAndCheckboxBtnGroups/SelectionButtonGroup';
 
 const ProfileSchoolSettings = ({ handleClose }) => {
   const dispatch = useDispatch();
@@ -72,13 +73,13 @@ const ProfileSchoolSettings = ({ handleClose }) => {
   const renderCourses = () => {
     if (selectedSchool) {
       return Object.values(selectedSchool.courses).map((course, i) => (
-        <Checkbox
+        <MultiSelectButtons
           key={i}
           isChecked={!!selectedCourses[course._id]}
           onChange={() => handleCourseChange(course)}
         >
           {course.courseCode}
-        </Checkbox>
+        </MultiSelectButtons>
       ));
     }
   };
@@ -86,19 +87,22 @@ const ProfileSchoolSettings = ({ handleClose }) => {
   return (
     <Box w="600px">
       <ModalHeader>School Settings</ModalHeader>
-      <FormControl>
+      <FormControl paddingInlineStart={6}>
         <FormLabel>School</FormLabel>
         <Select
           placeholder="Select a school"
           value={selectedSchool?._id}
           onChange={handleSchoolChange}
+          margin={3}
         >
           {renderSchools()}
         </Select>
+        <FormLabel>Courses</FormLabel>
+        <SimpleGrid minChildWidth="120px" spacing="7px">
+          {renderCourses()}
+        </SimpleGrid>
       </FormControl>
-      <Text fontSize="lg">Courses</Text>
-      {renderCourses()}
-      <ModalFooter>
+      <ModalFooter paddingInlineEnd={0} paddingTop={6}>
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>

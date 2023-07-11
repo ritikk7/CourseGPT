@@ -81,7 +81,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <Stack direction="row" height="400px">
+        <Stack direction="row" height="450px">
           {renderSettingsSidePanel()}
           <VStack p={5}>{renderSettings()}</VStack>
         </Stack>
