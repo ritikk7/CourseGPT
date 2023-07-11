@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
+  Center,
   Editable,
   EditableInput,
   EditablePreview,
@@ -10,6 +11,7 @@ import {
   FormControl,
   FormLabel,
   Image,
+  Input,
   ModalFooter,
   ModalHeader,
   Stack,
@@ -19,33 +21,45 @@ import { updateUser } from '../../../../redux/userSlice';
 const ProfileUserSettings = ({ handleClose }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [userInfo, setUserInfo] = useState({
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
     type: user.type,
+    profilePicture: user.profilePicture
   });
 
   const handleSave = () => {
     const updatedUser = {
       ...userInfo,
+      profilePicture: selectedFile
     };
     dispatch(updateUser(updatedUser));
     handleClose();
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(URL.createObjectURL(e.target.files[0]));
   };
 
   return (
     <Box w="600px">
       <ModalHeader> User Settings </ModalHeader>
       <Stack direction="row">
-        <Box w="350px" mt={6} >
+        <Box w="400px" m={1} justifyContent='center'>
           <Image
             borderRadius="full"
             boxSize="180px"
-            src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
+            src={selectedFile || userInfo.profilePicture || "https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"}
             alt="Profile Picture"
+            m={3}
           />
+          <Input id="fileUpload" type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
+          <FormLabel m={6} htmlFor="fileUpload" style={{ fontSize: '0.9em', display: 'inline-block', backgroundColor: 'teal', color: 'white', padding: '8px', borderRadius: '4px', cursor: 'pointer'}}>
+            Upload Profile Picture
+          </FormLabel>
         </Box>
         <Box w="100%">
           <Flex direction="row" spacing={5}>
@@ -103,7 +117,7 @@ const ProfileUserSettings = ({ handleClose }) => {
           </FormControl>
         </Box>
       </Stack>
-      <ModalFooter paddingInlineEnd={0} paddingTop={6}>
+      <ModalFooter paddingInlineEnd={0} paddingTop={0}>
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>
