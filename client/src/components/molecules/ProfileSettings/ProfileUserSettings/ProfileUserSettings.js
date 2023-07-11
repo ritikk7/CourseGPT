@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Flex,
   FormControl,
   FormLabel,
   Image,
@@ -46,37 +50,41 @@ const ProfileUserSettings = ({ handleClose }) => {
           />
         </Box>
         <Box w="100%">
-          <Stack direction="row" spacing={4}>
+          <Flex direction="row" spacing={4}>
             <FormControl>
               <FormLabel>First name</FormLabel>
-              <Input
-                placeholder="First name"
-                value={userInfo.firstName}
-                onChange={e =>
-                  setUserInfo({ ...userInfo, firstName: e.target.value })
+              <Editable
+                defaultValue={userInfo.firstName}
+                onSubmit={value =>
+                  setUserInfo({ ...userInfo, firstName: value })
                 }
-              />
+              >
+                <EditablePreview />
+                <EditableInput />
+              </Editable>
             </FormControl>
             <FormControl>
               <FormLabel>Last name</FormLabel>
-              <Input
-                placeholder="Last name"
-                value={userInfo.lastName}
-                onChange={e =>
-                  setUserInfo({ ...userInfo, lastName: e.target.value })
+              <Editable
+                defaultValue={userInfo.lastName}
+                onSubmit={value =>
+                  setUserInfo({ ...userInfo, lastName: value })
                 }
-              />
+              >
+                <EditablePreview />
+                <EditableInput />
+              </Editable>
             </FormControl>
-          </Stack>
+          </Flex>
           <FormControl>
             <FormLabel>Email address</FormLabel>
-            <Input
-              placeholder="Email address"
-              value={userInfo.email}
-              onChange={e =>
-                setUserInfo({ ...userInfo, email: e.target.value })
-              }
-            />
+            <Editable
+              defaultValue={userInfo.email}
+              onSubmit={value => setUserInfo({ ...userInfo, email: value })}
+            >
+              <EditablePreview />
+              <EditableInput />
+            </Editable>
           </FormControl>
           <FormControl>
             <FormLabel>Account Type</FormLabel>

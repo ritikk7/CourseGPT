@@ -18,7 +18,12 @@ const ProfileModal = ({ isOpen, handleClose }) => {
 
   const renderSettingsSidePanel = () => {
     return (
-      <Box width="150px" borderRight="1px solid" borderColor="gray.200">
+      <Box
+        width="150px"
+        borderRight="1px solid"
+        borderColor="gray.400"
+        backgroundColor="#84858c"
+      >
         <VStack spacing={3} height="full" justify="space-around">
           <Box
             as="button"
