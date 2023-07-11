@@ -1,7 +1,7 @@
 import React from 'react';
 import PromptButton from '../../atoms/PromptButton/PromptButton';
 import styles from './InfoPanel.module.css';
-import { HStack, Text } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
 const InfoPanel = ({ setInputText, inputRef }) => {
@@ -14,7 +14,11 @@ const InfoPanel = ({ setInputText, inputRef }) => {
 
   const renderPrompts = () => {
     return (
-      <HStack mt={24} spacing="16px">
+      <Stack
+        direction={['column', 'column', 'column', 'row']}
+        mt={24}
+        spacing="16px"
+      >
         {selectedCourse && waitingFirstMessage
           ? selectedCourse.promptTemplates?.map((prompt, i) => (
               <PromptButton
@@ -25,7 +29,7 @@ const InfoPanel = ({ setInputText, inputRef }) => {
               />
             ))
           : ''}
-      </HStack>
+      </Stack>
     );
   };
 

@@ -9,10 +9,10 @@ import { fetchAllSchools } from '../../redux/schoolsSlice';
 import RegisterUserDetails from '../organisms/RegisterUserDetails/RegisterUserDetails';
 import {
   fetchAllCourses,
-  setCurrentlySelectedDropdownCourse
-} from "../../redux/coursesSlice";
+  setCurrentlySelectedDropdownCourse,
+} from '../../redux/coursesSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
-import { fetchUserChats, setWaitingFirstMessage } from "../../redux/chatsSlice";
+import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -23,6 +23,7 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -61,6 +62,10 @@ function Home() {
     }
   };
 
+  const toggleSidePanelVisibility = () => {
+    setIsSidepanelVisible(isSidepanelVisible => !isSidepanelVisible);
+  };
+
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -69,8 +74,15 @@ function Home() {
         <RegisterUserDetails />
       ) : (
         <>
-          <SidePanel />
-          <RightSection />
+          <RightSection
+            isSidepanelVisible={isSidepanelVisible}
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+          />
+          <SidePanel
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+            isSidepanelVisible={isSidepanelVisible}
+            setIsSidepanelVisible={setIsSidepanelVisible}
+          />
         </>
       )}
     </div>

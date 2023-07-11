@@ -5,6 +5,16 @@
   right: 0;
   height: 100vh;
 }
+@media only screen and (max-width: 1380px) {
+  .container {
+    width: calc(100% - 250px);
+  }
+}
+@media only screen and (max-width: 680px) {
+  .container {
+    width: 100%;
+  }
+}
 
 .inputSection {
   position: absolute;
@@ -58,4 +68,9 @@
   border: none;
   height: 48px;
   width: 66px;
+}
+
+.toggleSidepanelBtn {
+  position: absolute;
+  top: 10px;
 }
