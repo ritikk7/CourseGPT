@@ -85,7 +85,7 @@ const ProfileSchoolSettings = ({ handleClose }) => {
   };
 
   return (
-    <Box w="600px">
+    <Box w="600px" color='white'>
       <ModalHeader>School Settings</ModalHeader>
       <FormControl paddingInlineStart={6}>
         <FormLabel>School</FormLabel>

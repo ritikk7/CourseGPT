@@ -12,6 +12,7 @@ import {
 import { FaUser, FaSchool, FaLock } from 'react-icons/fa';
 import ProfileUserSettings from '../../molecules/ProfileSettings/ProfileUserSettings/ProfileUserSettings';
 import ProfileSchoolSettings from '../../molecules/ProfileSettings/ProfileSchoolSettings/ProfileSchoolSettings';
+import ProfileSecuritySettings from '../../molecules/ProfileSettings/ProfileSecuritySettings/ProfileSecuritySettings';
 
 const ProfileModal = ({ isOpen, handleClose }) => {
   const [selectedSetting, setSelectedSetting] = useState('Personal');
@@ -21,10 +22,10 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       <Box
         width="150px"
         borderRight="1px solid"
-        borderColor="gray.400"
-        backgroundColor="gray.200"
+        borderColor="gray.600"
+        backgroundColor="gray.300"
       >
-        <VStack spacing={0} height="full" justify="space-around" p={1} m={-1}>
+        <VStack spacing={0} height="full" justify="space-around">
           <Box
             as="button"
             w="100%"
@@ -34,7 +35,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Personal')}
             _hover={{
-              background: 'gray.300'
+              background: 'gray.400'
             }}
           >
             <Icon as={FaUser} boxSize="24px" />
@@ -51,7 +52,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             borderColor="gray.400"
             onClick={() => setSelectedSetting('School')}
             _hover={{
-              background: 'gray.300'
+              background: 'gray.400'
             }}
           >
             <Icon as={FaSchool} boxSize="24px" />
@@ -63,8 +64,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            onClick={() => setSelectedSetting('Security')}
             _hover={{
-              background: 'gray.300'
+              background: 'gray.400'
             }}
           >
             <Icon as={FaLock} boxSize="24px" />
@@ -80,6 +82,8 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         return <ProfileUserSettings handleClose={handleClose} />;
       case 'School':
         return <ProfileSchoolSettings handleClose={handleClose} />;
+      case 'Security':
+        return <ProfileSecuritySettings handleClose={handleClose}/>
       default:
         return null;
     }
@@ -90,7 +94,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <Stack direction="row" height="450px" backgroundColor={'gray.500'}>
+        <Stack direction="row" height="450px" backgroundColor={'gray.600'}>
           {renderSettingsSidePanel()}
           <VStack p={5} >{renderSettings()}</VStack>
         </Stack>

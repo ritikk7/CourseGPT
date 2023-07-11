@@ -45,7 +45,7 @@ const ProfileUserSettings = ({ handleClose }) => {
   };
 
   return (
-    <Box w="600px">
+    <Box color='white' w="600px">
       <ModalHeader> User Settings </ModalHeader>
       <Stack direction="row">
         <Box w="400px" m={1} justifyContent='center'>
@@ -57,7 +57,7 @@ const ProfileUserSettings = ({ handleClose }) => {
             m={3}
           />
           <Input id="fileUpload" type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-          <FormLabel m={6} htmlFor="fileUpload" style={{ fontSize: '0.9em', display: 'inline-block', backgroundColor: 'teal', color: 'white', padding: '8px', borderRadius: '4px', cursor: 'pointer'}}>
+          <FormLabel m={6} htmlFor="fileUpload" style={{ fontSize: '0.9em', display: 'inline-block', backgroundColor: 'teal', padding: '8px', borderRadius: '4px', cursor: 'pointer'}}>
             Upload Profile Picture
           </FormLabel>
         </Box>
@@ -66,7 +66,6 @@ const ProfileUserSettings = ({ handleClose }) => {
             <FormControl m={4}>
               <FormLabel>First name</FormLabel>
               <Editable
-                color={'white'}
                 backgroundColor={'teal.600'} borderRadius={10}
                 defaultValue={userInfo.firstName}
                 onSubmit={value =>
@@ -80,7 +79,6 @@ const ProfileUserSettings = ({ handleClose }) => {
             <FormControl m={4}>
               <FormLabel>Last name</FormLabel>
               <Editable
-                color={'white'}
                 backgroundColor={'teal.600'} borderRadius={10}
                 defaultValue={userInfo.lastName}
                 onSubmit={value =>
@@ -95,7 +93,6 @@ const ProfileUserSettings = ({ handleClose }) => {
           <FormControl m={4} mt={0}>
             <FormLabel>Email address</FormLabel>
             <Editable
-              color={'white'}
               backgroundColor={'teal.600'} borderRadius={10}
               defaultValue={userInfo.email}
               onSubmit={value => setUserInfo({ ...userInfo, email: value })}
@@ -107,7 +104,6 @@ const ProfileUserSettings = ({ handleClose }) => {
           <FormControl m={4}>
             <FormLabel>Account Type</FormLabel>
             <Editable
-              color={'white'}
               backgroundColor={'teal.600'} borderRadius={10}
               defaultValue={userInfo.type}
             >
