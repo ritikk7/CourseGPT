@@ -7,17 +7,18 @@ const Course = require('../models/course');
 // example return: [ FeedbackInfo1, FeedbackInfo2 ]
 async function getDatabaseFeedbackInfo(courseId = null) {
   try {
+    console.log('get database feedback function');
     const returnFeedback = [];
 
     const allFeedback = await Feedback.find({});
 
-    const promises = allFeedback.map(async (feedback) => {
+    const promises = allFeedback.map(async feedback => {
       const qaPair = await QAPair.findById(feedback.qaPair);
-      if (courseId && qaPair.course !== courseId) return null
+      if (courseId && qaPair.course !== courseId) return null;
       const [course, question, answer] = await Promise.all([
         Course.findById(qaPair.course),
         Message.findById(qaPair.question),
-        Message.findById(qaPair.answer)
+        Message.findById(qaPair.answer),
       ]);
 
       return [feedback.comment, feedback.rating, question, answer, course];
@@ -25,6 +26,7 @@ async function getDatabaseFeedbackInfo(courseId = null) {
 
     const resolvedFeedback = await Promise.all(promises);
     returnFeedback.push(...resolvedFeedback);
+    console.log('get database feedback function done');
 
     return returnFeedback;
   } catch (error) {
@@ -32,8 +34,6 @@ async function getDatabaseFeedbackInfo(courseId = null) {
   }
 }
 
-
 module.exports = {
-    getDatabaseFeedbackInfo
+  getDatabaseFeedbackInfo,
 };
-
