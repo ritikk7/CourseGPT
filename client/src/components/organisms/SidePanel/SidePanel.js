@@ -6,7 +6,6 @@ import ProfileModal from '../ProfileModal/ProfileModal';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
 import {
-  fetchUserChats,
   setActiveChat,
   setFocusedChat,
   setWaitingFirstMessage,
@@ -26,7 +25,11 @@ import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
 
-const SidePanel = () => {
+const SidePanel = ({
+  toggleSidePanelVisibility,
+  isSidepanelVisible,
+  setIsSidepanelVisible,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isGptLoading = useSelector(state => state.messages.gptLoading);
@@ -127,7 +130,18 @@ const SidePanel = () => {
 
   let chats = Object.values(filteredChatsToShow);
   return (
-    <div className={styles.sidepanel}>
+    <div
+      className={styles.sidepanel}
+      style={
+        isSidepanelVisible
+          ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
+          : {
+              transform: 'translateX(-100%)',
+              transition: '0.4s',
+              transitionTimingFunction: 'ease-in-out',
+            }
+      }
+    >
       <div className={styles.courseSelect}>
         <CreateNewChatSection
           favouriteCourses={favouriteCourses}
@@ -136,6 +150,7 @@ const SidePanel = () => {
           handleNewChat={handleNewChat}
           disableNewChatButton={disableNewChatButton}
           disabledNewChatCourseSelector={isGptLoading}
+          toggleSidePanelVisibility={toggleSidePanelVisibility}
         />
         <div className={styles.chatsPanel}>
           {chats &&
@@ -149,6 +164,7 @@ const SidePanel = () => {
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
                   handleChatDelete={handleChatDelete}
+                  setIsSidepanelVisible={setIsSidepanelVisible}
                 />
               ))}
         </div>
