@@ -2,21 +2,17 @@ import React, { useEffect, useState } from 'react';
 import * as GroupHelpers from './groupHelpers';
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 
-function NlpSentenceEncoderComponent() {
-  const [listSentences, setListSentences] = useState([
-    "Will it snow tomorrow?",
-    "Recently a lot of hurricanes have hit the US",
-    "Global warming is real",
-    "An apple a day, keeps the doctors away",
-    "Eating strawberries is healthy",
-    "what is your age?",
-    "How old are you?",
-    "How are you?",
-    "The dog bit Johnny",
-    "Johnny bit the dog",
-    "The cat ate the mouse",
-    "The mouse ate the cat"
-  ]);
+
+function NlpSentenceEncoderComponent({ course, school, data }) {
+  const [feedbackInfo, ] = useState(() => {
+    return data.reduce((map, feedbackInfo) => {
+      const [comment, rating, question, answer, course] = feedbackInfo;
+      map[question.content] = { comment, rating, question, answer, course };
+      return map;
+    }, {});
+  });
+  const listSentences = Object.keys(feedbackInfo);
+
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {    
@@ -60,6 +56,10 @@ function NlpSentenceEncoderComponent() {
 
   return (
     <Box>
+      {/* {console.log(data)} */}
+      {/* {console.log(feedbackInfo)} */}
+      {console.log(listSentences)}
+
       {/* <Heading as="h1" size="xl">Sentence Similarity with TensorFlow.js Sentence Encoder</Heading> */}
       {groups && groups.length > 0 && groups.map((group, i) => (
         <VStack key={i} align="start" my={4}>

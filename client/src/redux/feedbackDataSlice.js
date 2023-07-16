@@ -23,6 +23,8 @@ export const fetchFeedbackAnalysis = createAsyncThunk(
       console.log('feedback data slice');
       const response = await api.get(`/feedbackData`, { courseId: course });
       console.log('feedback data slice api call done');
+      // console.log(response.data.feedbackData);
+
       return response.data.feedbackData;
     } catch (error) {
       console.log(error.message);
@@ -33,27 +35,19 @@ export const fetchFeedbackAnalysis = createAsyncThunk(
 const feedbackDataSlice = createSlice({
   name: 'feedbackData',
   initialState: {
-    // The `userChats` object maps `chatId` keys to a chat object.
-    // Example: { "chatId1": chatObject1, "chatId2": chatObject2, }
-    data: [],
+    feedbackInfo: [],
   },
   reducers: {},
   extraReducers: builder => {
     builder
       .addCase(fetchFeedbackAnalysis.pending, handlePending)
       .addCase(fetchFeedbackAnalysis.fulfilled, (state, action) => {
-        state.data = action.payload;
-        console.log('data stuff in feedback data slice');
+        state.feedbackInfo = action.payload;
+        // console.log(state.feedbackInfo);
+        // console.log('data stuff in feedback data slice');
       })
       .addCase(fetchFeedbackAnalysis.rejected, handleRejected);
   },
 });
-
-export const {
-  setActiveChat,
-  setFocusedChat,
-  setChatsError,
-  setWaitingFirstMessage,
-} = feedbackDataSlice.actions;
 
 export default feedbackDataSlice.reducer;

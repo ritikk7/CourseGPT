@@ -11,16 +11,16 @@ import {
 } from '@chakra-ui/react';
 import { schoolsWithCoursesSelector } from '../../../redux/selectors/schoolsWithCoursesSelector';
 import { fetchFeedbackAnalysis } from '../../../redux/feedbackDataSlice';
+import NlpSentenceEncoderComponent from './newtemp';
 
 const FeedbackData = () => {
   const dispatch = useDispatch();
   const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
-  const courses = state => state.courses.courses;
-  const [selectedSchool, setSelectedSchool] = useState('');
-  const [selectedCourse, setSelectedCourses] = useState([]);
+  const [selectedSchool, setSelectedSchool] = useState(''); // need to add dropdown stuff later
+  const [selectedCourse, setSelectedCourse] = useState([]);
+  const feedbackData = useSelector(state => state.feedbackData.feedbackInfo); 
 
   const handleClick = () => {
-    // Dispatch your action to the reducer
     dispatch(fetchFeedbackAnalysis());
   };
 
@@ -37,9 +37,8 @@ const FeedbackData = () => {
         )}
       </Box>
       <Box className={styles.title}>
-        <Button onClick={handleClick}>Click me</Button>
-
-        {/* <Text>Currently looking at the feedback for {selectedCourse.courseCode}: {selectedCourse.courseName} at {selectedSchool.name}</Text> */}
+        <Button onClick={handleClick}>Get feedback</Button>
+        {feedbackData.length && <NlpSentenceEncoderComponent course={selectedCourse} school={selectedSchool} data={feedbackData}/>} 
       </Box>
     </Box>
   );

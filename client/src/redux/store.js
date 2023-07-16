@@ -5,6 +5,7 @@ import coursesReducer from './coursesSlice';
 import chatsReducer from './chatsSlice';
 import messagesReducer from './messagesSlice';
 import authReducer from './authSlice';
+import feedbackDataReducer from './feedbackDataSlice';
 
 export default configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
     chats: chatsReducer,
     messages: messagesReducer,
     auth: authReducer,
+    feedbackData: feedbackDataReducer,
   },
 });
