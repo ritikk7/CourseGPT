@@ -53,11 +53,38 @@ const ChatSection = ({ message }) => {
     setIsHovered(false);
   };
 
+  const handleNewlineHTML = text => {
+    if (text) {
+      return text.split('\n').map((item, key) => {
+        return (
+          <span key={key}>
+            {item}
+            <br />
+          </span>
+        );
+      });
+    }
+    return null;
+  };
+  const handleNewlineText = text => {
+    if (text) {
+      let htmlText = text
+        .split('\n')
+        .map((item, key) => {
+          return `<span key=${key}>` + `${item}` + `<br />` + `</span>`;
+        })
+        .join('');
+      return htmlText;
+    }
+    return null;
+  };
+
   const renderBotAnswer = () => {
     if (!renderAnimation) {
-      return message.content;
+      return message.content && handleNewlineHTML(message.content);
     }
     if (message.content) {
+      console.log(message.content);
       return (
         <Typewriter
           options={{
@@ -65,7 +92,7 @@ const ChatSection = ({ message }) => {
           }}
           onInit={typewriter => {
             typewriter
-              .typeString(message.content)
+              .typeString(handleNewlineText(message.content))
               .callFunction(() => {
                 document.querySelector('.Typewriter__cursor').remove();
               })
@@ -100,8 +127,10 @@ const ChatSection = ({ message }) => {
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
-              {message && renderGptPlaceholder()}
-              {message && !messageIsGptPlaceholder && renderBotAnswer()}
+              <div className={styles.textBlock}>
+                {message && renderGptPlaceholder()}
+                {message && !messageIsGptPlaceholder && renderBotAnswer()}
+              </div>
               {message && !messageIsGptPlaceholder && isHovered && (
                 <Feedback message={message._id} />
               )}
