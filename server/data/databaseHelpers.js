@@ -7,7 +7,6 @@ const Course = require('../models/course');
 // example return: [ FeedbackInfo1, FeedbackInfo2 ]
 async function getDatabaseFeedbackInfo(courseId = null) {
   try {
-    console.log('get database feedback function');
     const returnFeedback = [];
 
     const allFeedback = await Feedback.find({});
@@ -26,7 +25,6 @@ async function getDatabaseFeedbackInfo(courseId = null) {
 
     const resolvedFeedback = await Promise.all(promises);
     returnFeedback.push(...resolvedFeedback);
-    console.log('get database feedback function done');
 
     return returnFeedback;
   } catch (error) {
