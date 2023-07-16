@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
 import FeedbackData from '../organisms/temp/temp';
+import NlpSentenceEncoderComponent from '../organisms/temp/newtemp';
 
 function FeedbackPage() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -29,7 +30,12 @@ function FeedbackPage() {
     }
   };
 
-  return <FeedbackData />;
+  return (
+    <>
+      <FeedbackData />;
+      <NlpSentenceEncoderComponent />
+    </>
+  );
 }
 
 export default FeedbackPage;
