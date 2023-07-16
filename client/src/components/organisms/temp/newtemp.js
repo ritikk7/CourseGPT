@@ -74,3 +74,13 @@ function NlpSentenceEncoderComponent({ course, school, data }) {
 }
 
 export default NlpSentenceEncoderComponent;
+
+
+
+/*
+Useful links that I referenced:
+- Tensorflow JS docs (ex: https://www.tensorflow.org/js/guide/nodejs)
+- https://github.com/tensorflow/tfjs-models/tree/master/universal-sentence-encoder
+- https://github.com/jinglescode/demos/tree/master/src/app/components/nlp-sentence-encoder
+- https://github.com/jinglescode/textual-similarity-universal-sentence-encoder
+*/
