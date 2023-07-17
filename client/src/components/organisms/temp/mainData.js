@@ -18,7 +18,7 @@ const FeedbackData = () => {
   const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
   const [selectedSchool, setSelectedSchool] = useState(''); // need to add dropdown stuff later
   const [selectedCourse, setSelectedCourse] = useState([]);
-  const feedbackData = useSelector(state => state.feedbackData.feedbackInfo); 
+  const feedbackData = useSelector(state => state.feedbackData.feedbackInfo);
 
   const handleClick = () => {
     dispatch(fetchFeedbackAnalysis());
@@ -38,7 +38,13 @@ const FeedbackData = () => {
       </Box>
       <Box className={styles.title}>
         <Button onClick={handleClick}>Get feedback</Button>
-        {feedbackData.length && <NlpSentenceEncoderComponent course={selectedCourse} school={selectedSchool} data={feedbackData}/>} 
+        {feedbackData.length && (
+          <NlpSentenceEncoderComponent
+            course={selectedCourse}
+            school={selectedSchool}
+            data={feedbackData}
+          />
+        )}
       </Box>
     </Box>
   );

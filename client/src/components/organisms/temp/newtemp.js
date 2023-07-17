@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import * as GroupHelpers from './groupHelpers';
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
-
+import * as SentimentAnalysisHelpers from './sentimentAnalysisHelpers';
+import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 
 function NlpSentenceEncoderComponent({ course, school, data }) {
-  const [feedbackInfo, ] = useState(() => {
+  const [feedbackInfo] = useState(() => {
     return data.reduce((map, feedbackInfo) => {
       const [comment, rating, question, answer, course] = feedbackInfo;
       map[question.content] = { comment, rating, question, answer, course };
@@ -14,68 +14,90 @@ function NlpSentenceEncoderComponent({ course, school, data }) {
   const listSentences = Object.keys(feedbackInfo);
 
   const [groups, setGroups] = useState([]);
+  const [feedbackSentiment, setFeedbackSentiment] = useState({});
 
-  useEffect(() => {    
+  useEffect(() => {
     const initializeTensorflow = async () => {
       await GroupHelpers.initializeTensorflow();
-      onClickAnalyzeSentences()
+      onClickAnalyzeSentences();
     };
-    
+
     initializeTensorflow();
-  }, []);
+  }, [listSentences]);
 
   const onClickAnalyzeSentences = async () => {
     await getSimilarity(listSentences);
   };
 
-  const getEmbeddings = async (listSentences) => {
+  const getEmbeddings = async listSentences => {
     const embeddings = await GroupHelpers.getEmbeddings(listSentences);
     return embeddings;
   };
 
-  const getSimilarity = async (listSentences) => {
+  const getSimilarity = async listSentences => {
     const embeddings = await getEmbeddings(listSentences);
-    const cosineSimilarityMatrix = GroupHelpers.cosineSimilarityMatrix(embeddings.arraySync());
-    const groupData = GroupHelpers.formGroups(cosineSimilarityMatrix);
+    const cosineSimilarityMatrix = GroupHelpers.cosineSimilarityMatrix(
+      embeddings.arraySync()
+    );
+    const groupData = GroupHelpers.formGroups(
+      cosineSimilarityMatrix,
+      listSentences
+    );
+    setGroups(groupData);
 
-    const toAdd = []
-    for (let i in groupData) {
-      let temp = []
-      for (let j in groupData[i]) {
-        const index = groupData[i][j];
-        if (index >= 0 && index < listSentences.length) {
-          temp.push(listSentences[index]);
-        }
+    const model = await SentimentAnalysisHelpers.loadModel();
+    const metadata = await SentimentAnalysisHelpers.getMetaData();
+    const sentenceAndSentiment = {};
+    for (let g of groupData) {
+      let sentiments = [];
+      for (let s of g) {
+        // console.log(feedbackInfo[s][0]);
+        let sentiment = SentimentAnalysisHelpers.getSentimentScore(
+          s,
+          model,
+          metadata
+        );
+        // console.log(sentiment);
+        sentiments.push(parseFloat(sentiment, 10))
+        // console.log(sum);
       }
-      toAdd.push(temp)
+      sentenceAndSentiment[g] = sentiments;
     }
-    
-    
-    setGroups(toAdd);
+    setFeedbackSentiment(sentenceAndSentiment);
   };
 
   return (
     <Box>
       {/* {console.log(data)} */}
       {/* {console.log(feedbackInfo)} */}
-      {console.log(listSentences)}
+      {/* {console.log(listSentences)} */}
 
-      {/* <Heading as="h1" size="xl">Sentence Similarity with TensorFlow.js Sentence Encoder</Heading> */}
-      {groups && groups.length > 0 && groups.map((group, i) => (
-        <VStack key={i} align="start" my={4}>
-          <Heading as="h3" size="md">Group {i + 1}</Heading>
-          {group && group.map((sentence, j) => (
-            <Text key={j}>{sentence}</Text>
-          ))}
-        </VStack>
-      ))}       
+      {groups &&
+        groups.length > 0 &&
+        groups.map((group, i) => (
+          <VStack key={i} align="start" my={4}>
+            <Heading as="h3" size="md">
+              There were {group.length} questions similar to {group[0]}
+              {/* Group {i + 1} */}
+            </Heading>
+            {feedbackSentiment[group] &&
+            <>
+            <Text>Out of a score between 0 and 1, user sentiment...</Text>
+            <Text>was an average of {SentimentAnalysisHelpers.calculateMean(feedbackSentiment[group])}</Text>
+            <Text>had a median of {SentimentAnalysisHelpers.calculateMedian(feedbackSentiment[group])}</Text>
+            <Text>had a variance of {SentimentAnalysisHelpers.calculateVariance(feedbackSentiment[group])}</Text>
+            </>
+}
+
+            {/* {group &&
+              group.map((sentence, j) => <Text key={j}>{sentence}</Text>)} */}
+          </VStack>
+        ))}
     </Box>
   );
 }
 
 export default NlpSentenceEncoderComponent;
-
-
 
 /*
 Useful links that I referenced:

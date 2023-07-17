@@ -44,7 +44,7 @@ export function cosineSimilarityMatrix(matrix) {
   return cosineSimilarityMatrix;
 }
 
-export function formGroups(cosineSimilarityMatrix) {
+export function formGroups(cosineSimilarityMatrix, listSentences) {
   const dictKeysInGroup = {};
   const groups = [];
 
@@ -77,11 +77,21 @@ export function formGroups(cosineSimilarityMatrix) {
     }
   }
 
-  const returnGroups = groups.map(group => [...new Set(group)]);
+  const groupData = groups.map(group => [...new Set(group)]);
+  const returnGroups = [];
+  for (let i in groupData) {
+    let temp = [];
+    for (let j in groupData[i]) {
+      const index = groupData[i][j];
+      if (index >= 0 && index < listSentences.length) {
+        temp.push(listSentences[index]);
+      }
+    }
+    returnGroups.push(temp);
+  }
 
   return returnGroups;
 }
-
 
 // async getSimilarity(list_sentences) {
 //   this.setState({ analyzing_text: true });
