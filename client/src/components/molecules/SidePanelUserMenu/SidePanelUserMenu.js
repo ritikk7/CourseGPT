@@ -17,13 +17,13 @@ const SidePanelUserMenu = ({
   handleLogout,
   handleClearConversations,
   setTrainCourseModalOpen,
-  setFeedbackSectionOpen,
   username,
 }) => {
   const userType = useSelector(state => state.user.type);
   const isTrainingCourse = useSelector(state => state.courses.loading);
   const isGptLoading = useSelector(state => state.messages.gptLoading);
   const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
+  const allowedViewAnalytics = ['Admin', 'Developer'];
   const navigate = useNavigate();
 
   return (
@@ -67,12 +67,11 @@ const SidePanelUserMenu = ({
             </MenuItem>
           </>
         ) : null}
-        {userType === 'Developer' && !isTrainingCourse ? (
+        {allowedViewAnalytics.includes(userType) ? (
           <>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={() => setFeedbackSectionOpen(true)} />
-            <MenuItem bg="black" onClick={navigate('/data')}>
-              View Feedback for Selected Course
+            <MenuItem bg="black" onClick={() => navigate('/data')}>
+              View Analytics
             </MenuItem>
           </>
         ) : null}
