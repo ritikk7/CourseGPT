@@ -92,3 +92,15 @@ export function formGroups(cosineSimilarityMatrix, listSentences) {
 
   return returnGroups;
 }
+
+
+/*
+Useful links that I referenced:
+- Tensorflow JS docs (ex: https://www.tensorflow.org/js/guide/nodejs)
+- https://github.com/tensorflow/tfjs-models/tree/master/universal-sentence-encoder
+- https://github.com/jinglescode/demos/tree/master/src/app/components/nlp-sentence-encoder
+- https://github.com/jinglescode/textual-similarity-universal-sentence-encoder
+- https://bensonruan.com/twitter-sentiment-analysis-with-tensorflowjs/
+- https://github.com/ibm-build-lab/Watson-NLP/blob/main/ML/Entities-Keywords-Extraction/Hotel%20Reviews%20Analysis%20-%20Entities%20and%20Keywords.ipynb
+- https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-additional-resources
+*/
