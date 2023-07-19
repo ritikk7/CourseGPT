@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './FeedbackDataModal.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Text, Button } from '@chakra-ui/react';
 import { fetchFeedbackAnalysis } from '../../../redux/feedbackDataSlice';
@@ -112,7 +111,6 @@ const FeedbackData = () => {
     const colorScheme = ['#ed475b', '#f59749', '#d5f252', '#18c7be', '#3f48c4'];
 
     // Create a categorical color scale.
-    // const color = d3.scaleOrdinal(colorScheme );
     var color = d3
       .scaleThreshold()
       .domain([0.2, 0.4, 0.6, 0.9])
@@ -189,8 +187,6 @@ const FeedbackData = () => {
     setBubbleChart(chart);
   };
 
-  console.log('bubbleChart', bubbleChart);
-
   useEffect(() => {
     renderVisualization();
   }, []);
@@ -208,8 +204,8 @@ const FeedbackData = () => {
   }, [bubbleChart]);
 
   return (
-    <Box className={styles.container}>
-      <Box className={styles.title}>
+    <Box>
+      <Box>
         {selectedSchool ? (
           <Text>
             Currently looking at the feedback for {selectedCourse.courseCode}:{' '}
@@ -219,7 +215,7 @@ const FeedbackData = () => {
           <Text>Looking at the feedback for all courses and schools</Text>
         )}
       </Box>
-      <Box className={styles.title}>
+      <Box>
         <Button onClick={handleClick}>Get feedback</Button>
         {feedbackData.length && (
           <MainAnalysisPage
