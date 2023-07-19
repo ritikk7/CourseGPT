@@ -24,7 +24,6 @@ import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNew
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
-import FeedbackDataModal from '../FeedbackDataModal/FeedbackDataModal';
 import TempButton from '../temp/DevButton';
 
 const SidePanel = () => {
@@ -174,11 +173,6 @@ const SidePanel = () => {
           isOpen={isTrainCourseModalOpen}
           handleClose={() => setTrainCourseModalOpen(false)}
           selectedCourseName={selectedCourse?.courseCode}
-        />
-        <FeedbackDataModal
-          isOpen={isTrainCourseModalOpen}
-          handleClose={() => setTrainCourseModalOpen(false)}
-          selectedCourse={selectedCourse}
         />
         <TempButton />
       </div>
