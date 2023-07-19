@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
-import { fetchUser, loginUser, registerUser } from './authSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {

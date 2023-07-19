@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import SidePanel from '../organisms/SidePanel/SidePanel';
-import RightSection from '../organisms/RightSection/RightSection';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
