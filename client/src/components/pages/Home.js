@@ -23,6 +23,7 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -61,6 +62,10 @@ function Home() {
     }
   };
 
+  const toggleSidePanelVisibility = () => {
+    setIsSidepanelVisible(isSidepanelVisible => !isSidepanelVisible);
+  };
+
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -69,8 +74,15 @@ function Home() {
         <RegisterUserDetails />
       ) : (
         <>
-          <SidePanel />
-          <RightSection />
+          <RightSection
+            isSidepanelVisible={isSidepanelVisible}
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+          />
+          <SidePanel
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+            isSidepanelVisible={isSidepanelVisible}
+            setIsSidepanelVisible={setIsSidepanelVisible}
+          />
         </>
       )}
     </div>

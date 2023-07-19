@@ -6,7 +6,7 @@ import { Button, Text } from '@chakra-ui/react';
 const PromptButton = ({ promptText, setInputText, inputRef }) => {
   return (
     <Button
-      width="33%"
+      width={{ base: '100%', lg: '33%' }}
       minH="85px"
       bg="#42434f"
       _hover={{ bg: '#2b2b2e' }}

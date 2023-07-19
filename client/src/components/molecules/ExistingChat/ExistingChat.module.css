@@ -13,7 +13,7 @@
   top: 50%;
   transform: translateY(-50%);
   margin: auto;
-  padding: 6px 12px 0 12px;
+  padding: 6px 12px;
   background: rgb(61, 61, 61);
   cursor: pointer;
 }
@@ -31,4 +31,10 @@
     rgba(31, 31, 32, 0) 60%,
     rgba(31, 31, 32, 1) 100%
   );
+}
+
+.editIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
