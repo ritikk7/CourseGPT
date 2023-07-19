@@ -64,19 +64,18 @@ const SidePanelUserMenu = ({
             <MenuDivider borderColor="rgb(100, 100, 102)" />
             <MenuItem bg="black" onClick={() => setTrainCourseModalOpen(true)}>
               Train Selected Course
-            </MenuItem>{' '}
+            </MenuItem>
           </>
         ) : null}
-        {/* {userType === 'Developer' && !isTrainingCourse ? (
+        {userType === 'Developer' && !isTrainingCourse ? (
           <>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={() => setFeedbackSectionOpen(true)}>
+            <MenuItem bg="black" onClick={() => setFeedbackSectionOpen(true)} />
             <MenuItem bg="black" onClick={navigate('/data')}>
-
               View Feedback for Selected Course
-            </MenuItem>{' '}
+            </MenuItem>
           </>
-        ) : null} */}
+        ) : null}
         <MenuDivider borderColor="rgb(100, 100, 102)" />
         <MenuItem bg="black" onClick={handleLogout}>
           Logout

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './FeedbackDataModal.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {

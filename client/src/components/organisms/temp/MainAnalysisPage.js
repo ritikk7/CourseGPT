@@ -3,11 +3,10 @@ import * as GroupHelpers from './groupHelpers';
 import * as SentimentAnalysisHelpers from './sentimentAnalysisHelpers';
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 
-  // Data is the return type from the file databaseHelpers in the backend
-  // basically, returns 2D array where a feedback info is [ comment, rating, question, answer, course ]
-  // example return: [ FeedbackInfo1, FeedbackInfo2 ]
+// Data is the return type from the file databaseHelpers in the backend
+// basically, returns 2D array where a feedback info is [ comment, rating, question, answer, course ]
+// example return: [ FeedbackInfo1, FeedbackInfo2 ]
 function MainAnalysisPage({ course, school, data }) {
-
   // FeedbackInfo maps the question to the rest of the feedback info
   const [feedbackInfo] = useState(() => {
     return data.reduce((map, feedbackInfo) => {
@@ -20,7 +19,7 @@ function MainAnalysisPage({ course, school, data }) {
   // listSentences is just the questions in an array
   const listSentences = Object.keys(feedbackInfo);
 
-  // groups is another 2D array with each internal array being a set of related questions 
+  // groups is another 2D array with each internal array being a set of related questions
   const [groups, setGroups] = useState([]);
 
   // feedbackSentiment is a map of an array of questions to a corresponding array of sentiment scores

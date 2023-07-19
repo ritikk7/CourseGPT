@@ -93,7 +93,6 @@ export function formGroups(cosineSimilarityMatrix, listSentences) {
   return returnGroups;
 }
 
-
 /*
 Useful links that I referenced:
 - Tensorflow JS docs (ex: https://www.tensorflow.org/js/guide/nodejs)

@@ -42,7 +42,7 @@ export function getSentimentScore(sentence, model, metadata) {
   const sequence = trimmed.map(word => {
     const wordIndex = metadata.word_index[word];
     if (typeof wordIndex === 'undefined') {
-      return 2; 
+      return 2;
     }
     return wordIndex + metadata.index_from;
   });
@@ -80,7 +80,6 @@ export function calculateMean(sentiments) {
   const mean = sum / sentiments.length;
   return mean;
 }
-
 
 /*
 Useful links that I referenced:
