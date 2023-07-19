@@ -92,37 +92,3 @@ export function formGroups(cosineSimilarityMatrix, listSentences) {
 
   return returnGroups;
 }
-
-// async getSimilarity(list_sentences) {
-//   this.setState({ analyzing_text: true });
-
-//   const embeddings = await this.getEmbeddings(list_sentences);
-//   const cosineSimilarityMatrix = GroupHelpers.cosineSimilarityMatrix(embeddings.arraySync());
-//   const groups = GroupHelpers.formGroups(cosineSimilarityMatrix);
-
-//   let htmlGroups = '';
-//   for (let i in groups) {
-//     htmlGroups += `<br/><b>Group ${parseInt(i) + 1}</b><br/>`;
-//     for (let j in groups[i]) {
-//       htmlGroups += `${list_sentences[groups[i][j]]}<br/>`;
-//     }
-//   }
-
-//   this.setState({
-//     output_resultshtml: htmlGroups,
-//     analyzing_text: false,
-//   });
-// }
-
-// render() {
-//   const { output_resultshtml } = this.state;
-
-//   return (
-//     <div>
-//       <h1>Sentence Similarity with TensorFlow.js Sentence Encoder</h1>
-//       <div>
-//         <div dangerouslySetInnerHTML={{ __html: output_resultshtml }}></div>
-//       </div>
-//     </div>
-//   );
-// }

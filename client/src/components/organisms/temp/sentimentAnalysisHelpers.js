@@ -13,6 +13,7 @@ export async function getMetaData() {
   return metadata.json();
 }
 
+// Adds padding for model
 function addPadding(sentences, metadata) {
   return sentences.map(sen => {
     if (sen.length > metadata.max_len) {
@@ -30,15 +31,18 @@ function addPadding(sentences, metadata) {
 }
 
 export function getSentimentScore(sentence, model, metadata) {
+  // Cleaning sentence
   const trimmed = sentence
     .trim()
     .toLowerCase()
     .replace(/(\.|\,|\!)/g, '')
     .split(' ');
+
+  // If word is misspelt, find closest word or return undefined
   const sequence = trimmed.map(word => {
     const wordIndex = metadata.word_index[word];
     if (typeof wordIndex === 'undefined') {
-      return 2; //oov_index
+      return 2; 
     }
     return wordIndex + metadata.index_from;
   });
@@ -52,9 +56,11 @@ export function getSentimentScore(sentence, model, metadata) {
 }
 
 export function calculateVariance(sentiments) {
-  const mean = sentiments.reduce((acc, val) => acc + val, 0) / sentiments.length;
-  const squaredDifferences = sentiments.map((val) => (val - mean) ** 2);
-  const variance = squaredDifferences.reduce((acc, val) => acc + val, 0) / sentiments.length;
+  const mean =
+    sentiments.reduce((acc, val) => acc + val, 0) / sentiments.length;
+  const squaredDifferences = sentiments.map(val => (val - mean) ** 2);
+  const variance =
+    squaredDifferences.reduce((acc, val) => acc + val, 0) / sentiments.length;
   return variance;
 }
 
