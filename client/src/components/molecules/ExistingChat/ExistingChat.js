@@ -4,6 +4,7 @@ import styles from './ExistingChat.module.css';
 import { Button, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
 
 const ExistingChat = ({
   title,
@@ -16,6 +17,8 @@ const ExistingChat = ({
   const isGptLoading = useSelector(state => state.messages.gptLoading);
   const [isFocused, setIsFocused] = useState(false);
   const [isScreenLarge, setIsScreenLarge] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const showEditMode = isFocused && isEditMode;
 
   useEffect(() => {
     setIsScreenLarge(window.innerWidth > 680);
@@ -23,7 +26,42 @@ const ExistingChat = ({
 
   useEffect(() => {
     setIsFocused(focusedChat == id);
+    setIsEditMode(false);
   }, [focusedChat]);
+
+  const renderActions = () => {
+    if (showEditMode) {
+      return (
+        <div className={styles.actions}>
+          <CheckIcon
+            fontSize="smaller"
+            mr={3}
+            onClick={() => {
+              handleChatDelete(id);
+            }}
+          />
+          <CloseIcon
+            fontSize="small"
+            onClick={() => {
+              setIsEditMode(false);
+            }}
+          />
+        </div>
+      );
+    } else if (isFocused) {
+      return (
+        <div
+          className={styles.actions}
+          onClick={() => {
+            setIsEditMode(true);
+          }}
+        >
+          <DeleteIcon className={styles.editIcon} fontSize="small" />
+        </div>
+      );
+    }
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       <Button
@@ -51,16 +89,7 @@ const ExistingChat = ({
         </div>
         {!isFocused && <div className={styles.gradient} />}
       </Button>
-      {isFocused && (
-        <div
-          className={styles.actions}
-          onClick={() => {
-            handleChatDelete(id);
-          }}
-        >
-          <DeleteIcon fontSize="small" style={{ margin: 'auto' }} />
-        </div>
-      )}
+      {renderActions()}
     </div>
   );
 };
