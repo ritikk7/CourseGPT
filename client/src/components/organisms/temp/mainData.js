@@ -100,7 +100,7 @@ const FeedbackData = () => {
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
   const renderVisualization = () => {
     // Specify the dimensions of the chart.
-    const width = 700;
+    const width = 900;
     const height = 640;
     const margin = 1; // to avoid clipping the root circle stroke
     const name = d => d.id.split('.').pop(); // "Strings" of "flare.util.Strings"
@@ -188,11 +188,13 @@ const FeedbackData = () => {
 
   const element = document.getElementById('chart-container');
   useEffect(() => {
-    if (svg.current) {
-      svg.current.removeChild(element.firstChild);
-      svg.current.appendChild(bubbleChart);
-    } else {
-      svg.current.appendChild(bubbleChart);
+    if (bubbleChart) {
+      if (svg.current && element && element.firstChild) {
+        svg.current.removeChild(element.firstChild);
+        svg.current.appendChild(bubbleChart);
+      } else {
+        svg.current.appendChild(bubbleChart);
+      }
     }
   }, [bubbleChart]);
 
