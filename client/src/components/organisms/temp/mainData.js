@@ -20,43 +20,101 @@ const FeedbackData = () => {
   };
 
   const dummyData = [
-    { id: 'flare.analytics.cluster.AgglomerativeCluster', value: 3938 },
-    { id: 'flare.analytics.cluster.CommunityStructure', value: 3812 },
-    { id: 'flare.analytics.cluster.HierarchicalCluster', value: 6714 },
-    { id: 'flare.analytics.cluster.MergeEdge', value: 743 },
-    { id: 'flare.analytics.graph.BetweennessCentrality', value: 3534 },
-    { id: 'flare.analytics.graph.LinkDistance', value: 5731 },
-    { id: 'flare.analytics.graph.MaxFlowMinCut', value: 7840 },
-    { id: 'flare.analytics.graph.ShortestPaths', value: 5914 },
-    { id: 'flare.analytics.graph.SpanningTree', value: 3416 },
-    { id: 'flare.analytics.optimization.AspectRatioBanker', value: 7074 },
-    { id: 'flare.animate.Easing', value: 17010 },
-    { id: 'flare.animate.FunctionSequence', value: 5842 },
-    { id: 'flare.animate.interpolate.ArrayInterpolator', value: 1983 },
-    { id: 'flare.animate.interpolate.ColorInterpolator', value: 2047 },
-    { id: 'flare.animate.interpolate.DateInterpolator', value: 1375 },
-    { id: 'flare.animate.interpolate.Interpolator', value: 8746 },
-    { id: 'flare.animate.interpolate.MatrixInterpolator', value: 2202 },
-    { id: 'flare.animate.interpolate.NumberInterpolator', value: 1382 },
-    { id: 'flare.animate.interpolate.ObjectInterpolator', value: 1629 },
-    { id: 'flare.animate.interpolate.PointInterpolator', value: 1675 },
+    {
+      id: 'flare.analytics.cluster.AgglomerativeCluster',
+      value: 3938,
+      sentiment: 0.5,
+    },
+    {
+      id: 'flare.analytics.cluster.CommunityStructure',
+      value: 3812,
+      sentiment: 0.8,
+    },
+    {
+      id: 'flare.analytics.cluster.HierarchicalCluster',
+      value: 6714,
+      sentiment: 1,
+    },
+    { id: 'flare.analytics.cluster.MergeEdge', value: 743, sentiment: 0.3 },
+    {
+      id: 'flare.analytics.graph.BetweennessCentrality',
+      value: 3534,
+      sentiment: 0.1,
+    },
+    { id: 'flare.analytics.graph.LinkDistance', value: 5731, sentiment: 0.15 },
+    { id: 'flare.analytics.graph.MaxFlowMinCut', value: 7840, sentiment: 0.33 },
+    { id: 'flare.analytics.graph.ShortestPaths', value: 5914, sentiment: 0.2 },
+    { id: 'flare.analytics.graph.SpanningTree', value: 3416, sentiment: 0.88 },
+    {
+      id: 'flare.analytics.optimization.AspectRatioBanker',
+      value: 7074,
+      sentiment: 0.56,
+    },
+    { id: 'flare.animate.Easing', value: 17010, sentiment: 0.49 },
+    { id: 'flare.animate.FunctionSequence', value: 5842, sentiment: 0.99 },
+    {
+      id: 'flare.animate.interpolate.ArrayInterpolator',
+      value: 1983,
+      sentiment: 0.78,
+    },
+    {
+      id: 'flare.animate.interpolate.ColorInterpolator',
+      value: 2047,
+      sentiment: 0.18,
+    },
+    {
+      id: 'flare.animate.interpolate.DateInterpolator',
+      value: 1375,
+      sentiment: 0.13,
+    },
+    {
+      id: 'flare.animate.interpolate.Interpolator',
+      value: 8746,
+      sentiment: 0.62,
+    },
+    {
+      id: 'flare.animate.interpolate.MatrixInterpolator',
+      value: 2202,
+      sentiment: 0.47,
+    },
+    {
+      id: 'flare.animate.interpolate.NumberInterpolator',
+      value: 1382,
+      sentiment: 0.94,
+    },
+    {
+      id: 'flare.animate.interpolate.ObjectInterpolator',
+      value: 1629,
+      sentiment: 0.5,
+    },
+    {
+      id: 'flare.animate.interpolate.PointInterpolator',
+      value: 1675,
+      sentiment: 0.3,
+    },
+    { id: '455', value: 500, sentiment: 0.84 },
+    { id: '1212', value: 12000, sentiment: 0.5 },
+    { id: '22333', value: 999, sentiment: 0.67 },
   ];
 
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
   const renderVisualization = () => {
     // Specify the dimensions of the chart.
-    const width = 928;
-    const height = width;
+    const width = 700;
+    const height = 640;
     const margin = 1; // to avoid clipping the root circle stroke
     const name = d => d.id.split('.').pop(); // "Strings" of "flare.util.Strings"
-    const group = d => d.id.split('.')[1]; // "util" of "flare.util.Strings"
     const names = d => name(d).split(/(?=[A-Z][a-z])|\s+/g); // ["Legend", "Item"] of "flare.vis.legend.LegendItems"
 
     // Specify the number format for values.
     const format = d3.format(',d');
 
     // Create a categorical color scale.
-    const color = d3.scaleOrdinal(d3.schemeTableau10);
+    const color = d3.scaleOrdinal(d3.schemePaired);
+    // var color = d3
+    //   .scaleThreshold()
+    //   .domain([0, 0.5, 1])
+    //   .range(['red', 'orange', 'yellow', 'darkgreen']);
 
     const pack = d3
       .pack()
@@ -91,7 +149,11 @@ const FeedbackData = () => {
     node
       .append('circle')
       .attr('fill-opacity', 0.7)
-      .attr('fill', d => color(group(d.data)))
+      .attr('fill', d => color(d.data))
+      // .attr('fill', d => {
+      //   // console.log('d.data.sentiment', d.data.sentiment);
+      //   color(d.data);
+      // })
       .attr('r', d => d.r);
 
     // Add a label.
@@ -114,16 +176,25 @@ const FeedbackData = () => {
       .attr('fill-opacity', 0.7)
       .text(d => format(d.value));
 
-    const chart = Object.assign(svg.node(), { scales: { color } });
+    const chart = Object.assign(svg.node(), {});
     setBubbleChart(chart);
   };
 
+  console.log('bubbleChart', bubbleChart);
+
   useEffect(() => {
     renderVisualization();
+  }, []);
+
+  const element = document.getElementById('chart-container');
+  useEffect(() => {
     if (svg.current) {
+      svg.current.removeChild(element.firstChild);
+      svg.current.appendChild(bubbleChart);
+    } else {
       svg.current.appendChild(bubbleChart);
     }
-  }, []);
+  }, [bubbleChart]);
 
   return (
     <Box className={styles.container}>
@@ -147,7 +218,7 @@ const FeedbackData = () => {
           />
         )}
       </Box>
-      {bubbleChart && <div ref={svg} />}
+      {bubbleChart && <div id="chart-container" ref={svg} />}
     </Box>
   );
 };
