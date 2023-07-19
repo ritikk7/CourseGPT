@@ -92,9 +92,9 @@ const FeedbackData = () => {
       value: 1675,
       sentiment: 0.3,
     },
-    { id: '455', value: 500, sentiment: 0.84 },
-    { id: '1212', value: 12000, sentiment: 0.5 },
-    { id: '22333', value: 999, sentiment: 0.67 },
+    { id: 'Meow', value: 500, sentiment: 0.84 },
+    { id: 'Course', value: 12000, sentiment: 0.5 },
+    { id: 'UBC', value: 999, sentiment: 0.67 },
   ];
 
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
@@ -110,7 +110,13 @@ const FeedbackData = () => {
     const format = d3.format(',d');
 
     // Create a categorical color scale.
-    const color = d3.scaleOrdinal(d3.schemePaired);
+    const color = d3.scaleOrdinal([
+      '#c7124b',
+      '#e85531',
+      '#ffba08',
+      '#2a9d8f',
+      '#264653',
+    ]);
     // var color = d3
     //   .scaleThreshold()
     //   .domain([0, 0.5, 1])
@@ -148,12 +154,11 @@ const FeedbackData = () => {
     // Add a filled circle.
     node
       .append('circle')
-      .attr('fill-opacity', 0.7)
+      .attr('fill', d => {
+        console.log('d.data', d.data, color(d.data));
+      })
       .attr('fill', d => color(d.data))
-      // .attr('fill', d => {
-      //   // console.log('d.data.sentiment', d.data.sentiment);
-      //   color(d.data);
-      // })
+
       .attr('r', d => d.r);
 
     // Add a label.
