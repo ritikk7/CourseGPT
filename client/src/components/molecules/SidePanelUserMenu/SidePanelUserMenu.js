@@ -18,6 +18,7 @@ const SidePanelUserMenu = ({
   handleClearConversations,
   setTrainCourseModalOpen,
   username,
+  setSeeFeedback,
 }) => {
   const userType = useSelector(state => state.user.type);
   const isTrainingCourse = useSelector(state => state.courses.loading);
@@ -70,7 +71,7 @@ const SidePanelUserMenu = ({
         {allowedViewAnalytics.includes(userType) ? (
           <>
             <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={() => navigate('/data')}>
+            <MenuItem bg="black" onClick={() => setSeeFeedback(true)}>
               View Analytics
             </MenuItem>
           </>

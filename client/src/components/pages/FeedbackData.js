@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../redux/authSlice';
 import FeedbackData from '../organisms/temp/mainData';
+import { Button } from '@chakra-ui/react';
 
-function FeedbackPage() {
+function FeedbackPage({ setSeeFeedback }) {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -29,7 +30,14 @@ function FeedbackPage() {
 
   return (
     <>
-      <FeedbackData />;
+      <Button
+        onClick={() => {
+          setSeeFeedback(false);
+        }}
+      >
+        Back
+      </Button>
+      <FeedbackData />
     </>
   );
 }

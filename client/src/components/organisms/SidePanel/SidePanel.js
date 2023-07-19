@@ -29,6 +29,7 @@ const SidePanel = ({
   toggleSidePanelVisibility,
   isSidepanelVisible,
   setIsSidepanelVisible,
+  setSeeFeedback,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -176,6 +177,7 @@ const SidePanel = ({
           handleClearConversations={handleClearConversations}
           setTrainCourseModalOpen={setTrainCourseModalOpen}
           username={userFirst + ' ' + userLast}
+          setSeeFeedback={setSeeFeedback}
         />
         {isSettingsOpen && (
           <ProfileModal

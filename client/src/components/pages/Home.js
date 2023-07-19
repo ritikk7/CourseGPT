@@ -13,6 +13,7 @@ import {
 } from '../../redux/coursesSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
+import FeedbackPage from './FeedbackData';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -24,6 +25,7 @@ function Home() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
+  const [seeFeedback, setSeeFeedback] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -68,11 +70,11 @@ function Home() {
 
   if (isLoading) return <LoadingSpinner />;
 
-  return (
-    <div className="App">
-      {!user.type ? (
-        <RegisterUserDetails />
-      ) : (
+  const renderPage = () => {
+    if (seeFeedback) {
+      return <FeedbackPage setSeeFeedback={setSeeFeedback} />;
+    } else
+      return (
         <>
           <RightSection
             isSidepanelVisible={isSidepanelVisible}
@@ -82,9 +84,15 @@ function Home() {
             toggleSidePanelVisibility={toggleSidePanelVisibility}
             isSidepanelVisible={isSidepanelVisible}
             setIsSidepanelVisible={setIsSidepanelVisible}
+            setSeeFeedback={setSeeFeedback}
           />
         </>
-      )}
+      );
+  };
+
+  return (
+    <div className="App">
+      {!user.type ? <RegisterUserDetails /> : renderPage()}
     </div>
   );
 }
