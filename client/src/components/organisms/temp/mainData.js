@@ -108,19 +108,15 @@ const FeedbackData = () => {
 
     // Specify the number format for values.
     const format = d3.format(',d');
+    //#005161
+    const colorScheme = ['#ed475b', '#f59749', '#d5f252', '#18c7be', '#3f48c4'];
 
     // Create a categorical color scale.
-    const color = d3.scaleOrdinal([
-      '#c7124b',
-      '#e85531',
-      '#ffba08',
-      '#2a9d8f',
-      '#264653',
-    ]);
-    // var color = d3
-    //   .scaleThreshold()
-    //   .domain([0, 0.5, 1])
-    //   .range(['red', 'orange', 'yellow', 'darkgreen']);
+    // const color = d3.scaleOrdinal(colorScheme );
+    var color = d3
+      .scaleThreshold()
+      .domain([0.2, 0.4, 0.6, 0.9])
+      .range(colorScheme);
 
     const pack = d3
       .pack()
@@ -157,7 +153,7 @@ const FeedbackData = () => {
       .attr('fill', d => {
         console.log('d.data', d.data, color(d.data));
       })
-      .attr('fill', d => color(d.data))
+      .attr('fill', d => color(d.data.sentiment))
 
       .attr('r', d => d.r);
 
@@ -180,6 +176,14 @@ const FeedbackData = () => {
       .attr('y', d => `${names(d.data).length / 2 + 0.35}em`)
       .attr('fill-opacity', 0.7)
       .text(d => format(d.value));
+
+    // Add a tspan for the node’s value.
+    text
+      .append('tspan')
+      .attr('x', 0)
+      .attr('y', d => `${names(d.data).length / 2 + 1.3}em`)
+      .attr('fill-opacity', 0.7)
+      .text(d => d.data.sentiment);
 
     const chart = Object.assign(svg.node(), {});
     setBubbleChart(chart);
