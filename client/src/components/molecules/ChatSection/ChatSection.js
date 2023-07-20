@@ -43,16 +43,6 @@ const ChatSection = ({ message }) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
   const handleNewlineHTML = text => {
     if (text) {
       return text.split('\n').map((item, key) => {
@@ -127,7 +117,7 @@ const ChatSection = ({ message }) => {
                 {message && renderGptPlaceholder()}
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>
-              {message && !messageIsGptPlaceholder && isHovered && (
+              {message && !messageIsGptPlaceholder && (
                 <Feedback message={message._id} />
               )}
             </div>
