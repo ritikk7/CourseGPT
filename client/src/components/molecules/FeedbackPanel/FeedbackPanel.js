@@ -40,13 +40,13 @@ const Feedback = ({ message }) => {
         )}
         <IconButton
           icon={<FaThumbsUp />}
-          colorScheme="green"
+          colorScheme="white"
           variant="ghost"
           onClick={handleThumbsUpClick}
         />
         <IconButton
           icon={<FaThumbsDown />}
-          colorScheme="red"
+          colorScheme="white"
           variant="ghost"
           onClick={handleThumbsDownClick}
         />

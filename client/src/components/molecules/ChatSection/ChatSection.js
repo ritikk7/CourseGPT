@@ -119,11 +119,7 @@ const ChatSection = ({ message }) => {
   return (
     <>
       {!isSenderUser ? (
-        <Box
-          className={styles['message-container']}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <Box className={styles['message-container']}>
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
