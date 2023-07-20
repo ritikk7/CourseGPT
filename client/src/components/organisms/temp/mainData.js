@@ -4,6 +4,7 @@ import { Box, Text, Button } from '@chakra-ui/react';
 import { fetchFeedbackAnalysis } from '../../../redux/feedbackDataSlice';
 import MainAnalysisPage from './MainAnalysisPage';
 import * as d3 from 'd3';
+import Legend from '../../molecules/Legend/Legend';
 
 const FeedbackData = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const FeedbackData = () => {
   const feedbackData = useSelector(state => state.feedbackData.feedbackInfo);
   const [bubbleChart, setBubbleChart] = useState(null);
   const svg = useRef(null);
+  const colorScheme = ['#ed475b', '#f59749', '#d5f252', '#18c7be', '#3f48c4'];
 
   const handleClick = () => {
     dispatch(fetchFeedbackAnalysis());
@@ -97,7 +99,7 @@ const FeedbackData = () => {
   ];
 
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
-  const renderVisualization = () => {
+  const prepareGraph = () => {
     // Specify the dimensions of the chart.
     const width = 1350;
     const height = 640;
@@ -108,12 +110,11 @@ const FeedbackData = () => {
     // Specify the number format for values.
     const format = d3.format(',d');
     //#005161
-    const colorScheme = ['#ed475b', '#f59749', '#d5f252', '#18c7be', '#3f48c4'];
 
     // Create a categorical color scale.
     var color = d3
       .scaleThreshold()
-      .domain([0.2, 0.4, 0.6, 0.9])
+      .domain([0.2, 0.4, 0.6, 0.8])
       .range(colorScheme);
 
     const pack = d3
@@ -155,10 +156,8 @@ const FeedbackData = () => {
     node
       .append('circle')
       .attr('fill', d => color(d.data.sentiment))
-
       .attr('r', d => d.r)
       .on('mouseover', (event, d) => {
-        console.log('mouseover');
         tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip
           .html(
@@ -198,7 +197,7 @@ const FeedbackData = () => {
   };
 
   useEffect(() => {
-    renderVisualization();
+    prepareGraph();
   }, []);
 
   const element = document.getElementById('chart-container');
@@ -236,7 +235,10 @@ const FeedbackData = () => {
         )}
       </Box>
       {bubbleChart && (
-        <div id="chart-container" ref={svg} style={{ margin: 'auto' }} />
+        <div>
+          <Legend colorScheme={colorScheme} />
+          <div id="chart-container" ref={svg} style={{ margin: 'auto' }} />
+        </div>
       )}
     </Box>
   );
