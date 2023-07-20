@@ -99,7 +99,7 @@ const FeedbackData = () => {
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
   const renderVisualization = () => {
     // Specify the dimensions of the chart.
-    const width = 900;
+    const width = 1350;
     const height = 640;
     const margin = 1; // to avoid clipping the root circle stroke
     const name = d => d.id.split('.').pop(); // "Strings" of "flare.util.Strings"
@@ -140,20 +140,38 @@ const FeedbackData = () => {
       .selectAll()
       .data(root.leaves())
       .join('g')
-      .attr('transform', d => `translate(${d.x},${d.y})`);
+      .attr('transform', d => `translate(${d.x},${d.y})`)
+      .on('mouseout', () => {
+        d3.selectAll('.nvtooltip').remove();
+      });
 
-    // Add a title.
-    node.append('title').text(d => `${d.data.id}\n${format(d.value)}`);
+    const tooltip = d3
+      .select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
 
     // Add a filled circle.
     node
       .append('circle')
-      .attr('fill', d => {
-        console.log('d.data', d.data, color(d.data));
-      })
       .attr('fill', d => color(d.data.sentiment))
 
-      .attr('r', d => d.r);
+      .attr('r', d => d.r)
+      .on('mouseover', (event, d) => {
+        console.log('mouseover');
+        tooltip.transition().duration(200).style('opacity', 0.9);
+        tooltip
+          .html(
+            `${d.data.id}<br>${format(d.value)}<br>Sentiment: ${
+              d.data.sentiment
+            }`
+          )
+          .style('left', `${event.pageX + 10}px`)
+          .style('top', `${event.pageY - 28}px`);
+      })
+      .on('mouseout', () => {
+        tooltip.transition().duration(200).style('opacity', 0);
+      });
 
     // Add a label.
     const text = node.append('text').attr('clip-path', d => `circle(${d.r})`);
@@ -174,14 +192,6 @@ const FeedbackData = () => {
       .attr('y', d => `${names(d.data).length / 2 + 0.35}em`)
       .attr('fill-opacity', 0.7)
       .text(d => format(d.value));
-
-    // Add a tspan for the node’s value.
-    text
-      .append('tspan')
-      .attr('x', 0)
-      .attr('y', d => `${names(d.data).length / 2 + 1.3}em`)
-      .attr('fill-opacity', 0.7)
-      .text(d => d.data.sentiment);
 
     const chart = Object.assign(svg.node(), {});
     setBubbleChart(chart);
@@ -225,7 +235,9 @@ const FeedbackData = () => {
           />
         )}
       </Box>
-      {bubbleChart && <div id="chart-container" ref={svg} />}
+      {bubbleChart && (
+        <div id="chart-container" ref={svg} style={{ margin: 'auto' }} />
+      )}
     </Box>
   );
 };
