@@ -74,7 +74,6 @@ const ChatSection = ({ message }) => {
       return message.content && handleNewlineHTML(message.content);
     }
     if (message.content) {
-      console.log(message.content);
       return (
         <Typewriter
           options={{
