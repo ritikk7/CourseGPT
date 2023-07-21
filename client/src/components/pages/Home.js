@@ -13,7 +13,7 @@ import {
 } from '../../redux/coursesSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
-import FeedbackPage from './FeedbackData';
+import AnalyticsPanel from '../organisms/Analytics/AnalyticsPanel';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -74,7 +74,10 @@ function Home() {
     if (seeFeedback) {
       return (
         <>
-          <FeedbackPage toggleSidePanelVisibility={toggleSidePanelVisibility} />
+          <AnalyticsPanel
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+            isSidepanelVisible={isSidepanelVisible}
+          />
           <SidePanel
             toggleSidePanelVisibility={toggleSidePanelVisibility}
             isSidepanelVisible={isSidepanelVisible}

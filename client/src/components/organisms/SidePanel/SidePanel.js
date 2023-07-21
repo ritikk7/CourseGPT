@@ -148,16 +148,27 @@ const SidePanel = ({
               }
         }
       >
-        <Button
-          ml={2}
-          bg="transparent"
-          _hover={{ bg: '#39393c' }}
-          border="1px solid rgb(100, 100, 102)"
-          onClick={toggleSidePanelVisibility}
-        >
-          <ChevronLeftIcon />
-        </Button>
-        <div className={styles.profile}>
+        <div className={styles.chevronLeft}>
+          <Button
+            ml={2}
+            mt={2}
+            bg="transparent"
+            width="50px"
+            position="absolute"
+            right={2}
+            _hover={{ bg: '#39393c' }}
+            border="1px solid rgb(100, 100, 102)"
+            onClick={toggleSidePanelVisibility}
+          >
+            <ChevronLeftIcon />
+          </Button>
+        </div>
+        <div className={styles.selectDataView}>
+          <div>Bubble Chart</div>
+          <div>Bar Chart</div>
+          <div>Word Cloud</div>
+        </div>
+        <div className={styles.profileAnalytics}>
           <SidePanelUserMenu
             handleLogout={handleLogout}
             setSettingsOpen={setSettingsOpen}

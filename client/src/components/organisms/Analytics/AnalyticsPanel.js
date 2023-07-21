@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchUser } from '../../redux/authSlice';
-import FeedbackData from '../organisms/temp/mainData';
+import { fetchUser } from '../../../redux/authSlice';
+import FeedbackData from '../temp/mainData';
+import styles from './AnalyticsPanel.module.css';
 
-function FeedbackPage({ toggleSidePanelVisibility }) {
+function AnalyticsPanel({ toggleSidePanelVisibility, isSidepanelVisible }) {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -28,10 +29,17 @@ function FeedbackPage({ toggleSidePanelVisibility }) {
   };
 
   return (
-    <>
+    <div
+      className={styles.container}
+      style={
+        isSidepanelVisible
+          ? { transition: '0.5s' }
+          : { width: '100%', transition: '0.5s' }
+      }
+    >
       <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
-    </>
+    </div>
   );
 }
 
-export default FeedbackPage;
+export default AnalyticsPanel;
