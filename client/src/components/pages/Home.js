@@ -13,7 +13,7 @@ import {
 } from '../../redux/coursesSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
-import AnalyticsPanel from '../organisms/Analytics/AnalyticsPanel';
+import AnalyticsWrapper from '../molecules/Analytics/AnalyticsWrapper';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -26,6 +26,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
   const [seeFeedback, setSeeFeedback] = useState(false);
+  const [selectedAnalyticsView, setSelectedAnalyticsView] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -74,9 +75,10 @@ function Home() {
     if (seeFeedback) {
       return (
         <>
-          <AnalyticsPanel
+          <AnalyticsWrapper
             toggleSidePanelVisibility={toggleSidePanelVisibility}
             isSidepanelVisible={isSidepanelVisible}
+            selectedAnalyticsView={selectedAnalyticsView}
           />
           <SidePanel
             toggleSidePanelVisibility={toggleSidePanelVisibility}
@@ -84,6 +86,7 @@ function Home() {
             setIsSidepanelVisible={setIsSidepanelVisible}
             isAnalyticsSidePanel={true}
             setSeeFeedback={setSeeFeedback}
+            setSelectedAnalyticsView={setSelectedAnalyticsView}
           />
         </>
       );

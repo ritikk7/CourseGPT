@@ -2,10 +2,17 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../../redux/authSlice';
-import FeedbackData from '../temp/mainData';
-import styles from './AnalyticsPanel.module.css';
+import FeedbackData from '../../organisms/temp/mainData';
+import styles from './AnalyticsWrapper.module.css';
+import { ChevronRightIcon } from '@chakra-ui/icons';
+import { Button } from '@chakra-ui/react';
+import BubbleChart from '../BubbleChart/BubbleChart';
 
-function AnalyticsPanel({ toggleSidePanelVisibility, isSidepanelVisible }) {
+function AnalyticsWrapper({
+  toggleSidePanelVisibility,
+  isSidepanelVisible,
+  selectedAnalyticsView,
+}) {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -28,6 +35,17 @@ function AnalyticsPanel({ toggleSidePanelVisibility, isSidepanelVisible }) {
     }
   };
 
+  const renderView = () => {
+    switch (selectedAnalyticsView) {
+      case 'bubble':
+        return <BubbleChart />;
+      default:
+        return (
+          <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
+        );
+    }
+  };
+
   return (
     <div
       className={styles.container}
@@ -37,9 +55,18 @@ function AnalyticsPanel({ toggleSidePanelVisibility, isSidepanelVisible }) {
           : { width: '100%', transition: '0.5s' }
       }
     >
-      <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
+      <Button
+        ml={2}
+        bg="transparent"
+        _hover={{ bg: '#50505c' }}
+        border="1px solid white"
+        onClick={toggleSidePanelVisibility}
+      >
+        <ChevronRightIcon />
+      </Button>
+      {renderView()}
     </div>
   );
 }
 
-export default AnalyticsPanel;
+export default AnalyticsWrapper;

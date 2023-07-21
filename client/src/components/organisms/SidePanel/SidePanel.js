@@ -33,6 +33,7 @@ const SidePanel = ({
   setIsSidepanelVisible,
   setSeeFeedback,
   isAnalyticsSidePanel,
+  setSelectedAnalyticsView,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -164,9 +165,34 @@ const SidePanel = ({
           </Button>
         </div>
         <div className={styles.selectDataView}>
-          <div>Bubble Chart</div>
-          <div>Bar Chart</div>
-          <div>Word Cloud</div>
+          <Button
+            onClick={() => {
+              setSelectedAnalyticsView('feedback');
+            }}
+          >
+            Feedback
+          </Button>
+          <Button
+            onClick={() => {
+              setSelectedAnalyticsView('bubble');
+            }}
+          >
+            Bubble Chart
+          </Button>
+          <Button
+            onClick={() => {
+              setSelectedAnalyticsView('bar');
+            }}
+          >
+            Bar Chart
+          </Button>
+          <Button
+            onClick={() => {
+              setSelectedAnalyticsView('word');
+            }}
+          >
+            Word Cloud
+          </Button>
         </div>
         <div className={styles.profileAnalytics}>
           <SidePanelUserMenu
