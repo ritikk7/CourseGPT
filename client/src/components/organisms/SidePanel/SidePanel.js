@@ -188,6 +188,13 @@ const SidePanel = ({
           </Button>
           <Button
             onClick={() => {
+              setSelectedAnalyticsView('scatter');
+            }}
+          >
+            Scatter
+          </Button>
+          <Button
+            onClick={() => {
               setSelectedAnalyticsView('word');
             }}
           >

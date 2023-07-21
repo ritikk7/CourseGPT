@@ -86,8 +86,6 @@ const BubbleChart = () => {
 
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
   const prepareGraph = () => {
-    d3.selectAll('.nvtooltip').style('opacity', '0');
-
     // Specify the dimensions of the chart.
     const width = 1350;
     const height = 800;

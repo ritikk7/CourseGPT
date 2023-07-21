@@ -7,6 +7,7 @@ import styles from './AnalyticsWrapper.module.css';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/react';
 import BubbleChart from '../BubbleChart/BubbleChart';
+import BarChart from '../BarChart/BarChart';
 
 function AnalyticsWrapper({
   toggleSidePanelVisibility,
@@ -39,6 +40,8 @@ function AnalyticsWrapper({
     switch (selectedAnalyticsView) {
       case 'bubble':
         return <BubbleChart />;
+      case 'bar':
+        return <BarChart />;
       default:
         return (
           <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
