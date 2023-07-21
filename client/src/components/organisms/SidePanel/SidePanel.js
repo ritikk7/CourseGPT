@@ -169,6 +169,8 @@ const SidePanel = ({
             onClick={() => {
               setSelectedAnalyticsView('feedback');
             }}
+            bg="transparent"
+            color="white"
           >
             Feedback
           </Button>
@@ -176,6 +178,8 @@ const SidePanel = ({
             onClick={() => {
               setSelectedAnalyticsView('bubble');
             }}
+            bg="transparent"
+            color="white"
           >
             Bubble Chart
           </Button>
@@ -183,6 +187,8 @@ const SidePanel = ({
             onClick={() => {
               setSelectedAnalyticsView('bar');
             }}
+            bg="transparent"
+            color="white"
           >
             Bar Chart
           </Button>
@@ -190,6 +196,8 @@ const SidePanel = ({
             onClick={() => {
               setSelectedAnalyticsView('scatter');
             }}
+            bg="transparent"
+            color="white"
           >
             Scatter
           </Button>
@@ -197,6 +205,8 @@ const SidePanel = ({
             onClick={() => {
               setSelectedAnalyticsView('word');
             }}
+            bg="transparent"
+            color="white"
           >
             Word Cloud
           </Button>

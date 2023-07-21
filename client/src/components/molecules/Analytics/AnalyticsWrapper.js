@@ -61,15 +61,18 @@ function AnalyticsWrapper({
           : { width: '100%', transition: '0.5s' }
       }
     >
-      <Button
-        ml={2}
-        bg="transparent"
-        _hover={{ bg: '#50505c' }}
-        border="1px solid white"
-        onClick={toggleSidePanelVisibility}
-      >
-        <ChevronRightIcon />
-      </Button>
+      {!isSidepanelVisible && (
+        <Button
+          ml={2}
+          bg="transparent"
+          _hover={{ bg: '#50505c' }}
+          border="1px solid white"
+          onClick={toggleSidePanelVisibility}
+        >
+          <ChevronRightIcon />
+        </Button>
+      )}
+
       {renderView()}
     </div>
   );
