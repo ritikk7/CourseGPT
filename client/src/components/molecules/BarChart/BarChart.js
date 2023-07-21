@@ -55,14 +55,6 @@ const data = {
       backgroundColor: 'rgb(255, 99, 132)',
       stack: 'Stack 0',
     },
-    // {
-    //   label: 'Dataset 2',
-    //   data: labels.map(
-    //     () => faker.datatype.number({ min: 0, max: 1000 }) / 1000
-    //   ),
-    //   backgroundColor: 'rgb(75, 192, 192)',
-    //   stack: 'Stack 0',
-    // },
     {
       label: 'Median Sentiment',
       data: labels.map(
@@ -75,7 +67,17 @@ const data = {
 };
 
 const BarChart = () => {
-  return <Bar options={options} data={data} />;
+  return (
+    <div
+      style={{
+        padding: '48px',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Bar options={options} data={data} />
+    </div>
+  );
 };
 
 export default BarChart;

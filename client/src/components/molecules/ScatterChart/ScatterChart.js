@@ -35,7 +35,17 @@ export const data = {
 };
 
 const ScatterChart = () => {
-  return <Scatter options={options} data={data} />;
+  return (
+    <div
+      style={{
+        padding: '56px 48px',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Scatter options={options} data={data} />
+    </div>
+  );
 };
 
 export default ScatterChart;

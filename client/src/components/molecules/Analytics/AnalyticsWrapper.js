@@ -68,6 +68,9 @@ function AnalyticsWrapper({
           _hover={{ bg: '#50505c' }}
           border="1px solid white"
           onClick={toggleSidePanelVisibility}
+          position="absolute"
+          top={4}
+          left={4}
         >
           <ChevronRightIcon />
         </Button>
