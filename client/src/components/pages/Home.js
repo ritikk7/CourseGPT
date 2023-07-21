@@ -72,7 +72,18 @@ function Home() {
 
   const renderPage = () => {
     if (seeFeedback) {
-      return <FeedbackPage setSeeFeedback={setSeeFeedback} />;
+      return (
+        <>
+          <FeedbackPage toggleSidePanelVisibility={toggleSidePanelVisibility} />
+          <SidePanel
+            toggleSidePanelVisibility={toggleSidePanelVisibility}
+            isSidepanelVisible={isSidepanelVisible}
+            setIsSidepanelVisible={setIsSidepanelVisible}
+            isAnalyticsSidePanel={true}
+            setSeeFeedback={setSeeFeedback}
+          />
+        </>
+      );
     } else
       return (
         <>

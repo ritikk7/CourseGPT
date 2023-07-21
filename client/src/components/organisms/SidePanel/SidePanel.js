@@ -24,12 +24,15 @@ import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNew
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
+import { Button } from '@chakra-ui/react';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 const SidePanel = ({
   toggleSidePanelVisibility,
   isSidepanelVisible,
   setIsSidepanelVisible,
   setSeeFeedback,
+  isAnalyticsSidePanel,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -130,6 +133,49 @@ const SidePanel = ({
   }, [selectedCourse, favouriteCourses]);
 
   let chats = Object.values(filteredChatsToShow);
+
+  if (isAnalyticsSidePanel) {
+    return (
+      <div
+        className={styles.sidepanel}
+        style={
+          isSidepanelVisible
+            ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
+            : {
+                transform: 'translateX(-100%)',
+                transition: '0.4s',
+                transitionTimingFunction: 'ease-in-out',
+              }
+        }
+      >
+        <Button
+          ml={2}
+          bg="transparent"
+          _hover={{ bg: '#39393c' }}
+          border="1px solid rgb(100, 100, 102)"
+          onClick={toggleSidePanelVisibility}
+        >
+          <ChevronLeftIcon />
+        </Button>
+        <div className={styles.profile}>
+          <SidePanelUserMenu
+            handleLogout={handleLogout}
+            setSettingsOpen={setSettingsOpen}
+            username={userFirst + ' ' + userLast}
+            setSeeFeedback={setSeeFeedback}
+            isAnalyticsMode={isAnalyticsSidePanel}
+          />
+          {isSettingsOpen && (
+            <ProfileModal
+              isOpen={isSettingsOpen}
+              handleClose={() => setSettingsOpen(false)}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={styles.sidepanel}

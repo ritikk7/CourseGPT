@@ -5,8 +5,9 @@ import { fetchFeedbackAnalysis } from '../../../redux/feedbackDataSlice';
 import MainAnalysisPage from './MainAnalysisPage';
 import * as d3 from 'd3';
 import Legend from '../../molecules/Legend/Legend';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 
-const FeedbackData = () => {
+const FeedbackData = ({ toggleSidePanelVisibility }) => {
   const dispatch = useDispatch();
   // This is for a select school/course thing I haven't done yet (can either have all schools/courses selected or specific one)
   const [selectedSchool, setSelectedSchool] = useState(''); // need to add dropdown stuff later
@@ -214,6 +215,15 @@ const FeedbackData = () => {
 
   return (
     <Box>
+      <Button
+        ml={2}
+        bg="transparent"
+        _hover={{ bg: '#50505c' }}
+        border="1px solid white"
+        onClick={toggleSidePanelVisibility}
+      >
+        <ChevronRightIcon />
+      </Button>
       <Box>
         {selectedSchool ? (
           <Text>
