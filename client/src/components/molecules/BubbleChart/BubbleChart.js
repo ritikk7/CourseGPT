@@ -197,6 +197,7 @@ const BubbleChart = () => {
       }
     }
   }, [bubbleChart]);
+
   return (
     <div>
       <Legend colorScheme={colorScheme} />

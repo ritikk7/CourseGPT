@@ -9,6 +9,7 @@ import { Button } from '@chakra-ui/react';
 import BubbleChart from '../BubbleChart/BubbleChart';
 import BarChart from '../BarChart/BarChart';
 import ScatterChart from '../ScatterChart/ScatterChart';
+import WordCloud from '../WordCloud/WordCloud';
 
 function AnalyticsWrapper({
   toggleSidePanelVisibility,
@@ -52,6 +53,8 @@ function AnalyticsWrapper({
         return <BarChart />;
       case 'scatter':
         return <ScatterChart />;
+      case 'word':
+        return <WordCloud />;
       default:
         return (
           <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
