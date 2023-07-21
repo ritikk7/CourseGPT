@@ -8,6 +8,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/react';
 import BubbleChart from '../BubbleChart/BubbleChart';
 import BarChart from '../BarChart/BarChart';
+import ScatterChart from '../ScatterChart/ScatterChart';
 
 function AnalyticsWrapper({
   toggleSidePanelVisibility,
@@ -42,6 +43,8 @@ function AnalyticsWrapper({
         return <BubbleChart />;
       case 'bar':
         return <BarChart />;
+      case 'scatter':
+        return <ScatterChart />;
       default:
         return (
           <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
