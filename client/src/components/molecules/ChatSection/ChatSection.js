@@ -112,7 +112,7 @@ const ChatSection = ({ message }) => {
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
-              <div className={styles.textBlock}>
+              <div className={styles.msgContent}>
                 {message && renderGptPlaceholder()}
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>

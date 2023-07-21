@@ -17,11 +17,6 @@
   width: 100%;
 }
 
-.textBlock {
-  flex-direction: column;
-  display: flex;
-}
-
 .chatFeedback {
   margin: auto;
   right: 0;
