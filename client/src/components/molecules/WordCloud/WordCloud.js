@@ -17,7 +17,9 @@ const WordCloud = ({ isSidepanelVisible }) => {
   return (
     <Resizable
       size={{
-        width: isSidepanelVisible ? 1000 : window.screen.width,
+        width: isSidepanelVisible
+          ? window.screen.width - 262
+          : window.screen.width,
         height: 600,
       }}
       style={resizeStyle}
