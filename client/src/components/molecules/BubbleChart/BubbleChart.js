@@ -87,8 +87,8 @@ const BubbleChart = () => {
   // https://observablehq.com/@d3/bubble-chart/2?intent=fork
   const prepareGraph = () => {
     // Specify the dimensions of the chart.
-    const width = 1350;
-    const height = 800;
+    const width = window.screen.width;
+    const height = 700;
     const margin = 1; // to avoid clipping the root circle stroke
     const name = d => d.id.split('.').pop(); // "Strings" of "flare.util.Strings"
     const names = d => name(d).split(/(?=[A-Z][a-z])|\s+/g); // ["Legend", "Item"] of "flare.vis.legend.LegendItems"

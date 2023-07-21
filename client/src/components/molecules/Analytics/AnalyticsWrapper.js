@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../../redux/authSlice';
@@ -19,6 +19,7 @@ function AnalyticsWrapper({
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [rerenderBubble, setRerenderBubble] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -37,10 +38,16 @@ function AnalyticsWrapper({
     }
   };
 
+  useEffect(() => {
+    if (selectedAnalyticsView === 'bubble') {
+      setRerenderBubble(<BubbleChart />);
+    } else setRerenderBubble(null);
+  }, [selectedAnalyticsView]);
+
   const renderView = () => {
     switch (selectedAnalyticsView) {
       case 'bubble':
-        return <BubbleChart />;
+        return rerenderBubble;
       case 'bar':
         return <BarChart />;
       case 'scatter':
