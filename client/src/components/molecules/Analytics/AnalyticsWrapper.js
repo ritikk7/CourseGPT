@@ -54,7 +54,7 @@ function AnalyticsWrapper({
       case 'scatter':
         return <ScatterChart />;
       case 'word':
-        return <WordCloud />;
+        return <WordCloud isSidepanelVisible={isSidepanelVisible} />;
       default:
         return (
           <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />

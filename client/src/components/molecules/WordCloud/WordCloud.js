@@ -1,48 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import ReactWordcloud from 'react-wordcloud';
 
-const WordCloudChart = () => {
-  const [chart, setChart] = useState(null);
-  const svg = useRef(null);
+import { Resizable } from 're-resizable';
+import Words from './Words';
 
-  var myWords = [
-    'Hello',
-    'Everybody',
-    'How',
-    'Are',
-    'You',
-    'Today',
-    'It',
-    'Is',
-    'A',
-    'Lovely',
-    'Day',
-    'I',
-    'Love',
-    'Coding',
-    'In',
-    'My',
-    'Van',
-    'Mate',
-  ];
-
-  const element = document.getElementById('word-chart');
-  useEffect(() => {
-    if (chart) {
-      if (svg.current && element && element.firstChild) {
-        svg.current.removeChild(element.firstChild);
-        svg.current.appendChild(chart);
-      } else {
-        svg.current.appendChild(chart);
-      }
-    }
-  }, [chart]);
+const WordCloud = ({ isSidepanelVisible }) => {
+  const resizeStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: 'solid 1px #ddd',
+    background: '#f0f0f0',
+    marginTop: 64,
+  };
 
   return (
-    <div>
-      {/* <div id="word-chart" ref={svg} style={{ margin: 'auto' }} /> */}
-      Coming Soon
-    </div>
+    <Resizable
+      size={{
+        width: isSidepanelVisible ? 1000 : window.screen.width,
+        height: 600,
+      }}
+      style={resizeStyle}
+    >
+      <div style={{ width: '100%', height: '100%' }}>
+        <ReactWordcloud words={Words} options={{ fontSizes: [24, 48] }} />
+      </div>
+    </Resizable>
   );
 };
 
-export default WordCloudChart;
+export default WordCloud;
