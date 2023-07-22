@@ -11,16 +11,15 @@ import BarChart from '../BarChart/BarChart';
 import ScatterChart from '../ScatterChart/ScatterChart';
 import WordCloud from '../WordCloud/WordCloud';
 
-function AnalyticsWrapper({
-  toggleSidePanelVisibility,
-  isSidepanelVisible,
-  selectedAnalyticsView,
-}) {
+function AnalyticsWrapper({ toggleSidePanelVisibility, isSidepanelVisible }) {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rerenderBubble, setRerenderBubble] = useState(null);
+  const selectedAnalyticsView = useSelector(
+    state => state.analytics.selectedAnalyticsView
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {

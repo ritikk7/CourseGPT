@@ -26,7 +26,6 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
   const [seeFeedback, setSeeFeedback] = useState(false);
-  const [selectedAnalyticsView, setSelectedAnalyticsView] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -78,7 +77,6 @@ function Home() {
           <AnalyticsWrapper
             toggleSidePanelVisibility={toggleSidePanelVisibility}
             isSidepanelVisible={isSidepanelVisible}
-            selectedAnalyticsView={selectedAnalyticsView}
           />
           <SidePanel
             toggleSidePanelVisibility={toggleSidePanelVisibility}
@@ -86,7 +84,6 @@ function Home() {
             setIsSidepanelVisible={setIsSidepanelVisible}
             isAnalyticsSidePanel={true}
             setSeeFeedback={setSeeFeedback}
-            setSelectedAnalyticsView={setSelectedAnalyticsView}
           />
         </>
       );

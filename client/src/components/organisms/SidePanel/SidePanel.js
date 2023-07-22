@@ -18,6 +18,7 @@ import {
   setShouldFocusChatInput,
   updateUser,
 } from '../../../redux/userSlice';
+import { setSelectedAnalyticsView } from '../../../redux/analyticsSlice';
 import { logoutUser } from '../../../redux/authSlice';
 import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
 import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
@@ -40,7 +41,6 @@ const SidePanel = ({
   setIsSidepanelVisible,
   setSeeFeedback,
   isAnalyticsSidePanel,
-  setSelectedAnalyticsView,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -174,7 +174,7 @@ const SidePanel = ({
         <div className={styles.selectDataView}>
           <Button
             onClick={() => {
-              setSelectedAnalyticsView('feedback');
+              dispatch(setSelectedAnalyticsView('feedback'));
             }}
             bg="transparent"
             color="white"
@@ -185,7 +185,7 @@ const SidePanel = ({
           </Button>
           <Button
             onClick={() => {
-              setSelectedAnalyticsView('bubble');
+              dispatch(setSelectedAnalyticsView('bubble'));
             }}
             bg="transparent"
             color="white"
@@ -196,7 +196,7 @@ const SidePanel = ({
           </Button>
           <Button
             onClick={() => {
-              setSelectedAnalyticsView('bar');
+              dispatch(setSelectedAnalyticsView('bar'));
             }}
             bg="transparent"
             color="white"
@@ -207,7 +207,7 @@ const SidePanel = ({
           </Button>
           <Button
             onClick={() => {
-              setSelectedAnalyticsView('scatter');
+              dispatch(setSelectedAnalyticsView('scatter'));
             }}
             bg="transparent"
             color="white"
@@ -218,7 +218,7 @@ const SidePanel = ({
           </Button>
           <Button
             onClick={() => {
-              setSelectedAnalyticsView('word');
+              dispatch(setSelectedAnalyticsView('word'));
             }}
             bg="transparent"
             color="white"
