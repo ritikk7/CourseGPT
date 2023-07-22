@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
   AlertIcon,
@@ -10,11 +10,13 @@ import {
   Input,
   ModalFooter,
   ModalHeader,
+  Text,
 } from '@chakra-ui/react';
 import { updatePassword } from '../../../../redux/authSlice';
 
 const ProfileSecuritySettings = ({ handleClose }) => {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -22,7 +24,6 @@ const ProfileSecuritySettings = ({ handleClose }) => {
   const [validationError, setValidationError] = useState('');
 
   const handleSave = async () => {
-    // validate new passwords match
     if (newPassword !== confirmPassword) {
       setValidationError('New passwords do not match');
       return;
@@ -47,6 +48,38 @@ const ProfileSecuritySettings = ({ handleClose }) => {
 
     handleClose();
   };
+
+  if (user.googleId !== null) {
+    return (
+      <Box w="600px" color="white">
+        <ModalHeader>Security Settings</ModalHeader>
+        <Text mt={3} paddingInlineStart={6}>
+          You're logged in with Google. To change your password, please visit
+          your
+          <a
+            href="https://myaccount.google.com/intro/signinoptions/password"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: 'blue',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={e => (e.target.style.textDecoration = 'underline')}
+            onMouseLeave={e => (e.target.style.textDecoration = 'none')}
+          >
+            {' '}
+            Google account settings
+          </a>
+          .
+        </Text>
+        <ModalFooter paddingInlineEnd={0} paddingTop={5}>
+          <Button colorScheme="red" onClick={handleClose}>
+            Close
+          </Button>
+        </ModalFooter>
+      </Box>
+    );
+  }
 
   return (
     <Box w="600px" color="white">
