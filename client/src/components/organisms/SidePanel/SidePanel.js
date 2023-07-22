@@ -26,6 +26,13 @@ import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
 import { Button } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
+import {
+  BubbleChart,
+  BarChart,
+  ScatterPlot,
+  Assessment,
+  Abc,
+} from '@mui/icons-material';
 
 const SidePanel = ({
   toggleSidePanelVisibility,
@@ -172,6 +179,7 @@ const SidePanel = ({
             bg="transparent"
             color="white"
             _hover={{ bg: '#39393c' }}
+            leftIcon={<Assessment />}
           >
             Feedback
           </Button>
@@ -182,6 +190,7 @@ const SidePanel = ({
             bg="transparent"
             color="white"
             _hover={{ bg: '#39393c' }}
+            leftIcon={<BubbleChart />}
           >
             Bubble Chart
           </Button>
@@ -192,6 +201,7 @@ const SidePanel = ({
             bg="transparent"
             color="white"
             _hover={{ bg: '#39393c' }}
+            leftIcon={<BarChart />}
           >
             Bar Chart
           </Button>
@@ -202,6 +212,7 @@ const SidePanel = ({
             bg="transparent"
             color="white"
             _hover={{ bg: '#39393c' }}
+            leftIcon={<ScatterPlot />}
           >
             Scatter
           </Button>
@@ -212,6 +223,7 @@ const SidePanel = ({
             bg="transparent"
             color="white"
             _hover={{ bg: '#39393c' }}
+            leftIcon={<Abc />}
           >
             Word Cloud
           </Button>
