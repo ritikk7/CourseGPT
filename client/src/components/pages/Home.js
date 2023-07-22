@@ -24,7 +24,6 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
   const [seeFeedback, setSeeFeedback] = useState(false);
 
   useEffect(() => {
@@ -64,24 +63,14 @@ function Home() {
     }
   };
 
-  const toggleSidePanelVisibility = () => {
-    setIsSidepanelVisible(isSidepanelVisible => !isSidepanelVisible);
-  };
-
   if (isLoading) return <LoadingSpinner />;
 
   const renderPage = () => {
     if (seeFeedback) {
       return (
         <>
-          <AnalyticsWrapper
-            toggleSidePanelVisibility={toggleSidePanelVisibility}
-            isSidepanelVisible={isSidepanelVisible}
-          />
+          <AnalyticsWrapper />
           <SidePanel
-            toggleSidePanelVisibility={toggleSidePanelVisibility}
-            isSidepanelVisible={isSidepanelVisible}
-            setIsSidepanelVisible={setIsSidepanelVisible}
             isAnalyticsSidePanel={true}
             setSeeFeedback={setSeeFeedback}
           />
@@ -90,16 +79,8 @@ function Home() {
     } else
       return (
         <>
-          <RightSection
-            isSidepanelVisible={isSidepanelVisible}
-            toggleSidePanelVisibility={toggleSidePanelVisibility}
-          />
-          <SidePanel
-            toggleSidePanelVisibility={toggleSidePanelVisibility}
-            isSidepanelVisible={isSidepanelVisible}
-            setIsSidepanelVisible={setIsSidepanelVisible}
-            setSeeFeedback={setSeeFeedback}
-          />
+          <RightSection />
+          <SidePanel setSeeFeedback={setSeeFeedback} />
         </>
       );
   };

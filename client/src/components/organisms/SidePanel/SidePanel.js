@@ -34,14 +34,9 @@ import {
   Assessment,
   Abc,
 } from '@mui/icons-material';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
-const SidePanel = ({
-  toggleSidePanelVisibility,
-  isSidepanelVisible,
-  setIsSidepanelVisible,
-  setSeeFeedback,
-  isAnalyticsSidePanel,
-}) => {
+const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isGptLoading = useSelector(state => state.messages.gptLoading);
@@ -59,6 +54,7 @@ const SidePanel = ({
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);
   const [filteredChatsToShow, setFilteredChatsToShow] = useState(existingChats);
+  const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
 
   useEffect(() => {
     if (selectedCourse) {
@@ -147,7 +143,7 @@ const SidePanel = ({
       <div
         className={styles.sidepanel}
         style={
-          isSidepanelVisible
+          isSidePanelVisible
             ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
             : {
                 transform: 'translateX(-100%)',
@@ -166,7 +162,7 @@ const SidePanel = ({
             right={2}
             _hover={{ bg: '#39393c' }}
             border="1px solid rgb(100, 100, 102)"
-            onClick={toggleSidePanelVisibility}
+            onClick={() => dispatch(setIsSidePanelVisible(false))}
           >
             <ChevronLeftIcon />
           </Button>
@@ -251,7 +247,7 @@ const SidePanel = ({
     <div
       className={styles.sidepanel}
       style={
-        isSidepanelVisible
+        isSidePanelVisible
           ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
           : {
               transform: 'translateX(-100%)',
@@ -268,7 +264,6 @@ const SidePanel = ({
           handleNewChat={handleNewChat}
           disableNewChatButton={disableNewChatButton}
           disabledNewChatCourseSelector={isGptLoading}
-          toggleSidePanelVisibility={toggleSidePanelVisibility}
         />
         <div className={styles.chatsPanel}>
           {chats &&
@@ -282,7 +277,6 @@ const SidePanel = ({
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
                   handleChatDelete={handleChatDelete}
-                  setIsSidepanelVisible={setIsSidepanelVisible}
                 />
               ))}
         </div>

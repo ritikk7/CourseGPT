@@ -3,8 +3,9 @@ import ReactWordcloud from 'react-wordcloud';
 
 import { Resizable } from 're-resizable';
 import Words from './Words';
+import { useSelector } from 'react-redux';
 
-const WordCloud = ({ isSidepanelVisible }) => {
+const WordCloud = () => {
   const resizeStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -12,10 +13,12 @@ const WordCloud = ({ isSidepanelVisible }) => {
     marginTop: 64,
   };
 
+  const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
+
   return (
     <Resizable
       size={{
-        width: isSidepanelVisible
+        width: isSidePanelVisible
           ? window.screen.width - 262
           : window.screen.width,
         height: 600,

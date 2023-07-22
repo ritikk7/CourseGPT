@@ -10,8 +10,9 @@ import BubbleChart from '../BubbleChart/BubbleChart';
 import BarChart from '../BarChart/BarChart';
 import ScatterChart from '../ScatterChart/ScatterChart';
 import WordCloud from '../WordCloud/WordCloud';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
-function AnalyticsWrapper({ toggleSidePanelVisibility, isSidepanelVisible }) {
+function AnalyticsWrapper() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function AnalyticsWrapper({ toggleSidePanelVisibility, isSidepanelVisible }) {
   const selectedAnalyticsView = useSelector(
     state => state.analytics.selectedAnalyticsView
   );
+  const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -53,11 +55,9 @@ function AnalyticsWrapper({ toggleSidePanelVisibility, isSidepanelVisible }) {
       case 'scatter':
         return <ScatterChart />;
       case 'word':
-        return <WordCloud isSidepanelVisible={isSidepanelVisible} />;
+        return <WordCloud />;
       default:
-        return (
-          <FeedbackData toggleSidePanelVisibility={toggleSidePanelVisibility} />
-        );
+        return <FeedbackData />;
     }
   };
 
@@ -65,18 +65,20 @@ function AnalyticsWrapper({ toggleSidePanelVisibility, isSidepanelVisible }) {
     <div
       className={styles.container}
       style={
-        isSidepanelVisible
+        isSidePanelVisible
           ? { transition: '0.5s' }
           : { width: '100%', transition: '0.5s' }
       }
     >
-      {!isSidepanelVisible && (
+      {!isSidePanelVisible && (
         <Button
           ml={2}
           bg="gray"
           _hover={{ bg: '#50505c' }}
           border="1px solid white"
-          onClick={toggleSidePanelVisibility}
+          onClick={() => {
+            dispatch(setIsSidePanelVisible(true));
+          }}
           position="absolute"
           top={4}
           left={4}

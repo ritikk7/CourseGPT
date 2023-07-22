@@ -16,7 +16,7 @@ const FeedbackData = () => {
   };
 
   return (
-    <div style={{ color: 'black' }}>
+    <div style={{ color: 'black', paddingTop: 60 }}>
       <Box>
         <Box>
           {selectedSchool ? (
