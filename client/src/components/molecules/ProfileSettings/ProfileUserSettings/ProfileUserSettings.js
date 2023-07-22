@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
-  Center,
   Editable,
   EditableInput,
   EditablePreview,
@@ -28,36 +27,57 @@ const ProfileUserSettings = ({ handleClose }) => {
     firstName: user.firstName,
     lastName: user.lastName,
     type: user.type,
-    profilePicture: user.profilePicture
+    profilePicture: user.profilePicture,
   });
 
   const handleSave = () => {
     const updatedUser = {
       ...userInfo,
-      profilePicture: selectedFile
+      profilePicture: selectedFile,
     };
     dispatch(updateUser(updatedUser));
     handleClose();
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = e => {
     setSelectedFile(URL.createObjectURL(e.target.files[0]));
   };
 
   return (
-    <Box color='white' w="600px">
+    <Box color="white" w="600px">
       <ModalHeader> User Settings </ModalHeader>
       <Stack direction="row">
-        <Box w="400px" m={1} justifyContent='center'>
+        <Box w="400px" m={1} justifyContent="center">
           <Image
             borderRadius="full"
             boxSize="180px"
-            src={selectedFile || userInfo.profilePicture || "https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"}
+            src={
+              selectedFile ||
+              userInfo.profilePicture ||
+              'https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg'
+            }
             alt="Profile Picture"
             m={3}
           />
-          <Input id="fileUpload" type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-          <FormLabel m={6} htmlFor="fileUpload" style={{ fontSize: '0.9em', display: 'inline-block', backgroundColor: 'teal', padding: '8px', borderRadius: '4px', cursor: 'pointer'}}>
+          <Input
+            id="fileUpload"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <FormLabel
+            m={6}
+            htmlFor="fileUpload"
+            style={{
+              fontSize: '0.9em',
+              display: 'inline-block',
+              backgroundColor: 'teal',
+              padding: '8px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
             Upload Profile Picture
           </FormLabel>
         </Box>
@@ -66,49 +86,53 @@ const ProfileUserSettings = ({ handleClose }) => {
             <FormControl m={4}>
               <FormLabel>First name</FormLabel>
               <Editable
-                backgroundColor={'teal.600'} borderRadius={10}
+                backgroundColor={'teal.600'}
+                borderRadius={10}
                 defaultValue={userInfo.firstName}
                 onSubmit={value =>
                   setUserInfo({ ...userInfo, firstName: value })
                 }
               >
-                <EditablePreview px={2}/>
-                <EditableInput borderRadius={10} px={2}/>
+                <EditablePreview px={2} />
+                <EditableInput borderRadius={10} px={2} />
               </Editable>
             </FormControl>
             <FormControl m={4}>
               <FormLabel>Last name</FormLabel>
               <Editable
-                backgroundColor={'teal.600'} borderRadius={10}
+                backgroundColor={'teal.600'}
+                borderRadius={10}
                 defaultValue={userInfo.lastName}
                 onSubmit={value =>
                   setUserInfo({ ...userInfo, lastName: value })
                 }
               >
-                <EditablePreview px={2}/>
-                <EditableInput borderRadius={10} px={2}/>
+                <EditablePreview px={2} />
+                <EditableInput borderRadius={10} px={2} />
               </Editable>
             </FormControl>
           </Flex>
           <FormControl m={4} mt={0}>
             <FormLabel>Email address</FormLabel>
             <Editable
-              backgroundColor={'teal.600'} borderRadius={10}
+              backgroundColor={'teal.600'}
+              borderRadius={10}
               defaultValue={userInfo.email}
               onSubmit={value => setUserInfo({ ...userInfo, email: value })}
             >
-              <EditablePreview px={2}/>
-              <EditableInput borderRadius={10} px={2}/>
+              <EditablePreview px={2} />
+              <EditableInput borderRadius={10} px={2} />
             </Editable>
           </FormControl>
           <FormControl m={4}>
             <FormLabel>Account Type</FormLabel>
             <Editable
-              backgroundColor={'teal.600'} borderRadius={10}
+              backgroundColor={'teal.600'}
+              borderRadius={10}
               defaultValue={userInfo.type}
             >
-              <EditablePreview px={2}/>
-              <EditableInput px={2}/>
+              <EditablePreview px={2} />
+              <EditableInput px={2} />
             </Editable>
           </FormControl>
         </Box>
@@ -117,7 +141,9 @@ const ProfileUserSettings = ({ handleClose }) => {
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>
-        <Button colorScheme="red" onClick={handleClose}>Cancel</Button>
+        <Button colorScheme="red" onClick={handleClose}>
+          Cancel
+        </Button>
       </ModalFooter>
     </Box>
   );

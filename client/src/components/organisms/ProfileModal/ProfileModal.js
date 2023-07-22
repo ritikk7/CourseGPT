@@ -35,7 +35,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Personal')}
             _hover={{
-              background: 'gray.400'
+              background: 'gray.400',
             }}
           >
             <Icon as={FaUser} boxSize="24px" />
@@ -52,7 +52,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             borderColor="gray.400"
             onClick={() => setSelectedSetting('School')}
             _hover={{
-              background: 'gray.400'
+              background: 'gray.400',
             }}
           >
             <Icon as={FaSchool} boxSize="24px" />
@@ -66,7 +66,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Security')}
             _hover={{
-              background: 'gray.400'
+              background: 'gray.400',
             }}
           >
             <Icon as={FaLock} boxSize="24px" />
@@ -83,7 +83,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       case 'School':
         return <ProfileSchoolSettings handleClose={handleClose} />;
       case 'Security':
-        return <ProfileSecuritySettings handleClose={handleClose}/>
+        return <ProfileSecuritySettings handleClose={handleClose} />;
       default:
         return null;
     }
@@ -96,7 +96,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         <ModalCloseButton />
         <Stack direction="row" height="450px" backgroundColor={'gray.600'}>
           {renderSettingsSidePanel()}
-          <VStack p={5} >{renderSettings()}</VStack>
+          <VStack p={5}>{renderSettings()}</VStack>
         </Stack>
       </ModalContent>
     </Modal>

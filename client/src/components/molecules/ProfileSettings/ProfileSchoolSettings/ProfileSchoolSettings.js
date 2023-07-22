@@ -85,7 +85,7 @@ const ProfileSchoolSettings = ({ handleClose }) => {
   };
 
   return (
-    <Box w="600px" color='white'>
+    <Box w="600px" color="white">
       <ModalHeader>School Settings</ModalHeader>
       <FormControl paddingInlineStart={6}>
         <FormLabel>School</FormLabel>
@@ -108,7 +108,9 @@ const ProfileSchoolSettings = ({ handleClose }) => {
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>
-        <Button colorScheme="red" onClick={handleClose}>Cancel</Button>
+        <Button colorScheme="red" onClick={handleClose}>
+          Cancel
+        </Button>
       </ModalFooter>
     </Box>
   );
