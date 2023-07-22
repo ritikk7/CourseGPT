@@ -171,6 +171,7 @@ const SidePanel = ({
             }}
             bg="transparent"
             color="white"
+            _hover={{ bg: '#39393c' }}
           >
             Feedback
           </Button>
@@ -180,6 +181,7 @@ const SidePanel = ({
             }}
             bg="transparent"
             color="white"
+            _hover={{ bg: '#39393c' }}
           >
             Bubble Chart
           </Button>
@@ -189,6 +191,7 @@ const SidePanel = ({
             }}
             bg="transparent"
             color="white"
+            _hover={{ bg: '#39393c' }}
           >
             Bar Chart
           </Button>
@@ -198,6 +201,7 @@ const SidePanel = ({
             }}
             bg="transparent"
             color="white"
+            _hover={{ bg: '#39393c' }}
           >
             Scatter
           </Button>
@@ -207,6 +211,7 @@ const SidePanel = ({
             }}
             bg="transparent"
             color="white"
+            _hover={{ bg: '#39393c' }}
           >
             Word Cloud
           </Button>

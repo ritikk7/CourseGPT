@@ -74,7 +74,7 @@ function AnalyticsWrapper({
       {!isSidepanelVisible && (
         <Button
           ml={2}
-          bg="transparent"
+          bg="gray"
           _hover={{ bg: '#50505c' }}
           border="1px solid white"
           onClick={toggleSidePanelVisibility}

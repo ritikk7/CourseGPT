@@ -16,28 +16,30 @@ const FeedbackData = () => {
   };
 
   return (
-    <Box>
+    <div style={{ color: 'black' }}>
       <Box>
-        {selectedSchool ? (
-          <Text>
-            Currently looking at the feedback for {selectedCourse.courseCode}:{' '}
-            {selectedCourse.courseName} at {selectedSchool.name}
-          </Text>
-        ) : (
-          <Text>Looking at the feedback for all courses and schools</Text>
-        )}
+        <Box>
+          {selectedSchool ? (
+            <Text>
+              Currently looking at the feedback for {selectedCourse.courseCode}:{' '}
+              {selectedCourse.courseName} at {selectedSchool.name}
+            </Text>
+          ) : (
+            <Text>Looking at the feedback for all courses and schools</Text>
+          )}
+        </Box>
+        <Box>
+          <Button onClick={handleClick}>Get feedback</Button>
+          {feedbackData.length && (
+            <MainAnalysisPage
+              course={selectedCourse}
+              school={selectedSchool}
+              data={feedbackData}
+            />
+          )}
+        </Box>
       </Box>
-      <Box>
-        <Button onClick={handleClick}>Get feedback</Button>
-        {feedbackData.length && (
-          <MainAnalysisPage
-            course={selectedCourse}
-            school={selectedSchool}
-            data={feedbackData}
-          />
-        )}
-      </Box>
-    </Box>
+    </div>
   );
 };
 
