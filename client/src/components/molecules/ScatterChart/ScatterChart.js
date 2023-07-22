@@ -24,7 +24,7 @@ export const options = {
 export const data = {
   datasets: [
     {
-      label: 'A dataset',
+      label: 'Sentiment',
       data: Array.from({ length: 100 }, () => ({
         x: faker.datatype.number({ min: 0, max: 100 }),
         y: faker.datatype.number({ min: 0, max: 100 }) / 100,

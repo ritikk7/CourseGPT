@@ -24,7 +24,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Chart.js Bar Chart - Stacked',
+      text: 'Sentiment Analysis of the 5 Most Asked Questions',
     },
   },
   responsive: true,
@@ -42,7 +42,7 @@ export const options = {
   },
 };
 
-const labels = ['Cats', 'Focus', 'question', 'April'];
+const labels = ['Cats', 'Focus', 'question', 'April', 'Exam'];
 
 const data = {
   labels,
