@@ -57,6 +57,13 @@ export const logoutUser = createUserRequest(
   // payload = null
 );
 
+export const updatePassword = createUserRequest(
+  'updatePassword',
+  'patch',
+  '/auth/update-password'
+  // payload = {oldPassword: "oldpassword", newPassword: "newpassword", confirmPassword: "confirmpassword"}
+);
+
 export const fetchUser = createUserRequest(
   'fetchUser',
   'get',

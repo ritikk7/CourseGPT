@@ -63,6 +63,28 @@ async function logout(req, res) {
   }
 }
 
+async function updatePassword(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(req.body.oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Old password does not match' });
+    }
+
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 async function getAuthorizedUser(req, res) {
   try {
     const user = await User.findById(req.user.id);
@@ -143,6 +165,7 @@ module.exports = {
   getAuthorizedUser,
   signAndRedirect,
   logout,
+  updatePassword,
 };
 
 /**

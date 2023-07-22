@@ -6,6 +6,7 @@ const {
   validateToken,
   getAuthorizedUser,
   logout,
+  updatePassword,
   signAndRedirect,
 } = require('../controllers/auth');
 const passport = require('passport');
@@ -35,6 +36,8 @@ router.post('/login', login);
 router.get('/get-auth-user', validateToken, getAuthorizedUser);
 
 router.post('/logout', validateToken, logout);
+
+router.patch('/update-password', validateToken, updatePassword);
 
 module.exports = router;
 
