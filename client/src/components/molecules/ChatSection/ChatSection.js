@@ -43,16 +43,6 @@ const ChatSection = ({ message }) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
   const renderBotAnswer = () => {
     if (!renderAnimation) {
       return message.content;
@@ -92,19 +82,17 @@ const ChatSection = ({ message }) => {
   return (
     <>
       {!isSenderUser ? (
-        <Box
-          className={styles['message-container']}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <Box className={styles['message-container']}>
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
-              {message && renderGptPlaceholder()}
-              {message && !messageIsGptPlaceholder && renderBotAnswer()}
-              {message && !messageIsGptPlaceholder && isHovered && (
-                <Feedback message={message._id} />
-              )}
+              <div className={styles.msgContent}>
+                {message && renderGptPlaceholder()}
+                {message && !messageIsGptPlaceholder && renderBotAnswer()}
+                {message && !messageIsGptPlaceholder && (
+                  <Feedback message={message._id} />
+                )}
+              </div>
             </div>
           </div>
         </Box>

@@ -5,9 +5,16 @@
 }
 
 .chatContent {
-  width: 82%;
+  width: 90%;
   margin: auto;
   display: flex;
+  position: relative;
+}
+
+.msgContent {
+  justify-content: space-between;
+  display: flex;
+  width: 100%;
 }
 
 .chatFeedback {
