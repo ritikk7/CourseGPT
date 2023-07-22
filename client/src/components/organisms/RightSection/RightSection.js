@@ -18,6 +18,7 @@ import {
   fetchChat,
 } from '../../../redux/chatsSlice';
 import { Button, Box, Spinner, Tooltip } from '@chakra-ui/react';
+import SearchBarInput from '../../molecules/SearchBar/SearchBarInput';
 
 const Message = ({ value }) => (
   <div className={styles.message}>
@@ -184,6 +185,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           Training complete!
         </Box>
       )}
+      <SearchBarInput />
       {mainPanel}
       {renderInput && (
         <InputArea
