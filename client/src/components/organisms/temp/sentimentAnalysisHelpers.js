@@ -31,7 +31,6 @@ function addPadding(sentences, metadata) {
 }
 
 export function getSentimentScore(sentence, model, metadata) {
-  // Cleaning sentence
   const trimmed = sentence
     .trim()
     .toLowerCase()

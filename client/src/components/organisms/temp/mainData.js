@@ -10,6 +10,7 @@ const FeedbackData = () => {
   const [selectedSchool, setSelectedSchool] = useState(''); // need to add dropdown stuff later
   const [selectedCourse, setSelectedCourse] = useState([]);
   const feedbackData = useSelector(state => state.feedbackData.feedbackInfo);
+  const freqData = useSelector(state => state.feedbackData.freqData);
 
   const handleClick = () => {
     dispatch(fetchFeedbackAnalysis());
@@ -35,6 +36,7 @@ const FeedbackData = () => {
               course={selectedCourse}
               school={selectedSchool}
               data={feedbackData}
+              freqData={freqData}
             />
           )}
         </Box>

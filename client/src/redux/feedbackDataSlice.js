@@ -32,10 +32,30 @@ export const fetchFeedbackAnalysis = createAsyncThunk(
   }
 );
 
+export const fetchGroups = createAsyncThunk(
+  'feedbackData/fetchGroups',
+  async (groupData, { getState }) => {
+    try {
+      const group = groupData || null;
+      console.log(group);
+
+      const response = await api.post(`/feedbackData/groups`, {
+        groupData: group,
+      });
+      console.log('feedback data slice api call done');
+
+      return response.data.freqData;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+);
+
 const feedbackDataSlice = createSlice({
   name: 'feedbackData',
   initialState: {
     feedbackInfo: [],
+    freqData: {},
   },
   reducers: {},
   extraReducers: builder => {
@@ -46,7 +66,14 @@ const feedbackDataSlice = createSlice({
         // console.log(state.feedbackInfo);
         // console.log('data stuff in feedback data slice');
       })
-      .addCase(fetchFeedbackAnalysis.rejected, handleRejected);
+      .addCase(fetchFeedbackAnalysis.rejected, handleRejected)
+      .addCase(fetchGroups.pending, handlePending)
+      .addCase(fetchGroups.fulfilled, (state, action) => {
+        state.freqData = action.payload;
+        // console.log(state.feedbackInfo);
+        // console.log('data stuff in feedback data slice');
+      })
+      .addCase(fetchGroups.rejected, handleRejected);
   },
 });
 
