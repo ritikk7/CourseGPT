@@ -1,50 +1,43 @@
-const natural = require('natural');
-const { fallback } = require('util');
+const winkNLP = require('wink-nlp');
+const its = require('wink-nlp/src/its.js');
+const as = require('wink-nlp/src/as.js');
+const model = require('wink-eng-lite-web-model');
+const nlp = winkNLP(model);
 
-// Polyfill for Node.js core modules
-if (!fallback.util) fallback.util = require.resolve('util/');
-if (!fallback.path) fallback.path = require.resolve('path-browserify');
 
-// Function to lemmatize a word using WordNet
-async function lemmatizeWord(word) {
-  return new Promise((resolve, reject) => {
-    natural.WordNet.lookup(word, results => {
-      if (results.length > 0) {
-        resolve(results[0].lemma);
-      } else {
-        resolve(word);
-      }
-    });
-  });
+function removeStopwords(words) {
+  const stopwords = ['i','me','my','myself','we','our','ours','ourselves','you','your','yours','yourself','yourselves','he','him','his','himself','she','her','hers','herself','it','its','itself','they','them','their','theirs','themselves','what','which','who','whom','this','that','these','those','am','is','are','was','were','be','been','being','have','has','had','having','do','does','did','doing','a','an','the','and','but','if','or','because','as','until','while','of','at','by','for','with','about','against','between','into','through','during','before','after','above','below','to','from','up','down','in','out','on','off','over','under','again','further','then','once','here','there','when','where','why','how','all','any','both','each','few','more','most','other','some','such','no','nor','not','only','own','same','so','than','too','very','s','t','can','will','just','don','should','now']
+
+  let res = [];
+  for(let i = 0; i < words.length; i++) {
+     if(!stopwords.includes(words[i])) {
+         res.push(words[i]);
+     }
+  }
+  return res;
 }
 
-// Function to extract keyword phrases
-export async function extractKeywordPhrases(feedbackList) {
-  // Create a tokenizer using natural
-  const tokenizer = new natural.WordTokenizer();
 
-  // Tokenize all feedback and merge into a single array of words
-  const words = feedbackList
-    .map(feedback => tokenizer.tokenize(feedback.toLowerCase()))
-    .flat();
+export function extractKeywordPhrases(feedbackList) {
+  for (let group of feedbackList) {
+    let doc = nlp.readDoc(group[1].flat().join(' '));
+    
+    let words = doc.tokens().out(its.normal, as.array);
+    words = removeStopwords(words)
 
-  // Lemmatize each word to group similar words (e.g., "dogs" and "dog")
-  return Promise.all(words.map(word => lemmatizeWord(word)))
-    .then(lemmatizedWords => {
-      // Calculate frequency distribution to get the most common words/phrases
-      const freqDist = new natural.FrequencyDistribution(lemmatizedWords);
-      const mostCommonPhrases = freqDist.mostCommon(10);
-
-      // Convert the most common phrases to an array of (phrase, times) pairs
-      const keywordPhrases = mostCommonPhrases.map(([phrase, count]) => ({
-        phrase,
-        count,
-      }));
-
-      return keywordPhrases;
-    })
-    .catch(error => {
-      console.error('Error during lemmatization:', error);
-      return [];
+    // create a Map to count the frequencies
+    let freqMap = new Map();
+    words.forEach(word => {
+      let count = freqMap.get(word) || 0;
+      freqMap.set(word, count + 1);
     });
+
+    // sort the frequencies in descending order and take the top 10
+    let mostFrequentWords = Array.from(freqMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([word, frequency]) => ({ word, frequency }));
+
+    return mostFrequentWords;
+  }
 }

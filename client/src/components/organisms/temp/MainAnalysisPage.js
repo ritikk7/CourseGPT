@@ -4,7 +4,7 @@ import * as SentimentAnalysisHelpers from './sentimentAnalysisHelpers';
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { fetchGroups } from '../../../redux/feedbackDataSlice';
-
+import { extractKeywordPhrases } from './frequentHelpers';
 // Data is the return type from the file databaseHelpers in the backend
 // basically, returns 2D array where a feedback info is [ comment, rating, question, answer, course ]
 // example return: [ FeedbackInfo1, FeedbackInfo2 ]
@@ -83,7 +83,10 @@ function MainAnalysisPage({ course, school, data, freqData }) {
       comments.push([g, cur]);
       sentenceAndSentiment[g] = sentiments;
     }
-    dispatch(fetchGroups(comments));
+
+    console.log(extractKeywordPhrases(comments));
+
+    // dispatch(fetchGroups(comments));
     setFeedbackSentiment(sentenceAndSentiment);
   };
 
