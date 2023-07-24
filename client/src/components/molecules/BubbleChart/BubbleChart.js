@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import Legend from '../Legend/Legend';
+import styles from './BubbleChart.module.css';
 
 const BubbleChart = () => {
   const [bubbleChart, setBubbleChart] = useState(null);
@@ -199,7 +200,7 @@ const BubbleChart = () => {
   }, [bubbleChart]);
 
   return (
-    <div>
+    <div className={styles.fade}>
       <Legend colorScheme={colorScheme} />
       <div id="chart-container" ref={svg} style={{ margin: 'auto' }} />
     </div>
