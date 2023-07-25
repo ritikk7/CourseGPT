@@ -1,4 +1,5 @@
 const Chat = require('../models/chat');
+const Message = require('../models/message');
 const User = require('../models/user');
 
 async function getChat(req, res) {
@@ -44,12 +45,16 @@ async function createChat(req, res) {
 }
 
 async function updateChats(req, res) {
-  const filter = req.body.filter;
+  let filter = req.body.filter;
   const updates = req.body.updates;
 
   try {
     await Chat.updateMany(filter, updates);
     const chats = await Chat.find(filter);
+
+    // also set associated messages to deleted
+    await Message.updateMany(filter, updates);
+
     res.status(200).send({ chats });
   } catch (error) {
     res.status(500).send({ error: error.message });
@@ -70,7 +75,12 @@ async function updateChat(req, res) {
       new: true,
     });
 
-    res.status(200).send({ chat: updatedChat });
+    // also set associated messages to deleted
+    const filter = { chat: chatId };
+    await Message.updateMany(filter, updates);
+    const updatedMessagesFound = await Message.find(filter);
+
+    res.status(200).send({ chat: updatedChat, messages: updatedMessagesFound });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
