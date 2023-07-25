@@ -125,11 +125,14 @@ const chatsSlice = createSlice({
     setActiveChat: (state, action) => {
       // Payload must be a string (chatId) or chat object
       if (typeof action.payload === 'string') {
+        console.log(state.userChats);
+        console.log(state.userChats[action.payload]);
         state.activeChat = state.userChats[action.payload];
       } else {
         state.activeChat = action.payload;
       }
       state.waitingFirstMessage = false;
+      console.log("active chat is now ", state.activeChat);
     },
     setFocusedChat: (state, action) => {
       state.focusedChat = action.payload;

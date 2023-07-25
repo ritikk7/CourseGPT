@@ -94,7 +94,7 @@ const userSlice = createSlice({
     loading: false,
     error: null, // string message
 
-    activePanel: 'INFO', // "CHAT", "INFO"
+    activePanel: 'INFO', // "CHAT", "INFO", "SEARCH"
     shouldFocusChatInput: false,
   },
   reducers: {
@@ -109,6 +109,9 @@ const userSlice = createSlice({
     },
     setActivePanelChat: (state, action) => {
       state.activePanel = 'CHAT';
+    },
+    setActivePanelSearch: (state, action) => {
+      state.activePanel = 'SEARCH';
     },
     setShouldFocusChatInput: (state, action) => {
       state.shouldFocusChatInput = action.payload;
@@ -147,6 +150,7 @@ export const {
   setUserError,
   setActivePanelChat,
   setActivePanelInfo,
+  setActivePanelSearch,
   setShouldFocusChatInput,
 } = userSlice.actions;
 export default userSlice.reducer;
