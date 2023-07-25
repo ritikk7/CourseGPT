@@ -2,21 +2,17 @@ import React from 'react';
 // import styled from 'styled-components';
 import styles from './MessageResult.module.css';
 import { Box, Highlight, Divider } from '@chakra-ui/react';
-import { setActiveChat, setFocusedChat } from '../../../redux/chatsSlice';
+import { setActiveChat, setFocusedChat, setHighlightMessage } from '../../../redux/chatsSlice';
 import { useDispatch } from 'react-redux';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import { setActivePanelChat } from '../../../redux/userSlice';
+import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 
 const MessageResult = ({ result }) => {
   const dispatch = useDispatch();
-  const mapHighlightedText = () => {
-    const texts = result.highlights[0].texts;
-    return [...texts]
-      .filter(text => text.type === 'hit')
-      .map(text => text.value);
-  };
-  const highlightedTexts = mapHighlightedText();
+  
+  const highlightedTexts = mapHighlightedTextToArray(result);
 
   const handleClick = async e => {
     e.preventDefault();
@@ -35,6 +31,7 @@ const MessageResult = ({ result }) => {
     // collapse search panel
     await dispatch(setActivePanelChat());
     // set ref at the messageId and autoscroll to that reference
+    await dispatch(setHighlightMessage(result));
   };
 
   return (

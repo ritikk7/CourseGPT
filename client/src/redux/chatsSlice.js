@@ -118,6 +118,9 @@ const chatsSlice = createSlice({
     activeChat: null, // chat object
     waitingFirstMessage: false,
     focusedChat: null, // chat id
+    // search result message with highlight information
+    // Example: { chat: chatID, content: messageContent, highlights: [highlight info], updatedAt: time, user: uid, _id: messageID }
+    highlightMessage: null, 
     loading: false,
     error: null, // string message
   },
@@ -125,14 +128,15 @@ const chatsSlice = createSlice({
     setActiveChat: (state, action) => {
       // Payload must be a string (chatId) or chat object
       if (typeof action.payload === 'string') {
-        console.log(state.userChats);
-        console.log(state.userChats[action.payload]);
         state.activeChat = state.userChats[action.payload];
       } else {
         state.activeChat = action.payload;
       }
+      // disable search result highlighting after user switch chats
+      if (state.highlightMessage && state.activeChat._id !== state.highlightMessage.chat){
+        state.highlightMessage = null;
+      }
       state.waitingFirstMessage = false;
-      console.log("active chat is now ", state.activeChat);
     },
     setFocusedChat: (state, action) => {
       state.focusedChat = action.payload;
@@ -143,6 +147,9 @@ const chatsSlice = createSlice({
     setWaitingFirstMessage: (state, action) => {
       state.activeChat = null;
       state.waitingFirstMessage = action.payload;
+    },
+    setHighlightMessage: (state, action) => {
+      state.highlightMessage = action.payload;
     },
   },
   extraReducers: builder => {
@@ -206,6 +213,7 @@ export const {
   setFocusedChat,
   setChatsError,
   setWaitingFirstMessage,
+  setHighlightMessage
 } = chatsSlice.actions;
 export default chatsSlice.reducer;
 
