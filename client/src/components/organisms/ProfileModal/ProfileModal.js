@@ -1,189 +1,121 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import {
   Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  Image,
-  Input,
+  Icon,
   Modal,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalOverlay,
-  Select,
   Stack,
-  Text,
+  useTheme,
   VStack,
 } from '@chakra-ui/react';
-import { updateUser } from '../../../redux/userSlice';
-import { schoolsWithCoursesSelector } from '../../../redux/selectors/schoolsWithCoursesSelector';
-import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
-import { userSchoolWithCoursesSelector } from '../../../redux/selectors/userSchoolWithCoursesSelector';
+import { FaUser, FaSchool, FaLock } from 'react-icons/fa';
+import ProfileUserSettings from '../../molecules/ProfileSettings/ProfileUserSettings/ProfileUserSettings';
+import ProfileSchoolSettings from '../../molecules/ProfileSettings/ProfileSchoolSettings/ProfileSchoolSettings';
+import ProfileSecuritySettings from '../../molecules/ProfileSettings/ProfileSecuritySettings/ProfileSecuritySettings';
 
 const ProfileModal = ({ isOpen, handleClose }) => {
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
-  const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
-  const userFavoriteCourses = useSelector(userFavouriteCoursesSelector);
-  const userSchool = useSelector(userSchoolWithCoursesSelector);
+  const [selectedSetting, setSelectedSetting] = useState('Personal');
 
-  const [userInfo, setUserInfo] = useState({
-    email: user.email,
-    //password: user.password,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    type: user.type,
-  });
-
-  const [selectedSchool, setSelectedSchool] = useState(userSchool);
-  const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
-
-  const handleSchoolChange = e => {
-    setSelectedSchool(schoolsWithCourses[e.target.value]);
+  const theme = useTheme();
+  const renderSettingsSidePanel = () => {
+    return (
+      <Box
+        width="150px"
+        borderRight="1px solid"
+        borderColor={theme.colors.textSecondary.light}
+        backgroundColor={theme.colors.background.light}
+      >
+        <VStack spacing={0} height="full" justify="space-around">
+          <Box
+            as="button"
+            w="100%"
+            flex="1"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            onClick={() => setSelectedSetting('Personal')}
+            _hover={{
+              background: theme.colors.button.hover,
+            }}
+          >
+            <Icon
+              as={FaUser}
+              boxSize="24px"
+              color={theme.colors.primary.light}
+            />
+          </Box>
+          <Box
+            as="button"
+            w="100%"
+            flex="1"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderTop="1px"
+            borderBottom="1px"
+            borderColor={theme.colors.primary.light}
+            onClick={() => setSelectedSetting('School')}
+            _hover={{
+              background: theme.colors.buttonTwo.hover,
+            }}
+          >
+            <Icon
+              as={FaSchool}
+              boxSize="24px"
+              color={theme.colors.primary.light}
+            />
+          </Box>
+          <Box
+            as="button"
+            w="100%"
+            flex="1"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            onClick={() => setSelectedSetting('Security')}
+            _hover={{
+              background: theme.colors.buttonTwo.hover,
+            }}
+          >
+            <Icon
+              as={FaLock}
+              boxSize="24px"
+              color={theme.colors.primary.light}
+            />
+          </Box>
+        </VStack>
+      </Box>
+    );
   };
 
-  useEffect(() => {
-    if (selectedSchool && userSchool && selectedSchool._id === userSchool._id) {
-      setSelectedCourses(userFavoriteCourses);
-    } else {
-      setSelectedCourses({});
-    }
-  }, [selectedSchool]);
-
-  const handleCourseChange = course => {
-    setSelectedCourses(prevCourses => {
-      if (prevCourses[course._id]) {
-        const { [course._id]: deletedCourse, ...remainingCourses } =
-          prevCourses;
-        return remainingCourses;
-      } else {
-        return { ...prevCourses, [course._id]: course };
-      }
-    });
-  };
-
-  const handleSave = () => {
-    const favourites = Object.keys(selectedCourses);
-    const school = selectedSchool._id;
-    const updatedUser = {
-      ...userInfo,
-      school,
-      favourites,
-    };
-    dispatch(updateUser(updatedUser));
-    handleClose();
-  };
-
-  const renderSchools = () => {
-    return Object.values(schoolsWithCourses).map((school, i) => (
-      <option key={i} value={school._id}>
-        {school.name}
-      </option>
-    ));
-  };
-
-  const renderCourses = () => {
-    if (selectedSchool) {
-      return Object.values(selectedSchool.courses).map((course, i) => (
-        <Checkbox
-          key={i}
-          isChecked={!!selectedCourses[course._id]}
-          onChange={() => handleCourseChange(course)}
-        >
-          {course.courseCode}
-        </Checkbox>
-      ));
+  const renderSettings = () => {
+    switch (selectedSetting) {
+      case 'Personal':
+        return <ProfileUserSettings handleClose={handleClose} />;
+      case 'School':
+        return <ProfileSchoolSettings handleClose={handleClose} />;
+      case 'Security':
+        return <ProfileSecuritySettings handleClose={handleClose} />;
+      default:
+        return null;
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} size="3xl">
+    <Modal isOpen={isOpen} onClose={handleClose} size="4xl">
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <VStack p={5}>
-          <Stack direction="row">
-            <Box boxSize="150px">
-              <Image
-                borderRadius="full"
-                boxSize="150px"
-                src="https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg"
-                alt="Profile Picture"
-              />
-            </Box>
-          </Stack>
-          <Box w="100%">
-            <Stack direction="row" spacing={4}>
-              <FormControl>
-                <FormLabel>First name</FormLabel>
-                <Input
-                  placeholder="First name"
-                  value={userInfo.firstName}
-                  onChange={e =>
-                    setUserInfo({ ...userInfo, firstName: e.target.value })
-                  }
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Last name</FormLabel>
-                <Input
-                  placeholder="Last name"
-                  value={userInfo.lastName}
-                  onChange={e =>
-                    setUserInfo({ ...userInfo, lastName: e.target.value })
-                  }
-                />
-              </FormControl>
-            </Stack>
-            <FormControl>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                placeholder="Email address"
-                value={userInfo.email}
-                onChange={e =>
-                  setUserInfo({ ...userInfo, email: e.target.value })
-                }
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Account Type</FormLabel>
-              <Select
-                value={userInfo.type}
-                onChange={e =>
-                  setUserInfo({ ...userInfo, type: e.target.value })
-                }
-              >
-                <option value="Student">Student</option>
-                <option value="Professor">Teacher</option>
-                <option value="Admin">Admin</option>
-                <option value="Developer">Developer</option>
-              </Select>
-            </FormControl>
-          </Box>
-          <Box w="100%">
-            <FormControl>
-              <FormLabel>School</FormLabel>
-              <Select
-                placeholder="Select a school"
-                value={selectedSchool?._id}
-                onChange={handleSchoolChange}
-              >
-                {renderSchools()}
-              </Select>
-            </FormControl>
-            <Text fontSize="lg">Courses</Text>
-            {renderCourses()}
-          </Box>
-        </VStack>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
-            Save
-          </Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </ModalFooter>
+        <Stack
+          direction="row"
+          height="450px"
+          backgroundColor={theme.colors.primary.light}
+        >
+          {renderSettingsSidePanel()}
+          <VStack p={5}>{renderSettings()}</VStack>
+        </Stack>
       </ModalContent>
     </Modal>
   );

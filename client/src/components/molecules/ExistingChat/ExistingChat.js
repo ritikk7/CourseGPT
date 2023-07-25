@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChatIcon } from '@chakra-ui/icons';
 import styles from './ExistingChat.module.css';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Text, useTheme } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
@@ -29,6 +29,8 @@ const ExistingChat = ({
     setIsEditMode(false);
   }, [focusedChat]);
 
+  const theme = useTheme();
+
   const renderActions = () => {
     if (showEditMode) {
       return (
@@ -39,12 +41,14 @@ const ExistingChat = ({
             onClick={() => {
               handleChatDelete(id);
             }}
+            color={theme.colors.textSecondary.light}
           />
           <CloseIcon
             fontSize="small"
             onClick={() => {
               setIsEditMode(false);
             }}
+            color={theme.colors.textSecondary.light}
           />
         </div>
       );
@@ -56,7 +60,11 @@ const ExistingChat = ({
             setIsEditMode(true);
           }}
         >
-          <DeleteIcon className={styles.editIcon} fontSize="small" />
+          <DeleteIcon
+            className={styles.editIcon}
+            fontSize="small"
+            color={'info'}
+          />
         </div>
       );
     }
@@ -66,10 +74,8 @@ const ExistingChat = ({
     <div style={{ position: 'relative' }}>
       <Button
         width="100%"
-        bg={isFocused ? 'rgb(61, 61, 61)' : 'transparent'}
-        _hover={
-          isFocused ? { bg: 'rgb(61, 61, 61)' } : { bg: 'rgb(47, 47, 47)' }
-        }
+        bg={isFocused ? theme.colors.button.light : 'transparent'}
+        _hover={{ bg: theme.colors.button.hover }}
         onClick={() => {
           handleExistingChatClick(id);
           if (!isScreenLarge) {
@@ -78,12 +84,20 @@ const ExistingChat = ({
         }}
         pl={3}
         isDisabled={isGptLoading}
+        color={theme.colors.button.textBase}
       >
         <div className={styles.existingChat}>
           <div>
-            <ChatIcon />
+            <ChatIcon color={theme.colors.textPrimary.light} />
           </div>
-          <Text fontSize="sm" fontWeight="normal" pl={2} my="auto" maxW="90%">
+          <Text
+            fontSize="sm"
+            fontWeight="normal"
+            pl={2}
+            my="auto"
+            maxW="90%"
+            color={theme.colors.textPrimary.light}
+          >
             {title}
           </Text>
         </div>

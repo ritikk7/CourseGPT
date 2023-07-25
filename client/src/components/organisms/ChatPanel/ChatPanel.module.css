@@ -8,6 +8,6 @@
 }
 
 .chatPanel::-webkit-scrollbar-thumb {
-  background: var(--placeholder);
+  background: var(--primary-colour);
   border-radius: 4px;
 }

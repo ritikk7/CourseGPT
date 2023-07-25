@@ -17,7 +17,7 @@ import {
   createChatWithSelectedDropdownCourse,
   fetchChat,
 } from '../../../redux/chatsSlice';
-import { Button, Box, Spinner, Tooltip } from '@chakra-ui/react';
+import { Button, Box, Spinner, Tooltip, useTheme } from '@chakra-ui/react';
 
 const Message = ({ value }) => (
   <div className={styles.message}>
@@ -135,6 +135,8 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
     }
   }, [shouldFocusChatInput, dispatch]);
 
+  const theme = useTheme();
+
   const mainPanel =
     activePanel === 'CHAT' ? (
       <ChatPanel />
@@ -147,17 +149,23 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       className={styles.container}
       style={
         isSidepanelVisible
-          ? { transition: '0.5s' }
-          : { width: '100%', transition: '0.5s' }
+          ? { transition: '0.5s', background: theme.colors.background.light }
+          : {
+              width: '100%',
+              transition: '0.5s',
+              background: theme.colors.background.light,
+            }
       }
     >
       {!isSidepanelVisible && (
         <div className={styles.toggleSidepanelBtn}>
           <Button
             ml={2}
-            bg="transparent"
-            _hover={{ bg: '#50505c' }}
-            border="1px solid white"
+            bg={theme.colors.button.light}
+            _hover={{ bg: theme.colors.button.hover }}
+            border={`1px solid ${theme.colors.primary.light}`}
+            color={theme.colors.button.textBase}
+            _hover={{ color: theme.colors.button.textHover }}
             onClick={toggleSidePanelVisibility}
           >
             <ChevronRightIcon />
@@ -167,7 +175,12 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       {isTrainingCourse && (
         <Tooltip label="Training in progress" fontSize="md" placement="top">
           <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-            <Spinner color="blue.500" speed="0.90s" size="lg" thickness="3px" />
+            <Spinner
+              color={theme.colors.accent.light}
+              speed="0.90s"
+              size="lg"
+              thickness="3px"
+            />
           </div>
         </Tooltip>
       )}
@@ -176,8 +189,8 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           position="absolute"
           top="10px"
           right="10px"
-          background="green.500"
-          color="white"
+          background={theme.colors.tertiary.light}
+          color={theme.colors.textPrimary.light}
           p="2"
           borderRadius="md"
         >

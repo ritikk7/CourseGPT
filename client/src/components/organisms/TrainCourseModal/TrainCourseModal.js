@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalOverlay,
   Textarea,
+  useTheme,
   VStack,
 } from '@chakra-ui/react';
 import { trainCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
@@ -25,11 +26,12 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
     handleClose();
   }
 
+  const theme = useTheme();
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="3xl">
       <ModalOverlay />
-      <ModalContent bg="gray.700">
-        <ModalCloseButton color="white" />
+      <ModalContent bg={theme.colors.background.light}>
+        <ModalCloseButton color={theme.colors.textPrimary.light} />
         <VStack p={5} pt={10}>
           <Textarea
             size="lg"
@@ -38,23 +40,30 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
             onChange={handleTextAreaChange}
             isResizable={true}
             height="300px"
-            color="white"
+            color={theme.colors.textPrimary.dark}
+            bg={theme.colors.tertiary.light}
           />
         </VStack>
         <ModalFooter>
           <Button
-            bg="blue.600"
-            color="white"
-            _hover={{ bg: 'blue.700' }}
+            bg={theme.colors.button.light}
+            color={theme.colors.textPrimary.light}
+            _hover={{
+              bg: theme.colors.button.hover,
+              color: theme.colors.textPrimary.light,
+            }}
             mr={3}
             onClick={onTrain}
           >
             Train {selectedCourseName}
           </Button>
           <Button
-            bg="red.600"
-            color="white"
-            _hover={{ bg: 'red.700' }}
+            bg={theme.colors.buttonTwo.light}
+            color={theme.colors.textPrimary.light}
+            _hover={{
+              bg: theme.colors.buttonTwo.hover,
+              color: theme.colors.textPrimary.light,
+            }}
             onClick={() => {
               setTextAreaValue('');
               handleClose();

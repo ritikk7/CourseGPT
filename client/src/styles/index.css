@@ -1,9 +1,29 @@
 :root {
-  --placeholder: rgb(194, 194, 194);
-  --gray1: #353744;
-  --gray2: #474a5a;
-  --black1: rgb(31, 31, 32);
-  /* borderColor: rgb(100, 100, 102) */
+  --primary-colour: #546e7a;
+  --secondary-colour: #607d8b;
+  --tertiary-colour: #90a4ae;
+  --text-primary-colour: #ffffff;
+  --text-secondary-colour: #b0bec5;
+  --accent-colour: #80cbc4;
+  --error-colour: #ef5350;
+  --background-colour: #cfd8dc;
+  --button-hover-colour: #7babf6;
+  --link-hover-colour: #7babf6;
+  --formLabel-colour: #ffffff;
+  --buttonTextHover-colour: #212121;
+
+  --primary-colour-rgba: 84, 110, 122;
+  --secondary-colour-rgba: 96, 125, 139;
+  --tertiary-colour-rgba: 144, 164, 174;
+  --text-primary-colour-rgba: 255, 255, 255;
+  --text-secondary-colour-rgba: 176, 190, 197;
+  --accent-colour-rgba: 128, 203, 196;
+  --error-colour-rgba: 239, 83, 80;
+  --background-colour-rgba: 207, 216, 220;
+  --button-hover-colour-rgba: 123, 171, 246;
+  --link-hover-colour-rgba: 123, 171, 246;
+  --formLabel-colour-rgba: 255, 255, 255;
+  --buttonTextHover-colour-rgba: 33, 33, 33;
 }
 
 body {

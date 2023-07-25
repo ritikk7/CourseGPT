@@ -3,7 +3,7 @@ import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
 import Typewriter from 'typewriter-effect';
-import { Box } from '@chakra-ui/react';
+import { Box, useTheme } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 
 const ChatSection = ({ message }) => {
@@ -43,6 +43,7 @@ const ChatSection = ({ message }) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
+  const theme = useTheme();
   const handleNewlineHTML = text => {
     if (text) {
       return text.split('\n').map((item, key) => {

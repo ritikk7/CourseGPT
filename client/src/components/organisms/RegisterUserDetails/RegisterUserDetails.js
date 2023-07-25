@@ -14,6 +14,7 @@ import {
   Text,
   useRadioGroup,
   useCheckboxGroup,
+  useTheme,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -116,8 +117,15 @@ export default function RegisterUserDetails() {
     }
   };
 
+  const theme = useTheme();
+
   return (
-    <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.800'}>
+    <Flex
+      minH={'100vh'}
+      align={'center'}
+      justify={'center'}
+      bg={theme.colors.background.light}
+    >
       <Stack
         align={'center'}
         spacing={8}
@@ -127,40 +135,54 @@ export default function RegisterUserDetails() {
         px={6}
       >
         <Stack>
-          <Heading fontSize={'4xl'} color={'white'}>
+          <Heading fontSize={'4xl'} color={theme.colors.textPrimary.light}>
             User Registration
           </Heading>
         </Stack>
         <Box
-          borderWidth="1px"
-          rounded="lg"
-          bg={'gray.700'}
-          shadow="1px 1px 3px rgba(0,0,0,0.3)"
-          w={[300, 400, 500, 600]}
+          rounded={'lg'}
+          bg={theme.colors.tertiary.light}
+          boxShadow={'lg'}
           p={8}
+          w={[300, 400, 500, 600]}
           m="10px auto"
         >
           {!userInfo.type && (
             <Stack spacing={4}>
-              <Heading fontSize={'xl'} py="20px">
+              <Heading
+                fontSize={'xl'}
+                py="20px"
+                color={theme.colors.textPrimary.light}
+              >
                 Welcome to CourseGPT {userInfo.firstName}!
               </Heading>
               <UserTypeSelectButtons
                 value={userInfo.type}
                 handleChange={value => handleUserSelection(value)}
+                theme={theme}
               />
             </Stack>
           )}
           {userInfo.type && (
             <Stack spacing={4}>
-              <Heading align={'center'} fontSize={'xl'} color={'white'}>
+              <Heading
+                align={'center'}
+                fontSize={'xl'}
+                color={theme.colors.textPrimary.light}
+              >
                 Registering as a {userInfo.type}
               </Heading>
-              <Text fontSize={'lg'} py="10px">
+              <Text
+                fontSize={'lg'}
+                py="10px"
+                color={theme.colors.textSecondary.light}
+              >
                 Please select your school and courses below:
               </Text>
               <FormControl>
-                <FormLabel color={'white'}>School</FormLabel>
+                <FormLabel color={theme.colors.formLabel.light}>
+                  School
+                </FormLabel>
                 <Select
                   placeholder="Select a school"
                   value={selectedSchool?._id}
@@ -179,8 +201,12 @@ export default function RegisterUserDetails() {
                       onClick={() => {
                         setUserInfo({ ...userInfo, type: null });
                       }}
-                      colorScheme="teal"
-                      variant="solid"
+                      bg={theme.colors.button.light}
+                      color={theme.colors.button.textBase}
+                      _hover={{
+                        bg: theme.colors.button.hover,
+                        color: theme.colors.button.textHover,
+                      }}
                       w="7rem"
                       mr="5%"
                     >
@@ -189,8 +215,12 @@ export default function RegisterUserDetails() {
                   </Flex>
                   <Button
                     w="7rem"
-                    colorScheme="red"
-                    variant="solid"
+                    bg={theme.colors.buttonTwo.light}
+                    color={theme.colors.buttonTwo.textBase}
+                    _hover={{
+                      bg: theme.colors.buttonTwo.hover,
+                      color: theme.colors.buttonTwo.textHover,
+                    }}
                     onClick={handleSubmit}
                   >
                     Submit
@@ -205,7 +235,7 @@ export default function RegisterUserDetails() {
   );
 }
 
-function UserTypeSelectButtons({ handleChange }) {
+function UserTypeSelectButtons({ handleChange, theme }) {
   const options = ['Student', 'Professor'];
 
   const { getRadioProps } = useRadioGroup({

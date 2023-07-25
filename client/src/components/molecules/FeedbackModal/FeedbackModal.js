@@ -10,6 +10,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  useTheme,
 } from '@chakra-ui/react';
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
 
@@ -39,23 +40,45 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
     }
   };
 
+  const theme = useTheme();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
+      <ModalContent bgColor={theme.colors.background.light}>
+        <ModalHeader
+          color={
+            isPositive ? theme.colors.accent.light : theme.colors.error.light
+          }
+        >
           {isPositive
             ? "We're glad we answered your question! What stood out to you?"
             : "We're sorry to hear that! What stood out to you?"}
         </ModalHeader>
         <ModalBody>
-          <Input value={inputValue} onChange={handleInputChange} />
+          <Input
+            value={inputValue}
+            onChange={handleInputChange}
+            borderColor={theme.colors.tertiary.light}
+            focusBorderColor={theme.colors.primary.light}
+          />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSubmit}>
+          <Button
+            bgColor={theme.colors.button.light}
+            color={theme.colors.button.textBase}
+            _hover={{
+              bgColor: theme.colors.button.hover,
+              color: theme.colors.button.textHover,
+            }}
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
-          <Button variant="ghost" onClick={onClose}>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            color={theme.colors.textSecondary.light}
+          >
             Close
           </Button>
         </ModalFooter>

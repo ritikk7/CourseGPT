@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import styles from './ChatPanel.module.css';
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
 import ChatSection from '../../molecules/ChatSection/ChatSection';
+import { useTheme } from '@chakra-ui/react';
 
 const ChatPanel = () => {
   const scrollRef = useRef(null);
@@ -24,6 +25,13 @@ const ChatPanel = () => {
     scrollToBottom();
   }, [activeChat]);
 
+  const theme = useTheme();
+  const chatPanelStyle = {
+    '--webkit-scrollbar-thumb': {
+      background: theme.colors.background.light,
+      borderRadius: '4px',
+    },
+  };
   const renderMessages = () => {
     const messagesToDisplay = Object.values(activeChat.messages);
     if (isGptLoading) {
@@ -42,7 +50,7 @@ const ChatPanel = () => {
 
   return (
     <>
-      <div className={styles.chatPanel}>
+      <div className={styles.chatPanel} style={chatPanelStyle}>
         {renderMessages()}
         <div
           id="dummy-div"

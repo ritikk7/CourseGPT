@@ -1,5 +1,6 @@
 import { Select } from '@chakra-ui/react';
 import React from 'react';
+import { useTheme } from '@chakra-ui/react';
 
 const NewChatCourseSelector = ({
   courses,
@@ -7,10 +8,13 @@ const NewChatCourseSelector = ({
   defaultValue,
   disable,
 }) => {
+  const theme = useTheme();
+
   return (
     <Select
-      _hover={{ bg: 'rgb(61, 61, 61)' }}
-      borderColor="rgb(100, 100, 102)"
+      _hover={{ bg: theme.colors.primary.light }}
+      borderColor={theme.colors.secondary.light}
+      color={theme.colors.textPrimary.light}
       value={defaultValue}
       onChange={e => onChange(e)}
       isDisabled={disable}

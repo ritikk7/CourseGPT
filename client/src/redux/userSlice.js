@@ -18,6 +18,7 @@ const updateUserData = (state, action) => {
     'favourites',
     'type',
     'selectedCourse',
+    'googleId',
   ];
   for (const field of userFields) {
     state[field] = action.payload[field] || null;
@@ -85,6 +86,7 @@ const userSlice = createSlice({
     firstName: null,
     lastName: null,
     email: null,
+    googleId: null,
     dateOfBirth: null,
     chats: [],
     school: null,

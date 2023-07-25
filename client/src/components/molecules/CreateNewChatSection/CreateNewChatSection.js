@@ -1,7 +1,7 @@
 import React from 'react';
 import NewChatCourseSelector from '../../atoms/NewChatCourseSelector/NewChatCourseSelector';
 import NewChatButton from '../../atoms/NewChatButton/NewChatButton';
-import { Button } from '@chakra-ui/react';
+import { Button, useTheme } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 const CreateNewChatSection = ({
@@ -13,6 +13,7 @@ const CreateNewChatSection = ({
   disabledNewChatCourseSelector,
   toggleSidePanelVisibility,
 }) => {
+  const theme = useTheme();
   return favouriteCourses && Object.keys(favouriteCourses).length > 0 ? (
     <>
       <div style={{ display: 'flex' }}>
@@ -25,11 +26,11 @@ const CreateNewChatSection = ({
         <Button
           ml={2}
           bg="transparent"
-          _hover={{ bg: '#39393c' }}
-          border="1px solid rgb(100, 100, 102)"
+          _hover={{ bg: theme.colors.secondary.light }}
+          border={`1px solid ${theme.colors.tertiary.light}`}
           onClick={toggleSidePanelVisibility}
         >
-          <ChevronLeftIcon />
+          <ChevronLeftIcon color={theme.colors.textPrimary.light} />
         </Button>
       </div>
       <NewChatButton

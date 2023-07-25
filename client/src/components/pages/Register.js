@@ -15,6 +15,7 @@ import {
   Link,
   Stack,
   Text,
+  useTheme,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, setAuthError } from '../../redux/authSlice';
@@ -60,17 +61,34 @@ export default function Register() {
     }
   }, [isAuthenticated, navigate]);
 
+  const theme = useTheme();
+
   return (
-    <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.800'}>
+    <Flex
+      minH={'100vh'}
+      align={'center'}
+      justify={'center'}
+      bg={theme.colors.background.light}
+    >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'} color={'white'}>
-            Sign up
+          <Heading fontSize={'4xl'} color={theme.colors.textSecondary.light}>
+            Sign up for an account
           </Heading>
         </Stack>
-        <Box rounded={'lg'} bg={'gray.700'} boxShadow={'lg'} p={8}>
+        <Box
+          rounded={'lg'}
+          bg={theme.colors.background.dark}
+          boxShadow={'lg'}
+          p={8}
+        >
           {authError && (
-            <Alert status="error" mb={5}>
+            <Alert
+              status="error"
+              mb={5}
+              bg={theme.colors.error.light}
+              color={theme.colors.textPrimary.light}
+            >
               <AlertIcon />
               {authError}
             </Alert>
@@ -80,43 +98,55 @@ export default function Register() {
               <HStack>
                 <Box>
                   <FormControl id="firstName" isRequired>
-                    <FormLabel color={'white'}>First Name</FormLabel>
+                    <FormLabel color={theme.colors.formLabel.light}>
+                      First Name
+                    </FormLabel>
                     <Input
                       name="firstName"
                       type="text"
-                      color={'white'}
+                      color={theme.colors.textSecondary.light}
+                      bg={theme.colors.tertiary.light}
                       onChange={handleChange}
                     />
                   </FormControl>
                 </Box>
                 <Box>
                   <FormControl id="lastName">
-                    <FormLabel color={'white'}>Last Name</FormLabel>
+                    <FormLabel color={theme.colors.formLabel.light}>
+                      Last Name
+                    </FormLabel>
                     <Input
                       name="lastName"
                       type="text"
-                      color={'white'}
+                      color={theme.colors.textSecondary.light}
+                      bg={theme.colors.tertiary.light}
                       onChange={handleChange}
                     />
                   </FormControl>
                 </Box>
               </HStack>
               <FormControl id="email" isRequired>
-                <FormLabel color={'white'}>Email</FormLabel>
+                <FormLabel color={theme.colors.formLabel.light}>
+                  Email
+                </FormLabel>
                 <Input
                   name="email"
                   type="text"
-                  color={'white'}
+                  color={theme.colors.textSecondary.light}
+                  bg={theme.colors.tertiary.light}
                   onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="password" isRequired>
-                <FormLabel color={'white'}>Password</FormLabel>
+                <FormLabel color={theme.colors.formLabel.light}>
+                  Password
+                </FormLabel>
                 <InputGroup>
                   <Input
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    color={'white'}
+                    color={theme.colors.textSecondary.light}
+                    bg={theme.colors.tertiary.light}
                     onChange={handleChange}
                   />
                   <InputRightElement h={'full'}>
@@ -133,23 +163,25 @@ export default function Register() {
               </FormControl>
               <Stack spacing={2}>
                 <Button
-                  bg={'blue.600'}
-                  color={'white'}
+                  bg={theme.colors.button.light}
+                  color={theme.colors.textPrimary.light}
                   _hover={{
-                    bg: 'blue.700',
+                    bg: theme.colors.button.hover,
+                    color: theme.colors.textPrimary.light,
                   }}
                   type="submit"
                 >
                   Register
                 </Button>
-                <Text align="center" color={'white'}>
+                <Text align="center" color={theme.colors.textSecondary.light}>
                   or
                 </Text>
                 <Button
-                  bg={'red.600'}
-                  color={'white'}
+                  bg={theme.colors.loginWithGoogle.light}
+                  color={theme.colors.textPrimary.light}
                   _hover={{
-                    bg: 'red.700',
+                    bg: theme.colors.loginWithGoogle.hover,
+                    color: theme.colors.textPrimary.light,
                   }}
                   onClick={handleGoogleLogin}
                   leftIcon={<FaGoogle />}
@@ -160,9 +192,9 @@ export default function Register() {
             </Stack>
           </form>
           <Stack justify="center" mt={4}>
-            <Text align={'center'} color={'white'}>
+            <Text align={'center'} color={theme.colors.textSecondary.light}>
               Already have an account?{' '}
-              <Link onClick={navigateToLogin} color={'blue.400'}>
+              <Link onClick={navigateToLogin} color={theme.colors.link.hover}>
                 Login!
               </Link>
             </Text>
@@ -172,6 +204,8 @@ export default function Register() {
     </Flex>
   );
 }
+
+
 
 /**
  * Majority of code written by team.

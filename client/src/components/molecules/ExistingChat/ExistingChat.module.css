@@ -5,6 +5,7 @@
   overflow: hidden;
   position: relative;
   cursor: auto;
+  color: var(--text-primary-colour);
 }
 
 .actions {
@@ -14,7 +15,7 @@
   transform: translateY(-50%);
   margin: auto;
   padding: 6px 12px;
-  background: rgb(61, 61, 61);
+  background: rgba(var(--primary-colour-rgba), 1);
   cursor: pointer;
 }
 
@@ -27,9 +28,9 @@
 
   background: linear-gradient(
     90deg,
-    rgba(53, 55, 68, 0) 0%,
-    rgba(31, 31, 32, 0) 60%,
-    rgba(31, 31, 32, 1) 100%
+    rgba(var(--primary-colour-rgba), 0) 0%,
+    rgba(var(--secondary-colour-rgba), 0) 60%,
+    rgba(var(--secondary-colour-rgba), 1) 100%
   );
 }
 
@@ -37,4 +38,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--text-primary-colour);
 }

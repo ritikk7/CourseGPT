@@ -1,15 +1,18 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, useTheme } from '@chakra-ui/react';
 
 const NewChatButton = ({ handleNewChat, disable }) => {
+  const theme = useTheme();
   return (
     <Button
       mt={4}
       width="100%"
-      bg="transparent"
-      _hover={disable ? '' : { bg: 'rgb(61, 61, 61)' }}
+      bg={theme.colors.button.light}
+      _hover={disable ? '' : { bg: theme.colors.button.hover }}
+      color={theme.colors.button.textBase}
+      _hover={{ color: theme.colors.button.textHover }}
       border="1px"
-      borderColor="rgb(100, 100, 102)"
+      borderColor={theme.colors.secondary.light}
       onClick={() => {
         if (!disable) {
           handleNewChat();

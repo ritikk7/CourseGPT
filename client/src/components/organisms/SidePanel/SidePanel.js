@@ -24,6 +24,7 @@ import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNew
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
+import { Box, useMediaQuery, useTheme } from '@chakra-ui/react';
 
 const SidePanel = ({
   toggleSidePanelVisibility,
@@ -129,20 +130,30 @@ const SidePanel = ({
   }, [selectedCourse, favouriteCourses]);
 
   let chats = Object.values(filteredChatsToShow);
+  const [isLargerThan680] = useMediaQuery('(min-width: 680px)');
+  const width = isLargerThan680 ? '18%' : '100%';
+  const theme = useTheme();
+
   return (
-    <div
-      className={styles.sidepanel}
-      style={
-        isSidepanelVisible
-          ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
-          : {
-              transform: 'translateX(-100%)',
-              transition: '0.4s',
-              transitionTimingFunction: 'ease-in-out',
-            }
-      }
+    <Box
+      bg={theme.colors.background.dark}
+      color={theme.colors.textPrimary.light}
+      w={width}
+      minW="250px"
+      pos="absolute"
+      left="0"
+      top="0"
+      h="100vh"
+      display="flex"
+      flexDirection="column"
+      transition="0.4s"
+      transitionTimingFunction="ease-in-out"
+      transform={isSidepanelVisible ? 'none' : 'translateX(-100%)'}
     >
-      <div className={styles.courseSelect}>
+      <div
+        className={styles.courseSelect}
+        color={theme.colors.textSecondary.light}
+      >
         <CreateNewChatSection
           favouriteCourses={favouriteCourses}
           handleCourseChange={handleCourseChange}
@@ -189,7 +200,7 @@ const SidePanel = ({
           selectedCourseName={selectedCourse?.courseCode}
         />
       </div>
-    </div>
+    </Box>
   );
 };
 

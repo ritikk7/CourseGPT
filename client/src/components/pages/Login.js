@@ -14,6 +14,7 @@ import {
   Link,
   Stack,
   Text,
+  useTheme,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, setAuthError } from '../../redux/authSlice';
@@ -54,17 +55,33 @@ export default function Login() {
     }
   }, [isAuthenticated, navigate]);
 
+  const theme = useTheme();
   return (
-    <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.800'}>
+    <Flex
+      minH={'100vh'}
+      align={'center'}
+      justify={'center'}
+      bg={theme.colors.background.light}
+    >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'} color={'white'}>
+          <Heading fontSize={'4xl'} color={theme.colors.textPrimary.light}>
             Sign in to your account
           </Heading>
         </Stack>
-        <Box rounded={'lg'} bg={'gray.700'} boxShadow={'lg'} p={8}>
+        <Box
+          rounded={'lg'}
+          bg={theme.colors.secondary.light}
+          boxShadow={'lg'}
+          p={8}
+        >
           {authError && (
-            <Alert status="error" mb={5}>
+            <Alert
+              status="error"
+              mb={5}
+              bg={theme.colors.error.light}
+              color={theme.colors.textSecondary.light}
+            >
               <AlertIcon />
               {authError}
             </Alert>
@@ -72,21 +89,27 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <Stack spacing={4}>
               <FormControl id="email" isRequired>
-                <FormLabel color={'white'}>Email address</FormLabel>
+                <FormLabel color={theme.colors.formLabel.light}>
+                  Email address
+                </FormLabel>
                 <Input
                   name="email"
                   type="email"
-                  color={'white'}
+                  color={theme.colors.textSecondary.light}
+                  bg={theme.colors.tertiary.light}
                   onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="password" isRequired>
-                <FormLabel color={'white'}>Password</FormLabel>
+                <FormLabel color={theme.colors.formLabel.light}>
+                  Password
+                </FormLabel>
                 <InputGroup>
                   <Input
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    color={'white'}
+                    color={theme.colors.textSecondary.light}
+                    bg={theme.colors.tertiary.light}
                     onChange={handleChange}
                   />
                   <InputRightElement h={'full'}>
@@ -103,24 +126,26 @@ export default function Login() {
               </FormControl>
               <Stack spacing={2}>
                 <Button
-                  bg={'blue.600'}
-                  color={'white'}
+                  bg={theme.colors.button.light}
+                  color={theme.colors.button.textBase}
                   _hover={{
-                    bg: 'blue.700',
+                    bg: theme.colors.button.hover,
+                    color: theme.colors.button.textHover,
                   }}
                   type="submit"
                 >
                   Sign in
                 </Button>
-                <Text align="center" color={'white'}>
+                <Text align="center" color={theme.colors.textSecondary.light}>
                   or
                 </Text>
 
                 <Button
-                  bg={'red.600'}
-                  color={'white'}
+                  bg={theme.colors.loginWithGoogle.light}
+                  color={theme.colors.loginWithGoogle.textBase}
                   _hover={{
-                    bg: 'red.700',
+                    bg: theme.colors.loginWithGoogle.hover,
+                    color: theme.colors.loginWithGoogle.textHover,
                   }}
                   onClick={handleGoogleLogin}
                   leftIcon={<FaGoogle />}
@@ -131,9 +156,12 @@ export default function Login() {
             </Stack>
           </form>
           <Stack justify="center" mt={4}>
-            <Text align={'center'} color={'white'}>
+            <Text align={'center'} color={theme.colors.textSecondary.light}>
               Don't have an account?{' '}
-              <Link onClick={navigateToRegister} color={'blue.400'}>
+              <Link
+                onClick={navigateToRegister}
+                color={theme.colors.link.hover}
+              >
                 Create one!
               </Link>
             </Text>
@@ -143,7 +171,6 @@ export default function Login() {
     </Flex>
   );
 }
-
 /**
  * Majority of code written by team.
  * The visual component structure was copied and adapted from:

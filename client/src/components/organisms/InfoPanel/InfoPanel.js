@@ -1,7 +1,7 @@
 import React from 'react';
 import PromptButton from '../../atoms/PromptButton/PromptButton';
 import styles from './InfoPanel.module.css';
-import { Stack, Text } from '@chakra-ui/react';
+import { Box, Stack, Text, useTheme } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
 const InfoPanel = ({ setInputText, inputRef }) => {
@@ -12,12 +12,16 @@ const InfoPanel = ({ setInputText, inputRef }) => {
     state => state.chats.waitingFirstMessage
   );
 
+  const theme = useTheme();
+
   const renderPrompts = () => {
     return (
       <Stack
         direction={['column', 'column', 'column', 'row']}
         mt={24}
         spacing="16px"
+        color={theme.colors.textPrimary.light}
+        bg={theme.colors.background.light}
       >
         {selectedCourse && waitingFirstMessage
           ? selectedCourse.promptTemplates?.map((prompt, i) => (
@@ -26,6 +30,9 @@ const InfoPanel = ({ setInputText, inputRef }) => {
                 promptText={prompt}
                 setInputText={() => setInputText(prompt)}
                 inputRef={inputRef}
+                color={theme.colors.button.textHover}
+                bg={theme.colors.button.light}
+                _hover={{ bg: theme.colors.button.hover }}
               />
             ))
           : ''}
@@ -34,12 +41,16 @@ const InfoPanel = ({ setInputText, inputRef }) => {
   };
 
   return (
-    <div className={styles.mainPanel}>
+    <Box
+      className={styles.mainPanel}
+      color={theme.colors.textPrimary.light}
+      bg={theme.colors.background.light}
+    >
       <Text as="b" fontSize="4xl">
         CourseGPT
       </Text>
       {renderPrompts()}
-    </div>
+    </Box>
   );
 };
 
