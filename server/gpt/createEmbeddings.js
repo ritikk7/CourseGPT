@@ -18,7 +18,9 @@ function splitStringToChunks(rawData, delimiter = '.') {
   let chunks = [];
   let chunk = '';
 
-  if(countTokens(rawData) <  1000) { return [rawData]} // if text is small, keep the context
+  if (countTokens(rawData) < 1000) {
+    return [rawData];
+  } // if text is small, keep the context
 
   // if its big, I found its better to split into smaller chunks
   for (const sentence of sentences) {
