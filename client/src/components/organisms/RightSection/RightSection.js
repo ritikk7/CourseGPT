@@ -149,10 +149,9 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       className={styles.container}
       style={
         isSidepanelVisible
-          ? { transition: '0.5s', background: theme.colors.background.light }
+          ? { background: theme.colors.background.light }
           : {
               width: '100%',
-              transition: '0.5s',
               background: theme.colors.background.light,
             }
       }
@@ -162,10 +161,12 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           <Button
             ml={2}
             bg={theme.colors.button.light}
-            _hover={{ bg: theme.colors.button.hover }}
             border={`1px solid ${theme.colors.primary.light}`}
             color={theme.colors.button.textBase}
-            _hover={{ color: theme.colors.button.textHover }}
+            _hover={{
+              color: theme.colors.button.textHover,
+              bg: theme.colors.button.hover,
+            }}
             onClick={toggleSidePanelVisibility}
           >
             <ChevronRightIcon />
