@@ -33,11 +33,10 @@ async function searchUserMessages(req, res) {
     const userId = req.params.userId;
     const search = req.query.search;
     if (!search || search === '') {
-      return res.status(422)
-        .json({
-          error: true,
-          message: 'Missing or empty search query parameter',
-        });
+      return res.status(422).json({
+        error: true,
+        message: 'Missing or empty search query parameter',
+      });
     }
     const agg = [
       {
@@ -46,7 +45,7 @@ async function searchUserMessages(req, res) {
           text: {
             query: search,
             path: 'content',
-            fuzzy: {}
+            fuzzy: {},
           },
           highlight: {
             path: 'content',
@@ -76,13 +75,15 @@ async function searchUserMessages(req, res) {
     const aggregate = await Message.aggregate(agg);
 
     // retrieve each message's course ID and attach to the aggregate results
-    await Promise.all(aggregate.map(async (result) => {
-      const chat = await Chat.findById(result.chat);
-      const courseId = chat.course;
-      result.course = courseId;
-      return result;
-    }));
-    
+    await Promise.all(
+      aggregate.map(async result => {
+        const chat = await Chat.findById(result.chat);
+        const courseId = chat.course;
+        result.course = courseId;
+        return result;
+      })
+    );
+
     res.status(200).json(aggregate);
   } catch (err) {
     console.log(err);

@@ -38,13 +38,16 @@ const ChatPanel = () => {
     return (
       renderChatMessages &&
       messagesToDisplay.map((msg, i) => {
-        if (highlightMessage) console.log("highlight chat ID =", highlightMessage._id);
-        console.log(msg._id);
-        const chatSectionRef = (highlightMessage && highlightMessage._id===msg._id) ? {ref: scrollRef}:{};
-        return (<>
-          <ChatSection key={i} message={msg} {...chatSectionRef}/>
-          {/* {highlightMessage && highlightMessage._id===msg._id && <ScrollRef ref={scrollRef} />} */}
-        </>)
+        const chatSectionRef =
+          highlightMessage && highlightMessage._id === msg._id
+            ? { ref: scrollRef }
+            : {};
+        return (
+          <>
+            <ChatSection key={i} message={msg} {...chatSectionRef} />
+            {/* {highlightMessage && highlightMessage._id===msg._id && <ScrollRef ref={scrollRef} />} */}
+          </>
+        );
       })
     );
   };

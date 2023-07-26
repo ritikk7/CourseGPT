@@ -62,7 +62,7 @@ const SearchBarInput = () => {
     setInput('');
     setLoading(false);
     setSearchResults([]);
-  }
+  };
 
   const prepareSearchQuery = query => {
     const url = `/users/${user.userId}/messages?search=${query}`;
@@ -101,8 +101,7 @@ const SearchBarInput = () => {
   useEffect(() => {
     if (activePanel === 'SEARCH' && !isClickedOutside) {
       expandContainer();
-    } 
-    else collapseContainer();
+    } else collapseContainer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePanel, isClickedOutside]);
 
@@ -132,7 +131,9 @@ const SearchBarInput = () => {
               placeholder="Search for Chats/Messages"
               name="searchString"
               value={input}
-              onFocus={() => { dispatch(setActivePanelSearch()) }}
+              onFocus={() => {
+                dispatch(setActivePanelSearch());
+              }}
               onChange={handleChange}
             />
             {input !== '' && (

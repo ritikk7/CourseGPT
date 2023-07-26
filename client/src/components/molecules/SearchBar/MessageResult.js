@@ -2,7 +2,11 @@ import React from 'react';
 // import styled from 'styled-components';
 import styles from './MessageResult.module.css';
 import { Box, Highlight, Divider } from '@chakra-ui/react';
-import { setActiveChat, setFocusedChat, setHighlightMessage } from '../../../redux/chatsSlice';
+import {
+  setActiveChat,
+  setFocusedChat,
+  setHighlightMessage,
+} from '../../../redux/chatsSlice';
 import { useDispatch } from 'react-redux';
 import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
@@ -11,7 +15,7 @@ import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 
 const MessageResult = ({ result }) => {
   const dispatch = useDispatch();
-  
+
   const highlightedTexts = mapHighlightedTextToArray(result);
 
   const handleClick = async e => {

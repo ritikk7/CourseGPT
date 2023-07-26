@@ -10,7 +10,6 @@ async function getAllMessages(req, res) {
   res.status(200).json({ messages });
 }
 
-
 async function getMessage(req, res) {
   // TODO
   const chatId = req.params.chatId;
@@ -48,8 +47,9 @@ async function getGptResponse(req, res) {
     const userMessageObject = req.body;
 
     let chatGPTResponse;
-    if(userMessageObject.content.toLowerCase().includes("ignore")) {
-      chatGPTResponse = "Potential security risk detected in your input. Please do not use words that might interfere with the AI's operations and try again with another question.";
+    if (userMessageObject.content.toLowerCase().includes('ignore')) {
+      chatGPTResponse =
+        "Potential security risk detected in your input. Please do not use words that might interfere with the AI's operations and try again with another question.";
     } else {
       chatGPTResponse = await ask(userMessageObject.content, chatId);
     }

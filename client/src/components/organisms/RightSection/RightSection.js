@@ -168,7 +168,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       {isTrainingCourse && (
         <Tooltip label="Training in progress" fontSize="md" placement="top">
           <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-            <Spinner color="blue.500" speed="0.90s" size="lg" thickness="3px"/>
+            <Spinner color="blue.500" speed="0.90s" size="lg" thickness="3px" />
           </div>
         </Tooltip>
       )}

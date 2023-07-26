@@ -7,9 +7,9 @@ import SearchTabPanel from './SearchTabPanel';
 const SearchTabs = ({ searchString, results }) => {
   const courses = useSelector(userFavouriteCoursesSelector);
 
-  const getFilteredResults = (courseId) => {
-    return results.filter((res) => res.course===courseId);
-  }
+  const getFilteredResults = courseId => {
+    return results.filter(res => res.course === courseId);
+  };
   return (
     <Tabs>
       <TabList>

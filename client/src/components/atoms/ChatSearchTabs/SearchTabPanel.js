@@ -2,7 +2,7 @@ import React from 'react';
 import MessageResult from '../../molecules/SearchBar/MessageResult';
 import { Center, Text, TabPanel } from '@chakra-ui/react';
 
-const SearchTabPanel = ({ searchString, results, course}) => {
+const SearchTabPanel = ({ searchString, results, course }) => {
   const isEmptyInput = !searchString || searchString === '';
   const isEmptyResults = !results || results.length === 0;
 
@@ -16,7 +16,7 @@ const SearchTabPanel = ({ searchString, results, course}) => {
       {!isEmptyInput && !isEmptyResults && (
         <>
           {results.map(result => (
-            <MessageResult key={result._id} result={result}  />
+            <MessageResult key={result._id} result={result} />
           ))}
         </>
       )}

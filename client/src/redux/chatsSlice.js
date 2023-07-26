@@ -120,7 +120,7 @@ const chatsSlice = createSlice({
     focusedChat: null, // chat id
     // search result message with highlight information
     // Example: { chat: chatID, content: messageContent, highlights: [highlight info], updatedAt: time, user: uid, _id: messageID }
-    highlightMessage: null, 
+    highlightMessage: null,
     loading: false,
     error: null, // string message
   },
@@ -133,7 +133,10 @@ const chatsSlice = createSlice({
         state.activeChat = action.payload;
       }
       // disable search result highlighting after user switch chats
-      if (state.highlightMessage && state.activeChat._id !== state.highlightMessage.chat){
+      if (
+        state.highlightMessage &&
+        state.activeChat._id !== state.highlightMessage.chat
+      ) {
         state.highlightMessage = null;
       }
       state.waitingFirstMessage = false;
@@ -213,7 +216,7 @@ export const {
   setFocusedChat,
   setChatsError,
   setWaitingFirstMessage,
-  setHighlightMessage
+  setHighlightMessage,
 } = chatsSlice.actions;
 export default chatsSlice.reducer;
 

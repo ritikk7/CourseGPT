@@ -74,7 +74,8 @@ const ChatSection = ({ message }, ref) => {
 
   const renderMessageContent = () => {
     console.log(highlightMessage);
-    if (!highlightMessage || highlightMessage._id !== message._id) return handleNewlineHTML(message.content);
+    if (!highlightMessage || highlightMessage._id !== message._id)
+      return handleNewlineHTML(message.content);
     return (
       <Highlight
         query={highlightedTexts}
@@ -88,7 +89,7 @@ const ChatSection = ({ message }, ref) => {
         {highlightMessage.content}
       </Highlight>
     );
-  }
+  };
 
   const renderBotAnswer = () => {
     if (!renderAnimation) {
@@ -130,7 +131,11 @@ const ChatSection = ({ message }, ref) => {
     <>
       {!isSenderUser ? (
         <Box className={styles['message-container']}>
-          <div className={styles.chatComponent} style={{ backgroundColor }} {...ref}>
+          <div
+            className={styles.chatComponent}
+            style={{ backgroundColor }}
+            {...ref}
+          >
             <div className={styles.chatContent}>
               {message && ProfileIcon}
               <div className={styles.msgContent}>
@@ -144,7 +149,11 @@ const ChatSection = ({ message }, ref) => {
           </div>
         </Box>
       ) : (
-        <div className={styles.chatComponent} style={{ backgroundColor }} {...ref}>
+        <div
+          className={styles.chatComponent}
+          style={{ backgroundColor }}
+          {...ref}
+        >
           <div className={styles.chatContent}>
             {message && ProfileIcon}
             {message && renderMessageContent()}

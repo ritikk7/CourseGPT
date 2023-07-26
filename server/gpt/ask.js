@@ -42,7 +42,9 @@ function buildMessageHelper(strings, query, tokenBudget) {
     countTokens(generatePostamble(strings, 0));
 
   for (let i = strings.length - 1; i > 0; i--) {
-    const nextEmbeddingString = `Information ${strings.length - (strings.length - i)}:\n[${
+    const nextEmbeddingString = `Information ${
+      strings.length - (strings.length - i)
+    }:\n[${
       strings[i]
     }]\nPlease consider this information when answering the question.\n`;
     const nextTokenCount = countTokens(nextEmbeddingString);
@@ -63,7 +65,6 @@ function buildMessageHelper(strings, query, tokenBudget) {
   return message;
 }
 
-
 function generatePreamble(strings, numInfo, query) {
   return `As an AI, you're given ${numInfo} pieces of information below related to the question "${query}". Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. Read all of them before you answer. Here are the pieces of information provided:\n\n`;
 }
@@ -78,7 +79,6 @@ async function ask(query, chatId, tokenBudget = process.env.TOKEN_LIMIT - 200) {
   if (!chat) throw new Error('Invalid chat ID');
   const course = chat.course;
   if (!course) throw new Error('Invalid course ID');
-
 
   const message = await buildQueryMessage(query, course, tokenBudget);
   if (!message) {
