@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Chat = require('../models/chat');
 const Message = require('../models/message');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -24,27 +25,21 @@ async function deleteUser(req, res) {
   res.send({ data: `Hello delete usr ${userId}` });
 }
 
-async function getUserMessages(req, res) {
+// search all user messages
+// params: userId
+// queries: search [required], course [optional]
+async function searchUserMessages(req, res) {
   try {
-    // const chatId = req.params.chatId;
     const userId = req.params.userId;
     const search = req.query.search;
-    // let course = req.query.course;
     if (!search || search === '') {
-      res
-        .status(422)
+      return res.status(422)
         .json({
           error: true,
           message: 'Missing or empty search query parameter',
         });
     }
-    // if (!course || course === '') {
-    //   course = [];
-    // }
-    // const page = parseInt(req.query.page) - 1 || 0;
-    // const limit = parseInt(req.query.limit) || 5;
-    // let sort = req.query.sort || 'updatedAt';
-    // let course = req.query.course || "";
+    // const course = req.query.course;
     const agg = [
       {
         $search: {
@@ -52,6 +47,7 @@ async function getUserMessages(req, res) {
           text: {
             query: search,
             path: 'content',
+            fuzzy: {}
           },
           highlight: {
             path: 'content',
@@ -76,18 +72,18 @@ async function getUserMessages(req, res) {
           },
         },
       },
-      // {
-      //   $limit:
-      //     6,
-      // },
-      // {
-      //   $count:
-      //     "content",
-      // },
     ];
 
     const aggregate = await Message.aggregate(agg);
-    console.log(aggregate);
+
+    // retrieve each message's course ID and attach to the aggregate results
+    await Promise.all(aggregate.map(async (result) => {
+      const chat = await Chat.findById(result.chat);
+      const courseId = chat.course;
+      result.course = courseId;
+      return result;
+    }));
+    
     res.status(200).json(aggregate);
   } catch (err) {
     console.log(err);
@@ -98,5 +94,5 @@ async function getUserMessages(req, res) {
 module.exports = {
   updateUser,
   deleteUser,
-  getUserMessages,
+  searchUserMessages,
 };

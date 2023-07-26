@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   updateUser,
   deleteUser,
-  getUserMessages,
+  searchUserMessages,
 } = require('../controllers/user');
 const { validateToken } = require('../controllers/auth');
 
@@ -13,6 +13,6 @@ router.patch('/:userId', updateUser);
 
 router.delete('/:userId', deleteUser);
 
-router.get('/:userId/messages', getUserMessages);
+router.get('/:userId/messages', searchUserMessages);
 
 module.exports = router;
