@@ -72,23 +72,35 @@ const ChatSection = ({ message }, ref) => {
     return null;
   };
 
+  const handleNewlineHTMLHighlighted = text => {
+    if (text) {
+      return text.split('\n').map((item, key) => {
+        return (
+          <span key={key}>
+            <Highlight
+              query={highlightedTexts}
+              styles={{
+                px: '1',
+                bg: 'blue.600',
+                color: 'white',
+                rounded: 'md',
+              }}
+            >
+              {item}
+            </Highlight>
+            <br />
+          </span>
+        );
+      });
+    }
+    return null;
+  };
+
   const renderMessageContent = () => {
     console.log(highlightMessage);
     if (!highlightMessage || highlightMessage._id !== message._id)
       return handleNewlineHTML(message.content);
-    return (
-      <Highlight
-        query={highlightedTexts}
-        styles={{
-          px: '1',
-          bg: 'blue.600',
-          color: 'white',
-          rounded: 'md',
-        }}
-      >
-        {highlightMessage.content}
-      </Highlight>
-    );
+    return handleNewlineHTMLHighlighted(message.content);
   };
 
   const renderBotAnswer = () => {
@@ -134,7 +146,7 @@ const ChatSection = ({ message }, ref) => {
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
-              <div className={styles.msgContent}>
+              <div className={styles.textBlock}>
                 {message && renderGptPlaceholder()}
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>

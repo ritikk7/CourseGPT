@@ -11,6 +11,11 @@
   position: relative;
 }
 
+.textBlock {
+  flex-direction: column;
+  display: flex;
+}
+
 .msgContent {
   justify-content: space-between;
   display: flex;
