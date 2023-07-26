@@ -8,20 +8,21 @@ const ChatPanel = () => {
   const scrollRef = useRef(null);
   const activeChat = useSelector(activeChatWithMessagesSelector);
   const isGptLoading = useSelector(state => state.messages.gptLoading);
+  const highlightMessage = useSelector(state => state.chats.highlightMessage);
   const renderChatMessages =
     activeChat &&
     Object.values(activeChat) &&
     Object.values(activeChat.messages) &&
     Object.values(activeChat.messages).length > 0;
 
-  const scrollToBottom = () => {
+  const scrollToRef = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToRef();
   }, [activeChat]);
 
   const renderMessages = () => {
@@ -36,7 +37,15 @@ const ChatPanel = () => {
     }
     return (
       renderChatMessages &&
-      messagesToDisplay.map((msg, i) => <ChatSection key={i} message={msg} />)
+      messagesToDisplay.map((msg, i) => {
+        if (highlightMessage) console.log("highlight chat ID =", highlightMessage._id);
+        console.log(msg._id);
+        const chatSectionRef = (highlightMessage && highlightMessage._id===msg._id) ? {ref: scrollRef}:{};
+        return (<>
+          <ChatSection key={i} message={msg} {...chatSectionRef}/>
+          {/* {highlightMessage && highlightMessage._id===msg._id && <ScrollRef ref={scrollRef} />} */}
+        </>)
+      })
     );
   };
 
@@ -44,11 +53,7 @@ const ChatPanel = () => {
     <>
       <div className={styles.chatPanel}>
         {renderMessages()}
-        <div
-          id="dummy-div"
-          ref={scrollRef}
-          style={{ float: 'left', clear: 'both' }}
-        />
+        {/* {!highlightMessage && <ScrollRef ref={scrollRef} />} */}
       </div>
     </>
   );

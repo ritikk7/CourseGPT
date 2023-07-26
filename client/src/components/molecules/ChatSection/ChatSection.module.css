@@ -24,9 +24,9 @@
   display: flex;
 }
 
-.chatComponent:nth-last-child(2) {
+/* .chatComponent:nth-last-child(2) {
   padding-bottom: 28vh;
-}
+} */
 
 /* https://blog.logrocket.com/code-block-typewriter-effect-react/
 https://www.amitmerchant.com/simple-blinking-cursor-animation-using-css/ */

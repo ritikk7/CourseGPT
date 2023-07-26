@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { Box, Highlight } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 
-const ChatSection = ({ message }) => {
+const ChatSection = ({ message }, ref) => {
   const user = useSelector(state => state.user);
   const highlightMessage = useSelector(state => state.chats.highlightMessage);
   const highlightedTexts = mapHighlightedTextToArray(highlightMessage);
@@ -130,7 +130,7 @@ const ChatSection = ({ message }) => {
     <>
       {!isSenderUser ? (
         <Box className={styles['message-container']}>
-          <div className={styles.chatComponent} style={{ backgroundColor }}>
+          <div className={styles.chatComponent} style={{ backgroundColor }} {...ref}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
               <div className={styles.msgContent}>
@@ -144,7 +144,7 @@ const ChatSection = ({ message }) => {
           </div>
         </Box>
       ) : (
-        <div className={styles.chatComponent} style={{ backgroundColor }}>
+        <div className={styles.chatComponent} style={{ backgroundColor }} {...ref}>
           <div className={styles.chatContent}>
             {message && ProfileIcon}
             {message && renderMessageContent()}
@@ -155,4 +155,4 @@ const ChatSection = ({ message }) => {
   );
 };
 
-export default ChatSection;
+export default forwardRef(ChatSection);
