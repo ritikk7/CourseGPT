@@ -11,13 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import SearchResults from './SearchResults';
-import styles from './SearchBarInput.module.css';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useClickOutside } from 'react-click-outside-hook';
 import { useDebounce } from '../../../hooks/debounceHook';
 import api from '../../../api/axiosInstance';
-import { setActivePanelChat, setActivePanelSearch } from '../../../redux/userSlice';
+import { setActivePanelSearch } from '../../../redux/userSlice';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;

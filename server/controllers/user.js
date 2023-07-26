@@ -39,7 +39,6 @@ async function searchUserMessages(req, res) {
           message: 'Missing or empty search query parameter',
         });
     }
-    // const course = req.query.course;
     const agg = [
       {
         $search: {
