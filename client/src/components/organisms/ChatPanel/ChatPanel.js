@@ -23,7 +23,7 @@ const ChatPanel = () => {
 
   useEffect(() => {
     scrollToRef();
-  }, [activeChat]);
+  }, [activeChat, scrollRef.current]);
 
   const renderMessages = () => {
     const messagesToDisplay = Object.values(activeChat.messages);
@@ -41,13 +41,11 @@ const ChatPanel = () => {
         const needsRef = highlightMessage && highlightMessage._id === msg._id;
 
         return (
-          <>
-            <ChatSection
-              key={i}
-              message={msg}
-              ref={needsRef ? scrollRef : null}
-            />
-          </>
+          <ChatSection
+            key={i}
+            message={msg}
+            ref={needsRef ? scrollRef : null}
+          />
         );
       })
     );
