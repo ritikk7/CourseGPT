@@ -17,6 +17,7 @@ import { useClickOutside } from 'react-click-outside-hook';
 import { useDebounce } from '../../../hooks/debounceHook';
 import api from '../../../api/axiosInstance';
 import { setActivePanelSearch } from '../../../redux/userSlice';
+import styles from './SearchBarInput.module.css';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;
@@ -108,59 +109,61 @@ const SearchBarInput = () => {
   useDebounce(input, 500, searchMessages);
 
   return (
-    <Center m={5} color="white">
-      <VStack>
-        <SearchBarContainer
-          animate={isExpanded ? 'expanded' : 'collapsed'}
-          variants={ContainerVariants}
-          transition={ContainerTransition}
-          ref={ref}
-        >
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <IconButton
-                colorScheme="gray.300"
-                aria-label="Search for Chats/Messages"
-                size="lg"
-                icon={<SearchIcon />}
-              />
-            </InputLeftElement>
-            <Input
-              id="searchString"
-              variant="outline"
-              placeholder="Search for Chats/Messages"
-              name="searchString"
-              value={input}
-              onFocus={() => {
-                dispatch(setActivePanelSearch());
-              }}
-              onChange={handleChange}
-            />
-            {input !== '' && (
-              <InputRightElement>
+    <div className={styles.container}>
+      <Center m={5} color="white">
+        <VStack>
+          <SearchBarContainer
+            animate={isExpanded ? 'expanded' : 'collapsed'}
+            variants={ContainerVariants}
+            transition={ContainerTransition}
+            ref={ref}
+          >
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
                 <IconButton
-                  isRound={true}
-                  variant="solid"
                   colorScheme="gray.300"
-                  aria-label="Clear Search Bar"
-                  size="xs"
-                  fontSize="9px"
-                  icon={<CloseIcon />}
-                  onClick={clearSearch}
+                  aria-label="Search for Chats/Messages"
+                  size="lg"
+                  icon={<SearchIcon />}
                 />
-              </InputRightElement>
+              </InputLeftElement>
+              <Input
+                id="searchString"
+                variant="outline"
+                placeholder="Search for Chats/Messages"
+                name="searchString"
+                value={input}
+                onFocus={() => {
+                  dispatch(setActivePanelSearch());
+                }}
+                onChange={handleChange}
+              />
+              {input !== '' && (
+                <InputRightElement>
+                  <IconButton
+                    isRound={true}
+                    variant="solid"
+                    colorScheme="gray.300"
+                    aria-label="Clear Search Bar"
+                    size="xs"
+                    fontSize="9px"
+                    icon={<CloseIcon />}
+                    onClick={clearSearch}
+                  />
+                </InputRightElement>
+              )}
+            </InputGroup>
+            {isExpanded && (
+              <SearchResults
+                searchString={input}
+                results={searchResults}
+                isLoading={isLoading}
+              />
             )}
-          </InputGroup>
-          {isExpanded && (
-            <SearchResults
-              searchString={input}
-              results={searchResults}
-              isLoading={isLoading}
-            />
-          )}
-        </SearchBarContainer>
-      </VStack>
-    </Center>
+          </SearchBarContainer>
+        </VStack>
+      </Center>
+    </div>
   );
 };
 

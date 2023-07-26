@@ -185,7 +185,6 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           Training complete!
         </Box>
       )}
-      <SearchBarInput />
       {mainPanel}
       {renderInput && (
         <InputArea
@@ -196,6 +195,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           disableInput={isGptLoading}
         />
       )}
+      <SearchBarInput />
     </div>
   );
 };

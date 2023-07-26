@@ -10,6 +10,7 @@ const SearchContent = styled.div`
   flex-direction: column;
   padding: 1em;
   overflow-y: auto;
+  background: #353744;
 `;
 
 const SearchResults = ({ searchString, results, isLoading }) => {
