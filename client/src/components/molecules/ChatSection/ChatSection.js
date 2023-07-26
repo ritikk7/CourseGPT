@@ -128,14 +128,10 @@ const ChatSection = ({ message }, ref) => {
   };
 
   return (
-    <>
+    <div ref={ref}>
       {!isSenderUser ? (
         <Box className={styles['message-container']}>
-          <div
-            className={styles.chatComponent}
-            style={{ backgroundColor }}
-            {...ref}
-          >
+          <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
               <div className={styles.msgContent}>
@@ -149,18 +145,14 @@ const ChatSection = ({ message }, ref) => {
           </div>
         </Box>
       ) : (
-        <div
-          className={styles.chatComponent}
-          style={{ backgroundColor }}
-          {...ref}
-        >
+        <div className={styles.chatComponent} style={{ backgroundColor }}>
           <div className={styles.chatContent}>
             {message && ProfileIcon}
             {message && renderMessageContent()}
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

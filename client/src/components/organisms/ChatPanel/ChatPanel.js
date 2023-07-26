@@ -38,14 +38,15 @@ const ChatPanel = () => {
     return (
       renderChatMessages &&
       messagesToDisplay.map((msg, i) => {
-        const chatSectionRef =
-          highlightMessage && highlightMessage._id === msg._id
-            ? { ref: scrollRef }
-            : {};
+        const needsRef = highlightMessage && highlightMessage._id === msg._id;
+
         return (
           <>
-            <ChatSection key={i} message={msg} {...chatSectionRef} />
-            {/* {highlightMessage && highlightMessage._id===msg._id && <ScrollRef ref={scrollRef} />} */}
+            <ChatSection
+              key={i}
+              message={msg}
+              ref={needsRef ? scrollRef : null}
+            />
           </>
         );
       })
@@ -56,7 +57,13 @@ const ChatPanel = () => {
     <>
       <div className={styles.chatPanel}>
         {renderMessages()}
-        {/* {!highlightMessage && <ScrollRef ref={scrollRef} />} */}
+        {!highlightMessage && (
+          <div
+            id="dummy-div"
+            ref={scrollRef}
+            style={{ float: 'left', clear: 'both' }}
+          />
+        )}
       </div>
     </>
   );

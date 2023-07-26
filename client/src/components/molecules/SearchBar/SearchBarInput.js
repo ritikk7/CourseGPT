@@ -118,7 +118,7 @@ const SearchBarInput = () => {
             transition={ContainerTransition}
             ref={ref}
           >
-            <InputGroup>
+            <InputGroup bg="#353744">
               <InputLeftElement pointerEvents="none">
                 <IconButton
                   colorScheme="gray.300"
