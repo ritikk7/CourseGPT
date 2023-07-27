@@ -4,7 +4,6 @@ const theme = extendTheme({
   colors: {
     background: {
       light: '#FFFFFF',
-<<<<<<< HEAD
       dark: '#455464',
     },
     primary: {
@@ -14,17 +13,6 @@ const theme = extendTheme({
     secondary: {
       light: '#6A7F8C',
       dark: '#546E7A',
-=======
-      dark: '#607D8B',
-    },
-    primary: {
-      light: '#EFEFEF',
-      dark: '#3C4B54',
-    },
-    secondary: {
-      light: '#6A7F8C',
-      dark: '#4B5C66',
->>>>>>> theme
     },
     tertiary: {
       light: '#BFC8CC',
@@ -73,11 +61,7 @@ const theme = extendTheme({
     },
     chatSection: {
       light: '#FFFFFF',
-<<<<<<< HEAD
       dark: '#90A4AE',
-=======
-      dark: '#bee2ff',
->>>>>>> theme
       arrow: '#455A64',
     },
     neutral: {
