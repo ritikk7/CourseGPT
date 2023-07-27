@@ -56,7 +56,7 @@ const InputArea = ({
         }
         disabled={disableInput}
       >
-        <ArrowForwardIcon color={theme.colors.textPrimary.dark}/>
+        <ArrowForwardIcon color={theme.colors.chatSection.arrow} boxSize="1.5em"/>
       </button>
     </div>
     <Message
@@ -165,9 +165,9 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
             ml={2}
             bg={theme.colors.button.light}
             border={`1px solid ${theme.colors.primary.light}`}
-            color={theme.colors.textPrimary.light}
+            color={theme.colors.textPrimary.dark}
             _hover={{
-              color: theme.colors.textPrimary.light,
+              color: theme.colors.textPrimary.dark,
               bg: theme.colors.button.hover,
             }}
             onClick={toggleSidePanelVisibility}
@@ -194,7 +194,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           top="10px"
           right="10px"
           background={theme.colors.accent.dark}
-          color={theme.colors.textPrimary.light}
+          color={theme.colors.textPrimary.dark}
           p="2"
           borderRadius="md"
         >

@@ -137,7 +137,6 @@ const SidePanel = ({
   return (
     <Box
       bg={theme.colors.background.dark}
-      color={theme.colors.textPrimary.light}
       w={width}
       minW="250px"
       pos="absolute"
@@ -150,10 +149,7 @@ const SidePanel = ({
       transitionTimingFunction="ease-in-out"
       transform={isSidepanelVisible ? 'none' : 'translateX(-100%)'}
     >
-      <div
-        className={styles.courseSelect}
-        color={theme.colors.textSecondary.light}
-      >
+      <Box w="90%" m="auto" mt="16px">
         <CreateNewChatSection
           favouriteCourses={favouriteCourses}
           handleCourseChange={handleCourseChange}
@@ -163,7 +159,7 @@ const SidePanel = ({
           disabledNewChatCourseSelector={isGptLoading}
           toggleSidePanelVisibility={toggleSidePanelVisibility}
         />
-        <div className={styles.chatsPanel}>
+        <Box className={styles.chatsPanel}>
           {chats &&
             chats.length > 0 &&
             chats
@@ -178,8 +174,8 @@ const SidePanel = ({
                   setIsSidepanelVisible={setIsSidepanelVisible}
                 />
               ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
       <div className={styles.profile}>
         <SidePanelUserMenu
           handleLogout={handleLogout}

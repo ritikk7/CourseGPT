@@ -25,12 +25,11 @@
   height: 100%;
   top: 0;
   left: 0;
-
   background: linear-gradient(
-    90deg,
-    rgba(var(--primary-colour-rgba), 0) 0%,
-    rgba(var(--secondary-colour-rgba), 0) 60%,
-    rgba(var(--secondary-colour-rgba), 1) 100%
+          90deg,
+          rgba(52, 73, 85, 0) 0%,
+          rgba(52, 73, 85, 0) 60%,
+          rgba(52, 73, 85, 1) 100%
   );
 }
 

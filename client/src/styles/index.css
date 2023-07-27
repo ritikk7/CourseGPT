@@ -1,29 +1,29 @@
 :root {
-  --primary-colour: #546e7a;
-  --secondary-colour: #607d8b;
-  --tertiary-colour: #90a4ae;
-  --text-primary-colour: #ffffff;
-  --text-secondary-colour: #b0bec5;
-  --accent-colour: #80cbc4;
-  --error-colour: #ef5350;
-  --background-colour: #cfd8dc;
-  --button-hover-colour: #7babf6;
-  --link-hover-colour: #7babf6;
-  --formLabel-colour: #ffffff;
-  --buttonTextHover-colour: #212121;
+  --primary-colour: #455A64;
+  --secondary-colour: #7A8F9C;
+  --tertiary-colour: #708E9E;
+  --text-primary-colour: #FFFFFF;
+  --text-secondary-colour: #AEBDC2;
+  --accent-colour: #a1c7ff;
+  --error-colour: #f44336;
+  --background-colour: #8C9EA6;
+  --button-hover-colour: #1A76B4;
+  --link-hover-colour: #BDBDBD;
+  --formLabel-colour: #AEBDC2;
+  --buttonTextHover-colour: #263238;
 
-  --primary-colour-rgba: 84, 110, 122;
-  --secondary-colour-rgba: 96, 125, 139;
-  --tertiary-colour-rgba: 144, 164, 174;
+  --primary-colour-rgba: 69, 90, 100;
+  --secondary-colour-rgba: 122, 143, 156;
+  --tertiary-colour-rgba: 207, 216, 220;
   --text-primary-colour-rgba: 255, 255, 255;
-  --text-secondary-colour-rgba: 176, 190, 197;
-  --accent-colour-rgba: 128, 203, 196;
-  --error-colour-rgba: 239, 83, 80;
-  --background-colour-rgba: 207, 216, 220;
-  --button-hover-colour-rgba: 123, 171, 246;
-  --link-hover-colour-rgba: 123, 171, 246;
-  --formLabel-colour-rgba: 255, 255, 255;
-  --buttonTextHover-colour-rgba: 33, 33, 33;
+  --text-secondary-colour-rgba: 174, 189, 194;
+  --accent-colour-rgba: 161, 199, 255;
+  --error-colour-rgba: 244, 67, 54;
+  --background-colour-rgba: 140, 158, 166;
+  --button-hover-colour-rgba: 26, 118, 180;
+  --link-hover-colour-rgba: 189, 189, 189;
+  --formLabel-colour-rgba: 174, 189, 194;
+  --buttonTextHover-colour-rgba: 38, 50, 56;
 }
 
 body {
