@@ -27,7 +27,7 @@ const theme = extendTheme({
       inactiveItemText: '#F5F5F5',
       mainTextColor: '#0E1723',
       mainFormLabelColor: '#0E1723',
-      mainFormInputColor: '#d9edfa',
+      mainFormInputColor: '#D9E2E8',
     },
     loginAndReg: {
       mainBackground: '#C4D6DC',
