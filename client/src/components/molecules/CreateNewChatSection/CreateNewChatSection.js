@@ -3,6 +3,8 @@ import NewChatCourseSelector from '../../atoms/NewChatCourseSelector/NewChatCour
 import NewChatButton from '../../atoms/NewChatButton/NewChatButton';
 import { Button } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { useDispatch } from 'react-redux';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
 const CreateNewChatSection = ({
   favouriteCourses,
@@ -11,8 +13,8 @@ const CreateNewChatSection = ({
   handleNewChat,
   disableNewChatButton,
   disabledNewChatCourseSelector,
-  toggleSidePanelVisibility,
 }) => {
+  const dispatch = useDispatch();
   return favouriteCourses && Object.keys(favouriteCourses).length > 0 ? (
     <>
       <div style={{ display: 'flex' }}>
@@ -27,7 +29,7 @@ const CreateNewChatSection = ({
           bg="transparent"
           _hover={{ bg: '#39393c' }}
           border="1px solid rgb(100, 100, 102)"
-          onClick={toggleSidePanelVisibility}
+          onClick={() => dispatch(setIsSidePanelVisible(false))}
         >
           <ChevronLeftIcon />
         </Button>

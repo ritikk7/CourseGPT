@@ -18,6 +18,7 @@ import {
   fetchChat,
 } from '../../../redux/chatsSlice';
 import { Button, Box, Spinner, Tooltip } from '@chakra-ui/react';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 import SearchBarInput from '../../molecules/SearchBar/SearchBarInput';
 
 const Message = ({ value }) => (
@@ -66,7 +67,7 @@ const InputArea = ({
   </div>
 );
 
-const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
+const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
   const isTrainingCourse = useSelector(state => state.courses.loading);
@@ -90,6 +91,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
   );
   const [trainingCompleted, setTrainingCompleted] = useState(false);
   const hasBeenTraining = useRef(false);
+  const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
 
   useEffect(() => {
     let timeoutId;
@@ -147,19 +149,21 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
     <div
       className={styles.container}
       style={
-        isSidepanelVisible
+        isSidePanelVisible
           ? { transition: '0.5s' }
           : { width: '100%', transition: '0.5s' }
       }
     >
-      {!isSidepanelVisible && (
+      {!isSidePanelVisible && (
         <div className={styles.toggleSidepanelBtn}>
           <Button
             ml={2}
             bg="transparent"
             _hover={{ bg: '#50505c' }}
             border="1px solid white"
-            onClick={toggleSidePanelVisibility}
+            onClick={() => {
+              dispatch(setIsSidePanelVisible(true));
+            }}
           >
             <ChevronRightIcon />
           </Button>

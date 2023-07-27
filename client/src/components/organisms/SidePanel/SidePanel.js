@@ -18,18 +18,25 @@ import {
   setShouldFocusChatInput,
   updateUser,
 } from '../../../redux/userSlice';
+import { setSelectedAnalyticsView } from '../../../redux/analyticsSlice';
 import { logoutUser } from '../../../redux/authSlice';
 import SidePanelUserMenu from '../../molecules/SidePanelUserMenu/SidePanelUserMenu';
 import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNewChatSection';
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
+import { Button } from '@chakra-ui/react';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
+import {
+  BubbleChart,
+  BarChart,
+  ScatterPlot,
+  Assessment,
+  Abc,
+} from '@mui/icons-material';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
-const SidePanel = ({
-  toggleSidePanelVisibility,
-  isSidepanelVisible,
-  setIsSidepanelVisible,
-}) => {
+const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isGptLoading = useSelector(state => state.messages.gptLoading);
@@ -47,6 +54,7 @@ const SidePanel = ({
   const [defaultDropdownValue, setDefaultDropdownValue] = useState('');
   const existingChats = useSelector(state => state.chats.userChats);
   const [filteredChatsToShow, setFilteredChatsToShow] = useState(existingChats);
+  const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
 
   useEffect(() => {
     if (selectedCourse) {
@@ -129,11 +137,117 @@ const SidePanel = ({
   }, [selectedCourse, favouriteCourses]);
 
   let chats = Object.values(filteredChatsToShow);
+
+  if (isAnalyticsSidePanel) {
+    return (
+      <div
+        className={styles.sidepanel}
+        style={
+          isSidePanelVisible
+            ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
+            : {
+                transform: 'translateX(-100%)',
+                transition: '0.4s',
+                transitionTimingFunction: 'ease-in-out',
+              }
+        }
+      >
+        <div className={styles.chevronLeft}>
+          <Button
+            ml={2}
+            mt={2}
+            bg="transparent"
+            width="50px"
+            position="absolute"
+            right={2}
+            _hover={{ bg: '#39393c' }}
+            border="1px solid rgb(100, 100, 102)"
+            onClick={() => dispatch(setIsSidePanelVisible(false))}
+          >
+            <ChevronLeftIcon />
+          </Button>
+        </div>
+        <div className={styles.selectDataView}>
+          <Button
+            onClick={() => {
+              dispatch(setSelectedAnalyticsView('feedback'));
+            }}
+            bg="transparent"
+            color="white"
+            _hover={{ bg: '#39393c' }}
+            leftIcon={<Assessment />}
+          >
+            Feedback
+          </Button>
+          <Button
+            onClick={() => {
+              dispatch(setSelectedAnalyticsView('bubble'));
+            }}
+            bg="transparent"
+            color="white"
+            _hover={{ bg: '#39393c' }}
+            leftIcon={<BubbleChart />}
+          >
+            Bubble Chart
+          </Button>
+          <Button
+            onClick={() => {
+              dispatch(setSelectedAnalyticsView('bar'));
+            }}
+            bg="transparent"
+            color="white"
+            _hover={{ bg: '#39393c' }}
+            leftIcon={<BarChart />}
+          >
+            Bar Chart
+          </Button>
+          <Button
+            onClick={() => {
+              dispatch(setSelectedAnalyticsView('scatter'));
+            }}
+            bg="transparent"
+            color="white"
+            _hover={{ bg: '#39393c' }}
+            leftIcon={<ScatterPlot />}
+          >
+            Scatter
+          </Button>
+          <Button
+            onClick={() => {
+              dispatch(setSelectedAnalyticsView('word'));
+            }}
+            bg="transparent"
+            color="white"
+            _hover={{ bg: '#39393c' }}
+            leftIcon={<Abc />}
+          >
+            Word Cloud
+          </Button>
+        </div>
+        <div className={styles.profileAnalytics}>
+          <SidePanelUserMenu
+            handleLogout={handleLogout}
+            setSettingsOpen={setSettingsOpen}
+            username={userFirst + ' ' + userLast}
+            setSeeFeedback={setSeeFeedback}
+            isAnalyticsMode={isAnalyticsSidePanel}
+          />
+          {isSettingsOpen && (
+            <ProfileModal
+              isOpen={isSettingsOpen}
+              handleClose={() => setSettingsOpen(false)}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={styles.sidepanel}
       style={
-        isSidepanelVisible
+        isSidePanelVisible
           ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
           : {
               transform: 'translateX(-100%)',
@@ -150,7 +264,6 @@ const SidePanel = ({
           handleNewChat={handleNewChat}
           disableNewChatButton={disableNewChatButton}
           disabledNewChatCourseSelector={isGptLoading}
-          toggleSidePanelVisibility={toggleSidePanelVisibility}
         />
         <div className={styles.chatsPanel}>
           {chats &&
@@ -164,7 +277,6 @@ const SidePanel = ({
                   title={chatObj.title}
                   handleExistingChatClick={handleExistingChatClick}
                   handleChatDelete={handleChatDelete}
-                  setIsSidepanelVisible={setIsSidepanelVisible}
                 />
               ))}
         </div>
@@ -176,6 +288,7 @@ const SidePanel = ({
           handleClearConversations={handleClearConversations}
           setTrainCourseModalOpen={setTrainCourseModalOpen}
           username={userFirst + ' ' + userLast}
+          setSeeFeedback={setSeeFeedback}
         />
         {isSettingsOpen && (
           <ProfileModal

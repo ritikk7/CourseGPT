@@ -20,6 +20,15 @@
   color: black;
 }
 
+.chevronLeft {
+  position: relative;
+}
+
+.selectDataView {
+  margin-top: 70px;
+  display: grid;
+}
+
 .courseSelect {
   width: 90%;
   margin: auto;
@@ -28,6 +37,13 @@
 
 .profile {
   padding: 16px;
+}
+
+.profileAnalytics {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
 }
 
 .chatsPanel {

@@ -8,6 +8,7 @@ const userRoutes = require('./routes/user');
 const messageRoutes = require('./routes/message');
 const chatRoutes = require('./routes/chat');
 const feedbackRoutes = require('./routes/feedback');
+const feedbackDataRoutes = require('./routes/feedbackData');
 const courseRoutes = require('./routes/course');
 const schoolRoutes = require('./routes/school');
 const getAllRoutes = require('./routes/all');
@@ -47,6 +48,7 @@ function setupRoutes(app) {
     '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedback',
     feedbackRoutes
   );
+  app.use('/api/feedbackData', feedbackDataRoutes);
   app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
   app.use('/api/users/:userId/chats', chatRoutes);
   app.use('/api/schools/:schoolId/courses', courseRoutes);

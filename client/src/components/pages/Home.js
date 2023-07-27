@@ -13,6 +13,7 @@ import {
 } from '../../redux/coursesSlice';
 import { setActivePanelInfo } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
+import AnalyticsWrapper from '../molecules/Analytics/AnalyticsWrapper';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -23,7 +24,7 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [isSidepanelVisible, setIsSidepanelVisible] = useState(true);
+  const [seeFeedback, setSeeFeedback] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -62,29 +63,31 @@ function Home() {
     }
   };
 
-  const toggleSidePanelVisibility = () => {
-    setIsSidepanelVisible(isSidepanelVisible => !isSidepanelVisible);
-  };
-
   if (isLoading) return <LoadingSpinner />;
+
+  const renderPage = () => {
+    if (seeFeedback) {
+      return (
+        <>
+          <AnalyticsWrapper />
+          <SidePanel
+            isAnalyticsSidePanel={true}
+            setSeeFeedback={setSeeFeedback}
+          />
+        </>
+      );
+    } else
+      return (
+        <>
+          <RightSection />
+          <SidePanel setSeeFeedback={setSeeFeedback} />
+        </>
+      );
+  };
 
   return (
     <div className="App">
-      {!user.type ? (
-        <RegisterUserDetails />
-      ) : (
-        <>
-          <RightSection
-            isSidepanelVisible={isSidepanelVisible}
-            toggleSidePanelVisibility={toggleSidePanelVisibility}
-          />
-          <SidePanel
-            toggleSidePanelVisibility={toggleSidePanelVisibility}
-            isSidepanelVisible={isSidepanelVisible}
-            setIsSidepanelVisible={setIsSidepanelVisible}
-          />
-        </>
-      )}
+      {!user.type ? <RegisterUserDetails /> : renderPage()}
     </div>
   );
 }
