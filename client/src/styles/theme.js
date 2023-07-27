@@ -55,7 +55,7 @@ const theme = extendTheme({
     },
     secondary: {
       light: '#6A7F8C',
-      dark: '#3E5360',
+      dark: '#3F5761',
     },
     tertiary: {
       light: '#B3C5D3',
