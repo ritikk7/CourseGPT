@@ -18,8 +18,16 @@ import {
   fetchChat,
 } from '../../../redux/chatsSlice';
 import { Button, Box, Spinner, Tooltip } from '@chakra-ui/react';
-import { setIsSidePanelVisible } from '../../../redux/uiSlice';
+import {
+  setIsSearchBarVisible,
+  setIsSidePanelVisible,
+} from '../../../redux/uiSlice';
 import SearchBarInput from '../../molecules/SearchBar/SearchBarInput';
+import { HotKeys } from 'react-hotkeys';
+
+const keyMap = {
+  SHOW_SEARCH: 'command+f',
+};
 
 const Message = ({ value }) => (
   <div className={styles.message}>
@@ -92,6 +100,13 @@ const RightSection = () => {
   const [trainingCompleted, setTrainingCompleted] = useState(false);
   const hasBeenTraining = useRef(false);
   const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
+  const isSearchBarVisible = useSelector(state => state.ui.isSearchBarVisible);
+
+  const hotKeyHandlers = {
+    SHOW_SEARCH: () => {
+      dispatch(setIsSearchBarVisible(true));
+    },
+  };
 
   useEffect(() => {
     let timeoutId;
@@ -146,61 +161,68 @@ const RightSection = () => {
     );
 
   return (
-    <div
-      className={styles.container}
-      style={
-        isSidePanelVisible
-          ? { transition: '0.5s' }
-          : { width: '100%', transition: '0.5s' }
-      }
-    >
-      {!isSidePanelVisible && (
-        <div className={styles.toggleSidepanelBtn}>
-          <Button
-            ml={2}
-            bg="transparent"
-            _hover={{ bg: '#50505c' }}
-            border="1px solid white"
-            onClick={() => {
-              dispatch(setIsSidePanelVisible(true));
-            }}
-          >
-            <ChevronRightIcon />
-          </Button>
-        </div>
-      )}
-      {isTrainingCourse && (
-        <Tooltip label="Training in progress" fontSize="md" placement="top">
-          <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-            <Spinner color="blue.500" speed="0.90s" size="lg" thickness="3px" />
+    <HotKeys keyMap={keyMap} handlers={hotKeyHandlers}>
+      <div
+        className={styles.container}
+        style={
+          isSidePanelVisible
+            ? { transition: '0.5s' }
+            : { width: '100%', transition: '0.5s' }
+        }
+      >
+        {!isSidePanelVisible && (
+          <div className={styles.toggleSidepanelBtn}>
+            <Button
+              ml={2}
+              bg="transparent"
+              _hover={{ bg: '#50505c' }}
+              border="1px solid white"
+              onClick={() => {
+                dispatch(setIsSidePanelVisible(true));
+              }}
+            >
+              <ChevronRightIcon />
+            </Button>
           </div>
-        </Tooltip>
-      )}
-      {trainingCompleted && (
-        <Box
-          position="absolute"
-          top="10px"
-          right="10px"
-          background="green.500"
-          color="white"
-          p="2"
-          borderRadius="md"
-        >
-          Training complete!
-        </Box>
-      )}
-      {mainPanel}
-      {renderInput && (
-        <InputArea
-          currentUserInput={currentUserInput}
-          setInputText={setInputText}
-          onInputSubmit={onInputSubmit}
-          inputRef={inputRef}
-          disableInput={isGptLoading}
-        />
-      )}
-      <SearchBarInput />
-    </div>
+        )}
+        {isTrainingCourse && (
+          <Tooltip label="Training in progress" fontSize="md" placement="top">
+            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+              <Spinner
+                color="blue.500"
+                speed="0.90s"
+                size="lg"
+                thickness="3px"
+              />
+            </div>
+          </Tooltip>
+        )}
+        {trainingCompleted && (
+          <Box
+            position="absolute"
+            top="10px"
+            right="10px"
+            background="green.500"
+            color="white"
+            p="2"
+            borderRadius="md"
+          >
+            Training complete!
+          </Box>
+        )}
+        {mainPanel}
+        {renderInput && (
+          <InputArea
+            currentUserInput={currentUserInput}
+            setInputText={setInputText}
+            onInputSubmit={onInputSubmit}
+            inputRef={inputRef}
+            disableInput={isGptLoading}
+          />
+        )}
+        {isSearchBarVisible && <SearchBarInput />}
+      </div>
+    </HotKeys>
   );
 };
 
