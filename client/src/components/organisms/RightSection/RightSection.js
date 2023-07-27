@@ -39,6 +39,9 @@ const InputArea = ({
           onChange={e => setInputText(e.target.value)}
           onKeyDown={onInputSubmit}
           ref={inputRef}
+          style={{
+            backgroundColor: theme.colors.chatSection.hover,
+          }}
         />
         <button
           className={styles.sendBtn}

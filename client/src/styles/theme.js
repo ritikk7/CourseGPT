@@ -30,7 +30,7 @@ const theme = extendTheme({
       mainFormInputColor: '#d9edfa',
     },
     loginAndReg: {
-      mainBackground: '#f1f7fc',
+      mainBackground: '#C4D6DC',
       boxBackground: '#FFFFFF',
       inputBackground: '#f1f7fc',
       text: '#0E1723',
@@ -48,6 +48,7 @@ const theme = extendTheme({
       },
       icon: '#0E1723',
     },
+    icon: '#455A64',
     primary: {
       light: '#DDEAF3',
       dark: '#47687F',
