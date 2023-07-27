@@ -8,8 +8,8 @@ const theme = extendTheme({
     },
     sidePanel: {
       background: `#607D8B`,
-      hoverItemBackground: `#455A64`,
-      activeItemBackground: `#90A4AE`,
+      hoverItemBackground: `#48606C`,
+      activeItemBackground: `#455A64`,
       text: '#FFFFFF',
       textHover: '#E0E0E0',
     },

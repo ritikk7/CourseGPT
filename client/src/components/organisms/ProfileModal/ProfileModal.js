@@ -40,7 +40,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             onClick={() => setSelectedSetting('Personal')}
             _hover={{
               background:
-                theme.colors.profileModal.sidePanelHoverItemBackground,
+                selectedSetting === 'Personal'
+                  ? theme.colors.profileModal.sidePanelActiveItemBackground
+                  : theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
             backgroundColor={
               selectedSetting === 'Personal'
@@ -66,7 +68,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             onClick={() => setSelectedSetting('Avatar')}
             _hover={{
               background:
-                theme.colors.profileModal.sidePanelHoverItemBackground,
+                selectedSetting === 'Avatar'
+                  ? theme.colors.profileModal.sidePanelActiveItemBackground
+                  : theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
             backgroundColor={
               selectedSetting === 'Avatar'
@@ -93,7 +97,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             onClick={() => setSelectedSetting('School')}
             _hover={{
               background:
-                theme.colors.profileModal.sidePanelHoverItemBackground,
+                selectedSetting === 'School'
+                  ? theme.colors.profileModal.sidePanelActiveItemBackground
+                  : theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
             backgroundColor={
               selectedSetting === 'School'
@@ -117,7 +123,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             onClick={() => setSelectedSetting('Security')}
             _hover={{
               background:
-                theme.colors.profileModal.sidePanelHoverItemBackground,
+                selectedSetting === 'Security'
+                  ? theme.colors.profileModal.sidePanelActiveItemBackground
+                  : theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
             backgroundColor={
               selectedSetting === 'Security'

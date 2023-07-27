@@ -79,7 +79,11 @@ const ExistingChat = ({
             ? theme.colors.sidePanel.activeItemBackground
             : 'transparent'
         }
-        _hover={{ bg: theme.colors.sidePanel.hoverItemBackground }}
+        _hover={{
+          bg: isFocused
+            ? theme.colors.sidePanel.activeItemBackground
+            : theme.colors.sidePanel.hoverItemBackground,
+        }}
         onClick={() => {
           handleExistingChatClick(id);
           if (!isScreenLarge) {
