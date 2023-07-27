@@ -31,7 +31,9 @@ const InputArea = ({
   onInputSubmit,
   inputRef,
   disableInput,
-}) => (
+}) => {
+  const theme = useTheme();
+  return(
   <div className={styles.inputSection}>
     <div className={styles.inputArea}>
       <input
@@ -54,7 +56,7 @@ const InputArea = ({
         }
         disabled={disableInput}
       >
-        <ArrowForwardIcon />
+        <ArrowForwardIcon color={theme.colors.textPrimary.dark}/>
       </button>
     </div>
     <Message
@@ -63,7 +65,8 @@ const InputArea = ({
       }
     />
   </div>
-);
+)
+};
 
 const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
   const dispatch = useDispatch();
@@ -149,10 +152,10 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       className={styles.container}
       style={
         isSidepanelVisible
-          ? { background: theme.colors.background.light }
+          ? { background: theme.colors.chatSection.dark }
           : {
               width: '100%',
-              background: theme.colors.background.light,
+            background: theme.colors.chatSection.dark,
             }
       }
     >
@@ -162,9 +165,9 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
             ml={2}
             bg={theme.colors.button.light}
             border={`1px solid ${theme.colors.primary.light}`}
-            color={theme.colors.button.textBase}
+            color={theme.colors.textPrimary.light}
             _hover={{
-              color: theme.colors.button.textHover,
+              color: theme.colors.textPrimary.light,
               bg: theme.colors.button.hover,
             }}
             onClick={toggleSidePanelVisibility}
@@ -190,7 +193,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           position="absolute"
           top="10px"
           right="10px"
-          background={theme.colors.tertiary.light}
+          background={theme.colors.accent.dark}
           color={theme.colors.textPrimary.light}
           p="2"
           borderRadius="md"
