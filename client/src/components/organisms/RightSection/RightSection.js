@@ -40,7 +40,8 @@ const InputArea = ({
           onKeyDown={onInputSubmit}
           ref={inputRef}
           style={{
-            backgroundColor: theme.colors.chatSection.hover,
+            backgroundColor: theme.colors.mainInput,
+            color: theme.colors.background.light,
           }}
         />
         <button

@@ -45,7 +45,7 @@
 }
 
 .input::placeholder {
-  color: #464545;
+  color: var(--chakra-colors-primary-light);
 }
 
 .message {

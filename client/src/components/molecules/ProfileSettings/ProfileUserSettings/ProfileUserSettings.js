@@ -46,9 +46,7 @@ const ProfileUserSettings = ({ handleClose }) => {
           <Image
             borderRadius="full"
             boxSize="180px"
-            src={
-              userInfo.profilePicture
-            }
+            src={userInfo.profilePicture}
             alt="Profile Picture"
             m={3}
           />
@@ -63,7 +61,7 @@ const ProfileUserSettings = ({ handleClose }) => {
                 backgroundColor={theme.colors.profileModal.mainFormInputColor}
                 borderRadius={10}
                 defaultValue={userInfo.firstName}
-                onChange={(e) =>
+                onChange={e =>
                   setUserInfo({ ...userInfo, firstName: e.target.value })
                 }
               />
@@ -76,7 +74,7 @@ const ProfileUserSettings = ({ handleClose }) => {
                 backgroundColor={theme.colors.profileModal.mainFormInputColor}
                 borderRadius={10}
                 defaultValue={userInfo.lastName}
-                onChange={(e) =>
+                onChange={e =>
                   setUserInfo({ ...userInfo, lastName: e.target.value })
                 }
               />
@@ -90,7 +88,9 @@ const ProfileUserSettings = ({ handleClose }) => {
               backgroundColor={theme.colors.profileModal.mainFormInputColor}
               borderRadius={10}
               defaultValue={userInfo.email}
-              onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+              onChange={e =>
+                setUserInfo({ ...userInfo, email: e.target.value })
+              }
             />
           </FormControl>
           <FormControl m={4}>
@@ -101,7 +101,7 @@ const ProfileUserSettings = ({ handleClose }) => {
               backgroundColor={theme.colors.profileModal.mainFormInputColor}
               borderRadius={10}
               defaultValue={userInfo.type}
-              onChange={(e) => setUserInfo({ ...userInfo, type: e.target.value })}
+              onChange={e => setUserInfo({ ...userInfo, type: e.target.value })}
             >
               <option value="Student">Student</option>
               <option value="Professor">Professor</option>

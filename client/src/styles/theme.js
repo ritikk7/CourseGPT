@@ -109,6 +109,7 @@ const theme = extendTheme({
       light: '#7F9CAE',
       dark: '#2E404C',
     },
+    mainInput: '#738389',
   },
   styles: {
     global: {
