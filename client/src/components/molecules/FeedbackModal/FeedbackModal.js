@@ -44,7 +44,7 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent bg={theme.colors.background.dark}>
+      <ModalContent bg={theme.colors.secondary.dark}>
         <ModalHeader color={theme.colors.textPrimary.light}>
           {isPositive
             ? "We're glad we answered your question! What stood out to you?"
@@ -81,6 +81,7 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
               bgColor: theme.colors.buttonCancel.hover,
               color: theme.colors.textPrimary.light,
             }}
+            ml={3}
           >
             Close
           </Button>
