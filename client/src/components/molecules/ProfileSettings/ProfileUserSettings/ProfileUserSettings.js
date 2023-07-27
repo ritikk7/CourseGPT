@@ -66,20 +66,6 @@ const ProfileUserSettings = ({ handleClose }) => {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-          <FormLabel
-            m={6}
-            htmlFor="fileUpload"
-            style={{
-              fontSize: '0.9em',
-              display: 'inline-block',
-              backgroundColor: 'teal',
-              padding: '8px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
-          >
-            Upload Profile Picture
-          </FormLabel>
         </Box>
         <Box w="100%">
           <Flex direction="row" spacing={5}>
@@ -137,7 +123,7 @@ const ProfileUserSettings = ({ handleClose }) => {
           </FormControl>
         </Box>
       </Stack>
-      <ModalFooter paddingInlineEnd={0} paddingTop={0}>
+      <ModalFooter paddingInlineEnd={0} paddingTop={5}>
         <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>

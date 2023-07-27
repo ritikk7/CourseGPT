@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import styles from './ProfileAvatar.module.css';
 import {
   Box,
   Button,
@@ -34,8 +34,10 @@ const avatarImages = [
 const ProfileAvatar = ({ handleClose }) => {
   const dispatch = useDispatch();
 
+  const [selectedAvatar, setSelectedAvatar] = useState('');
+
   const handleSave = () => {
-    const updatedUser = {};
+    const updatedUser = { profilePicture: selectedAvatar };
     dispatch(updateUser(updatedUser));
     handleClose();
   };
@@ -45,14 +47,24 @@ const ProfileAvatar = ({ handleClose }) => {
       <ModalHeader>Profile Avatar Settings</ModalHeader>
       <FormControl paddingInlineStart={6}>
         <FormLabel>Choose your profile avatar</FormLabel>
-        <SimpleGrid columns={4} spacing={4}>
+        <SimpleGrid columns={4}>
           {avatarImages.map((image, index) => (
-            <Image
-              key={index}
-              borderRadius="full"
-              boxSize="92px"
-              src={image || ''}
-            />
+            <div
+              className={styles.btn}
+              style={
+                selectedAvatar === image ? { backgroundColor: 'black' } : null
+              }
+              onClick={() => setSelectedAvatar(image)}
+            >
+              <Image
+                key={index}
+                borderRadius="full"
+                boxSize="92px"
+                src={image || ''}
+                mx="auto"
+                my={4}
+              />
+            </div>
           ))}
         </SimpleGrid>
       </FormControl>
