@@ -27,7 +27,7 @@ import { HotKeys } from 'react-hotkeys';
 import InputArea from '../../atoms/InputArea/InputArea';
 
 const keyMap = {
-  SHOW_SEARCH: 'command+f',
+  SHOW_SEARCH: ['command+f', 'ctrl+f'],
 };
 
 const RightSection = () => {
@@ -58,7 +58,8 @@ const RightSection = () => {
   const isSearchBarVisible = useSelector(state => state.ui.isSearchBarVisible);
 
   const hotKeyHandlers = {
-    SHOW_SEARCH: () => {
+    SHOW_SEARCH: e => {
+      e.preventDefault();
       dispatch(setIsSearchBarVisible(true));
     },
   };
