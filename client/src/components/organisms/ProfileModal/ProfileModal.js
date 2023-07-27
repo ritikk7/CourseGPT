@@ -9,10 +9,11 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { FaUser, FaSchool, FaLock } from 'react-icons/fa';
+import { FaUser, FaUserPlus, FaSchool, FaLock } from 'react-icons/fa';
 import ProfileUserSettings from '../../molecules/ProfileSettings/ProfileUserSettings/ProfileUserSettings';
 import ProfileSchoolSettings from '../../molecules/ProfileSettings/ProfileSchoolSettings/ProfileSchoolSettings';
 import ProfileSecuritySettings from '../../molecules/ProfileSettings/ProfileSecuritySettings/ProfileSecuritySettings';
+import ProfileAvatar from '../../molecules/ProfileSettings/ProfileAvatar/ProfileAvatar';
 
 const ProfileModal = ({ isOpen, handleClose }) => {
   const [selectedSetting, setSelectedSetting] = useState('Personal');
@@ -39,6 +40,22 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             }}
           >
             <Icon as={FaUser} boxSize="24px" />
+          </Box>
+          <Box
+            as="button"
+            w="100%"
+            flex="1"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderTop="1px"
+            borderColor="gray.400"
+            onClick={() => setSelectedSetting('Avatar')}
+            _hover={{
+              background: 'gray.400',
+            }}
+          >
+            <Icon as={FaUserPlus} boxSize="24px" />
           </Box>
           <Box
             as="button"
@@ -80,6 +97,8 @@ const ProfileModal = ({ isOpen, handleClose }) => {
     switch (selectedSetting) {
       case 'Personal':
         return <ProfileUserSettings handleClose={handleClose} />;
+      case 'Avatar':
+        return <ProfileAvatar handleClose={handleClose} />;
       case 'School':
         return <ProfileSchoolSettings handleClose={handleClose} />;
       case 'Security':
