@@ -18,6 +18,7 @@ import { useDebounce } from '../../../hooks/debounceHook';
 import api from '../../../api/axiosInstance';
 import { setActivePanelSearch } from '../../../redux/userSlice';
 import styles from './SearchBarInput.module.css';
+import { setIsSearchBarVisible } from '../../../redux/uiSlice';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;
@@ -49,6 +50,7 @@ const SearchBarInput = () => {
   const [ref, isClickedOutside] = useClickOutside();
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const isSearchBarVisible = useSelector(state => state.ui.isSearchBarVisible);
 
   const expandContainer = () => {
     setExpanded(true);
@@ -100,13 +102,18 @@ const SearchBarInput = () => {
   };
 
   useEffect(() => {
-    if (activePanel === 'SEARCH' && !isClickedOutside) {
+    if (activePanel === 'SEARCH' && !isClickedOutside && isSearchBarVisible) {
       expandContainer();
     } else collapseContainer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activePanel, isClickedOutside]);
+  }, [activePanel, isClickedOutside, isSearchBarVisible]);
 
   useDebounce(input, 500, searchMessages);
+
+  const hideSearch = () => {
+    dispatch(setIsSearchBarVisible(false));
+    clearSearch();
+  };
 
   return (
     <div className={styles.container}>
@@ -138,20 +145,18 @@ const SearchBarInput = () => {
                 }}
                 onChange={handleChange}
               />
-              {input !== '' && (
-                <InputRightElement>
-                  <IconButton
-                    isRound={true}
-                    variant="solid"
-                    colorScheme="gray.300"
-                    aria-label="Clear Search Bar"
-                    size="xs"
-                    fontSize="9px"
-                    icon={<CloseIcon />}
-                    onClick={clearSearch}
-                  />
-                </InputRightElement>
-              )}
+              <InputRightElement>
+                <IconButton
+                  isRound={true}
+                  variant="solid"
+                  colorScheme="gray.300"
+                  aria-label="Clear Search Bar"
+                  size="lg"
+                  fontSize="14px"
+                  icon={<CloseIcon />}
+                  onClick={hideSearch}
+                />
+              </InputRightElement>
             </InputGroup>
             {isExpanded && (
               <SearchResults
