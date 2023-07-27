@@ -30,7 +30,7 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="3xl">
       <ModalOverlay />
-      <ModalContent bg={theme.colors.background.light}>
+      <ModalContent bg={theme.colors.secondary.dark}>
         <ModalCloseButton color={theme.colors.textPrimary.light} />
         <VStack p={5} pt={10}>
           <Textarea
@@ -40,8 +40,7 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
             onChange={handleTextAreaChange}
             isResizable={true}
             height="300px"
-            color={theme.colors.textPrimary.dark}
-            bg={theme.colors.tertiary.light}
+            color={theme.colors.textPrimary.light}
           />
         </VStack>
         <ModalFooter>
