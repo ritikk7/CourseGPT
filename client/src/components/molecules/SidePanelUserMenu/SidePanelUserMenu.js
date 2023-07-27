@@ -19,6 +19,7 @@ const SidePanelUserMenu = ({
   username,
 }) => {
   const userType = useSelector(state => state.user.type);
+  const userProfile = useSelector(state => state.user.profilePicture);
   const isTrainingCourse = useSelector(state => state.courses.loading);
   const isGptLoading = useSelector(state => state.messages.gptLoading);
   const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
@@ -35,8 +36,8 @@ const SidePanelUserMenu = ({
           <Image
             borderRadius="full"
             boxSize="32px"
-            src="https://bit.ly/dan-abramov"
-            alt="Dan Abramov"
+            src={userProfile ? userProfile : 'https://bit.ly/dan-abramov'}
+            alt="avatar"
           />
         }
         rightIcon={<HamburgerIcon />}

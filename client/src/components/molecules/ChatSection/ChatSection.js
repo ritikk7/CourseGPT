@@ -8,12 +8,13 @@ import Feedback from '../FeedbackPanel/FeedbackPanel';
 
 const ChatSection = ({ message }) => {
   const user = useSelector(state => state.user);
+  const userProfile = useSelector(state => state.user.profilePicture);
   const isSenderUser = message.role === 'user';
   const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
   const courseGptImage = './coursegptLogo.png';
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
-  const userImage = 'https://bit.ly/dan-abramov';
+  const userImage = userProfile ? userProfile : 'https://bit.ly/dan-abramov';
   const renderAnimation = isTimestampLessThan15SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
   const [typingAnimation, setTypingAnimation] = useState('.');

@@ -14,7 +14,7 @@ import { updateUser } from '../../../../redux/userSlice';
 import { useDispatch } from 'react-redux';
 
 const Avatar = {
-  Cat: './assets/cat.jpg',
+  Cat: './assets/cat.png',
   Earth: './assets/earth.jpeg',
   Man: './assets/man.png',
   Pup: './assets/pup.png',
