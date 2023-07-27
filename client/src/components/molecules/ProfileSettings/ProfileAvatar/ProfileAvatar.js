@@ -13,7 +13,23 @@ import {
 import { updateUser } from '../../../../redux/userSlice';
 import { useDispatch } from 'react-redux';
 
-const avatarImages = ['./assets/cat.jpg'];
+const Avatar = {
+  Cat: './assets/cat.jpg',
+  Earth: './assets/earth.jpeg',
+  Man: './assets/man.png',
+  Pup: './assets/pup.png',
+  Robot: './assets/robot.png',
+  Woman: './assets/woman.png',
+};
+
+const avatarImages = [
+  Avatar.Cat,
+  Avatar.Earth,
+  Avatar.Man,
+  Avatar.Pup,
+  Avatar.Robot,
+  Avatar.Woman,
+];
 
 const ProfileAvatar = ({ handleClose }) => {
   const dispatch = useDispatch();
@@ -26,16 +42,16 @@ const ProfileAvatar = ({ handleClose }) => {
 
   return (
     <Box w="600px" color="white">
-      <ModalHeader>Profile Avatar</ModalHeader>
+      <ModalHeader>Profile Avatar Settings</ModalHeader>
       <FormControl paddingInlineStart={6}>
-        <FormLabel>Avatars</FormLabel>
-        <SimpleGrid minChildWidth="120px" spacing="7px">
-          {avatarImages.map(image => (
+        <FormLabel>Choose your profile avatar</FormLabel>
+        <SimpleGrid columns={4} spacing={4}>
+          {avatarImages.map((image, index) => (
             <Image
+              key={index}
               borderRadius="full"
-              boxSize="72px"
+              boxSize="92px"
               src={image || ''}
-              mx={4}
             />
           ))}
         </SimpleGrid>
