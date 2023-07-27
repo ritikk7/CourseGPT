@@ -56,7 +56,7 @@ const InputArea = ({
         }
         disabled={disableInput}
       >
-        <ArrowForwardIcon color={theme.colors.textPrimary.dark}/>
+        <ArrowForwardIcon color={theme.colors.chatSection.arrow} boxSize="1.5em"/>
       </button>
     </div>
     <Message

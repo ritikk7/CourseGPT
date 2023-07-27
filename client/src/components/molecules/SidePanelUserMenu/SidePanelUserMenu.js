@@ -29,7 +29,8 @@ const SidePanelUserMenu = ({
     <Menu>
       <MenuButton
         as={Button}
-        bg={theme.colors.buttonTwo.light}
+        bg={theme.colors.buttonTwo.dark}
+        color={theme.colors.textPrimary.light}
         _hover={{
           bg: theme.colors.buttonTwo.hover,
           color: theme.colors.textPrimary.light,
@@ -51,7 +52,7 @@ const SidePanelUserMenu = ({
             backgroundColor={theme.colors.background.dark}
           />
         }
-        rightIcon={<HamburgerIcon color={theme.colors.textPrimary.dark} />}
+        rightIcon={<HamburgerIcon color={theme.colors.accent.light} />}
         width="100%"
       >
         {username}
