@@ -4,14 +4,14 @@ const theme = extendTheme({
   colors: {
     background: {
       light: '#FFFFFF',
-      dark: '#607D8B',
+      dark: '#1c1c1c',
     },
     sidePanel: {
       background: `#607D8B`,
       hoverItemBackground: `#455A64`,
       activeItemBackground: `#90A4AE`,
       text: '#FFFFFF',
-      textHover: '#c2ddff',
+      textHover: '#E0E0E0',
     },
     profileModal: {
       mainBackground: '#FFFFFF',
@@ -100,9 +100,9 @@ const theme = extendTheme({
     },
     chatSection: {
       light: '#FFFFFF',
-      dark: '#d9edfa',
+      dark: '#d1dbde',
       arrow: '#304B57',
-      hover: '#c5ebfd',
+      hover: '#A2B4BA',
     },
     neutral: {
       light: '#7F9CAE',
