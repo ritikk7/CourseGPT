@@ -58,10 +58,10 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
             Train {selectedCourseName}
           </Button>
           <Button
-            bg={theme.colors.buttonTwo.light}
+            bg={theme.colors.buttonCancel.light}
             color={theme.colors.textPrimary.light}
             _hover={{
-              bg: theme.colors.buttonTwo.hover,
+              bg: theme.colors.buttonCancel.hover,
               color: theme.colors.textPrimary.light,
             }}
             onClick={() => {

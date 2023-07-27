@@ -14,8 +14,8 @@ import {
   ModalFooter,
   ModalHeader,
   Stack,
-  useTheme,
-} from '@chakra-ui/react';
+  useTheme
+} from "@chakra-ui/react";
 import { updateUser } from '../../../../redux/userSlice';
 
 const ProfileUserSettings = ({ handleClose }) => {
@@ -45,23 +45,12 @@ const ProfileUserSettings = ({ handleClose }) => {
   };
 
   const theme = useTheme();
+
   return (
-    <Box
-      color={theme.colors.textSecondary.light}
-      w="600px"
-      bg={theme.colors.background.light}
-    >
-      <ModalHeader color={theme.colors.primary.light}>
-        {' '}
-        User Settings{' '}
-      </ModalHeader>
+    <Box color={theme.colors.profileModal.mainTextColor} w="600px">
+      <ModalHeader> User Settings </ModalHeader>
       <Stack direction="row">
-        <Box
-          w="400px"
-          m={1}
-          justifyContent="center"
-          bg={theme.colors.tertiary.light}
-        >
+        <Box w="400px" m={1} justifyContent="center">
           <Image
             borderRadius="full"
             boxSize="180px"
@@ -80,30 +69,13 @@ const ProfileUserSettings = ({ handleClose }) => {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-          <FormLabel
-            m={6}
-            htmlFor="fileUpload"
-            style={{
-              fontSize: '0.9em',
-              display: 'inline-block',
-              backgroundColor: theme.colors.button.light,
-              color: theme.colors.button.textBase,
-              padding: '8px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
-          >
-            Upload Profile Picture
-          </FormLabel>
         </Box>
         <Box w="100%">
           <Flex direction="row" spacing={5}>
             <FormControl m={4}>
-              <FormLabel color={theme.colors.textPrimary.light}>
-                First name
-              </FormLabel>
+              <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>First name</FormLabel>
               <Editable
-                backgroundColor={theme.colors.tertiary.light}
+                backgroundColor={theme.colors.profileModal.mainFormInputColor}
                 borderRadius={10}
                 defaultValue={userInfo.firstName}
                 onSubmit={value =>
@@ -115,11 +87,9 @@ const ProfileUserSettings = ({ handleClose }) => {
               </Editable>
             </FormControl>
             <FormControl m={4}>
-              <FormLabel color={theme.colors.textPrimary.light}>
-                Last name
-              </FormLabel>
+              <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Last name</FormLabel>
               <Editable
-                backgroundColor={theme.colors.tertiary.light}
+                backgroundColor={theme.colors.profileModal.mainFormInputColor}
                 borderRadius={10}
                 defaultValue={userInfo.lastName}
                 onSubmit={value =>
@@ -132,11 +102,9 @@ const ProfileUserSettings = ({ handleClose }) => {
             </FormControl>
           </Flex>
           <FormControl m={4} mt={0}>
-            <FormLabel color={theme.colors.textPrimary.light}>
-              Email address
-            </FormLabel>
+            <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Email address</FormLabel>
             <Editable
-              backgroundColor={theme.colors.tertiary.light}
+              backgroundColor={theme.colors.profileModal.mainFormInputColor}
               borderRadius={10}
               defaultValue={userInfo.email}
               onSubmit={value => setUserInfo({ ...userInfo, email: value })}
@@ -146,11 +114,9 @@ const ProfileUserSettings = ({ handleClose }) => {
             </Editable>
           </FormControl>
           <FormControl m={4}>
-            <FormLabel color={theme.colors.textPrimary.light}>
-              Account Type
-            </FormLabel>
+            <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Account Type</FormLabel>
             <Editable
-              backgroundColor={theme.colors.tertiary.light}
+              backgroundColor={theme.colors.profileModal.mainFormInputColor}
               borderRadius={10}
               defaultValue={userInfo.type}
             >
@@ -160,21 +126,11 @@ const ProfileUserSettings = ({ handleClose }) => {
           </FormControl>
         </Box>
       </Stack>
-      <ModalFooter paddingInlineEnd={0} paddingTop={0}>
-        <Button
-          colorScheme="blue"
-          mr={3}
-          onClick={handleSave}
-          bg={theme.colors.button.light}
-          _hover={{ bg: theme.colors.button.hover }}
-        >
+      <ModalFooter paddingInlineEnd={0} paddingTop={5} color={theme.colors.button.text}>
+        <Button bg={theme.colors.button.light} _hover={{ bg: theme.colors.button.hover }} mr={3} onClick={handleSave}>
           Save
         </Button>
-        <Button
-          colorScheme="red"
-          onClick={handleClose}
-          bg={theme.colors.error.light}
-        >
+        <Button bg={theme.colors.buttonCancel.light} _hover={{ bg: theme.colors.buttonCancel.hover }} onClick={handleClose}>
           Cancel
         </Button>
       </ModalFooter>

@@ -74,7 +74,11 @@ const ExistingChat = ({
     <div style={{ position: 'relative' }}>
       <Button
         width="100%"
-        bg={isFocused ? theme.colors.sidePanel.activeItemBackground : 'transparent'}
+        bg={
+          isFocused
+            ? theme.colors.sidePanel.activeItemBackground
+            : 'transparent'
+        }
         _hover={{ bg: theme.colors.sidePanel.hoverItemBackground }}
         onClick={() => {
           handleExistingChatClick(id);

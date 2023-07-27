@@ -21,10 +21,7 @@ const Feedback = ({ message }) => {
   const theme = useTheme();
   return (
     <Box>
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Flex justifyContent="space-between" alignItems="center">
         {currentFeedbackModal === 'positive' && (
           <FeedbackModal
             isOpen={true}

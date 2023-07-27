@@ -33,39 +33,42 @@ const InputArea = ({
   disableInput,
 }) => {
   const theme = useTheme();
-  return(
-  <div className={styles.inputSection}>
-    <div className={styles.inputArea}>
-      <input
-        className={styles.input}
-        placeholder="Enter a prompt..."
-        value={currentUserInput || ''}
-        onChange={e => setInputText(e.target.value)}
-        onKeyDown={onInputSubmit}
-        ref={inputRef}
-      />
-      <button
-        className={styles.sendBtn}
-        onClick={e => {
-          if (currentUserInput.trim()) onInputSubmit(e);
-        }}
-        style={
-          currentUserInput.trim() && !disableInput
-            ? {}
-            : { cursor: 'not-allowed', opacity: 0.5 }
+  return (
+    <div className={styles.inputSection}>
+      <div className={styles.inputArea}>
+        <input
+          className={styles.input}
+          placeholder="Enter a prompt..."
+          value={currentUserInput || ''}
+          onChange={e => setInputText(e.target.value)}
+          onKeyDown={onInputSubmit}
+          ref={inputRef}
+        />
+        <button
+          className={styles.sendBtn}
+          onClick={e => {
+            if (currentUserInput.trim()) onInputSubmit(e);
+          }}
+          style={
+            currentUserInput.trim() && !disableInput
+              ? {}
+              : { cursor: 'not-allowed', opacity: 0.5 }
+          }
+          disabled={disableInput}
+        >
+          <ArrowForwardIcon
+            color={theme.colors.chatSection.arrow}
+            boxSize="1.5em"
+          />
+        </button>
+      </div>
+      <Message
+        value={
+          'CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]'
         }
-        disabled={disableInput}
-      >
-        <ArrowForwardIcon color={theme.colors.chatSection.arrow} boxSize="1.5em"/>
-      </button>
+      />
     </div>
-    <Message
-      value={
-        'CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]'
-      }
-    />
-  </div>
-)
+  );
 };
 
 const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
@@ -155,7 +158,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           ? { background: theme.colors.chatSection.light }
           : {
               width: '100%',
-            background: theme.colors.chatSection.light,
+              background: theme.colors.chatSection.light,
             }
       }
     >
@@ -163,12 +166,11 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
         <div className={styles.toggleSidepanelBtn}>
           <Button
             ml={2}
-            bg={theme.colors.button.light}
-            border={`1px solid ${theme.colors.primary.light}`}
-            color={theme.colors.textPrimary.dark}
+            bg={theme.colors.sidePanel.background}
+            border={`1px solid ${theme.colors.sidePanel.text}`}
+            color={theme.colors.sidePanel.text}
             _hover={{
-              color: theme.colors.textPrimary.dark,
-              bg: theme.colors.button.hover,
+              bg: theme.colors.sidePanel.hoverItemBackground,
             }}
             onClick={toggleSidePanelVisibility}
           >

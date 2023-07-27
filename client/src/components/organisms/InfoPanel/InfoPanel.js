@@ -30,7 +30,6 @@ const InfoPanel = ({ setInputText, inputRef }) => {
                 promptText={prompt}
                 setInputText={() => setInputText(prompt)}
                 inputRef={inputRef}
-
               />
             ))
           : ''}
@@ -39,10 +38,7 @@ const InfoPanel = ({ setInputText, inputRef }) => {
   };
 
   return (
-    <Box
-      className={styles.mainPanel}
-      bg={theme.colors.chatSection.light}
-    >
+    <Box className={styles.mainPanel} bg={theme.colors.chatSection.light}>
       <Text as="b" fontSize="4xl" color={theme.colors.textPrimary.dark}>
         CourseGPT
       </Text>

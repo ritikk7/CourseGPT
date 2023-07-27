@@ -124,7 +124,7 @@ export default function RegisterUserDetails() {
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      bg={theme.colors.background.light}
+      bg={theme.colors.loginAndReg.mainBackground}
     >
       <Stack
         align={'center'}
@@ -135,13 +135,13 @@ export default function RegisterUserDetails() {
         px={6}
       >
         <Stack>
-          <Heading fontSize={'4xl'} color={theme.colors.textPrimary.light}>
+          <Heading fontSize={'4xl'} color={theme.colors.loginAndReg.text}>
             User Registration
           </Heading>
         </Stack>
         <Box
           rounded={'lg'}
-          bg={theme.colors.tertiary.light}
+          bg={theme.colors.loginAndReg.boxBackground}
           boxShadow={'lg'}
           p={8}
           w={[300, 400, 500, 600]}
@@ -152,7 +152,7 @@ export default function RegisterUserDetails() {
               <Heading
                 fontSize={'xl'}
                 py="20px"
-                color={theme.colors.textPrimary.light}
+                color={theme.colors.loginAndReg.text}
               >
                 Welcome to CourseGPT {userInfo.firstName}!
               </Heading>
@@ -168,25 +168,26 @@ export default function RegisterUserDetails() {
               <Heading
                 align={'center'}
                 fontSize={'xl'}
-                color={theme.colors.textPrimary.light}
+                color={theme.colors.loginAndReg.text}
               >
                 Registering as a {userInfo.type}
               </Heading>
               <Text
                 fontSize={'lg'}
                 py="10px"
-                color={theme.colors.textSecondary.light}
+                color={theme.colors.loginAndReg.text}
               >
                 Please select your school and courses below:
               </Text>
               <FormControl>
-                <FormLabel color={theme.colors.formLabel.light}>
+                <FormLabel color={theme.colors.loginAndReg.text}>
                   School
                 </FormLabel>
                 <Select
                   placeholder="Select a school"
                   value={selectedSchool?._id}
                   onChange={handleSchoolChange}
+                  bg={theme.colors.loginAndReg.inputBackground}
                 >
                   {renderSchools()}
                 </Select>
@@ -201,11 +202,11 @@ export default function RegisterUserDetails() {
                       onClick={() => {
                         setUserInfo({ ...userInfo, type: null });
                       }}
-                      bg={theme.colors.button.light}
-                      color={theme.colors.button.textBase}
+                      bg={theme.colors.loginAndReg.loginOrRegisterButton.base}
+                      color={theme.colors.loginAndReg.text}
                       _hover={{
-                        bg: theme.colors.button.hover,
-                        color: theme.colors.button.textHover,
+                        bg: theme.colors.loginAndReg.loginOrRegisterButton.hover,
+                        color: theme.colors.loginAndReg.text,
                       }}
                       w="7rem"
                       mr="5%"
@@ -215,11 +216,11 @@ export default function RegisterUserDetails() {
                   </Flex>
                   <Button
                     w="7rem"
-                    bg={theme.colors.buttonTwo.light}
-                    color={theme.colors.buttonTwo.textBase}
+                    bg={theme.colors.loginAndReg.loginWithGoogleButton.base}
+                    color={theme.colors.loginAndReg.text}
                     _hover={{
-                      bg: theme.colors.buttonTwo.hover,
-                      color: theme.colors.buttonTwo.textHover,
+                      bg: theme.colors.loginAndReg.loginWithGoogleButton.hover,
+                      color: theme.colors.loginAndReg.text,
                     }}
                     onClick={handleSubmit}
                   >

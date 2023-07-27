@@ -68,17 +68,17 @@ export default function Register() {
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      bg={theme.colors.background.light}
+      bg={theme.colors.loginAndReg.mainBackground}
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'} color={theme.colors.textSecondary.light}>
+          <Heading fontSize={'4xl'} color={theme.colors.loginAndReg.text}>
             Sign up for an account
           </Heading>
         </Stack>
         <Box
           rounded={'lg'}
-          bg={theme.colors.background.dark}
+          bg={theme.colors.loginAndReg.boxBackground}
           boxShadow={'lg'}
           p={8}
         >
@@ -98,55 +98,55 @@ export default function Register() {
               <HStack>
                 <Box>
                   <FormControl id="firstName" isRequired>
-                    <FormLabel color={theme.colors.formLabel.light}>
+                    <FormLabel color={theme.colors.loginAndReg.text}>
                       First Name
                     </FormLabel>
                     <Input
                       name="firstName"
                       type="text"
-                      color={theme.colors.textSecondary.light}
-                      bg={theme.colors.tertiary.light}
+                      color={theme.colors.loginAndReg.text}
+                      bg={theme.colors.loginAndReg.inputBackground}
                       onChange={handleChange}
                     />
                   </FormControl>
                 </Box>
                 <Box>
                   <FormControl id="lastName">
-                    <FormLabel color={theme.colors.formLabel.light}>
+                    <FormLabel color={theme.colors.loginAndReg.text}>
                       Last Name
                     </FormLabel>
                     <Input
                       name="lastName"
                       type="text"
-                      color={theme.colors.textSecondary.light}
-                      bg={theme.colors.tertiary.light}
+                      color={theme.colors.loginAndReg.text}
+                      bg={theme.colors.loginAndReg.inputBackground}
                       onChange={handleChange}
                     />
                   </FormControl>
                 </Box>
               </HStack>
               <FormControl id="email" isRequired>
-                <FormLabel color={theme.colors.formLabel.light}>
+                <FormLabel color={theme.colors.loginAndReg.text}>
                   Email
                 </FormLabel>
                 <Input
                   name="email"
                   type="text"
-                  color={theme.colors.textSecondary.light}
-                  bg={theme.colors.tertiary.light}
+                  color={theme.colors.loginAndReg.text}
+                  bg={theme.colors.loginAndReg.inputBackground}
                   onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="password" isRequired>
-                <FormLabel color={theme.colors.formLabel.light}>
+                <FormLabel color={theme.colors.loginAndReg.text}>
                   Password
                 </FormLabel>
                 <InputGroup>
                   <Input
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    color={theme.colors.textSecondary.light}
-                    bg={theme.colors.tertiary.light}
+                    color={theme.colors.loginAndReg.text}
+                    bg={theme.colors.loginAndReg.inputBackground}
                     onChange={handleChange}
                   />
                   <InputRightElement h={'full'}>
@@ -163,24 +163,24 @@ export default function Register() {
               </FormControl>
               <Stack spacing={2}>
                 <Button
-                  bg={theme.colors.button.light}
+                  bg={theme.colors.loginAndReg.loginOrRegisterButton.base}
                   color={theme.colors.textPrimary.light}
                   _hover={{
-                    bg: theme.colors.button.hover,
+                    bg: theme.colors.loginAndReg.loginOrRegisterButton.hover,
                     color: theme.colors.textPrimary.light,
                   }}
                   type="submit"
                 >
                   Register
                 </Button>
-                <Text align="center" color={theme.colors.textSecondary.light}>
+                <Text align="center" color={theme.colors.loginAndReg.text}>
                   or
                 </Text>
                 <Button
-                  bg={theme.colors.loginWithGoogle.light}
+                  bg={theme.colors.loginAndReg.loginWithGoogleButton.base}
                   color={theme.colors.textPrimary.light}
                   _hover={{
-                    bg: theme.colors.loginWithGoogle.hover,
+                    bg: theme.colors.loginAndReg.loginWithGoogleButton.hover,
                     color: theme.colors.textPrimary.light,
                   }}
                   onClick={handleGoogleLogin}
@@ -192,9 +192,9 @@ export default function Register() {
             </Stack>
           </form>
           <Stack justify="center" mt={4}>
-            <Text align={'center'} color={theme.colors.textSecondary.light}>
+            <Text align={'center'} color={theme.colors.loginAndReg.text}>
               Already have an account?{' '}
-              <Link onClick={navigateToLogin} color={theme.colors.link.hover}>
+              <Link onClick={navigateToLogin} color={theme.colors.loginAndReg.link.hover}>
                 Login!
               </Link>
             </Text>
@@ -204,7 +204,6 @@ export default function Register() {
     </Flex>
   );
 }
-
 
 
 /**

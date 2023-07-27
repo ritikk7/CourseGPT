@@ -1,6 +1,6 @@
 import { Box, useCheckbox, useRadio, useTheme } from '@chakra-ui/react';
 
-// A button group that allow multiselect
+// A button group that allows multiselect
 export function MultiSelectButtons(props) {
   const { getCheckboxProps, getInputProps } = useCheckbox(props);
 
@@ -17,18 +17,18 @@ export function MultiSelectButtons(props) {
         borderWidth="1px"
         borderRadius="md"
         boxShadow="md"
-        color={theme.colors.button.textBase}
-        bg={theme.colors.primary.light}
+        color={theme.colors.profileModal.inactiveItemText}
+        bg={theme.colors.profileModal.inactiveItemBackground}
         _checked={{
-          bg: theme.colors.button.hover,
-          color: theme.colors.button.textHover,
+          bg: theme.colors.profileModal.activeItemBackground,
+          color: theme.colors.profileModal.activeItemText,
         }}
         _focus={{
           boxShadow: 'outline',
         }}
         _hover={{
-          bg: theme.colors.button.hover,
-          color: theme.colors.button.textHover,
+          bg: theme.colors.profileModal.hoverItemBackground,
+          color: theme.colors.profileModal.hoverItemText,
         }}
         px={5}
         py={3}
@@ -42,35 +42,36 @@ export function MultiSelectButtons(props) {
   );
 }
 
-// A button group that allow single select
+// A button group that allows single select
 export function SingleSelectButtons(props) {
   const { getInputProps, getRadioProps } = useRadio(props);
+
   const theme = useTheme();
   const input = getInputProps();
-  const radiobtns = getRadioProps();
+  const radio = getRadioProps();
 
   return (
     <Box as="label" w="100%">
       <input {...input} />
       <Box
-        bg={theme.colors.primary.light}
-        {...radiobtns}
+        bg={theme.colors.profileModal.inactiveItemBackground}
+        {...radio}
         cursor="pointer"
         borderWidth="1px"
         borderRadius="md"
         boxShadow="md"
-        color={theme.colors.button.textBase}
+        color={theme.colors.profileModal.inactiveItemText}
         _checked={{
-          bg: theme.colors.button.light,
-          color: theme.colors.button.textBase,
-          borderColor: theme.colors.button.light,
+          bg: theme.colors.profileModal.activeItemBackground,
+          color: theme.colors.profileModal.activeItemText,
+          borderColor: theme.colors.profileModal.activeItemBackground,
         }}
         _focus={{
           boxShadow: 'outline',
         }}
         _hover={{
-          bg: theme.colors.button.hover,
-          color: theme.colors.button.textHover,
+          bg: theme.colors.profileModal.hoverItemBackground,
+          color: theme.colors.profileModal.hoverItemText,
         }}
         px={5}
         py={3}

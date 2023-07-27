@@ -12,13 +12,18 @@ const NewChatCourseSelector = ({
 
   return (
     <Select
-      _hover={{ bg: theme.colors.sidePanel.hoverItemBackground, borderColor: theme.colors.sidePanel.text }}
+      _hover={{
+        bg: theme.colors.sidePanel.hoverItemBackground,
+        borderColor: theme.colors.sidePanel.text,
+      }}
       borderColor={theme.colors.sidePanel.text}
       _focus={{
-        bg: theme.colors.sidePanel.hoverItemBackground, borderColor: theme.colors.sidePanel.text
+        bg: theme.colors.sidePanel.hoverItemBackground,
+        borderColor: theme.colors.sidePanel.text,
       }}
       _expanded={{
-        bg: theme.colors.sidePanel.hoverItemBackground, borderColor: theme.colors.sidePanel.text
+        bg: theme.colors.sidePanel.hoverItemBackground,
+        borderColor: theme.colors.sidePanel.text,
       }}
       color={theme.colors.sidePanel.text}
       value={defaultValue}

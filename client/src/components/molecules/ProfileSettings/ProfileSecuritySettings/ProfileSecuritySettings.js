@@ -8,12 +8,11 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Link,
   ModalFooter,
   ModalHeader,
   Text,
-  useTheme,
-} from '@chakra-ui/react';
+  useTheme
+} from "@chakra-ui/react";
 import { updatePassword } from '../../../../redux/authSlice';
 
 const ProfileSecuritySettings = ({ handleClose }) => {
@@ -50,37 +49,37 @@ const ProfileSecuritySettings = ({ handleClose }) => {
 
     handleClose();
   };
+
   const theme = useTheme();
 
   if (user.googleId !== null) {
     return (
-      <Box
-        w="600px"
-        color={theme.colors.textPrimary.light}
-        bg={theme.colors.background.light}
-      >
-        <ModalHeader color={theme.colors.primary.light}>
-          Security Settings
-        </ModalHeader>
+      <Box w="600px" color={theme.colors.profileModal.mainTextColor}>
+        <ModalHeader>Security Settings</ModalHeader>
         <Text mt={3} paddingInlineStart={6}>
           You're logged in with Google. To change your password, please visit
           your
-          <Link
+          <a
             href="https://myaccount.google.com/intro/signinoptions/password"
             target="_blank"
             rel="noopener noreferrer"
-            color={theme.colors.link.light}
-            _hover={{ color: theme.colors.link.hover }}
+            style={{
+              color: 'blue',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={e => (e.target.style.textDecoration = 'underline')}
+            onMouseLeave={e => (e.target.style.textDecoration = 'none')}
           >
             {' '}
             Google account settings
-          </Link>
+          </a>
           .
         </Text>
         <ModalFooter paddingInlineEnd={0} paddingTop={5}>
           <Button
-            bg={theme.colors.error.light}
-            _hover={{ bg: theme.colors.error.light }}
+            color={theme.colors.button.text}
+            bg={theme.colors.buttonCancel.light}
+            _hover={{ bg: theme.colors.buttonCancel.hover }}
             onClick={handleClose}
           >
             Close
@@ -91,57 +90,48 @@ const ProfileSecuritySettings = ({ handleClose }) => {
   }
 
   return (
-    <Box
-      w="600px"
-      color={theme.colors.textPrimary.light}
-      bg={theme.colors.background.light}
-    >
-      <ModalHeader color={theme.colors.primary.light}>
-        Security Settings
-      </ModalHeader>
+    <Box w="600px" color={theme.colors.profileModal.mainTextColor}>
+      <ModalHeader>Security Settings</ModalHeader>
       {validationError && (
-        <Alert status="error" bg={theme.colors.error.light}>
-          <AlertIcon color={theme.colors.textPrimary.light} />
+        <Alert status="error">
+          <AlertIcon />
           {validationError}
         </Alert>
       )}
       <FormControl mt={3} paddingInlineStart={6}>
-        <FormLabel color={theme.colors.formLabel.light}>Old Password</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Old Password</FormLabel>
         <Input
           type="password"
           value={oldPassword}
           onChange={e => setOldPassword(e.target.value)}
+          color={theme.colors.profileModal.mainFormInputColor}
         />
       </FormControl>
       <FormControl mt={3} paddingInlineStart={6}>
-        <FormLabel color={theme.colors.formLabel.light}>New Password</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>New Password</FormLabel>
         <Input
           type="password"
           value={newPassword}
           onChange={e => setNewPassword(e.target.value)}
+          color={theme.colors.profileModal.mainFormInputColor}
         />
       </FormControl>
       <FormControl mt={3} paddingInlineStart={6}>
-        <FormLabel color={theme.colors.formLabel.light}>
-          Confirm New Password
-        </FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Confirm New Password</FormLabel>
         <Input
           type="password"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
+          color={theme.colors.profileModal.mainFormInputColor}
         />
       </FormControl>
       <ModalFooter paddingInlineEnd={0} paddingTop={5}>
-        <Button
-          bg={theme.colors.button.light}
-          _hover={{ bg: theme.colors.button.hover }}
-          onClick={handleSave}
-        >
+        <Button colorScheme="blue" mr={3} onClick={handleSave}>
           Save
         </Button>
         <Button
-          bg={theme.colors.error.light}
-          _hover={{ bg: theme.colors.error.light }}
+          bg={theme.colors.buttonCancel.light}
+          _hover={{ bg: theme.colors.buttonCancel.hover }}
           onClick={handleClose}
         >
           Cancel

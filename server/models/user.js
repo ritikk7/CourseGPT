@@ -11,7 +11,7 @@ const UserSchema = new Schema(
       enum: ['Student', 'Professor', 'Admin', 'Developer', 'Tester', null],
       default: null,
     },
-    profilePicture: { type: String, default: '' },
+    profilePicture: { type: String, default: './assets/pup.png' },
     firstName: { type: String, default: '' },
     lastName: { type: String, default: '' },
     chats: [{ type: Schema.Types.ObjectId, ref: 'ChatSection' }],

@@ -61,17 +61,17 @@ export default function Login() {
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      bg={theme.colors.background.light}
+      bg={theme.colors.loginAndReg.mainBackground}
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'} color={theme.colors.textPrimary.light}>
+          <Heading fontSize={'4xl'} color={theme.colors.loginAndReg.text}>
             Sign in to your account
           </Heading>
         </Stack>
         <Box
           rounded={'lg'}
-          bg={theme.colors.secondary.light}
+          bg={theme.colors.loginAndReg.boxBackground}
           boxShadow={'lg'}
           p={8}
         >
@@ -80,7 +80,7 @@ export default function Login() {
               status="error"
               mb={5}
               bg={theme.colors.error.light}
-              color={theme.colors.textSecondary.light}
+              color={theme.colors.loginAndReg.text}
             >
               <AlertIcon />
               {authError}
@@ -89,27 +89,27 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <Stack spacing={4}>
               <FormControl id="email" isRequired>
-                <FormLabel color={theme.colors.formLabel.light}>
+                <FormLabel color={theme.colors.loginAndReg.text}>
                   Email address
                 </FormLabel>
                 <Input
                   name="email"
                   type="email"
-                  color={theme.colors.textSecondary.light}
-                  bg={theme.colors.tertiary.light}
+                  color={theme.colors.loginAndReg.text}
+                  bg={theme.colors.loginAndReg.inputBackground}
                   onChange={handleChange}
                 />
               </FormControl>
               <FormControl id="password" isRequired>
-                <FormLabel color={theme.colors.formLabel.light}>
+                <FormLabel color={theme.colors.loginAndReg.text}>
                   Password
                 </FormLabel>
                 <InputGroup>
                   <Input
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    color={theme.colors.textSecondary.light}
-                    bg={theme.colors.tertiary.light}
+                    color={theme.colors.loginAndReg.text}
+                    bg={theme.colors.loginAndReg.inputBackground}
                     onChange={handleChange}
                   />
                   <InputRightElement h={'full'}>
@@ -126,26 +126,26 @@ export default function Login() {
               </FormControl>
               <Stack spacing={2}>
                 <Button
-                  bg={theme.colors.button.light}
-                  color={theme.colors.button.textBase}
+                  bg={theme.colors.loginAndReg.loginOrRegisterButton.base}
+                  color={theme.colors.textPrimary.light}
                   _hover={{
-                    bg: theme.colors.button.hover,
-                    color: theme.colors.button.textHover,
+                    bg: theme.colors.loginAndReg.loginOrRegisterButton.hover,
+                    color: theme.colors.textPrimary.light,
                   }}
                   type="submit"
                 >
                   Sign in
                 </Button>
-                <Text align="center" color={theme.colors.textSecondary.light}>
+                <Text align="center" color={theme.colors.loginAndReg.text}>
                   or
                 </Text>
 
                 <Button
-                  bg={theme.colors.loginWithGoogle.light}
-                  color={theme.colors.loginWithGoogle.textBase}
+                  bg={theme.colors.loginAndReg.loginWithGoogleButton.base}
+                  color={theme.colors.textPrimary.light}
                   _hover={{
-                    bg: theme.colors.loginWithGoogle.hover,
-                    color: theme.colors.loginWithGoogle.textHover,
+                    bg: theme.colors.loginAndReg.loginWithGoogleButton.hover,
+                    color: theme.colors.textPrimary.light,
                   }}
                   onClick={handleGoogleLogin}
                   leftIcon={<FaGoogle />}
@@ -156,11 +156,11 @@ export default function Login() {
             </Stack>
           </form>
           <Stack justify="center" mt={4}>
-            <Text align={'center'} color={theme.colors.textSecondary.light}>
+            <Text align={'center'} color={theme.colors.loginAndReg.text}>
               Don't have an account?{' '}
               <Link
                 onClick={navigateToRegister}
-                color={theme.colors.link.hover}
+                color={theme.colors.loginAndReg.link.hover}
               >
                 Create one!
               </Link>

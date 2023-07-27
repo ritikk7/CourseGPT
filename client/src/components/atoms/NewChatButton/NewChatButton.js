@@ -8,7 +8,7 @@ const NewChatButton = ({ handleNewChat, disable }) => {
       mt={4}
       width="100%"
       bg={theme.colors.sidePanel.background}
-      _hover={disable ? '' : { bg: theme.colors.sidePanel.hoverItemBackground}}
+      _hover={disable ? '' : { bg: theme.colors.sidePanel.hoverItemBackground }}
       color={theme.colors.sidePanel.text}
       border="1px"
       borderColor={theme.colors.sidePanel.text}

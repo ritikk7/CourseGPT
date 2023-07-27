@@ -13,13 +13,40 @@ const theme = extendTheme({
       text: '#FFFFFF',
       textHover: '#c2ddff',
     },
-    page: {
-      background: '#FFFFFF',
-      sidePanelBackground: `#607D8B`,
-      sidePanelHoverItemBackground: `#90A4AE`,
-      sidePanelActiveItemBackground: `#455A64`,
-      text: '#FFFFFF',
-      textDark: '#08101C',
+    profileModal: {
+      mainBackground: '#FFFFFF',
+      sidePanelInactiveItemBackground: `#607D8B`,
+      sidePanelHoverItemBackground: `#455A64`,
+      sidePanelActiveItemBackground: `#90A4AE`,
+      sidePanelIconColor: '#FFFFFF',
+      hoverItemBackground: `#455A64`,
+      activeItemBackground: `#607D8B`,
+      inactiveItemBackground: `#90A4AE`,
+      hoverItemText: '#FFFFFF',
+      activeItemText: '#FFFFFF',
+      inactiveItemText: '#F5F5F5',
+      mainTextColor: '#0E1723',
+      mainFormLabelColor: '#0E1723',
+      mainFormInputColor: '#d9edfa',
+    },
+    loginAndReg: {
+      mainBackground: '#f1f7fc',
+      boxBackground: '#FFFFFF',
+      inputBackground: '#f1f7fc',
+      text: '#0E1723',
+      link: {
+        base: '#1A73E8',
+        hover: '#1543C4',
+      },
+      loginWithGoogleButton: {
+        base: '#ff6b6b',
+        hover: '#ff4a4a',
+      },
+      loginOrRegisterButton: {
+        base: '#5791ff',
+        hover: '#2b75ff',
+      },
+      icon: '#0E1723',
     },
     primary: {
       light: '#DDEAF3',
@@ -47,19 +74,16 @@ const theme = extendTheme({
       darker: '#134782',
     },
     button: {
+      text: 'textPrimary.light',
       hover: '#1262A3',
       light: '#2675BF',
       dark: '#105287',
     },
-    buttonTwo: {
+    buttonCancel: {
+      text: 'textPrimary.light',
       hover: '#3B4D57',
       light: '#507387',
       dark: '#2B3642',
-    },
-    loginWithGoogle: {
-      hover: '#9A3312',
-      light: '#BF4236',
-      dark: '#881C1A',
     },
     error: {
       light: '#D33A34',

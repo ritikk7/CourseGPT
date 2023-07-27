@@ -1,18 +1,18 @@
 :root {
-  --primary-colour: #455A64;
+  --primary-colour: #455a64;
   --secondary-colour: #d9edfa;
   --tertiary-colour: #d9edfa;
-  --text-primary-colour: #FFFFFF;
-  --text-secondary-colour: #AEBDC2;
+  --text-primary-colour: #ffffff;
+  --text-secondary-colour: #aebdc2;
   --accent-colour: #a1c7ff;
   --error-colour: #f44336;
-  --background-colour: #8C9EA6;
-  --button-hover-colour: #1A76B4;
-  --link-hover-colour: #BDBDBD;
-  --formLabel-colour: #AEBDC2;
+  --background-colour: #8c9ea6;
+  --button-hover-colour: #1a76b4;
+  --link-hover-colour: #bdbdbd;
+  --formLabel-colour: #aebdc2;
   --buttonTextHover-colour: #263238;
 
-  --primary-colour-rgba: 144,163,174;
+  --primary-colour-rgba: 144, 163, 174;
   --secondary-colour-rgba: 122, 143, 156;
   --tertiary-colour-rgba: 207, 216, 220;
   --text-primary-colour-rgba: 255, 255, 255;

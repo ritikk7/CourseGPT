@@ -8,13 +8,16 @@ import Feedback from '../FeedbackPanel/FeedbackPanel';
 
 const ChatSection = ({ message }) => {
   const user = useSelector(state => state.user);
+  const userProfile = useSelector(state => state.user.profilePicture);
   const isSenderUser = message.role === 'user';
   const theme = useTheme();
-  const backgroundColor = isSenderUser ? `${theme.colors.chatSection.light}` : `${theme.colors.chatSection.dark}`;
+  const backgroundColor = isSenderUser
+    ? `${theme.colors.chatSection.light}`
+    : `${theme.colors.chatSection.dark}`;
   const courseGptImage = './coursegptLogo.png';
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
-  const userImage = 'https://bit.ly/dan-abramov';
+  const userImage = userProfile ? userProfile : 'https://bit.ly/dan-abramov';
   const renderAnimation = isTimestampLessThan15SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
   const [typingAnimation, setTypingAnimation] = useState('.');
@@ -43,7 +46,6 @@ const ChatSection = ({ message }) => {
   ) : (
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
-
 
   const handleNewlineHTML = text => {
     if (text) {
@@ -126,12 +128,12 @@ const ChatSection = ({ message }) => {
         </Box>
       ) : (
         <Box color={theme.colors.textPrimary.dark}>
-        <div className={styles.chatComponent} style={{ backgroundColor }}>
-          <div className={styles.chatContent}>
-            {message && ProfileIcon}
-            {message && message.content}
+          <div className={styles.chatComponent} style={{ backgroundColor }}>
+            <div className={styles.chatContent}>
+              {message && ProfileIcon}
+              {message && message.content}
+            </div>
           </div>
-        </div>
         </Box>
       )}
     </>
