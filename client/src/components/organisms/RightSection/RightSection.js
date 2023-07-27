@@ -15,15 +15,11 @@ import {
 import { ArrowForwardIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   createChatWithSelectedDropdownCourse,
-  fetchChat, setActiveChat, setFocusedChat
-} from "../../../redux/chatsSlice";
+  fetchChat,
+  setActiveChat,
+  setFocusedChat,
+} from '../../../redux/chatsSlice';
 import { Button, Box, Spinner, Tooltip, useTheme } from '@chakra-ui/react';
-
-const Message = ({ value }) => (
-  <div className={styles.message}>
-    <p>{value}</p>
-  </div>
-);
 
 const InputArea = ({
   currentUserInput,
@@ -62,11 +58,15 @@ const InputArea = ({
           />
         </button>
       </div>
-      <Message
-        value={
-          'CourseGPT may produce inaccurate information about instructors or course content. [CourseGPT 2023 Version]'
-        }
-      />
+      <div
+        className={styles.message}
+        style={{ color: theme.colors.textPrimary.dark }}
+      >
+        <p>
+          CourseGPT may produce inaccurate information about instructors or
+          course content. [CourseGPT 2023 Version]
+        </p>
+      </div>
     </div>
   );
 };
