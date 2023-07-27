@@ -44,9 +44,35 @@ const ChatSection = ({ message }) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
+  const handleNewlineHTML = text => {
+    if (text) {
+      return text.split('\n').map((item, key) => {
+        return (
+          <span key={key}>
+            {item}
+            <br />
+          </span>
+        );
+      });
+    }
+    return null;
+  };
+  const handleNewlineText = text => {
+    if (text) {
+      let htmlText = text
+        .split('\n')
+        .map((item, key) => {
+          return `<span key=${key}>` + `${item}` + `<br />` + `</span>`;
+        })
+        .join('');
+      return htmlText;
+    }
+    return null;
+  };
+
   const renderBotAnswer = () => {
     if (!renderAnimation) {
-      return message.content;
+      return message.content && handleNewlineHTML(message.content);
     }
     if (message.content) {
       return (
@@ -56,7 +82,7 @@ const ChatSection = ({ message }) => {
           }}
           onInit={typewriter => {
             typewriter
-              .typeString(message.content)
+              .typeString(handleNewlineText(message.content))
               .callFunction(() => {
                 document.querySelector('.Typewriter__cursor').remove();
               })
@@ -90,10 +116,10 @@ const ChatSection = ({ message }) => {
               <div className={styles.msgContent}>
                 {message && renderGptPlaceholder()}
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
-                {message && !messageIsGptPlaceholder && (
-                  <Feedback message={message._id} />
-                )}
               </div>
+              {message && !messageIsGptPlaceholder && (
+                <Feedback message={message._id} />
+              )}
             </div>
           </div>
         </Box>

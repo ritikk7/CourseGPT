@@ -7,8 +7,6 @@ const crypto = require('crypto');
 const { EmbeddingCache } = require('../util/EmbeddingCache');
 const { Logger } = require('../util/Logger');
 const stopwords = require('stopword');
-const natural = require('natural');
-const stemmer = natural.PorterStemmer;
 
 const BATCH_SIZE = process.env.BATCH_SIZE || 1000;
 const CHUNK_SIZE = process.env.CHUNK_SIZE || 500;
@@ -20,6 +18,9 @@ function splitStringToChunks(rawData, delimiter = '.') {
   let chunks = [];
   let chunk = '';
 
+  if(countTokens(rawData) <  1000) { return [rawData]} // if text is small, keep the context
+
+  // if its big, I found its better to split into smaller chunks
   for (const sentence of sentences) {
     if (countTokens(chunk + sentence + delimiter) > CHUNK_SIZE) {
       if (chunk) {
@@ -43,26 +44,19 @@ async function normalizeAndCleanText(rawText) {
   Logger.logEnter();
   // According to Chat GPTs suggestion we should optimize the text for embeddings by:
   // - Converting all the text to lowercase
-  // - Removing all special characters
-  // - Removing all numbers
   // - Removing extra white spaces
   // - Removing stop words
-  // - Applying stemming to reduce each word to its root form
   let cleanedText = rawText.toLowerCase();
-  cleanedText = cleanedText.replace(/[^a-zA-Z0-9\s]/g, '');
-  cleanedText = cleanedText.replace(/\d+/g, '');
   cleanedText = cleanedText.replace(/\s\s+/g, ' ');
   const words = cleanedText.split(' ');
   const cleanedWords = stopwords.removeStopwords(words);
-  const stemmedWords = cleanedWords.map(word => stemmer.stem(word));
-  cleanedText = stemmedWords.join(' ');
+  cleanedText = cleanedWords.join(' ');
   Logger.logExit();
   return cleanedText.trim();
 }
 
-async function generateSectionTitle(sectionContent) {
+async function generateSectionTitle(cleanedSectionContent) {
   Logger.logEnter();
-  const cleanedSectionContent = await normalizeAndCleanText(sectionContent);
   const keywords = await extractKeywords(cleanedSectionContent);
 
   let content = '';
@@ -71,14 +65,15 @@ async function generateSectionTitle(sectionContent) {
       ', '
     )}] from the cleaned section content of course ${
       currCourse.courseCode
-    }, think carefully and generate a short, relevant title optimized for embedding-based search.\n\nHere is the section content:\n"${cleanedSectionContent}"`;
+    }, think carefully and generate a long, descriptive title optimized for embedding-based search.\n\nHere is the section content:\n"${cleanedSectionContent}"`;
   } else {
-    content = `Given the cleaned section content of course ${currCourse.courseCode}, think carefully and create a short, relevant title optimized for embedding-based search.\n\nHere is the section content:\n"${cleanedSectionContent}"`;
+    content = `Given the cleaned section content of course ${currCourse.courseCode}, think carefully and long, descriptive title optimized for embedding-based search.\n\nHere is the section content:\n"${cleanedSectionContent}"`;
   }
   let generatedTitle = await createCourseGptCompletion(
-    [{ role: 'system', content: content }],
+    [{ role: 'user', content: content }],
     0.5
   );
+
   generatedTitle = generatedTitle.replace(/['"]+/g, '');
 
   Logger.logExit();
@@ -91,7 +86,7 @@ async function extractKeywords(sectionContent) {
     const content = `From the following course section content, identify and list the key topics, entities, keywords, or themes it covers. Please list them as comma-separated values:\n"${sectionContent}"`;
 
     const rawKeywords = await createCourseGptCompletion([
-      { role: 'system', content: content },
+      { role: 'user', content: content },
     ]);
 
     if (rawKeywords.includes(',')) {
@@ -108,10 +103,14 @@ async function extractKeywords(sectionContent) {
 async function splitRawDataIntoSections(rawData) {
   Logger.logEnter();
   const resultSections = [];
-  const fileChunks = splitStringToChunks(rawData);
+  let fileChunks = splitStringToChunks(rawData);
+  fileChunks = await Promise.all(
+    fileChunks.map(chunk => normalizeAndCleanText(chunk))
+  );
   const titles = await Promise.all(
     fileChunks.map(chunk => generateSectionTitle(chunk))
   );
+
   for (let i = 0; i < fileChunks.length; i++) {
     resultSections.push([titles[i], fileChunks[i]]);
   }
@@ -172,17 +171,21 @@ async function storeEmbeddingsInMongoAndCache(
 
 async function createEmbeddingForNewData(submitterId, course, content) {
   Logger.logEnter();
-  currCourse = course;
-  let trainingStrings = await processDataIntoTrainingStrings(content);
-  const embeddings = await createCourseEmbeddings(trainingStrings);
-  await storeEmbeddingsInMongoAndCache(
-    submitterId,
-    course,
-    trainingStrings,
-    embeddings
-  );
-  Logger.logExit();
-  Logger.happyLog('Finished creating embedding for new data');
+  try {
+    currCourse = course;
+    let trainingStrings = await processDataIntoTrainingStrings(content);
+    const embeddings = await createCourseEmbeddings(trainingStrings);
+    await storeEmbeddingsInMongoAndCache(
+      submitterId,
+      course,
+      trainingStrings,
+      embeddings
+    );
+    Logger.logExit();
+    Logger.happyLog('Finished creating embedding for new data');
+  } catch (err) {
+    Logger.error('Error creating embedding for new data:' + err);
+  }
 }
 
 module.exports = {
