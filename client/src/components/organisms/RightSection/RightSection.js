@@ -15,8 +15,8 @@ import {
 import { ArrowForwardIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   createChatWithSelectedDropdownCourse,
-  fetchChat,
-} from '../../../redux/chatsSlice';
+  fetchChat, setActiveChat, setFocusedChat
+} from "../../../redux/chatsSlice";
 import { Button, Box, Spinner, Tooltip, useTheme } from '@chakra-ui/react';
 
 const Message = ({ value }) => (
@@ -126,6 +126,8 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       async newMessagePayload => {
         await dispatch(getGptResponseInChat(newMessagePayload.payload));
         dispatch(fetchChat(newMessagePayload.payload.chat));
+        await dispatch(setActiveChat(newMessagePayload.payload.chat));
+        await dispatch(setFocusedChat(newMessagePayload.payload.chat));
       }
     );
   };

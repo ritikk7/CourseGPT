@@ -194,7 +194,10 @@ export default function Register() {
           <Stack justify="center" mt={4}>
             <Text align={'center'} color={theme.colors.loginAndReg.text}>
               Already have an account?{' '}
-              <Link onClick={navigateToLogin} color={theme.colors.loginAndReg.link.hover}>
+              <Link
+                onClick={navigateToLogin}
+                color={theme.colors.loginAndReg.link.hover}
+              >
                 Login!
               </Link>
             </Text>
@@ -204,7 +207,6 @@ export default function Register() {
     </Flex>
   );
 }
-
 
 /**
  * Majority of code written by team.

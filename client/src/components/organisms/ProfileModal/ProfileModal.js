@@ -6,9 +6,10 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Stack, useTheme,
-  VStack
-} from "@chakra-ui/react";
+  Stack,
+  useTheme,
+  VStack,
+} from '@chakra-ui/react';
 import { FaUser, FaUserPlus, FaSchool, FaLock } from 'react-icons/fa';
 import ProfileUserSettings from '../../molecules/ProfileSettings/ProfileUserSettings/ProfileUserSettings';
 import ProfileSchoolSettings from '../../molecules/ProfileSettings/ProfileSchoolSettings/ProfileSchoolSettings';
@@ -24,7 +25,9 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         width="150px"
         borderRight="1px solid"
         borderColor={theme.colors.profileModal.mainTextColor}
-        backgroundColor={theme.colors.profileModal.sidePanelInactiveItemBackground}
+        backgroundColor={
+          theme.colors.profileModal.sidePanelInactiveItemBackground
+        }
       >
         <VStack spacing={0} height="full" justify="space-around">
           <Box
@@ -36,11 +39,20 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Personal')}
             _hover={{
-              background: theme.colors.profileModal.sidePanelHoverItemBackground,
+              background:
+                theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
-            backgroundColor={selectedSetting === 'Personal' ? theme.colors.profileModal.sidePanelActiveItemBackground : theme.colors.profileModal.sidePanelInactiveItemBackground}
+            backgroundColor={
+              selectedSetting === 'Personal'
+                ? theme.colors.profileModal.sidePanelActiveItemBackground
+                : theme.colors.profileModal.sidePanelInactiveItemBackground
+            }
           >
-            <Icon as={FaUser} boxSize="24px" color={theme.colors.profileModal.sidePanelIconColor} />
+            <Icon
+              as={FaUser}
+              boxSize="24px"
+              color={theme.colors.profileModal.sidePanelIconColor}
+            />
           </Box>
           <Box
             as="button"
@@ -53,11 +65,20 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             borderColor={theme.colors.profileModal.mainTextColor}
             onClick={() => setSelectedSetting('Avatar')}
             _hover={{
-              background: theme.colors.profileModal.sidePanelHoverItemBackground,
+              background:
+                theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
-            backgroundColor={selectedSetting === 'Avatar' ? theme.colors.profileModal.sidePanelActiveItemBackground : theme.colors.profileModal.sidePanelInactiveItemBackground}
+            backgroundColor={
+              selectedSetting === 'Avatar'
+                ? theme.colors.profileModal.sidePanelActiveItemBackground
+                : theme.colors.profileModal.sidePanelInactiveItemBackground
+            }
           >
-            <Icon as={FaUserPlus} boxSize="24px" color={theme.colors.profileModal.sidePanelIconColor} />
+            <Icon
+              as={FaUserPlus}
+              boxSize="24px"
+              color={theme.colors.profileModal.sidePanelIconColor}
+            />
           </Box>
           <Box
             as="button"
@@ -71,11 +92,20 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             borderColor={theme.colors.profileModal.mainTextColor}
             onClick={() => setSelectedSetting('School')}
             _hover={{
-              background: theme.colors.profileModal.sidePanelHoverItemBackground,
+              background:
+                theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
-            backgroundColor={selectedSetting === 'School' ? theme.colors.profileModal.sidePanelActiveItemBackground : theme.colors.profileModal.sidePanelInactiveItemBackground}
+            backgroundColor={
+              selectedSetting === 'School'
+                ? theme.colors.profileModal.sidePanelActiveItemBackground
+                : theme.colors.profileModal.sidePanelInactiveItemBackground
+            }
           >
-            <Icon as={FaSchool} boxSize="24px" color={theme.colors.profileModal.sidePanelIconColor} />
+            <Icon
+              as={FaSchool}
+              boxSize="24px"
+              color={theme.colors.profileModal.sidePanelIconColor}
+            />
           </Box>
           <Box
             as="button"
@@ -86,11 +116,20 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Security')}
             _hover={{
-              background: theme.colors.profileModal.sidePanelHoverItemBackground,
+              background:
+                theme.colors.profileModal.sidePanelHoverItemBackground,
             }}
-            backgroundColor={selectedSetting === 'Security' ? theme.colors.profileModal.sidePanelActiveItemBackground : theme.colors.profileModal.sidePanelInactiveItemBackground}
+            backgroundColor={
+              selectedSetting === 'Security'
+                ? theme.colors.profileModal.sidePanelActiveItemBackground
+                : theme.colors.profileModal.sidePanelInactiveItemBackground
+            }
           >
-            <Icon as={FaLock} boxSize="24px" color={theme.colors.profileModal.sidePanelIconColor} />
+            <Icon
+              as={FaLock}
+              boxSize="24px"
+              color={theme.colors.profileModal.sidePanelIconColor}
+            />
           </Box>
         </VStack>
       </Box>
@@ -117,7 +156,11 @@ const ProfileModal = ({ isOpen, handleClose }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <Stack direction="row" height="450px" backgroundColor={theme.colors.profileModal.mainBackground}>
+        <Stack
+          direction="row"
+          height="450px"
+          backgroundColor={theme.colors.profileModal.mainBackground}
+        >
           {renderSettingsSidePanel()}
           <VStack p={5}>{renderSettings()}</VStack>
         </Stack>

@@ -15,9 +15,9 @@ const theme = extendTheme({
     },
     profileModal: {
       mainBackground: '#FFFFFF',
-      sidePanelInactiveItemBackground: `#607D8B`,
+      sidePanelInactiveItemBackground: `#90A4AE`,
       sidePanelHoverItemBackground: `#455A64`,
-      sidePanelActiveItemBackground: `#90A4AE`,
+      sidePanelActiveItemBackground: `#607D8B`,
       sidePanelIconColor: '#FFFFFF',
       hoverItemBackground: `#455A64`,
       activeItemBackground: `#607D8B`,
@@ -81,8 +81,8 @@ const theme = extendTheme({
     },
     buttonCancel: {
       text: 'textPrimary.light',
-      hover: '#3B4D57',
-      light: '#507387',
+      hover: '#9E2023',
+      light: '#D33A34',
       dark: '#2B3642',
     },
     error: {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../../../redux/userSlice';
 import { useTheme } from '@chakra-ui/react';
 import {
@@ -35,7 +35,7 @@ const avatarImages = [
 const ProfileAvatar = ({ handleClose }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const profileImage = useSelector((state) => state.user.profilePicture);
+  const profileImage = useSelector(state => state.user.profilePicture);
   const [selectedAvatar, setSelectedAvatar] = useState(profileImage);
 
   const handleSave = () => {
@@ -57,7 +57,10 @@ const ProfileAvatar = ({ handleClose }) => {
               className={styles.btn}
               style={
                 selectedAvatar === image
-                  ? { backgroundColor: theme.colors.profileModal.activeItemBackground }
+                  ? {
+                      backgroundColor:
+                        theme.colors.profileModal.activeItemBackground,
+                    }
                   : null
               }
               onClick={() => setSelectedAvatar(image)}
@@ -74,11 +77,24 @@ const ProfileAvatar = ({ handleClose }) => {
           ))}
         </SimpleGrid>
       </FormControl>
-      <ModalFooter paddingInlineEnd={0} paddingTop={6} color={theme.colors.button.text}>
-        <Button  bg={theme.colors.button.light} _hover={{ bg: theme.colors.button.hover }} mr={3} onClick={handleSave}>
+      <ModalFooter
+        paddingInlineEnd={0}
+        paddingTop={6}
+        color={theme.colors.button.text}
+      >
+        <Button
+          bg={theme.colors.button.light}
+          _hover={{ bg: theme.colors.button.hover }}
+          mr={3}
+          onClick={handleSave}
+        >
           Save
         </Button>
-        <Button bg={theme.colors.buttonCancel.light} _hover={{ bg: theme.colors.buttonCancel.hover }} onClick={handleClose}>
+        <Button
+          bg={theme.colors.buttonCancel.light}
+          _hover={{ bg: theme.colors.buttonCancel.hover }}
+          onClick={handleClose}
+        >
           Cancel
         </Button>
       </ModalFooter>

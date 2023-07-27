@@ -205,7 +205,8 @@ export default function RegisterUserDetails() {
                       bg={theme.colors.loginAndReg.loginOrRegisterButton.base}
                       color={theme.colors.loginAndReg.text}
                       _hover={{
-                        bg: theme.colors.loginAndReg.loginOrRegisterButton.hover,
+                        bg: theme.colors.loginAndReg.loginOrRegisterButton
+                          .hover,
                         color: theme.colors.loginAndReg.text,
                       }}
                       w="7rem"

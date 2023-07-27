@@ -11,8 +11,8 @@ import {
   ModalFooter,
   ModalHeader,
   Text,
-  useTheme
-} from "@chakra-ui/react";
+  useTheme,
+} from '@chakra-ui/react';
 import { updatePassword } from '../../../../redux/authSlice';
 
 const ProfileSecuritySettings = ({ handleClose }) => {
@@ -99,7 +99,9 @@ const ProfileSecuritySettings = ({ handleClose }) => {
         </Alert>
       )}
       <FormControl mt={3} paddingInlineStart={6}>
-        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Old Password</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>
+          Old Password
+        </FormLabel>
         <Input
           type="password"
           value={oldPassword}
@@ -108,7 +110,9 @@ const ProfileSecuritySettings = ({ handleClose }) => {
         />
       </FormControl>
       <FormControl mt={3} paddingInlineStart={6}>
-        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>New Password</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>
+          New Password
+        </FormLabel>
         <Input
           type="password"
           value={newPassword}
@@ -117,7 +121,9 @@ const ProfileSecuritySettings = ({ handleClose }) => {
         />
       </FormControl>
       <FormControl mt={3} paddingInlineStart={6}>
-        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Confirm New Password</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>
+          Confirm New Password
+        </FormLabel>
         <Input
           type="password"
           value={confirmPassword}

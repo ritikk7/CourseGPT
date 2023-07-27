@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button, FormControl, FormLabel, ModalFooter, ModalHeader, Select, SimpleGrid, useTheme } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  ModalFooter,
+  ModalHeader,
+  Select,
+  SimpleGrid,
+  useTheme,
+} from '@chakra-ui/react';
 
 import { updateUser } from '../../../../redux/userSlice';
 import { schoolsWithCoursesSelector } from '../../../../redux/selectors/schoolsWithCoursesSelector';
@@ -34,7 +44,8 @@ const ProfileSchoolSettings = ({ handleClose }) => {
   const handleCourseChange = course => {
     setSelectedCourses(prevCourses => {
       if (prevCourses[course._id]) {
-        const { [course._id]: deletedCourse, ...remainingCourses } = prevCourses;
+        const { [course._id]: deletedCourse, ...remainingCourses } =
+          prevCourses;
         return remainingCourses;
       } else {
         return { ...prevCourses, [course._id]: course };
@@ -52,7 +63,9 @@ const ProfileSchoolSettings = ({ handleClose }) => {
 
   const renderSchools = () => {
     return Object.values(schoolsWithCourses).map((school, i) => (
-      <option key={i} value={school._id}>{school.name}</option>
+      <option key={i} value={school._id}>
+        {school.name}
+      </option>
     ));
   };
 
@@ -74,9 +87,11 @@ const ProfileSchoolSettings = ({ handleClose }) => {
     <Box w="600px" color={theme.colors.profileModal.mainTextColor}>
       <ModalHeader>School Settings</ModalHeader>
       <FormControl paddingInlineStart={6}>
-        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>School</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>
+          School
+        </FormLabel>
         <Select
-          backgroundColor={theme.colors.profileModal.inactiveItemBackground}
+          backgroundColor={theme.colors.profileModal.activeItemBackground}
           color={theme.colors.textPrimary.light}
           placeholder="Select a school"
           value={selectedSchool?._id}
@@ -85,16 +100,31 @@ const ProfileSchoolSettings = ({ handleClose }) => {
         >
           {renderSchools()}
         </Select>
-        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>Courses</FormLabel>
+        <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>
+          Courses
+        </FormLabel>
         <SimpleGrid minChildWidth="120px" spacing="7px">
           {renderCourses()}
         </SimpleGrid>
       </FormControl>
-      <ModalFooter paddingInlineEnd={0} paddingTop={5} color={theme.colors.button.text}>
-        <Button bg={theme.colors.button.light} _hover={{ bg: theme.colors.button.hover }} mr={3} onClick={handleSave}>
+      <ModalFooter
+        paddingInlineEnd={0}
+        paddingTop={5}
+        color={theme.colors.button.text}
+      >
+        <Button
+          bg={theme.colors.button.light}
+          _hover={{ bg: theme.colors.button.hover }}
+          mr={3}
+          onClick={handleSave}
+        >
           Save
         </Button>
-        <Button bg={theme.colors.buttonCancel.light} _hover={{ bg: theme.colors.buttonCancel.hover }} onClick={handleClose}>
+        <Button
+          bg={theme.colors.buttonCancel.light}
+          _hover={{ bg: theme.colors.buttonCancel.hover }}
+          onClick={handleClose}
+        >
           Cancel
         </Button>
       </ModalFooter>
