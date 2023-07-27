@@ -12,9 +12,15 @@ const NewChatCourseSelector = ({
 
   return (
     <Select
-      _hover={{ bg: theme.colors.primary.light }}
-      borderColor={theme.colors.secondary.light}
-      color={theme.colors.textPrimary.light}
+      _hover={{ bg: theme.colors.sidePanel.hoverItemBackground, borderColor: theme.colors.sidePanel.text }}
+      borderColor={theme.colors.sidePanel.text}
+      _focus={{
+        bg: theme.colors.sidePanel.hoverItemBackground, borderColor: theme.colors.sidePanel.text
+      }}
+      _expanded={{
+        bg: theme.colors.sidePanel.hoverItemBackground, borderColor: theme.colors.sidePanel.text
+      }}
+      color={theme.colors.sidePanel.text}
       value={defaultValue}
       onChange={e => onChange(e)}
       isDisabled={disable}

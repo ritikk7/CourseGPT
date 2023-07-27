@@ -7,12 +7,11 @@ const NewChatButton = ({ handleNewChat, disable }) => {
     <Button
       mt={4}
       width="100%"
-      bg={theme.colors.button.light}
-      _hover={disable ? '' : { bg: theme.colors.button.hover }}
-      color={theme.colors.button.textBase}
-      _hover={{ color: theme.colors.button.textHover }}
+      bg={theme.colors.sidePanel.background}
+      _hover={disable ? '' : { bg: theme.colors.sidePanel.hoverItemBackground}}
+      color={theme.colors.sidePanel.text}
       border="1px"
-      borderColor={theme.colors.secondary.light}
+      borderColor={theme.colors.sidePanel.text}
       onClick={() => {
         if (!disable) {
           handleNewChat();

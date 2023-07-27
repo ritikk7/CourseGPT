@@ -136,7 +136,7 @@ const SidePanel = ({
 
   return (
     <Box
-      bg={theme.colors.background.dark}
+      bg={theme.colors.sidePanel.background}
       w={width}
       minW="250px"
       pos="absolute"

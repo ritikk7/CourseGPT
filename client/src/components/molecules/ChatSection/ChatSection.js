@@ -110,7 +110,7 @@ const ChatSection = ({ message }) => {
   return (
     <>
       {!isSenderUser ? (
-        <Box className={styles['message-container']}>
+        <Box color={theme.colors.textPrimary.dark}>
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
@@ -125,12 +125,14 @@ const ChatSection = ({ message }) => {
           </div>
         </Box>
       ) : (
+        <Box color={theme.colors.textPrimary.dark}>
         <div className={styles.chatComponent} style={{ backgroundColor }}>
           <div className={styles.chatContent}>
             {message && ProfileIcon}
             {message && message.content}
           </div>
         </div>
+        </Box>
       )}
     </>
   );

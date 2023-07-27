@@ -44,18 +44,18 @@ const Feedback = ({ message }) => {
         <IconButton
           icon={<FaThumbsUp />}
           bg={theme.colors.chatSection.dark}
-          color={theme.colors.textPrimary.light}
+          color={theme.colors.textPrimary.dark}
           _hover={{
-            color: theme.colors.accent.light,
+            color: theme.colors.accent.darker,
           }}
           onClick={handleThumbsUpClick}
         />
         <IconButton
           icon={<FaThumbsDown />}
           bg={theme.colors.chatSection.dark}
-          color={theme.colors.textPrimary.light}
+          color={theme.colors.textPrimary.dark}
           _hover={{
-            color: theme.colors.error.light,
+            color: theme.colors.error.dark,
           }}
           onClick={handleThumbsDownClick}
         />

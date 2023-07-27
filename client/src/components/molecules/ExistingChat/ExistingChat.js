@@ -41,14 +41,14 @@ const ExistingChat = ({
             onClick={() => {
               handleChatDelete(id);
             }}
-            color={theme.colors.textSecondary.light}
+            color={theme.colors.sidePanel.text}
           />
           <CloseIcon
             fontSize="small"
             onClick={() => {
               setIsEditMode(false);
             }}
-            color={theme.colors.textSecondary.light}
+            color={theme.colors.sidePanel.text}
           />
         </div>
       );
@@ -74,8 +74,8 @@ const ExistingChat = ({
     <div style={{ position: 'relative' }}>
       <Button
         width="100%"
-        bg={isFocused ? theme.colors.button.light : 'transparent'}
-        _hover={{ bg: theme.colors.button.hover }}
+        bg={isFocused ? theme.colors.sidePanel.activeItemBackground : 'transparent'}
+        _hover={{ bg: theme.colors.sidePanel.hoverItemBackground }}
         onClick={() => {
           handleExistingChatClick(id);
           if (!isScreenLarge) {

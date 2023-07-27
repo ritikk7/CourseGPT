@@ -26,11 +26,11 @@ const CreateNewChatSection = ({
         <Button
           ml={2}
           bg="transparent"
-          _hover={{ bg: theme.colors.secondary.light }}
-          border={`1px solid ${theme.colors.tertiary.light}`}
+          _hover={{ bg: theme.colors.sidePanel.hoverItemBackground }}
+          border={`1px solid ${theme.colors.sidePanel.text}`}
           onClick={toggleSidePanelVisibility}
         >
-          <ChevronLeftIcon color={theme.colors.textPrimary.light} />
+          <ChevronLeftIcon color={theme.colors.sidePanel.text} />
         </Button>
       </div>
       <NewChatButton

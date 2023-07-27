@@ -19,13 +19,16 @@ const ProfileModal = ({ isOpen, handleClose }) => {
   const [selectedSetting, setSelectedSetting] = useState('Personal');
 
   const theme = useTheme();
+  const personalBackgroundColor = selectedSetting === 'Personal'? theme.colors.page.sidePanelActiveItemBackground: 'transparent';
+  const schoolBackgroundColor = selectedSetting === 'School'? theme.colors.page.sidePanelActiveItemBackground: 'transparent';
+  const securityBackgroundColor = selectedSetting === 'Security'? theme.colors.page.sidePanelActiveItemBackground: 'transparent';
   const renderSettingsSidePanel = () => {
     return (
       <Box
         width="150px"
         borderRight="1px solid"
-        borderColor={theme.colors.textSecondary.light}
-        backgroundColor={theme.colors.background.light}
+        borderColor={theme.colors.page.text}
+        backgroundColor={theme.colors.page.sidePanelBackground}
       >
         <VStack spacing={0} height="full" justify="space-around">
           <Box
@@ -37,13 +40,14 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Personal')}
             _hover={{
-              background: theme.colors.button.hover,
+              background: theme.colors.page.sidePanelHoverItemBackground,
             }}
+            bg={personalBackgroundColor}
           >
             <Icon
               as={FaUser}
               boxSize="24px"
-              color={theme.colors.primary.light}
+              color={theme.colors.page.text}
             />
           </Box>
           <Box
@@ -55,16 +59,17 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             borderTop="1px"
             borderBottom="1px"
-            borderColor={theme.colors.primary.light}
+            borderColor={theme.colors.page.text}
             onClick={() => setSelectedSetting('School')}
             _hover={{
-              background: theme.colors.buttonTwo.hover,
+              background: theme.colors.page.sidePanelHoverItemBackground,
             }}
+            bg={schoolBackgroundColor}
           >
             <Icon
               as={FaSchool}
               boxSize="24px"
-              color={theme.colors.primary.light}
+              color={theme.colors.page.text}
             />
           </Box>
           <Box
@@ -76,13 +81,14 @@ const ProfileModal = ({ isOpen, handleClose }) => {
             justifyContent="center"
             onClick={() => setSelectedSetting('Security')}
             _hover={{
-              background: theme.colors.buttonTwo.hover,
+              background: theme.colors.page.sidePanelHoverItemBackground,
             }}
+            bg={securityBackgroundColor}
           >
             <Icon
               as={FaLock}
               boxSize="24px"
-              color={theme.colors.primary.light}
+              color={theme.colors.page.text}
             />
           </Box>
         </VStack>
@@ -111,7 +117,7 @@ const ProfileModal = ({ isOpen, handleClose }) => {
         <Stack
           direction="row"
           height="450px"
-          backgroundColor={theme.colors.primary.light}
+          backgroundColor={theme.colors.page.text}
         >
           {renderSettingsSidePanel()}
           <VStack p={5}>{renderSettings()}</VStack>

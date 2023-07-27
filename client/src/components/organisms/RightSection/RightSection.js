@@ -152,10 +152,10 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
       className={styles.container}
       style={
         isSidepanelVisible
-          ? { background: theme.colors.chatSection.dark }
+          ? { background: theme.colors.chatSection.light }
           : {
               width: '100%',
-            background: theme.colors.chatSection.dark,
+            background: theme.colors.chatSection.light,
             }
       }
     >

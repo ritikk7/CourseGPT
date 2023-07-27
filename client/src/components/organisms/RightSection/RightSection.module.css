@@ -42,11 +42,11 @@
   width: 100%;
   outline: none;
   background-color: var(--tertiary-colour);
-  color: var(--text-primary-colour);
+  color: #08101C;
 }
 
 .input::placeholder {
-  color: var(--tertiary-colour);
+  color: #464545;
 }
 
 .message {

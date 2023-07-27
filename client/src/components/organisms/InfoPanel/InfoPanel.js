@@ -20,8 +20,8 @@ const InfoPanel = ({ setInputText, inputRef }) => {
         direction={['column', 'column', 'column', 'row']}
         mt={24}
         spacing="16px"
-        color={theme.colors.textPrimary.light}
-        bg={theme.colors.background.light}
+        bg={theme.colors.chatSection.light}
+        color={theme.colors.button.textHover}
       >
         {selectedCourse && waitingFirstMessage
           ? selectedCourse.promptTemplates?.map((prompt, i) => (
@@ -30,9 +30,7 @@ const InfoPanel = ({ setInputText, inputRef }) => {
                 promptText={prompt}
                 setInputText={() => setInputText(prompt)}
                 inputRef={inputRef}
-                color={theme.colors.button.textHover}
-                bg={theme.colors.button.light}
-                _hover={{ bg: theme.colors.button.hover }}
+
               />
             ))
           : ''}
@@ -43,10 +41,9 @@ const InfoPanel = ({ setInputText, inputRef }) => {
   return (
     <Box
       className={styles.mainPanel}
-      color={theme.colors.textPrimary.light}
-      bg={theme.colors.background.light}
+      bg={theme.colors.chatSection.light}
     >
-      <Text as="b" fontSize="4xl">
+      <Text as="b" fontSize="4xl" color={theme.colors.textPrimary.dark}>
         CourseGPT
       </Text>
       {renderPrompts()}
