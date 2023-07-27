@@ -20,11 +20,10 @@ const Feedback = ({ message }) => {
 
   const theme = useTheme();
   return (
-    <Box bgColor={theme.colors.background.light}>
+    <Box>
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        color={theme.colors.textPrimary.light}
       >
         {currentFeedbackModal === 'positive' && (
           <FeedbackModal
@@ -32,8 +31,6 @@ const Feedback = ({ message }) => {
             onClose={handleCloseModal}
             isPositive={true}
             message={message}
-            backgroundColor={theme.colors.accent.light}
-            color={theme.colors.textSecondary.light}
           />
         )}
         {currentFeedbackModal === 'negative' && (
@@ -42,27 +39,23 @@ const Feedback = ({ message }) => {
             onClose={handleCloseModal}
             isPositive={false}
             message={message}
-            backgroundColor={theme.colors.error.light}
-            color={theme.colors.textSecondary.light}
           />
         )}
         <IconButton
           icon={<FaThumbsUp />}
-          bgColor={theme.colors.button.light}
-          color={theme.colors.button.textBase}
+          bg={theme.colors.chatSection.dark}
+          color={theme.colors.textPrimary.light}
           _hover={{
-            bgColor: theme.colors.button.hover,
-            color: theme.colors.button.textHover,
+            color: theme.colors.accent.light,
           }}
           onClick={handleThumbsUpClick}
         />
         <IconButton
           icon={<FaThumbsDown />}
-          bgColor={theme.colors.buttonTwo.light}
-          color={theme.colors.buttonTwo.textBase}
+          bg={theme.colors.chatSection.dark}
+          color={theme.colors.textPrimary.light}
           _hover={{
-            bgColor: theme.colors.buttonTwo.hover,
-            color: theme.colors.buttonTwo.textHover,
+            color: theme.colors.error.light,
           }}
           onClick={handleThumbsDownClick}
         />

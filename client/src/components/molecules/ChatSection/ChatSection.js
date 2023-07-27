@@ -9,7 +9,8 @@ import Feedback from '../FeedbackPanel/FeedbackPanel';
 const ChatSection = ({ message }) => {
   const user = useSelector(state => state.user);
   const isSenderUser = message.role === 'user';
-  const backgroundColor = isSenderUser ? 'transparent' : 'rgba(68,70,84)';
+  const theme = useTheme();
+  const backgroundColor = isSenderUser ? `${theme.colors.chatSection.light}` : `${theme.colors.chatSection.dark}`;
   const courseGptImage = './coursegptLogo.png';
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
@@ -43,7 +44,7 @@ const ChatSection = ({ message }) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
-  const theme = useTheme();
+
   const handleNewlineHTML = text => {
     if (text) {
       return text.split('\n').map((item, key) => {

@@ -15,7 +15,7 @@ import {
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
 
 const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
-  const [inputValue, setInputValue] = useState('Tell us your thoughts');
+  const [inputValue, setInputValue] = useState('');
   const activeChat = useSelector(activeChatWithMessagesSelector);
 
   const handleInputChange = e => {
@@ -23,7 +23,7 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
   };
 
   const handleSubmit = async () => {
-    if (!inputValue || inputValue === 'Tell us your thoughts') {
+    if (!inputValue || inputValue === '') {
       return;
     }
     try {
@@ -44,11 +44,9 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent bgColor={theme.colors.background.light}>
+      <ModalContent bg={theme.colors.background.dark}>
         <ModalHeader
-          color={
-            isPositive ? theme.colors.accent.light : theme.colors.error.light
-          }
+          color={ theme.colors.textPrimary.light}
         >
           {isPositive
             ? "We're glad we answered your question! What stood out to you?"
@@ -59,16 +57,18 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
             value={inputValue}
             onChange={handleInputChange}
             borderColor={theme.colors.tertiary.light}
+            color={theme.colors.textPrimary.light}
             focusBorderColor={theme.colors.primary.light}
+            placeholder="Tell us your thoughts"
           />
         </ModalBody>
         <ModalFooter>
           <Button
-            bgColor={theme.colors.button.light}
-            color={theme.colors.button.textBase}
+            bg={theme.colors.button.light}
+            color={theme.colors.textPrimary.light}
             _hover={{
               bgColor: theme.colors.button.hover,
-              color: theme.colors.button.textHover,
+              color: theme.colors.textPrimary.light,
             }}
             onClick={handleSubmit}
           >
@@ -77,7 +77,12 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
           <Button
             variant="ghost"
             onClick={onClose}
-            color={theme.colors.textSecondary.light}
+            bg={theme.colors.buttonTwo.light}
+            color={theme.colors.textPrimary.light}
+            _hover={{
+              bgColor: theme.colors.buttonTwo.hover,
+              color: theme.colors.textPrimary.light,
+            }}
           >
             Close
           </Button>

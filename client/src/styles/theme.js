@@ -58,6 +58,10 @@ const theme = extendTheme({
       light: '#AEBDC2',
       dark: '#546E7A',
     },
+    chatSection: {
+      light: '#949fa2',
+      dark: '#546E7A',
+    },
     neutral: {
       light: '#AEBDC2',
       dark: '#455A64',

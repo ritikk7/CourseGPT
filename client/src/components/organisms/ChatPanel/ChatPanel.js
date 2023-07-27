@@ -26,12 +26,6 @@ const ChatPanel = () => {
   }, [activeChat]);
 
   const theme = useTheme();
-  const chatPanelStyle = {
-    '--webkit-scrollbar-thumb': {
-      background: theme.colors.background.light,
-      borderRadius: '4px',
-    },
-  };
   const renderMessages = () => {
     const messagesToDisplay = Object.values(activeChat.messages);
     if (isGptLoading) {
@@ -50,7 +44,7 @@ const ChatPanel = () => {
 
   return (
     <>
-      <div className={styles.chatPanel} style={chatPanelStyle}>
+      <div className={styles.chatPanel}>
         {renderMessages()}
         <div
           id="dummy-div"
