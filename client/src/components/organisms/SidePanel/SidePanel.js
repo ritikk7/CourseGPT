@@ -130,8 +130,8 @@ const SidePanel = ({
   }, [selectedCourse, favouriteCourses]);
 
   let chats = Object.values(filteredChatsToShow);
-  const [isLargerThan680] = useMediaQuery('(min-width: 680px)');
-  const width = isLargerThan680 ? '18%' : '100%';
+  const [isDesktop] = useMediaQuery('(max-width: 680px)');
+  const width = isDesktop ? '100%' : '18%';
   const theme = useTheme();
 
   return (
