@@ -16,8 +16,8 @@ const theme = extendTheme({
     profileModal: {
       mainBackground: '#FFFFFF',
       sidePanelInactiveItemBackground: `#90A4AE`,
-      sidePanelHoverItemBackground: `#455A64`,
-      sidePanelActiveItemBackground: `#607D8B`,
+      sidePanelHoverItemBackground: `#607D8B`,
+      sidePanelActiveItemBackground: `#455A64`,
       sidePanelIconColor: '#FFFFFF',
       hoverItemBackground: `#455A64`,
       activeItemBackground: `#607D8B`,
