@@ -7,13 +7,22 @@
   cursor: auto;
 }
 
+.editActions {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  padding: 0 4px 2px 8px;
+  transform: translateY(-50%);
+  background: rgb(61, 61, 61);
+  cursor: pointer;
+}
+
 .actions {
   position: absolute;
-  right: 0;
-  top: 50%;
+  right: 8px;
+  top: 55%;
+  padding: 0 4px;
   transform: translateY(-50%);
-  margin: auto;
-  padding: 6px 12px;
   background: rgb(61, 61, 61);
   cursor: pointer;
 }

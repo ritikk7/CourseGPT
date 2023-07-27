@@ -33,7 +33,7 @@ const ExistingChat = ({
   const renderActions = () => {
     if (showEditMode) {
       return (
-        <div className={styles.actions}>
+        <div className={styles.editActions}>
           <CheckIcon
             fontSize="smaller"
             mr={3}
