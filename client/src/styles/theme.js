@@ -62,7 +62,7 @@ const theme = extendTheme({
       dark: '#2F414C',
     },
     textPrimary: {
-      light: '#F5F5F5',
+      light: '#FFFFFF',
       dark: '#08101C',
     },
     textSecondary: {
