@@ -3,16 +3,19 @@ import { ChatIcon } from '@chakra-ui/icons';
 import styles from './ExistingChat.module.css';
 import { Button, Text, useTheme } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
+import { Button, Text } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
 const ExistingChat = ({
   title,
   handleExistingChatClick,
   id,
   handleChatDelete,
-  setIsSidepanelVisible,
 }) => {
+  const dispatch = useDispatch();
   const focusedChat = useSelector(state => state.chats.focusedChat);
   const isGptLoading = useSelector(state => state.messages.gptLoading);
   const [isFocused, setIsFocused] = useState(false);
@@ -34,7 +37,7 @@ const ExistingChat = ({
   const renderActions = () => {
     if (showEditMode) {
       return (
-        <div className={styles.actions}>
+        <div className={styles.editActions}>
           <CheckIcon
             fontSize="smaller"
             mr={3}
@@ -87,7 +90,7 @@ const ExistingChat = ({
         onClick={() => {
           handleExistingChatClick(id);
           if (!isScreenLarge) {
-            setIsSidepanelVisible(false);
+            dispatch(setIsSidePanelVisible(false));
           }
         }}
         pl={3}

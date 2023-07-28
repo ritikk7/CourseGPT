@@ -1,0 +1,22 @@
+.inputGroup {
+  height: 2.5em;
+  border-radius: 6px;
+  box-shadow: 0px 2px 12px 3px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: slideDown 0.6s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    top: -200px;
+  }
+  to {
+    top: 16px;
+  }
+}

@@ -1,5 +1,49 @@
+.sidepanel {
+  background: var(--black1);
+  width: 18%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  flex-direction: column;
+  display: flex;
+  min-width: 250px;
+}
+
+@media only screen and (max-width: 680px) {
+  .sidepanel {
+    width: 100%;
+  }
+}
+
+.textareaStyle {
+  color: black;
+}
+
+.chevronLeft {
+  position: relative;
+}
+
+.selectDataView {
+  margin-top: 70px;
+  display: grid;
+}
+
+.courseSelect {
+  width: 90%;
+  margin: auto;
+  margin-top: 16px;
+}
+
 .profile {
   padding: 16px;
+}
+
+.profileAnalytics {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
 }
 
 .chatsPanel {

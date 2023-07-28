@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
 import Typewriter from 'typewriter-effect';
 import { Box, useTheme } from '@chakra-ui/react';
+import { Box, Highlight } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
+import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 
-const ChatSection = ({ message }) => {
+const ChatSection = ({ message }, ref) => {
   const user = useSelector(state => state.user);
+  const highlightMessage = useSelector(state => state.chats.highlightMessage);
+  const highlightedTexts = mapHighlightedTextToArray(highlightMessage);
   const userProfile = useSelector(state => state.user.profilePicture);
   const isSenderUser = message.role === 'user';
   const theme = useTheme();
@@ -73,9 +77,40 @@ const ChatSection = ({ message }) => {
     return null;
   };
 
+  const handleNewlineHTMLHighlighted = text => {
+    if (text) {
+      return text.split('\n').map((item, key) => {
+        return (
+          <span key={key}>
+            <Highlight
+              query={highlightedTexts}
+              styles={{
+                px: '1',
+                bg: 'blue.600',
+                color: 'white',
+                rounded: 'md',
+              }}
+            >
+              {item}
+            </Highlight>
+            <br />
+          </span>
+        );
+      });
+    }
+    return null;
+  };
+
+  const renderMessageContent = () => {
+    console.log(highlightMessage);
+    if (!highlightMessage || highlightMessage._id !== message._id)
+      return handleNewlineHTML(message.content);
+    return handleNewlineHTMLHighlighted(message.content);
+  };
+
   const renderBotAnswer = () => {
     if (!renderAnimation) {
-      return message.content && handleNewlineHTML(message.content);
+      return renderMessageContent();
     }
     if (message.content) {
       return (
@@ -110,19 +145,17 @@ const ChatSection = ({ message }) => {
   };
 
   return (
-    <>
+    <div ref={ref}>
       {!isSenderUser ? (
         <Box color={theme.colors.textPrimary.dark}>
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
               {message && ProfileIcon}
-              <div className={styles.msgContent}>
+              <div className={styles.textBlock}>
                 {message && renderGptPlaceholder()}
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>
-              {message && !messageIsGptPlaceholder && (
-                <Feedback message={message._id} />
-              )}
+              {message && !messageIsGptPlaceholder && <Feedback message={message._id} />}
             </div>
           </div>
         </Box>
@@ -130,14 +163,13 @@ const ChatSection = ({ message }) => {
         <Box color={theme.colors.textPrimary.dark}>
           <div className={styles.chatComponent} style={{ backgroundColor }}>
             <div className={styles.chatContent}>
-              {message && ProfileIcon}
-              {message && message.content}
+              {message && renderMessageContent()}
             </div>
           </div>
         </Box>
       )}
-    </>
+    </div>
   );
 };
 
-export default ChatSection;
+export default forwardRef(ChatSection);

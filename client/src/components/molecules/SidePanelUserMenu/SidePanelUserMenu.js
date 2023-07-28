@@ -18,6 +18,8 @@ const SidePanelUserMenu = ({
   handleClearConversations,
   setTrainCourseModalOpen,
   username,
+  setSeeFeedback,
+  isAnalyticsMode,
 }) => {
   const userType = useSelector(state => state.user.type);
   const userProfile = useSelector(state => state.user.profilePicture);
@@ -25,6 +27,53 @@ const SidePanelUserMenu = ({
   const isGptLoading = useSelector(state => state.messages.gptLoading);
   const usersAllowedToTrain = ['Professor', 'Admin', 'Developer'];
   const theme = useTheme();
+  const allowedViewAnalytics = ['Admin', 'Developer'];
+
+  const renderUserMenu = () => {
+    if (isAnalyticsMode) {
+      return (
+        <>
+          <MenuDivider borderColor="rgb(100, 100, 102)" />
+          <MenuItem
+            bg="black"
+            onClick={() => {
+              setSeeFeedback(false);
+            }}
+          >
+            Back
+          </MenuItem>
+        </>
+      );
+    }
+    return (
+      <>
+        {!isGptLoading ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={handleClearConversations}>
+              Clear conversations
+            </MenuItem>
+          </>
+        ) : null}
+        {usersAllowedToTrain.includes(userType) && !isTrainingCourse ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={() => setTrainCourseModalOpen(true)}>
+              Train Selected Course
+            </MenuItem>
+          </>
+        ) : null}
+        {allowedViewAnalytics.includes(userType) ? (
+          <>
+            <MenuDivider borderColor="rgb(100, 100, 102)" />
+            <MenuItem bg="black" onClick={() => setSeeFeedback(true)}>
+              View Analytics
+            </MenuItem>
+          </>
+        ) : null}
+      </>
+    );
+  };
 
   return (
     <Menu>

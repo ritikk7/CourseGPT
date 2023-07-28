@@ -12,7 +12,7 @@ import {
   setActivePanelChat,
   setShouldFocusChatInput,
 } from '../../../redux/userSlice';
-import { ArrowForwardIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
   createChatWithSelectedDropdownCourse,
   fetchChat,
@@ -28,62 +28,17 @@ import {
   AlertIcon,
   CloseButton,
 } from '@chakra-ui/react';
+import {
+  setIsSearchBarVisible,
+  setIsSidePanelVisible,
+} from '../../../redux/uiSlice';
+import SearchBarInput from '../../molecules/SearchBar/SearchBarInput';
+import { HotKeys } from 'react-hotkeys';
+import InputArea from '../../atoms/InputArea/InputArea';
 
-const InputArea = ({
-  currentUserInput,
-  setInputText,
-  onInputSubmit,
-  inputRef,
-  disableInput,
-}) => {
-  const theme = useTheme();
-  return (
-    <div className={styles.inputSection}>
-      <div className={styles.inputArea}>
-        <input
-          className={styles.input}
-          placeholder="Enter a prompt..."
-          value={currentUserInput || ''}
-          onChange={e => setInputText(e.target.value)}
-          onKeyDown={onInputSubmit}
-          ref={inputRef}
-          style={{
-            backgroundColor: theme.colors.mainInput,
-            color: theme.colors.background.light,
-          }}
-        />
-        <button
-          className={styles.sendBtn}
-          onClick={e => {
-            if (currentUserInput.trim()) onInputSubmit(e);
-          }}
-          style={
-            currentUserInput.trim() && !disableInput
-              ? {}
-              : { cursor: 'not-allowed', opacity: 0.5 }
-          }
-          disabled={disableInput}
-        >
-          <ArrowForwardIcon
-            color={theme.colors.chatSection.arrow}
-            boxSize="1.5em"
-          />
-        </button>
-      </div>
-      <div
-        className={styles.message}
-        style={{ color: theme.colors.textPrimary.dark }}
-      >
-        <p>
-          CourseGPT may produce inaccurate information about instructors or
-          course content. [CourseGPT 2023 Version]
-        </p>
-      </div>
-    </div>
-  );
-};
+const keyMap = { SHOW_SEARCH: ['command+f', 'ctrl+f'] };
 
-const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
+const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
   const isTrainingCourse = useSelector(state => state.courses.loading);
@@ -107,6 +62,15 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
   );
   const [trainingCompleted, setTrainingCompleted] = useState(false);
   const hasBeenTraining = useRef(false);
+  const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
+  const isSearchBarVisible = useSelector(state => state.ui.isSearchBarVisible);
+
+  const hotKeyHandlers = {
+    SHOW_SEARCH: e => {
+      e.preventDefault();
+      dispatch(setIsSearchBarVisible(true));
+    },
+  };
 
   useEffect(() => {
     let timeoutId;
@@ -165,10 +129,11 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
     );
 
   return (
+    <HotKeys keyMap={keyMap} handlers={hotKeyHandlers}>
     <div
       className={styles.container}
       style={
-        isSidepanelVisible
+        isSidePanelVisible
           ? { background: theme.colors.chatSection.light }
           : {
               width: '100%',
@@ -176,7 +141,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
             }
       }
     >
-      {!isSidepanelVisible && (
+      {!isSidePanelVisible && (
         <div className={styles.toggleSidepanelBtn}>
           <Button
             ml={2}
@@ -186,7 +151,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
             _hover={{
               bg: theme.colors.sidePanel.hoverItemBackground,
             }}
-            onClick={toggleSidePanelVisibility}
+            onClick={() => {dispatch(setIsSidePanelVisible(true));}}
           >
             <ChevronRightIcon />
           </Button>
@@ -242,7 +207,9 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
           disableInput={isGptLoading}
         />
       )}
+      {isSearchBarVisible && <SearchBarInput />}
     </div>
+    </HotKeys>
   );
 };
 

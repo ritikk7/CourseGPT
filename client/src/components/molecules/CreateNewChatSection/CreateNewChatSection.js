@@ -3,6 +3,8 @@ import NewChatCourseSelector from '../../atoms/NewChatCourseSelector/NewChatCour
 import NewChatButton from '../../atoms/NewChatButton/NewChatButton';
 import { Button, useTheme } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { useDispatch } from 'react-redux';
+import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
 const CreateNewChatSection = ({
   favouriteCourses,
@@ -11,8 +13,8 @@ const CreateNewChatSection = ({
   handleNewChat,
   disableNewChatButton,
   disabledNewChatCourseSelector,
-  toggleSidePanelVisibility,
 }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   return favouriteCourses && Object.keys(favouriteCourses).length > 0 ? (
     <>
@@ -28,7 +30,7 @@ const CreateNewChatSection = ({
           bg="transparent"
           _hover={{ bg: theme.colors.sidePanel.hoverItemBackground }}
           border={`1px solid ${theme.colors.sidePanel.text}`}
-          onClick={toggleSidePanelVisibility}
+          onClick={() => dispatch(setIsSidePanelVisible(false))}
         >
           <ChevronLeftIcon color={theme.colors.sidePanel.text} />
         </Button>
