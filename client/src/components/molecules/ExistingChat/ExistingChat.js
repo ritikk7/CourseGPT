@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ChatIcon } from '@chakra-ui/icons';
 import styles from './ExistingChat.module.css';
 import { Button, Text, useTheme } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import { Button, Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CloseIcon, CheckIcon } from '@chakra-ui/icons';

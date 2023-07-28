@@ -3,8 +3,7 @@ import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
 import Typewriter from 'typewriter-effect';
-import { Box, useTheme } from '@chakra-ui/react';
-import { Box, Highlight } from '@chakra-ui/react';
+import { Box, Highlight, useTheme } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 
@@ -155,7 +154,9 @@ const ChatSection = ({ message }, ref) => {
                 {message && renderGptPlaceholder()}
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>
-              {message && !messageIsGptPlaceholder && <Feedback message={message._id} />}
+              {message && !messageIsGptPlaceholder && (
+                <Feedback message={message._id} />
+              )}
             </div>
           </div>
         </Box>

@@ -38,6 +38,13 @@ import InputArea from '../../atoms/InputArea/InputArea';
 
 const keyMap = { SHOW_SEARCH: ['command+f', 'ctrl+f'] };
 
+const Message = ({ value }) => (
+  <div className={styles.message}>
+    <p>{value}</p>
+  </div>
+);
+
+
 const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);
@@ -130,85 +137,87 @@ const RightSection = () => {
 
   return (
     <HotKeys keyMap={keyMap} handlers={hotKeyHandlers}>
-    <div
-      className={styles.container}
-      style={
-        isSidePanelVisible
-          ? { background: theme.colors.chatSection.light }
-          : {
-              width: '100%',
-              background: theme.colors.chatSection.light,
-            }
-      }
-    >
-      {!isSidePanelVisible && (
-        <div className={styles.toggleSidepanelBtn}>
-          <Button
-            ml={2}
-            bg={theme.colors.sidePanel.background}
-            border={`1px solid ${theme.colors.sidePanel.text}`}
-            color={theme.colors.sidePanel.text}
-            _hover={{
-              bg: theme.colors.sidePanel.hoverItemBackground,
-            }}
-            onClick={() => {dispatch(setIsSidePanelVisible(true));}}
-          >
-            <ChevronRightIcon />
-          </Button>
-        </div>
-      )}
-      {isTrainingCourse && (
-        <Tooltip
-          label="Training in progress"
-          fontSize="md"
-          placement="left"
-          background={theme.colors.sidePanel.background}
-        >
-          <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-            <Spinner
-              color={theme.colors.accent.light}
-              speed="0.90s"
-              size="lg"
-              thickness="3px"
-            />
+      <div
+        className={styles.container}
+        style={
+          isSidePanelVisible
+            ? { background: theme.colors.chatSection.light }
+            : {
+                width: '100%',
+                background: theme.colors.chatSection.light,
+              }
+        }
+      >
+        {!isSidePanelVisible && (
+          <div className={styles.toggleSidepanelBtn}>
+            <Button
+              ml={2}
+              bg={theme.colors.sidePanel.background}
+              border={`1px solid ${theme.colors.sidePanel.text}`}
+              color={theme.colors.sidePanel.text}
+              _hover={{
+                bg: theme.colors.sidePanel.hoverItemBackground,
+              }}
+              onClick={() => {
+                dispatch(setIsSidePanelVisible(true));
+              }}
+            >
+              <ChevronRightIcon />
+            </Button>
           </div>
-        </Tooltip>
-      )}
-      {trainingCompleted && (
-        <Alert
-          status="success"
-          position="absolute"
-          top="10px"
-          right="10px"
-          p="2"
-          w="55"
-          borderRadius="md"
-          background={theme.colors.sidePanel.background}
-          color={theme.colors.textPrimary.light}
-        >
-          <AlertIcon color={theme.colors.textPrimary.light} />
-          Training complete!
-          <CloseButton
-            alignSelf="center"
-            position="relative"
-            onClick={() => {
-              setTrainingCompleted(false);
-            }}
+        )}
+        {isTrainingCourse && (
+          <Tooltip
+            label="Training in progress"
+            fontSize="md"
+            placement="left"
+            background={theme.colors.sidePanel.background}
+          >
+            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+              <Spinner
+                color={theme.colors.accent.light}
+                speed="0.90s"
+                size="lg"
+                thickness="3px"
+              />
+            </div>
+          </Tooltip>
+        )}
+        {trainingCompleted && (
+          <Alert
+            status="success"
+            position="absolute"
+            top="10px"
+            right="10px"
+            p="2"
+            w="55"
+            borderRadius="md"
+            background={theme.colors.sidePanel.background}
+            color={theme.colors.textPrimary.light}
+          >
+            <AlertIcon color={theme.colors.textPrimary.light} />
+            Training complete!
+            <CloseButton
+              alignSelf="center"
+              position="relative"
+              onClick={() => {
+                setTrainingCompleted(false);
+              }}
+            />
+          </Alert>
+        )}
+        {mainPanel}
+        {renderInput && (
+          <InputArea
+            currentUserInput={currentUserInput}
+            setInputText={setInputText}
+            onInputSubmit={onInputSubmit}
+            inputRef={inputRef}
+            disableInput={isGptLoading}
           />
-        </Alert>
-      )}
-      {mainPanel}
-      {renderInput && (
-        <InputArea
-          currentUserInput={currentUserInput}
-          setInputText={setInputText}
-          onInputSubmit={onInputSubmit}
-          inputRef={inputRef}
-          disableInput={isGptLoading}
-        />
-      )}
-      {isSearchBarVisible && <SearchBarInput />}
-    </div>
+        )}
+        {isSearchBarVisible && <SearchBarInput />}
+      </div>
     </HotKeys>
   );
 };

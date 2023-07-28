@@ -25,7 +25,7 @@ import CreateNewChatSection from '../../molecules/CreateNewChatSection/CreateNew
 import ExistingChat from '../../molecules/ExistingChat/ExistingChat';
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
-import { Box, Button, useMediaQuery, useTheme } from "@chakra-ui/react";
+import { Box, Button, useMediaQuery, useTheme } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import {
   BubbleChart,
@@ -140,7 +140,6 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
   const [isDesktop] = useMediaQuery('(max-width: 680px)');
   const width = isDesktop ? '100%' : '18%';
   const theme = useTheme();
-
 
   if (isAnalyticsSidePanel) {
     return (

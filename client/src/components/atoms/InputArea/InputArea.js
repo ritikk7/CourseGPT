@@ -2,13 +2,7 @@ import React from 'react';
 
 import styles from './InputArea.module.css';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { useTheme } from "@chakra-ui/react";
-
-const Message = ({ value }) => (
-  <div className={styles.message}>
-    <p>{value}</p>
-  </div>
-);
+import { useTheme } from '@chakra-ui/react';
 
 const InputArea = ({
   currentUserInput,
