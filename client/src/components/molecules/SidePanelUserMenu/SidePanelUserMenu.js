@@ -97,7 +97,7 @@ const SidePanelUserMenu = ({
           <Image
             borderRadius="full"
             boxSize="32px"
-            src={userProfile ? userProfile : 'https://bit.ly/dan-abramov'}
+            src={userProfile}
             alt="avatar"
           />
         }
