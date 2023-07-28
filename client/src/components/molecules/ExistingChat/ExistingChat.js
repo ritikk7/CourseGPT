@@ -43,12 +43,14 @@ const ExistingChat = ({
               handleChatDelete(id);
             }}
             color={theme.colors.sidePanel.text}
+            bg={theme.colors.sidePanel.activeItemBackground}
           />
           <CloseIcon
             fontSize="small"
             onClick={() => {
               setIsEditMode(false);
             }}
+            bg={theme.colors.sidePanel.activeItemBackground}
             color={theme.colors.sidePanel.text}
           />
         </div>

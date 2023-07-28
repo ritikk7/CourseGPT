@@ -115,6 +115,7 @@ const ProfileSchoolSettings = ({ handleClose }) => {
         <Button
           bg={theme.colors.button.light}
           _hover={{ bg: theme.colors.button.hover }}
+          color={theme.colors.button.text}
           mr={3}
           onClick={handleSave}
         >
@@ -123,6 +124,7 @@ const ProfileSchoolSettings = ({ handleClose }) => {
         <Button
           bg={theme.colors.buttonCancel.light}
           _hover={{ bg: theme.colors.buttonCancel.hover }}
+          color={theme.colors.buttonCancel.text}
           onClick={handleClose}
         >
           Cancel

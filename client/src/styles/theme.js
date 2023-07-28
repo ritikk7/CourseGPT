@@ -75,13 +75,13 @@ const theme = extendTheme({
       darker: '#134782',
     },
     button: {
-      text: 'textPrimary.light',
+      text: '#FFFFFF',
       hover: '#1262A3',
       light: '#2675BF',
       dark: '#105287',
     },
     buttonCancel: {
-      text: 'textPrimary.light',
+      text: '#FFFFFF',
       hover: '#9E2023',
       light: '#D33A34',
       dark: '#2B3642',

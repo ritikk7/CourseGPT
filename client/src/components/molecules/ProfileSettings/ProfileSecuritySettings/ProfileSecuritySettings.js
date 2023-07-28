@@ -131,12 +131,15 @@ const ProfileSecuritySettings = ({ handleClose }) => {
           color={theme.colors.profileModal.mainFormInputColor}
         />
       </FormControl>
-      <ModalFooter paddingInlineEnd={0} paddingTop={5}>
-        <Button colorScheme="blue" mr={3} onClick={handleSave}>
+      <ModalFooter paddingInlineEnd={0} paddingTop={5} color={theme.colors.button.text}>
+        <Button           bg={theme.colors.button.light}
+                          color={theme.colors.button.text}
+                          _hover={{ bg: theme.colors.button.hover }} mr={3} onClick={handleSave}>
           Save
         </Button>
         <Button
           bg={theme.colors.buttonCancel.light}
+          color={theme.colors.button.text}
           _hover={{ bg: theme.colors.buttonCancel.hover }}
           onClick={handleClose}
         >
