@@ -49,24 +49,42 @@ const SidePanelUserMenu = ({
       <>
         {!isGptLoading ? (
           <>
-            <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={handleClearConversations}>
+            <MenuDivider borderColor={theme.colors.sidePanel.text} />
+            <MenuItem
+              bg={theme.colors.sidePanel.hoverItemBackground}
+              color={theme.colors.sidePanel.text}
+              _hover={{
+                color: theme.colors.sidePanel.textHover,
+              }}
+              onClick={handleClearConversations}
+            >
               Clear conversations
             </MenuItem>
           </>
         ) : null}
         {usersAllowedToTrain.includes(userType) && !isTrainingCourse ? (
           <>
-            <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={() => setTrainCourseModalOpen(true)}>
+            <MenuDivider borderColor={theme.colors.sidePanel.text} />
+            <MenuItem
+              bg={theme.colors.sidePanel.hoverItemBackground}
+              color={theme.colors.sidePanel.text}
+              _hover={{
+                color: theme.colors.sidePanel.textHover,
+              }}
+              onClick={() => setTrainCourseModalOpen(true)}
+            >
               Train Selected Course
-            </MenuItem>
+            </MenuItem>{' '}
           </>
         ) : null}
         {allowedViewAnalytics.includes(userType) ? (
           <>
-            <MenuDivider borderColor="rgb(100, 100, 102)" />
-            <MenuItem bg="black" onClick={() => setSeeFeedback(true)}>
+            <MenuDivider borderColor={theme.colors.sidePanel.text} />
+            <MenuItem               bg={theme.colors.sidePanel.hoverItemBackground}
+                                    color={theme.colors.sidePanel.text}
+                                    _hover={{
+                                      color: theme.colors.sidePanel.textHover,
+                                    }} onClick={() => setSeeFeedback(true)}>
               View Analytics
             </MenuItem>
           </>
@@ -121,36 +139,7 @@ const SidePanelUserMenu = ({
         >
           Profile
         </MenuItem>
-        {!isGptLoading ? (
-          <>
-            <MenuDivider borderColor={theme.colors.sidePanel.text} />
-            <MenuItem
-              bg={theme.colors.sidePanel.hoverItemBackground}
-              color={theme.colors.sidePanel.text}
-              _hover={{
-                color: theme.colors.sidePanel.textHover,
-              }}
-              onClick={handleClearConversations}
-            >
-              Clear conversations
-            </MenuItem>
-          </>
-        ) : null}
-        {usersAllowedToTrain.includes(userType) && !isTrainingCourse ? (
-          <>
-            <MenuDivider borderColor={theme.colors.sidePanel.text} />
-            <MenuItem
-              bg={theme.colors.sidePanel.hoverItemBackground}
-              color={theme.colors.sidePanel.text}
-              _hover={{
-                color: theme.colors.sidePanel.textHover,
-              }}
-              onClick={() => setTrainCourseModalOpen(true)}
-            >
-              Train Selected Course
-            </MenuItem>{' '}
-          </>
-        ) : null}
+        {renderUserMenu()}
         <MenuDivider borderColor={theme.colors.sidePanel.text} />
         <MenuItem
           bg={theme.colors.sidePanel.hoverItemBackground}
