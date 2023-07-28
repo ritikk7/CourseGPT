@@ -102,7 +102,7 @@ const theme = extendTheme({
     chatSection: {
       light: '#FFFFFF',
       dark: '#d1dbde',
-      arrow: '#304B57',
+      arrow: '#FFFFFF',
       hover: '#A2B4BA',
     },
     neutral: {
