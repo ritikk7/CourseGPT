@@ -34,7 +34,7 @@ export function getSentimentScore(sentence, model, metadata) {
   const trimmed = sentence
     .trim()
     .toLowerCase()
-    .replace(/(\.|\,|\!)/g, '')
+    .replace(/([.,!])/g, '')
     .split(' ');
 
   // If word is misspelt, find closest word or return undefined

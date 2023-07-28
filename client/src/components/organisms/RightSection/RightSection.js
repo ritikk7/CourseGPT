@@ -44,7 +44,6 @@ const Message = ({ value }) => (
   </div>
 );
 
-
 const RightSection = () => {
   const dispatch = useDispatch();
   const activePanel = useSelector(state => state.user.activePanel);

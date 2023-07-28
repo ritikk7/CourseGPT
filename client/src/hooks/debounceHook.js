@@ -1,4 +1,5 @@
 /* Taken from https://github.com/ipenywis/react-candy-searchbar/tree/master */
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';

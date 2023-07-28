@@ -7,7 +7,9 @@ import MainAnalysisPage from './MainAnalysisPage';
 const FeedbackData = () => {
   const dispatch = useDispatch();
   // This is for a select school/course thing I haven't done yet (can either have all schools/courses selected or specific one)
+  // eslint-disable-next-line no-unused-vars
   const [selectedSchool, setSelectedSchool] = useState(''); // need to add dropdown stuff later
+  // eslint-disable-next-line no-unused-vars
   const [selectedCourse, setSelectedCourse] = useState([]);
   const feedbackData = useSelector(state => state.feedbackData.feedbackInfo);
   const freqData = useSelector(state => state.feedbackData.freqData);

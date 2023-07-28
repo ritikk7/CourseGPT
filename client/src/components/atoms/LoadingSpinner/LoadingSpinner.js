@@ -1,8 +1,7 @@
 import React from 'react';
-import { Box, Spinner, useTheme } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 
 const LoadingSpinner = () => {
-  const theme = useTheme();
   return (
     <Box
       display="flex"

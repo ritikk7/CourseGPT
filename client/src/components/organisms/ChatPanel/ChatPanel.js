@@ -26,7 +26,6 @@ const ChatPanel = () => {
     scrollToRef();
   }, [activeChat, scrollRef.current]);
 
-  const theme = useTheme();
   const renderMessages = () => {
     const messagesToDisplay = Object.values(activeChat.messages);
     if (isGptLoading) {

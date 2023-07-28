@@ -30,6 +30,7 @@ function MainAnalysisPage({ course, school, data, freqData }) {
   const [feedbackSentiment, setFeedbackSentiment] = useState({});
 
   // freqSentences is a map of an array of questions to a corresponding array of the 10 most frequent questions
+  // eslint-disable-next-line no-unused-vars
   const [freqSentences, setFreqSentences] = useState({});
 
   // initializes the model

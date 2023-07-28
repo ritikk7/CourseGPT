@@ -185,7 +185,7 @@ const BubbleChart = () => {
 
   useEffect(() => {
     prepareGraph();
-  }, []);
+  }, [prepareGraph]);
 
   const element = document.getElementById('chart-container');
   useEffect(() => {

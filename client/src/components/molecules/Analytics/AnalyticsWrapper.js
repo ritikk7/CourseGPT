@@ -23,12 +23,6 @@ function AnalyticsWrapper() {
   );
   const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      loginAndLoadUserData();
-    }
-  }, [isAuthenticated, dispatch]);
-
   const loginAndLoadUserData = async () => {
     try {
       await dispatch(fetchUser());
@@ -39,6 +33,12 @@ function AnalyticsWrapper() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      loginAndLoadUserData();
+    }
+  }, [isAuthenticated, dispatch]);
 
   useEffect(() => {
     if (selectedAnalyticsView === 'bubble') {
