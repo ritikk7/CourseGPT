@@ -145,9 +145,13 @@ const SidePanelUserMenu = ({
         >
           Profile
         </MenuItem>
-        <MenuDivider borderColor="rgb(100, 100, 102)" />
+        <MenuDivider borderColor={theme.colors.sidePanel.text} />
         <MenuItem
-          bg="black"
+          bg={theme.colors.sidePanel.hoverItemBackground}
+          color={theme.colors.sidePanel.text}
+          _hover={{
+            color: theme.colors.sidePanel.textHover,
+          }}
           onClick={() => {
             dispatch(setIsSearchBarVisible(true));
             dispatch(setActivePanelSearch());
