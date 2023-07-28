@@ -19,7 +19,15 @@ import {
   setActiveChat,
   setFocusedChat,
 } from '../../../redux/chatsSlice';
-import { Button, Box, Spinner, Tooltip, useTheme } from '@chakra-ui/react';
+import {
+  Button,
+  Spinner,
+  Tooltip,
+  useTheme,
+  Alert,
+  AlertIcon,
+  CloseButton,
+} from '@chakra-ui/react';
 
 const InputArea = ({
   currentUserInput,
@@ -105,7 +113,7 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
     if (!isTrainingCourse && trainingCompleted) {
       timeoutId = setTimeout(() => {
         setTrainingCompleted(false);
-      }, 3000);
+      }, 5000);
     }
     return () => clearTimeout(timeoutId);
   }, [isTrainingCourse, trainingCompleted]);
@@ -185,7 +193,12 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
         </div>
       )}
       {isTrainingCourse && (
-        <Tooltip label="Training in progress" fontSize="md" placement="top">
+        <Tooltip
+          label="Training in progress"
+          fontSize="md"
+          placement="left"
+          background={theme.colors.sidePanel.background}
+        >
           <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
             <Spinner
               color={theme.colors.accent.light}
@@ -197,17 +210,27 @@ const RightSection = ({ isSidepanelVisible, toggleSidePanelVisibility }) => {
         </Tooltip>
       )}
       {trainingCompleted && (
-        <Box
+        <Alert
+          status="success"
           position="absolute"
           top="10px"
           right="10px"
-          background={theme.colors.accent.dark}
-          color={theme.colors.textPrimary.dark}
           p="2"
+          w="55"
           borderRadius="md"
+          background={theme.colors.sidePanel.background}
+          color={theme.colors.textPrimary.light}
         >
+          <AlertIcon color={theme.colors.textPrimary.light} />
           Training complete!
-        </Box>
+          <CloseButton
+            alignSelf="center"
+            position="relative"
+            onClick={() => {
+              setTrainingCompleted(false);
+            }}
+          />
+        </Alert>
       )}
       {mainPanel}
       {renderInput && (
