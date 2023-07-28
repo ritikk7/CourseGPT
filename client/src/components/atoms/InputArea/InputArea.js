@@ -20,7 +20,7 @@ const InputArea = ({
     <div className={styles.inputArea}>
       <input
         className={styles.input}
-        placeholder="Enter a prompt..."
+        placeholder="Enter a prompt... Press ctrl+F or cmd+F to search all chats..."
         value={currentUserInput || ''}
         onChange={e => setInputText(e.target.value)}
         onKeyDown={onInputSubmit}
