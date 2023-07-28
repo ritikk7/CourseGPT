@@ -8,6 +8,7 @@ import {
   IconButton,
   Center,
   VStack,
+  useTheme
 } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import SearchResults from './SearchResults';
@@ -42,6 +43,7 @@ const ContainerVariants = {
 const ContainerTransition = { type: 'spring', damping: 22, stiffness: 150 };
 
 const SearchBarInput = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth);
   const activePanel = useSelector(state => state.user.activePanel);
@@ -116,8 +118,13 @@ const SearchBarInput = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Center m={5} color="white">
+    <div className={styles.container} >
+      <Center m={5}
+        borderRadius='6px'
+        style={{
+          backgroundColor: theme.colors.sidePanel.background,
+          color: theme.colors.background.light,
+        }}>
         <VStack>
           <SearchBarContainer
             animate={isExpanded ? 'expanded' : 'collapsed'}
@@ -135,8 +142,13 @@ const SearchBarInput = () => {
                 />
               </InputLeftElement>
               <Input
+                className={styles.input}
                 id="searchString"
                 variant="outline"
+                style={{
+                  backgroundColor: theme.colors.sidePanel.background,
+                  color: theme.colors.background.light,
+                }}
                 placeholder="Search for Chats/Messages"
                 name="searchString"
                 value={input}

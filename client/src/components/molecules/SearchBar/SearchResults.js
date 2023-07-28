@@ -1,25 +1,21 @@
 import React from 'react';
-import styled from 'styled-components';
 import LoadingSpinner from '../../atoms/LoadingSpinner/LoadingSpinner';
 import SearchTabs from '../../atoms/ChatSearchTabs/SearchTabs';
-
-const SearchContent = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 1em;
-  overflow-y: auto;
-  background: #353744;
-`;
+import styles from './SearchResults.module.css';
+import { useTheme } from '@chakra-ui/react';
 
 const SearchResults = ({ searchString, results, isLoading }) => {
+  const theme = useTheme();
   return (
     <>
-      <SearchContent>
+      <div className={styles.searchContent} 
+          style={{
+            backgroundColor: theme.colors.sidePanel.background,
+            color: theme.colors.background.light,
+          }}>
         <SearchTabs searchString={searchString} results={results} />
         {isLoading && <LoadingSpinner />}
-      </SearchContent>
+      </div>
     </>
   );
 };

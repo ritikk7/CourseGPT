@@ -1,7 +1,6 @@
 import React from 'react';
-// import styled from 'styled-components';
 import styles from './MessageResult.module.css';
-import { Box, Highlight, Divider } from '@chakra-ui/react';
+import { Box, Highlight, Divider, useTheme } from '@chakra-ui/react';
 import {
   setActiveChat,
   setFocusedChat,
@@ -15,6 +14,7 @@ import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 import { setIsSearchBarVisible } from '../../../redux/uiSlice';
 
 const MessageResult = ({ result }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   const highlightedTexts = mapHighlightedTextToArray(result);
@@ -49,7 +49,7 @@ const MessageResult = ({ result }) => {
             px: '1',
             py: '1',
             bg: 'blue.600',
-            color: 'yellow.50',
+            color: theme.colors.background.light,
             rounded: 'md',
           }}
         >

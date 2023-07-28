@@ -5,6 +5,10 @@
   overflow: hidden;
 }
 
+.input::placeholder {
+  color: var(--placeholder);
+}
+
 .container {
   position: absolute;
   left: 50%;
