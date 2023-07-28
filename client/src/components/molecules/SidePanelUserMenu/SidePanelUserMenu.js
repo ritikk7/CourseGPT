@@ -83,11 +83,14 @@ const SidePanelUserMenu = ({
         {allowedViewAnalytics.includes(userType) ? (
           <>
             <MenuDivider borderColor={theme.colors.sidePanel.text} />
-            <MenuItem               bg={theme.colors.sidePanel.hoverItemBackground}
-                                    color={theme.colors.sidePanel.text}
-                                    _hover={{
-                                      color: theme.colors.sidePanel.textHover,
-                                    }} onClick={() => setSeeFeedback(true)}>
+            <MenuItem
+              bg={theme.colors.sidePanel.hoverItemBackground}
+              color={theme.colors.sidePanel.text}
+              _hover={{
+                color: theme.colors.sidePanel.textHover,
+              }}
+              onClick={() => setSeeFeedback(true)}
+            >
               View Analytics
             </MenuItem>
           </>
