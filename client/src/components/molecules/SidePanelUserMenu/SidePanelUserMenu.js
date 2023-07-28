@@ -10,7 +10,9 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setIsSearchBarVisible } from '../../../redux/uiSlice';
+import { setActivePanelSearch } from '../../../redux/userSlice';
 
 const SidePanelUserMenu = ({
   setSettingsOpen,
@@ -21,6 +23,7 @@ const SidePanelUserMenu = ({
   setSeeFeedback,
   isAnalyticsMode,
 }) => {
+  const dispatch = useDispatch();
   const userType = useSelector(state => state.user.type);
   const userProfile = useSelector(state => state.user.profilePicture);
   const isTrainingCourse = useSelector(state => state.courses.loading);
@@ -138,6 +141,16 @@ const SidePanelUserMenu = ({
           onClick={() => setSettingsOpen(true)}
         >
           Profile
+        </MenuItem>
+        <MenuDivider borderColor="rgb(100, 100, 102)" />
+        <MenuItem
+          bg="black"
+          onClick={() => {
+            dispatch(setIsSearchBarVisible(true));
+            dispatch(setActivePanelSearch());
+          }}
+        >
+          Search Chats/Messages
         </MenuItem>
         {renderUserMenu()}
         <MenuDivider borderColor={theme.colors.sidePanel.text} />

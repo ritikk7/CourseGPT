@@ -12,6 +12,7 @@ import { setCurrentlySelectedDropdownCourse } from '../../../redux/coursesSlice'
 import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import { setActivePanelChat } from '../../../redux/userSlice';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
+import { setIsSearchBarVisible } from '../../../redux/uiSlice';
 
 const MessageResult = ({ result }) => {
   const dispatch = useDispatch();
@@ -20,15 +21,15 @@ const MessageResult = ({ result }) => {
 
   const handleClick = async e => {
     e.preventDefault();
-    console.log(result);
+    // console.log(result);
     const chatId = result.chat;
     // set selected course to all chats
-    console.log('setting CurrentlySelectedDropdownCourse to null (All)');
+    // console.log('setting CurrentlySelectedDropdownCourse to null (All)');
     await dispatch(setCurrentlySelectedDropdownCourse(null));
     // set selected chat to chatId
-    console.log('setting active chat to chat ', chatId);
+    // console.log('setting active chat to chat ', chatId);
     await dispatch(setActiveChat(chatId));
-    console.log('setting focused chat to chat ', chatId);
+    // console.log('setting focused chat to chat ', chatId);
     await dispatch(setFocusedChat(chatId));
     // Render messages on the right (with the message highlighted)
     await dispatch(fetchActiveChatMessages());
@@ -36,6 +37,7 @@ const MessageResult = ({ result }) => {
     await dispatch(setActivePanelChat());
     // set ref at the messageId and autoscroll to that reference
     await dispatch(setHighlightMessage(result));
+    await dispatch(setIsSearchBarVisible(false));
   };
 
   return (
