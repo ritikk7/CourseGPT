@@ -12,7 +12,7 @@
     "start:staging": "cd client && npm run build:staging && cd .. && cd server && npm run start:staging",
     "start": "npm run server:prod",
     "server:prod": "cd server && npm run start:prod",
-    "heroku-postbuild": "cd client && npm run build",
+    "heroku-postbuild": "cd client && npm run build:prod",
     "postinstall": "cd server && npm install && cd ../client && npm install --force && cd ..",
     "lint": "eslint .",
     "format": "prettier --write .",
