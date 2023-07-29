@@ -8,11 +8,13 @@ const SearchResults = ({ searchString, results, isLoading }) => {
   const theme = useTheme();
   return (
     <>
-      <div className={styles.searchContent} 
-          style={{
-            backgroundColor: theme.colors.sidePanel.background,
-            color: theme.colors.background.light,
-          }}>
+      <div
+        className={styles.searchContent}
+        style={{
+          backgroundColor: theme.colors.sidePanel.background,
+          color: theme.colors.background.light,
+        }}
+      >
         <SearchTabs searchString={searchString} results={results} />
         {isLoading && <LoadingSpinner />}
       </div>

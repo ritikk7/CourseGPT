@@ -1,7 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { userFavouriteCoursesSelector } from '../../../redux/selectors/userFavouriteCoursesSelector';
-import { Badge, Tabs, TabList, Tab, TabPanels, useTheme } from '@chakra-ui/react';
+import {
+  Badge,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  useTheme,
+} from '@chakra-ui/react';
 import SearchTabPanel from './SearchTabPanel';
 
 const SearchTabs = ({ searchString, results }) => {
@@ -14,19 +21,23 @@ const SearchTabs = ({ searchString, results }) => {
   return (
     <Tabs>
       <TabList>
-        <Tab key="all"
-        _hover={{ bg: '#455A64' }} 
-        _focus={{ bg: '#455A64'}}  
-        color={theme.colors.background.light}
-        borderTopRadius={7}>
+        <Tab
+          key="all"
+          _hover={{ bg: '#455A64' }}
+          _focus={{ bg: '#455A64' }}
+          color={theme.colors.background.light}
+          borderTopRadius={7}
+        >
           All<Badge mx={2}>{results.length}</Badge>
         </Tab>
         {Object.keys(courses).map(id => (
-          <Tab key={id} 
-            _hover={{ bg: '#455A64' }} 
-            _focus={{ bg: '#455A64'}}  
+          <Tab
+            key={id}
+            _hover={{ bg: '#455A64' }}
+            _focus={{ bg: '#455A64' }}
             color={theme.colors.background.light}
-            borderTopRadius={7}> 
+            borderTopRadius={7}
+          >
             {courses[id].courseCode}
             <Badge mx={2}>{getFilteredResults(id).length}</Badge>
           </Tab>

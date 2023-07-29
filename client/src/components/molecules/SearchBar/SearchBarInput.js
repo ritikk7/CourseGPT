@@ -8,7 +8,7 @@ import {
   IconButton,
   Center,
   VStack,
-  useTheme
+  useTheme,
 } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import SearchResults from './SearchResults';
@@ -118,13 +118,15 @@ const SearchBarInput = () => {
   };
 
   return (
-    <div className={styles.container} >
-      <Center m={5}
-        borderRadius='6px'
+    <div className={styles.container}>
+      <Center
+        m={5}
+        borderRadius="6px"
         style={{
           backgroundColor: theme.colors.sidePanel.background,
           color: theme.colors.background.light,
-        }}>
+        }}
+      >
         <VStack>
           <SearchBarContainer
             animate={isExpanded ? 'expanded' : 'collapsed'}
