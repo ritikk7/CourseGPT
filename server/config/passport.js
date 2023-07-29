@@ -2,12 +2,15 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/user');
 
+const callback = process.env.NODE_ENV === 'production' ? '/api/auth/google/callback'
+  : 'https://course-gpt.herokuapp.com/api/auth/google/callback'
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/api/auth/google/callback',
+      callbackURL: callback,
     },
     findOrCreate
   )
