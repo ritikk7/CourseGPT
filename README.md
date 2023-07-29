@@ -4,8 +4,6 @@ Unlock the potential of personalized education with [CourseGPT](https://course-g
 
 CourseGPT allows professors to train custom AI models on demand, acting as a virtual tutor available 24/7 to students. By providing immediate access to tailored course content, it enhances student learning while significantly reducing professors’ administrative workload.
 
-Empowering students to learn and professors to teach— our application takes care of the rest. With CourseGPT handling the Q&A, everyone can focus on what they do best.
-
 ---
 
 ## Project Progress 1
