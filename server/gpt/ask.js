@@ -11,8 +11,8 @@ const { Logger } = require('../util/Logger');
 async function buildQueryMessage(query, course, tokenBudget) {
   Logger.logEnter();
 
-  const maxEmbeddingsToInclude = 5; // adjust this to lower value if responses end up being bad again
-  const relatednessThreshold = 0.75;
+  const maxEmbeddingsToInclude = 10; // adjust this to lower value if responses end up being bad again
+  const relatednessThreshold = 0.7;
   const strings = await getAscendingOrderRelatednessStrings(
     query,
     course,
@@ -56,6 +56,8 @@ function buildMessageHelper(strings, query, tokenBudget) {
     tokensInMessageSoFar += nextTokenCount;
   }
 
+  Logger.debug(includedInfo);
+
   const message =
     generatePreamble(strings, includedInfoCount, query) +
     includedInfo.join('') +
@@ -66,11 +68,11 @@ function buildMessageHelper(strings, query, tokenBudget) {
 }
 
 function generatePreamble(strings, numInfo, query) {
-  return `As an AI, you're given ${numInfo} pieces of information below related to the question "${query}". Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. Read all of them before you answer. Here are the pieces of information provided:\n\n`;
+  return `As an AI, you're given ${numInfo} pieces of information below related to the question "${query}". Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. Read all of the information before you answer. Here are the pieces of information provided:\n\n`;
 }
 
 function generatePostamble(strings, numInfo, query) {
-  return `As an AI, you're given ${numInfo} pieces of information above related to the question below. Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. The pieces of information are above. Read all of them again before you answer. The question is below.\n\n"${query}"`;
+  return `As an AI, you're given ${numInfo} pieces of information above related to the question below. Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. The pieces of information are above. Read all of the information again before you answer. The question is below.\n\n"${query}"`;
 }
 
 async function ask(query, chatId, tokenBudget = process.env.TOKEN_LIMIT - 200) {

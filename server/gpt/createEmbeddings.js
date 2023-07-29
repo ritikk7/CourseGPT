@@ -10,6 +10,7 @@ const stopwords = require('stopword');
 
 const BATCH_SIZE = process.env.BATCH_SIZE || 1000;
 const CHUNK_SIZE = process.env.CHUNK_SIZE || 500;
+const SINGLE_CHUNK_MAX_SIZE = CHUNK_SIZE * 2;
 let currCourse = null;
 
 function splitStringToChunks(rawData, delimiter = '.') {
@@ -18,7 +19,7 @@ function splitStringToChunks(rawData, delimiter = '.') {
   let chunks = [];
   let chunk = '';
 
-  if (countTokens(rawData) < 1000) {
+  if (countTokens(rawData) < SINGLE_CHUNK_MAX_SIZE) {
     return [rawData];
   } // if text is small, keep the context
 
