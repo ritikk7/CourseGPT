@@ -6,6 +6,7 @@ import Typewriter from 'typewriter-effect';
 import { Box, Highlight, useTheme } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
+import ReactMarkdown from 'react-markdown';
 
 const ChatSection = ({ message }, ref) => {
   const user = useSelector(state => state.user);
@@ -55,7 +56,7 @@ const ChatSection = ({ message }, ref) => {
       return text.split('\n').map((item, key) => {
         return (
           <span key={key}>
-            {item}
+            <ReactMarkdown children={item} />
             <br />
           </span>
         );
@@ -63,6 +64,7 @@ const ChatSection = ({ message }, ref) => {
     }
     return null;
   };
+
   const handleNewlineText = text => {
     if (text) {
       let htmlText = text

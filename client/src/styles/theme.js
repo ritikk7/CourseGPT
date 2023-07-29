@@ -102,14 +102,14 @@ const theme = extendTheme({
     },
 
     chatSection: {
-      dark: '#d1dbde',  // background for message from chat gpt (dark background)
-      lightText: '#09111e',  // text for dark background
-      light: '#ffffff',  // background for message from user (light background)
-      darkText: '#09111e',  // text for light background
-      sendArrow: '#ffffff',  // send arrow inside input box
-      inputBackground: '#738389',  // background for user input box
-      inputText: '#ffffff',  // text for user input box
-      icon: '#455a64',  // icon color for feedback on top of dark background
+      dark: '#d1dbde', // background for message from chat gpt (dark background)
+      lightText: '#09111e', // text for dark background
+      light: '#ffffff', // background for message from user (light background)
+      darkText: '#09111e', // text for light background
+      sendArrow: '#ffffff', // send arrow inside input box
+      inputBackground: '#738389', // background for user input box
+      inputText: '#ffffff', // text for user input box
+      icon: '#455a64', // icon color for feedback on top of dark background
     },
 
     neutral: {
