@@ -64,15 +64,11 @@ const feedbackDataSlice = createSlice({
       .addCase(fetchFeedbackAnalysis.pending, handlePending)
       .addCase(fetchFeedbackAnalysis.fulfilled, (state, action) => {
         state.feedbackInfo = action.payload;
-        // console.log(state.feedbackInfo);
-        // console.log('data stuff in feedback data slice');
       })
       .addCase(fetchFeedbackAnalysis.rejected, handleRejected)
       .addCase(fetchGroups.pending, handlePending)
       .addCase(fetchGroups.fulfilled, (state, action) => {
         state.freqData = action.payload;
-        // console.log(state.feedbackInfo);
-        // console.log('data stuff in feedback data slice');
       })
       .addCase(fetchGroups.rejected, handleRejected)
 
