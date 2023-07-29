@@ -23,8 +23,8 @@ const InputArea = ({
           onKeyDown={onInputSubmit}
           ref={inputRef}
           style={{
-            backgroundColor: theme.colors.mainInput,
-            color: theme.colors.background.light,
+            backgroundColor: theme.colors.chatSection.inputBackground,
+            color: theme.colors.chatSection.inputText,
           }}
         />
         <button
@@ -40,7 +40,7 @@ const InputArea = ({
           disabled={disableInput}
         >
           <ArrowForwardIcon
-            color={theme.colors.chatSection.arrow}
+            color={theme.colors.chatSection.sendArrow}
             boxSize="1.5em"
           />
         </button>

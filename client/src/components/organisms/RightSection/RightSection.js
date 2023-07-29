@@ -110,6 +110,8 @@ const RightSection = () => {
         dispatch(fetchChat(newMessagePayload.payload.chat));
         await dispatch(setActiveChat(newMessagePayload.payload.chat));
         await dispatch(setFocusedChat(newMessagePayload.payload.chat));
+        // add a non-awaited call to get chat title to reduce latency (right now coupled with answer from gpt) - TODO: fix this
+        // inputs:
       }
     );
   };
