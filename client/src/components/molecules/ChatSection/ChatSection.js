@@ -66,12 +66,10 @@ const ChatSection = ({ message }, ref) => {
         } else {
           return block.split('\n').map((item, key) => (
             <span key={key}>
-        <ReactMarkdown children={item} />
-        <br />
-    </span>
+              <ReactMarkdown children={item} />
+              <br />
+            </span>
           ));
-
-
         }
       });
     }
