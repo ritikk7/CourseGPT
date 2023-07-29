@@ -10,13 +10,6 @@ async function getAllMessages(req, res) {
   res.status(200).json({ messages });
 }
 
-async function getMessage(req, res) {
-  // TODO
-  const chatId = req.params.chatId;
-  const msgId = req.params.messageId;
-  res.send({ data: `Hello get  msg ${msgId} from chat ${chatId}` });
-}
-
 async function createUserMessage(req, res) {
   try {
     const chatId = req.params.chatId;
@@ -66,13 +59,6 @@ async function getGptResponse(req, res) {
     let chat = await Chat.findById(chatId);
     chat.messages.push(newGptMessage._id);
 
-    if (!chat.title) {
-      chat.title = await generateChatTitle(
-        userMessageObject.content,
-        chatGPTResponse
-      );
-    }
-
     await chat.save();
 
     await qaPair.createQaPair({
@@ -90,8 +76,49 @@ async function getGptResponse(req, res) {
   }
 }
 
+async function createChatTitle(req, res) {
+  try {
+    const chatId = req.params.chatId;
+    let updatedChat = await Chat.findById(chatId).populate('messages');
+    let userMessageContent;
+    let chatGptResponseContent;
+    let messageIds = [];
+
+    for(let i = 0; i < updatedChat.messages.length; i++) {
+      // only ever executed when there are two messages - one user and one gpt
+      let message = updatedChat.messages[i];
+      if(message.role === 'user') {
+        userMessageContent = message.content;
+      } else {
+        chatGptResponseContent = message.content;
+      }
+      messageIds.push(message._id);
+    }
+
+    if (!updatedChat.title) {
+      updatedChat.title = await generateChatTitle(
+        userMessageContent,
+        chatGptResponseContent
+      );
+    }
+
+    await updatedChat.save();
+
+    // The frontend expects just a list of id's not the populated messages
+    updatedChat.messages = messageIds;
+
+    res.status(201).json({ chat: updatedChat });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Something went wrong ' + error.message + error + error.stack,
+    });
+  }
+}
+
+
 module.exports = {
   createUserMessage,
   getAllMessages,
   getGptResponse,
+  createChatTitle
 };

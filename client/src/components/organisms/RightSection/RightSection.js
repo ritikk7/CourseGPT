@@ -14,11 +14,12 @@ import {
 } from '../../../redux/userSlice';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
+  createChatTitle,
   createChatWithSelectedDropdownCourse,
   fetchChat,
   setActiveChat,
-  setFocusedChat,
-} from '../../../redux/chatsSlice';
+  setFocusedChat
+} from "../../../redux/chatsSlice";
 import {
   Button,
   Spinner,
@@ -106,12 +107,13 @@ const RightSection = () => {
     dispatch(setActivePanelChat());
     await dispatch(createUserMessageInActiveChat(currentUserInput)).then(
       async newMessagePayload => {
-        await dispatch(getGptResponseInChat(newMessagePayload.payload));
-        dispatch(fetchChat(newMessagePayload.payload.chat));
-        await dispatch(setActiveChat(newMessagePayload.payload.chat));
-        await dispatch(setFocusedChat(newMessagePayload.payload.chat));
-        // add a non-awaited call to get chat title to reduce latency (right now coupled with answer from gpt) - TODO: fix this
-        // inputs:
+        dispatch(setActiveChat(newMessagePayload.payload.chat));
+        dispatch(setFocusedChat(newMessagePayload.payload.chat));
+        await dispatch(getGptResponseInChat(newMessagePayload.payload)).then(
+          async newGptMessage => {
+            dispatch(createChatTitle(newGptMessage.payload));
+          }
+        )
       }
     );
   };

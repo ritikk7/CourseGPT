@@ -114,7 +114,6 @@ const ChatSection = ({ message }, ref) => {
   };
 
   const renderMessageContent = () => {
-    console.log(highlightMessage);
     if (!highlightMessage || highlightMessage._id !== message._id)
       return handleMixedTextWithCodeBlocksAndNewlines(message.content);
     return handleNewlineHTMLHighlighted(message.content);

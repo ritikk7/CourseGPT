@@ -136,10 +136,6 @@ const SidePanelUserMenu = ({
           bg: theme.colors.sidePanel.menuBackground,
           color: theme.colors.textPrimary.light,
         }}
-        _focus={{
-          bg: theme.colors.sidePanel.menuBackground,
-          color: theme.colors.textPrimary.light,
-        }}
         _expanded={{
           bg: theme.colors.sidePanel.menuBackground,
           color: theme.colors.textPrimary.light,

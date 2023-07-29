@@ -39,6 +39,24 @@ export const fetchUserChats = createAsyncThunk(
   }
 );
 
+export const createChatTitle = createAsyncThunk(
+  'chats/createChatTitle',
+  async (gptMessageObject, { getState }) => {
+    try {
+      const userId = getState().auth.userId;
+      const chatId = gptMessageObject.chat;
+      const response = await api.post(
+        `/users/${userId}/chats/${chatId}/messages/chat-title`,
+        gptMessageObject
+      );
+      console.log(response.data.chat);
+      return response.data.chat;
+    } catch (error) {
+      handleRequestError(error);
+    }
+  }
+);
+
 export const fetchChat = createAsyncThunk(
   'chats/fetchChat',
   async (chatId, { getState }) => {
@@ -170,6 +188,12 @@ const chatsSlice = createSlice({
         handleLoading(state, false);
       })
       .addCase(fetchChat.rejected, handleRejected)
+      .addCase(createChatTitle.pending, handlePending)
+      .addCase(createChatTitle.fulfilled, (state, action) => {
+        state.userChats[action.payload._id] = action.payload;
+        handleLoading(state, false);
+      })
+      .addCase(createChatTitle.rejected, handleRejected)
       .addCase(createChatWithSelectedDropdownCourse.pending, handlePending)
       .addCase(
         createChatWithSelectedDropdownCourse.fulfilled,
