@@ -178,7 +178,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             }}
             bg="transparent"
             color="black"
-            _hover={{ bg: '#39393c', color: 'white'  }}
+            _hover={{ bg: '#39393c', color: 'white' }}
             leftIcon={<Assessment />}
           >
             Feedback
@@ -189,7 +189,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             }}
             bg="transparent"
             color="black"
-            _hover={{ bg: '#39393c', color: 'white'  }}
+            _hover={{ bg: '#39393c', color: 'white' }}
             leftIcon={<BubbleChart />}
           >
             Bubble Chart
@@ -200,7 +200,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             }}
             bg="transparent"
             color="black"
-            _hover={{ bg: '#39393c', color: 'white'  }}
+            _hover={{ bg: '#39393c', color: 'white' }}
             leftIcon={<BarChart />}
           >
             Bar Chart
@@ -222,7 +222,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             }}
             bg="transparent"
             color="black"
-            _hover={{ bg: '#39393c', color: 'white'}}
+            _hover={{ bg: '#39393c', color: 'white' }}
             leftIcon={<Abc />}
           >
             Word Cloud
