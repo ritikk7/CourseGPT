@@ -60,7 +60,7 @@ export function SingleSelectButtons(props) {
         borderWidth="1px"
         borderRadius="md"
         boxShadow="md"
-        color={theme.colors.profileModal.inactiveItemText}
+        color={theme.colors.profileModal.activeItemText}
         _checked={{
           bg: theme.colors.profileModal.activeItemBackground,
           color: theme.colors.profileModal.activeItemText,

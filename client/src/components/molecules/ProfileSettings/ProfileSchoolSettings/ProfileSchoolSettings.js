@@ -91,8 +91,12 @@ const ProfileSchoolSettings = ({ handleClose }) => {
           School
         </FormLabel>
         <Select
-          backgroundColor={theme.colors.profileModal.activeItemBackground}
-          color={theme.colors.textPrimary.light}
+          bg={theme.colors.loginAndReg.inputBackground}
+          color={theme.colors.loginAndReg.text}
+          borderColor={theme.colors.loginAndReg.icon}
+          _focus={{ borderColor: theme.colors.loginAndReg.icon }}
+          _hover={{ borderColor: theme.colors.loginAndReg.icon }}
+          _active={{ borderColor: theme.colors.loginAndReg.icon }}
           placeholder="Select a school"
           value={selectedSchool?._id}
           onChange={handleSchoolChange}

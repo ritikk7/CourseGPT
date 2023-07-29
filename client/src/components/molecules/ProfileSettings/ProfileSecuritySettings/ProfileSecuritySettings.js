@@ -106,7 +106,7 @@ const ProfileSecuritySettings = ({ handleClose }) => {
           type="password"
           value={oldPassword}
           onChange={e => setOldPassword(e.target.value)}
-          color={theme.colors.profileModal.mainFormInputColor}
+          color={theme.colors.profileModal.mainTextColor}
         />
       </FormControl>
       <FormControl mt={3} paddingInlineStart={6}>
@@ -117,7 +117,7 @@ const ProfileSecuritySettings = ({ handleClose }) => {
           type="password"
           value={newPassword}
           onChange={e => setNewPassword(e.target.value)}
-          color={theme.colors.profileModal.mainFormInputColor}
+          color={theme.colors.profileModal.mainTextColor}
         />
       </FormControl>
       <FormControl mt={3} paddingInlineStart={6}>
@@ -128,7 +128,7 @@ const ProfileSecuritySettings = ({ handleClose }) => {
           type="password"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
-          color={theme.colors.profileModal.mainFormInputColor}
+          color={theme.colors.profileModal.mainTextColor}
         />
       </FormControl>
       <ModalFooter

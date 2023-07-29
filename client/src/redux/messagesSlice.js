@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
+import { logoutUser } from "./authSlice";
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -134,7 +135,17 @@ const messagesSlice = createSlice({
       })
       .addCase(getGptResponseInChat.rejected, (state, action) => {
         state.gptLoading = false;
-      });
+      })
+
+    // Auth slice
+  .addCase(logoutUser.fulfilled, state => {
+      state.messages = {};
+      state.currentUserInput = '';
+        state.loading = false;
+        state.gptLoading = false;
+        state.error = null;
+    })
+
   },
 });
 

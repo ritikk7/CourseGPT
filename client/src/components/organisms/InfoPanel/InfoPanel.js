@@ -21,7 +21,7 @@ const InfoPanel = ({ setInputText, inputRef }) => {
         mt={24}
         spacing="16px"
         bg={theme.colors.chatSection.light}
-        color={theme.colors.button.textHover}
+        color={theme.colors.chatSection.darkText}
       >
         {selectedCourse && waitingFirstMessage
           ? selectedCourse.promptTemplates?.map((prompt, i) => (

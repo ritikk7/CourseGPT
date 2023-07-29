@@ -10,7 +10,12 @@ const openAI = new OpenAIApi(
   })
 );
 
-async function createCourseGptCompletion(messages, temperature = 0.5, retryMin = 0, retryMax = 5) {
+async function createCourseGptCompletion(
+  messages,
+  temperature = 0.5,
+  retryMin = 0,
+  retryMax = 5
+) {
   Logger.logEnter();
   const NUM_ATTEMPTS = 3;
   for (let i = 0; i < NUM_ATTEMPTS; i++) {

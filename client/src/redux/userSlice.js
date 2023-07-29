@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
-import { fetchUser, loginUser, registerUser } from './authSlice';
+import { fetchUser, loginUser, logoutUser, registerUser } from "./authSlice";
 import {
   createChatWithSelectedDropdownCourse,
   setActiveChat,
@@ -27,7 +27,7 @@ const updateUserData = (state, action) => {
 };
 
 const clearUserData = state => {
-  updateUserData(state, { payload: {} });
+  updateUserData(state, { payload: {chats: [], favourites: []} });
 };
 
 const handleLoading = (state, loadingStatus) => {
@@ -132,6 +132,9 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, updateUserData)
       .addCase(registerUser.fulfilled, updateUserData)
       .addCase(fetchUser.fulfilled, updateUserData)
+      .addCase(logoutUser.fulfilled, state => {
+        clearUserData(state);
+      })
 
       // chatSlice actions
       .addCase(

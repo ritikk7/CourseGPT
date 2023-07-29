@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
+import { logoutUser } from "./authSlice";
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -130,7 +131,14 @@ const coursesSlice = createSlice({
           handleLoading(state, false);
         }
       )
-      .addCase(trainCurrentlySelectedDropdownCourse.rejected, handleRejected);
+      .addCase(trainCurrentlySelectedDropdownCourse.rejected, handleRejected)
+
+      // Auth slice
+      .addCase(logoutUser.fulfilled, state => {
+        state.currentlySelectedDropdownCourse = null;
+        state.loading = false;
+        state.error = null;
+      })
   },
 });
 

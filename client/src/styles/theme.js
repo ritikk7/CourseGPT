@@ -9,40 +9,80 @@ const theme = extendTheme({
 
     profileModal: {
       mainBackground: '#FFFFFF',
-      sidePanelInactiveItemBackground: `#90A4AE`,
-      sidePanelHoverItemBackground: `#607D8B`,
-      sidePanelActiveItemBackground: `#455A64`,
+      sidePanelInactiveItemBackground: `#1F3A60`,
+      sidePanelHoverItemBackground: `#336699`,
+      sidePanelActiveItemBackground: `#1A243B`,
       sidePanelIconColor: '#FFFFFF',
-      hoverItemBackground: `#455A64`,
-      activeItemBackground: `#607D8B`,
-      inactiveItemBackground: `#90A4AE`,
+      hoverItemBackground: `#336699`,
+      activeItemBackground: `#1A243B`,
+      inactiveItemBackground: `#26487c`,
       hoverItemText: '#FFFFFF',
       activeItemText: '#FFFFFF',
-      inactiveItemText: '#F5F5F5',
-      mainTextColor: '#0E1723',
-      mainFormLabelColor: '#0E1723',
-      mainFormInputColor: '#D9E2E8',
+      inactiveItemText: '#eeeeee',
+      mainTextColor: '#08101C',
+      mainFormLabelColor: '#08101C',
+      mainFormInputColor: '#c2dcff',
     },
+
     loginAndReg: {
-      mainBackground: '#C4D6DC',
+      mainBackground: '#c2dcff',
       boxBackground: '#FFFFFF',
-      inputBackground: '#f1f7fc',
-      text: '#0E1723',
+      inputBackground: '#FFFFFF',
+      text: '#08101C',
       link: {
-        base: '#1A73E8',
-        hover: '#1543C4',
+        base: '#1F3A60',
+        hover: '#1A243B',
       },
       loginWithGoogleButton: {
-        base: '#ff6b6b',
-        hover: '#ff4a4a',
+        hover: '#ff3f37',
+        base: '#D33A34',
       },
       loginOrRegisterButton: {
-        base: '#5791ff',
-        hover: '#2b75ff',
+        base: '#1F3A60',
+        hover: '#3567af',
       },
-      icon: '#0E1723',
+      icon: '#1F3A60',
     },
-    icon: '#455A64',
+
+    sidePanel: {
+      background: `#1F3A60`,
+      hoverItemBackground: `#336699`,
+      activeItemBackground: `#1A243B`,
+      text: '#FFFFFF',
+      menuBackground: `#336699`,
+      menuTextHover: '#FFFFFF',
+      menuText: '#ececec',
+    },
+
+    chatSection: {
+      dark: '#c2dcff', // background for message from chat gpt (dark background)
+      lightText: '#08101C', // text for dark background
+      light: '#FFFFFF', // background for message from user (light background)
+      darkText: '#08101C', // text for light background
+      sendArrow: '#1F3A60', // send arrow inside input box
+      inputBackground: '#FFFFFF', // background for user input box
+      inputText: '#1F3A60', // text for user input box
+      icon: `#1F3A60`, // icon color for feedback on top of dark background
+    },
+
+    button: {
+      text: '#FFFFFF',
+      hover: '#336699',
+      light: '#1F3A60',
+      dark: '#1A243B',
+    },
+
+    buttonCancel: {
+      text: '#FFFFFF',
+      hover: '#9E2023',
+      light: '#D33A34',
+      dark: '#1A243B',
+    },
+
+    feedbackModal: {
+      mainBackground: '#FFFFFF',
+    },
+
     primary: {
       light: '#DDEAF3',
       dark: '#47687F',
@@ -68,18 +108,6 @@ const theme = extendTheme({
       dark: '#265D9F',
       darker: '#134782',
     },
-    button: {
-      text: '#FFFFFF',
-      hover: '#1262A3',
-      light: '#2675BF',
-      dark: '#105287',
-    },
-    buttonCancel: {
-      text: '#FFFFFF',
-      hover: '#9E2023',
-      light: '#D33A34',
-      dark: '#2B3642',
-    },
     error: {
       light: '#D33A34',
       dark: '#9E2023',
@@ -94,30 +122,10 @@ const theme = extendTheme({
       dark: '#3B4D57',
     },
 
-    sidePanel: {
-      background: `#1F3A60`,
-      hoverItemBackground: `#336699`,
-      activeItemBackground: `#1A243B`,
-      text: '#FFFFFF',
-      textHover: '#BFC2CA',
-    },
-
-    chatSection: {
-      dark: '#c2dcff',  // background for message from chat gpt (dark background)
-      lightText: '#08101C',  // text for dark background
-      light: '#FFFFFF',  // background for message from user (light background)
-      darkText: '#08101C',  // text for light background
-      sendArrow: '#1F3A60',  // send arrow inside input box
-      inputBackground: '#FFFFFF',  // background for user input box
-      inputText: '#1F3A60',  // text for user input box
-      icon: `#1F3A60`,  // icon color for feedback on top of dark background
-    },
-
     neutral: {
       light: '#7F9CAE',
       dark: '#2E404C',
     },
-    mainInput: '#738389',
   },
   styles: {
     global: {

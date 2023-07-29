@@ -36,9 +36,12 @@ const SidePanelUserMenu = ({
     if (isAnalyticsMode) {
       return (
         <>
-          <MenuDivider borderColor="rgb(100, 100, 102)" />
           <MenuItem
-            bg="black"
+            bg={theme.colors.sidePanel.menuBackground}
+            color={theme.colors.sidePanel.menuText}
+            _hover={{
+              color: theme.colors.sidePanel.menuTextHover,
+            }}
             onClick={() => {
               setSeeFeedback(false);
             }}
@@ -50,14 +53,38 @@ const SidePanelUserMenu = ({
     }
     return (
       <>
+        <MenuItem
+          bg={theme.colors.sidePanel.menuBackground}
+          color={theme.colors.sidePanel.menuText}
+          _hover={{
+            color: theme.colors.sidePanel.menuTextHover,
+          }}
+          onClick={() => setSettingsOpen(true)}
+        >
+          Profile
+        </MenuItem>
+        <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
+        <MenuItem
+          bg={theme.colors.sidePanel.menuBackground}
+          color={theme.colors.sidePanel.menuText}
+          _hover={{
+            color: theme.colors.sidePanel.menuTextHover,
+          }}
+          onClick={() => {
+            dispatch(setIsSearchBarVisible(true));
+            dispatch(setActivePanelSearch());
+          }}
+        >
+          Search Chats/Messages
+        </MenuItem>
         {!isGptLoading ? (
           <>
-            <MenuDivider borderColor={theme.colors.sidePanel.text} />
+            <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
             <MenuItem
-              bg={theme.colors.sidePanel.hoverItemBackground}
-              color={theme.colors.sidePanel.text}
+              bg={theme.colors.sidePanel.menuBackground}
+              color={theme.colors.sidePanel.menuText}
               _hover={{
-                color: theme.colors.sidePanel.textHover,
+                color: theme.colors.sidePanel.menuTextHover,
               }}
               onClick={handleClearConversations}
             >
@@ -67,12 +94,12 @@ const SidePanelUserMenu = ({
         ) : null}
         {usersAllowedToTrain.includes(userType) && !isTrainingCourse ? (
           <>
-            <MenuDivider borderColor={theme.colors.sidePanel.text} />
+            <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
             <MenuItem
-              bg={theme.colors.sidePanel.hoverItemBackground}
-              color={theme.colors.sidePanel.text}
+              bg={theme.colors.sidePanel.menuBackground}
+              color={theme.colors.sidePanel.menuText}
               _hover={{
-                color: theme.colors.sidePanel.textHover,
+                color: theme.colors.sidePanel.menuTextHover,
               }}
               onClick={() => setTrainCourseModalOpen(true)}
             >
@@ -82,12 +109,12 @@ const SidePanelUserMenu = ({
         ) : null}
         {allowedViewAnalytics.includes(userType) ? (
           <>
-            <MenuDivider borderColor={theme.colors.sidePanel.text} />
+            <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
             <MenuItem
-              bg={theme.colors.sidePanel.hoverItemBackground}
-              color={theme.colors.sidePanel.text}
+              bg={theme.colors.sidePanel.menuBackground}
+              color={theme.colors.sidePanel.menuText}
               _hover={{
-                color: theme.colors.sidePanel.textHover,
+                color: theme.colors.sidePanel.menuTextHover,
               }}
               onClick={() => setSeeFeedback(true)}
             >
@@ -104,17 +131,17 @@ const SidePanelUserMenu = ({
       <MenuButton
         as={Button}
         bg={theme.colors.sidePanel.background}
-        color={theme.colors.sidePanel.text}
+        color={theme.colors.sidePanel.menuText}
         _hover={{
-          bg: theme.colors.sidePanel.hoverItemBackground,
+          bg: theme.colors.sidePanel.menuBackground,
           color: theme.colors.textPrimary.light,
         }}
         _focus={{
-          bg: theme.colors.sidePanel.hoverItemBackground,
+          bg: theme.colors.sidePanel.menuBackground,
           color: theme.colors.textPrimary.light,
         }}
         _expanded={{
-          bg: theme.colors.sidePanel.hoverItemBackground,
+          bg: theme.colors.sidePanel.menuBackground,
           color: theme.colors.textPrimary.light,
         }}
         leftIcon={
@@ -125,47 +152,23 @@ const SidePanelUserMenu = ({
             alt="avatar"
           />
         }
-        rightIcon={<HamburgerIcon color={theme.colors.sidePanel.text} />}
+        rightIcon={<HamburgerIcon color={theme.colors.sidePanel.menuText} />}
         width="100%"
       >
         {username}
       </MenuButton>
       <MenuList
-        bg={theme.colors.sidePanel.hoverItemBackground}
-        color={theme.colors.sidePanel.text}
+        bg={theme.colors.sidePanel.menuBackground}
+        color={theme.colors.sidePanel.menuText}
         border="none"
       >
-        <MenuItem
-          bg={theme.colors.sidePanel.hoverItemBackground}
-          color={theme.colors.sidePanel.text}
-          _hover={{
-            color: theme.colors.sidePanel.textHover,
-          }}
-          onClick={() => setSettingsOpen(true)}
-        >
-          Profile
-        </MenuItem>
-        <MenuDivider borderColor={theme.colors.sidePanel.text} />
-        <MenuItem
-          bg={theme.colors.sidePanel.hoverItemBackground}
-          color={theme.colors.sidePanel.text}
-          _hover={{
-            color: theme.colors.sidePanel.textHover,
-          }}
-          onClick={() => {
-            dispatch(setIsSearchBarVisible(true));
-            dispatch(setActivePanelSearch());
-          }}
-        >
-          Search Chats/Messages
-        </MenuItem>
         {renderUserMenu()}
-        <MenuDivider borderColor={theme.colors.sidePanel.text} />
+        <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
         <MenuItem
-          bg={theme.colors.sidePanel.hoverItemBackground}
-          color={theme.colors.sidePanel.text}
+          bg={theme.colors.sidePanel.menuBackground}
+          color={theme.colors.sidePanel.menuText}
           _hover={{
-            color: theme.colors.sidePanel.textHover,
+            color: theme.colors.sidePanel.menuTextHover,
           }}
           onClick={handleLogout}
         >

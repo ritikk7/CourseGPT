@@ -5,6 +5,7 @@ import {
   getGptResponseInChat,
 } from './messagesSlice';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
+import { logoutUser } from "./authSlice";
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -207,7 +208,17 @@ const chatsSlice = createSlice({
         if (state.activeChat._id === chatId) {
           state.activeChat = state.userChats[chatId];
         }
-      });
+      })
+      // Auth slice
+      .addCase(logoutUser.fulfilled, state => {
+        state.userChats = {};
+        state.activeChat = null;
+        state.waitingFirstMessage = false;
+        state.focusedChat = null;
+        state.highlightMessage = null;
+        state.loading = false;
+        state.error = null;
+      })
   },
 });
 

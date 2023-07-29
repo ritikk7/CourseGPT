@@ -143,32 +143,33 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
 
   if (isAnalyticsSidePanel) {
     return (
-      <div
-        className={styles.sidepanel}
+      <Box
         bg={theme.colors.sidePanel.background}
-        style={
-          isSidePanelVisible
-            ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
-            : {
-                transform: 'translateX(-100%)',
-                transition: '0.4s',
-                transitionTimingFunction: 'ease-in-out',
-              }
-        }
+        w={width}
+        minW="250px"
+        pos="absolute"
+        left="0"
+        top="0"
+        h="100%"
+        display="flex"
+        flexDirection="column"
+        transition="0.4s"
+        transitionTimingFunction="ease-in-out"
+        transform={isSidePanelVisible ? 'none' : 'translateX(-100%)'}
       >
         <div className={styles.chevronLeft}>
           <Button
             ml={2}
             mt={2}
-            bg="transparent"
+            bg={theme.colors.sidePanel.background}
             width="50px"
             position="absolute"
             right={2}
-            _hover={{ bg: '#39393c' }}
+            _hover={{ bg: theme.colors.sidePanel.hoverItemBackground }}
             border="1px solid rgb(100, 100, 102)"
             onClick={() => dispatch(setIsSidePanelVisible(false))}
           >
-            <ChevronLeftIcon />
+            <ChevronLeftIcon color={theme.colors.sidePanel.text} />
           </Button>
         </div>
         <div className={styles.selectDataView}>
@@ -176,9 +177,12 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             onClick={() => {
               dispatch(setSelectedAnalyticsView('feedback'));
             }}
-            bg="transparent"
-            color="black"
-            _hover={{ bg: '#39393c', color: 'white' }}
+            bg={theme.colors.sidePanel.background}
+            color={theme.colors.sidePanel.text}
+            _hover={{
+              bg: theme.colors.sidePanel.hoverItemBackground,
+              color: theme.colors.sidePanel.menuTextHover,
+            }}
             leftIcon={<Assessment />}
           >
             Feedback
@@ -187,9 +191,12 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             onClick={() => {
               dispatch(setSelectedAnalyticsView('bubble'));
             }}
-            bg="transparent"
-            color="black"
-            _hover={{ bg: '#39393c', color: 'white' }}
+            bg={theme.colors.sidePanel.background}
+            color={theme.colors.sidePanel.text}
+            _hover={{
+              bg: theme.colors.sidePanel.hoverItemBackground,
+              color: theme.colors.sidePanel.menuTextHover,
+            }}
             leftIcon={<BubbleChart />}
           >
             Bubble Chart
@@ -198,9 +205,12 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             onClick={() => {
               dispatch(setSelectedAnalyticsView('bar'));
             }}
-            bg="transparent"
-            color="black"
-            _hover={{ bg: '#39393c', color: 'white' }}
+            bg={theme.colors.sidePanel.background}
+            color={theme.colors.sidePanel.text}
+            _hover={{
+              bg: theme.colors.sidePanel.hoverItemBackground,
+              color: theme.colors.sidePanel.menuTextHover,
+            }}
             leftIcon={<BarChart />}
           >
             Bar Chart
@@ -209,9 +219,12 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             onClick={() => {
               dispatch(setSelectedAnalyticsView('scatter'));
             }}
-            bg="transparent"
-            color="black"
-            _hover={{ bg: '#39393c', color: 'white' }}
+            bg={theme.colors.sidePanel.background}
+            color={theme.colors.sidePanel.text}
+            _hover={{
+              bg: theme.colors.sidePanel.hoverItemBackground,
+              color: theme.colors.sidePanel.menuTextHover,
+            }}
             leftIcon={<ScatterPlot />}
           >
             Scatter
@@ -220,9 +233,12 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             onClick={() => {
               dispatch(setSelectedAnalyticsView('word'));
             }}
-            bg="transparent"
-            color="black"
-            _hover={{ bg: '#39393c', color: 'white' }}
+            bg={theme.colors.sidePanel.background}
+            color={theme.colors.sidePanel.text}
+            _hover={{
+              bg: theme.colors.sidePanel.hoverItemBackground,
+              color: theme.colors.sidePanel.menuTextHover,
+            }}
             leftIcon={<Abc />}
           >
             Word Cloud
@@ -243,7 +259,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
             />
           )}
         </div>
-      </div>
+      </Box>
     );
   } else {
     return (

@@ -188,6 +188,11 @@ export default function RegisterUserDetails() {
                   value={selectedSchool?._id}
                   onChange={handleSchoolChange}
                   bg={theme.colors.loginAndReg.inputBackground}
+                  color={theme.colors.loginAndReg.text}
+                  borderColor={theme.colors.loginAndReg.icon}
+                  _focus={{ borderColor: theme.colors.loginAndReg.icon }}
+                  _hover={{ borderColor: theme.colors.loginAndReg.icon }}
+                  _active={{ borderColor: theme.colors.loginAndReg.icon }}
                 >
                   {renderSchools()}
                 </Select>
@@ -202,12 +207,11 @@ export default function RegisterUserDetails() {
                       onClick={() => {
                         setUserInfo({ ...userInfo, type: null });
                       }}
-                      bg={theme.colors.loginAndReg.loginOrRegisterButton.base}
-                      color={theme.colors.loginAndReg.text}
+                      bg={theme.colors.button.light}
+                      color={theme.colors.button.text}
                       _hover={{
-                        bg: theme.colors.loginAndReg.loginOrRegisterButton
-                          .hover,
-                        color: theme.colors.loginAndReg.text,
+                        bg: theme.colors.button.hover,
+                        color: theme.colors.button.text,
                       }}
                       w="7rem"
                       mr="5%"
@@ -217,11 +221,11 @@ export default function RegisterUserDetails() {
                   </Flex>
                   <Button
                     w="7rem"
-                    bg={theme.colors.loginAndReg.loginWithGoogleButton.base}
-                    color={theme.colors.loginAndReg.text}
+                    bg={theme.colors.buttonCancel.light}
+                    color={theme.colors.buttonCancel.text}
                     _hover={{
-                      bg: theme.colors.loginAndReg.loginWithGoogleButton.hover,
-                      color: theme.colors.loginAndReg.text,
+                      bg: theme.colors.buttonCancel.hover,
+                      color: theme.colors.buttonCancel.text,
                     }}
                     onClick={handleSubmit}
                   >

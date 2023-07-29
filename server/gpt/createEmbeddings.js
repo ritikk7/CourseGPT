@@ -74,7 +74,9 @@ async function generateSectionTitle(cleanedSectionContent) {
   }
   let generatedTitle = await createCourseGptCompletion(
     [{ role: 'user', content: content }],
-    0.5, 60, 180
+    0.5,
+    60,
+    180
   );
 
   generatedTitle = generatedTitle.replace(/['"]+/g, '');
@@ -88,9 +90,12 @@ async function extractKeywords(sectionContent) {
   try {
     const content = `From the following course section content, identify and list the key topics, entities, keywords, or themes it covers. Please list them as comma-separated values:\n"${sectionContent}"`;
 
-    const rawKeywords = await createCourseGptCompletion([
-      { role: 'user', content: content }
-    ], 0.5, 60, 180);
+    const rawKeywords = await createCourseGptCompletion(
+      [{ role: 'user', content: content }],
+      0.5,
+      60,
+      180
+    );
 
     if (rawKeywords.includes(',')) {
       return rawKeywords.split(',').map(keyword => keyword.trim());
