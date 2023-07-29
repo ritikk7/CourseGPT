@@ -145,6 +145,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
     return (
       <div
         className={styles.sidepanel}
+        bg={theme.colors.sidePanel.background}
         style={
           isSidePanelVisible
             ? { transition: '0.4s', transitionTimingFunction: 'ease-in-out' }
@@ -176,8 +177,8 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
               dispatch(setSelectedAnalyticsView('feedback'));
             }}
             bg="transparent"
-            color="white"
-            _hover={{ bg: '#39393c' }}
+            color="black"
+            _hover={{ bg: '#39393c', color: 'white'  }}
             leftIcon={<Assessment />}
           >
             Feedback
@@ -187,8 +188,8 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
               dispatch(setSelectedAnalyticsView('bubble'));
             }}
             bg="transparent"
-            color="white"
-            _hover={{ bg: '#39393c' }}
+            color="black"
+            _hover={{ bg: '#39393c', color: 'white'  }}
             leftIcon={<BubbleChart />}
           >
             Bubble Chart
@@ -198,8 +199,8 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
               dispatch(setSelectedAnalyticsView('bar'));
             }}
             bg="transparent"
-            color="white"
-            _hover={{ bg: '#39393c' }}
+            color="black"
+            _hover={{ bg: '#39393c', color: 'white'  }}
             leftIcon={<BarChart />}
           >
             Bar Chart
@@ -209,8 +210,8 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
               dispatch(setSelectedAnalyticsView('scatter'));
             }}
             bg="transparent"
-            color="white"
-            _hover={{ bg: '#39393c' }}
+            color="black"
+            _hover={{ bg: '#39393c', color: 'white' }}
             leftIcon={<ScatterPlot />}
           >
             Scatter
@@ -220,8 +221,8 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
               dispatch(setSelectedAnalyticsView('word'));
             }}
             bg="transparent"
-            color="white"
-            _hover={{ bg: '#39393c' }}
+            color="black"
+            _hover={{ bg: '#39393c', color: 'white'}}
             leftIcon={<Abc />}
           >
             Word Cloud
