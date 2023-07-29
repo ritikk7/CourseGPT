@@ -35,9 +35,9 @@
   left: 0;
   background: linear-gradient(
     90deg,
-    rgba(96, 125, 138, 0) 00%,
-    rgba(96, 125, 138, 0) 60%,
-    rgba(96, 125, 138, 1) 90%
+    rgba(var(--sidebar-shading), 0) 00%,
+    rgba(var(--sidebar-shading), 0) 60%,
+    rgba(var(--sidebar-shading), 1) 90%
   );
 }
 

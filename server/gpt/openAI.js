@@ -59,7 +59,7 @@ async function generateChatTitle(userInput, gptResponse) {
 
   let title = await createCourseGptCompletion(messages, 0.5);
   title = title.split(' ').slice(0, 5).join(' ');
-  title = title.replace(/["']/g, "");
+  title = title.replace(/["']/g, '');
   Logger.logExit();
   return title;
 }

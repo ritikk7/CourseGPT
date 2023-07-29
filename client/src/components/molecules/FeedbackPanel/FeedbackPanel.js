@@ -41,7 +41,7 @@ const Feedback = ({ message }) => {
         <IconButton
           icon={<FaThumbsUp />}
           bg={theme.colors.chatSection.dark}
-          color={theme.colors.icon}
+          color={theme.colors.chatSection.icon}
           _hover={{
             color: theme.colors.accent.darker,
           }}
@@ -50,7 +50,7 @@ const Feedback = ({ message }) => {
         <IconButton
           icon={<FaThumbsDown />}
           bg={theme.colors.chatSection.dark}
-          color={theme.colors.icon}
+          color={theme.colors.chatSection.icon}
           _hover={{
             color: theme.colors.error.dark,
           }}
