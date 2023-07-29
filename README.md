@@ -1,6 +1,6 @@
 # CourseGPT
 
-Unlock the potential of personalized education with [CourseGPT](https://course-gpt.herokuapp.com/) - an AI-powered proffesor at your service.
+Unlock the potential of personalized education with [CourseGPT](https://course-gpt.herokuapp.com/) - an AI-powered professor at your service.
 
 CourseGPT allows professors to train custom AI models on demand, acting as a virtual tutor available 24/7 to students. By providing immediate access to tailored course content, it enhances student learning while significantly reducing professors’ administrative workload.
 
