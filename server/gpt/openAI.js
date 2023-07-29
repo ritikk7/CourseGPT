@@ -10,7 +10,7 @@ const openAI = new OpenAIApi(
   })
 );
 
-async function createCourseGptCompletion(messages, temperature = 0.5) {
+async function createCourseGptCompletion(messages, temperature = 0.5, retryMin = 0, retryMax = 5) {
   Logger.logEnter();
   const NUM_ATTEMPTS = 3;
   for (let i = 0; i < NUM_ATTEMPTS; i++) {
@@ -24,7 +24,7 @@ async function createCourseGptCompletion(messages, temperature = 0.5) {
       Logger.logExit();
       return response.data.choices[0].message.content;
     } catch (err) {
-      await sleepWithRandomDelay(5, 20); // wait to retry
+      await sleepWithRandomDelay(retryMin, retryMax); // wait to retry
       Logger.warn(
         `Failed createCourseGptCompletion on attempt #${i}/${NUM_ATTEMPTS}. Retrying! ` +
           err
@@ -57,7 +57,7 @@ async function generateChatTitle(userInput, gptResponse) {
     { role: 'user', content: prompt },
   ];
 
-  let title = await createCourseGptCompletion(messages, 0.5);
+  let title = await createCourseGptCompletion(messages);
   title = title.split(' ').slice(0, 5).join(' ');
   title = title.replace(/["']/g, '');
   Logger.logExit();

@@ -93,23 +93,24 @@ const theme = extendTheme({
       light: '#7E99A7',
       dark: '#3B4D57',
     },
+
     sidePanel: {
-      background: `#607d8b`,
-      hoverItemBackground: `#48606c`,
-      activeItemBackground: `#455a64`,
-      text: '#F5F6F8',
-      textHover: '#D8E0E5',
+      background: `#1F3A60`,
+      hoverItemBackground: `#336699`,
+      activeItemBackground: `#1A243B`,
+      text: '#FFFFFF',
+      textHover: '#BFC2CA',
     },
 
     chatSection: {
-      dark: '#d1dbde', // background for message from chat gpt (dark background)
-      lightText: '#09111e', // text for dark background
-      light: '#ffffff', // background for message from user (light background)
-      darkText: '#09111e', // text for light background
-      sendArrow: '#ffffff', // send arrow inside input box
-      inputBackground: '#738389', // background for user input box
-      inputText: '#ffffff', // text for user input box
-      icon: '#455a64', // icon color for feedback on top of dark background
+      dark: '#c2dcff',  // background for message from chat gpt (dark background)
+      lightText: '#08101C',  // text for dark background
+      light: '#FFFFFF',  // background for message from user (light background)
+      darkText: '#08101C',  // text for light background
+      sendArrow: '#1F3A60',  // send arrow inside input box
+      inputBackground: '#FFFFFF',  // background for user input box
+      inputText: '#1F3A60',  // text for user input box
+      icon: `#1F3A60`,  // icon color for feedback on top of dark background
     },
 
     neutral: {
