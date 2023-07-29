@@ -7,6 +7,8 @@ import { Box, Highlight, useTheme } from '@chakra-ui/react';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ChatSection = ({ message }, ref) => {
   const user = useSelector(state => state.user);
@@ -51,15 +53,24 @@ const ChatSection = ({ message }, ref) => {
     <ChatSenderImage imageUrl={courseGptImage} alt="CourseGPT Logo" />
   );
 
-  const handleNewlineHTML = text => {
+  const handleMixedTextWithCodeBlocksAndNewlines = text => {
     if (text) {
-      return text.split('\n').map((item, key) => {
-        return (
-          <span key={key}>
-            <ReactMarkdown children={item} />
-            <br />
-          </span>
-        );
+      let blocks = text.split('```');
+      return blocks.map((block, index) => {
+        if (index % 2 === 1) {
+          return (
+            <SyntaxHighlighter language="javascript" style={prism} key={index}>
+              {block}
+            </SyntaxHighlighter>
+          );
+        } else {
+          return block.split('\n').map((item, key) => (
+            <span key={key}>
+              {item}
+              <br />
+            </span>
+          ));
+        }
       });
     }
     return null;
@@ -105,7 +116,7 @@ const ChatSection = ({ message }, ref) => {
   const renderMessageContent = () => {
     console.log(highlightMessage);
     if (!highlightMessage || highlightMessage._id !== message._id)
-      return handleNewlineHTML(message.content);
+      return handleMixedTextWithCodeBlocksAndNewlines(message.content);
     return handleNewlineHTMLHighlighted(message.content);
   };
 
