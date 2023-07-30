@@ -46,7 +46,7 @@ const ProfileAvatar = ({ handleClose }) => {
 
   return (
     <Box w="600px" color={theme.colors.profileModal.mainTextColor}>
-      <ModalHeader>Profile Avatar Settings</ModalHeader>
+      <ModalHeader>Avatar Settings</ModalHeader>
       <FormControl paddingInlineStart={6}>
         <FormLabel color={theme.colors.profileModal.mainFormLabelColor}>
           Choose your profile avatar

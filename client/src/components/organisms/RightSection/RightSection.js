@@ -18,8 +18,8 @@ import {
   createChatWithSelectedDropdownCourse,
   fetchChat,
   setActiveChat,
-  setFocusedChat
-} from "../../../redux/chatsSlice";
+  setFocusedChat,
+} from '../../../redux/chatsSlice';
 import {
   Button,
   Spinner,
@@ -113,7 +113,7 @@ const RightSection = () => {
           async newGptMessage => {
             dispatch(createChatTitle(newGptMessage.payload));
           }
-        )
+        );
       }
     );
   };

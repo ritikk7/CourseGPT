@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { updateUser } from "./userSlice";
-import { fetchAllSchools, fetchSchool } from "./schoolsSlice";
-import { logoutUser } from "./authSlice";
+import { updateUser } from './userSlice';
+import { fetchAllSchools, fetchSchool } from './schoolsSlice';
+import { logoutUser } from './authSlice';
 
 const uiSlice = createSlice({
   name: 'ui',
@@ -18,11 +18,10 @@ const uiSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder
-      .addCase(logoutUser.fulfilled, state => {
-        state.isSidePanelVisible =  true;
-          state.isSearchBarVisible =  false;
-      });
+    builder.addCase(logoutUser.fulfilled, state => {
+      state.isSidePanelVisible = true;
+      state.isSearchBarVisible = false;
+    });
   },
 });
 

@@ -4,7 +4,7 @@ const {
   createUserMessage,
   getAllMessages,
   getGptResponse,
-  createChatTitle
+  createChatTitle,
 } = require('../controllers/message');
 const { validateToken } = require('../controllers/auth');
 

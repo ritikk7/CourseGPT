@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
-import { logoutUser } from "./authSlice";
+import { logoutUser } from './authSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -72,11 +72,11 @@ const feedbackDataSlice = createSlice({
       })
       .addCase(fetchGroups.rejected, handleRejected)
 
-    // Auth slice
-  .addCase(logoutUser.fulfilled, state => {
-      state.feedbackInfo = [];
-      state.freqData = {};
-    })
+      // Auth slice
+      .addCase(logoutUser.fulfilled, state => {
+        state.feedbackInfo = [];
+        state.freqData = {};
+      });
   },
 });
 

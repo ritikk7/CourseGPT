@@ -84,10 +84,10 @@ async function createChatTitle(req, res) {
     let chatGptResponseContent;
     let messageIds = [];
 
-    for(let i = 0; i < updatedChat.messages.length; i++) {
+    for (let i = 0; i < updatedChat.messages.length; i++) {
       // only ever executed when there are two messages - one user and one gpt
       let message = updatedChat.messages[i];
-      if(message.role === 'user') {
+      if (message.role === 'user') {
         userMessageContent = message.content;
       } else {
         chatGptResponseContent = message.content;
@@ -115,10 +115,9 @@ async function createChatTitle(req, res) {
   }
 }
 
-
 module.exports = {
   createUserMessage,
   getAllMessages,
   getGptResponse,
-  createChatTitle
+  createChatTitle,
 };

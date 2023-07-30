@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
 import buildObjectMapFromArray from '../util/buildObjectMapFromArray';
-import { logoutUser } from "./authSlice";
+import { logoutUser } from './authSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -138,7 +138,7 @@ const coursesSlice = createSlice({
         state.currentlySelectedDropdownCourse = null;
         state.loading = false;
         state.error = null;
-      })
+      });
   },
 });
 

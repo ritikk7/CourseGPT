@@ -3,7 +3,8 @@ import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
 import Typewriter from 'typewriter-effect';
-import { Box, Highlight, useTheme } from '@chakra-ui/react';
+import { Box, Highlight, useTheme, IconButton } from '@chakra-ui/react';
+import { CopyIcon } from '@chakra-ui/icons';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 import ReactMarkdown from 'react-markdown';
@@ -113,6 +114,10 @@ const ChatSection = ({ message }, ref) => {
     return null;
   };
 
+  const handleCopyToClipboard = text => {
+    navigator.clipboard.writeText(text);
+  };
+
   const renderMessageContent = () => {
     if (!highlightMessage || highlightMessage._id !== message._id)
       return handleMixedTextWithCodeBlocksAndNewlines(message.content);
@@ -167,7 +172,14 @@ const ChatSection = ({ message }, ref) => {
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>
               {message && !messageIsGptPlaceholder && (
-                <Feedback message={message._id} />
+                <>
+                  <Feedback message={message._id} />
+                  <IconButton
+                    icon={<CopyIcon />}
+                    onClick={() => handleCopyToClipboard(message.content)}
+                    style={{ backgroundColor }}
+                  />
+                </>
               )}
             </div>
           </div>
