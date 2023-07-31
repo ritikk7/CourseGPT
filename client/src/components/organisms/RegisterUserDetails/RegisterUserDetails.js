@@ -36,7 +36,6 @@ export default function RegisterUserDetails() {
     setUserInfo({ ...userInfo, type: value });
     dispatch(fetchAllSchools());
     dispatch(fetchAllCourses());
-    console.log(userInfo);
   };
 
   const schoolsWithCourses = useSelector(schoolsWithCoursesSelector);
@@ -52,6 +51,7 @@ export default function RegisterUserDetails() {
 
   const [selectedSchool, setSelectedSchool] = useState(userSchool);
   const [selectedCourses, setSelectedCourses] = useState(userFavoriteCourses);
+  const [disableSubmit, setDisableSubmit] = useState(true);
 
   const handleSchoolChange = e => {
     // reset courses to empty array
@@ -65,18 +65,21 @@ export default function RegisterUserDetails() {
     for (let courseId of userSelectedCourses) {
       selectedCoursesObj[courseId] = selectedSchool.courses[courseId];
     }
-    console.log(selectedCoursesObj);
     setSelectedCourses(selectedCoursesObj);
   };
 
   useEffect(() => {
-    if (selectedSchool && userSchool && selectedSchool._id === userSchool._id) {
-      setSelectedCourses(userFavoriteCourses);
-    } else {
-      setSelectedCourses({});
-    }
+    setSelectedCourses({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSchool]);
+
+  useEffect(() => {
+    if (isEmpty(selectedCourses)) {
+      setDisableSubmit(true);
+    } else {
+      setDisableSubmit(false);
+    }
+  }, [selectedCourses]);
 
   const handleSubmit = () => {
     const favourites = Object.keys(selectedCourses);
@@ -88,7 +91,6 @@ export default function RegisterUserDetails() {
       favourites: favourites,
       userType: userType,
     };
-    console.log(updatedUser);
     dispatch(updateUser(updatedUser));
   };
 
@@ -227,6 +229,7 @@ export default function RegisterUserDetails() {
                       bg: theme.colors.buttonCancel.hover,
                       color: theme.colors.buttonCancel.text,
                     }}
+                    isDisabled={disableSubmit}
                     onClick={handleSubmit}
                   >
                     Submit
@@ -288,4 +291,15 @@ function CourseSelectButtons({ courses, selected, handleChange }) {
       })}
     </>
   );
+}
+
+// helper function to determine if an object is empty
+function isEmpty(obj) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
 }
