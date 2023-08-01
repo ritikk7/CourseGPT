@@ -22,8 +22,9 @@
 .container {
   padding: 12px;
   width: 360px;
-  margin-top: 48px;
+  margin-top: 8px;
   color: black;
+  margin: auto;
 }
 
 .blockContainer {

@@ -185,7 +185,9 @@ const BubbleChart = () => {
 
   return (
     <div className={styles.fade}>
-      <Legend colorScheme={colorScheme} />
+      <div style={{ marginTop: 30 }}>
+        <Legend colorScheme={colorScheme} />
+      </div>
       <div id="chart-container" ref={svg} style={{ margin: 'auto' }} />
     </div>
   );

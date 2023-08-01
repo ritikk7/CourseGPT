@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import { Text, Center } from '@chakra-ui/react';
 import { Chart } from 'chart.js';
 import { WordCloudController, WordElement } from 'chartjs-chart-wordcloud';
-import { colorScheme } from '../BubbleChart/BubbleChart';
+import Legend from '../Legend/Legend';
 
 const WordCloud = () => {
   const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
   const sidePanelLength = 262;
+  const colorScheme = ['#c7003c', '#ff9412', '#52b788', '#0073b5', '#3c2394'];
 
   const chooseColor = sentiment => {
     if (0 <= sentiment && sentiment < 0.2) {
@@ -66,6 +67,7 @@ const WordCloud = () => {
       >
         Top Words From The Last 100 Questions
       </Text>
+      <Legend colorScheme={colorScheme} m="auto" mt="30px" />
       <Center>
         <canvas
           id="word-cloud"
@@ -74,7 +76,7 @@ const WordCloud = () => {
               ? window.screen.width - sidePanelLength
               : window.screen.width
           }
-          height="600px"
+          height="500px"
         />
       </Center>
     </div>
