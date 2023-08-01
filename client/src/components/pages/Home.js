@@ -43,7 +43,6 @@ function Home() {
         navigate('/login');
       }
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -59,7 +58,6 @@ function Home() {
       await dispatch(fetchUserChats());
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
     }
   };
 

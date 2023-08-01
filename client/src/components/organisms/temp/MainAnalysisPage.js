@@ -66,7 +66,6 @@ function MainAnalysisPage({ course, school, data, freqData }) {
     const model = await SentimentAnalysisHelpers.loadModel();
     const metadata = await SentimentAnalysisHelpers.getMetaData();
     const sentenceAndSentiment = {};
-    // console.log(feedbackInfo);
     const comments = [];
     for (let g of groupData) {
       let sentiments = [];
@@ -84,8 +83,6 @@ function MainAnalysisPage({ course, school, data, freqData }) {
       comments.push([g, cur]);
       sentenceAndSentiment[g] = sentiments;
     }
-
-    console.log(extractKeywordPhrases(comments));
 
     // dispatch(fetchGroups(comments));
     setFeedbackSentiment(sentenceAndSentiment);

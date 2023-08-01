@@ -29,7 +29,6 @@ function AnalyticsWrapper() {
         navigate('/');
       }
     } catch (error) {
-      console.log(error);
     }
   };
 

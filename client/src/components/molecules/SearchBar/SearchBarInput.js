@@ -85,7 +85,6 @@ const SearchBarInput = () => {
     try {
       response = await api.get(URL);
     } catch (err) {
-      console.log('Error: ', err);
       return;
     }
 
