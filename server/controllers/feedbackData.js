@@ -1,7 +1,5 @@
 const { getDatabaseFeedbackInfo } = require('../data/databaseHelpers');
 const { extractKeywordPhrases } = require('../data/groupingHelpers');
-
-// notes: need to do something with feedback here (make useful)
 async function getFeedbackAnalysis(req, res) {
   try {
     const feedbackData = await getDatabaseFeedbackInfo(req.body.courseId);

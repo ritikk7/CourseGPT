@@ -1,7 +1,6 @@
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 const User = require('../models/user');
-const { Logger } = require('../util/Logger');
 
 async function getChat(req, res) {
   try {
@@ -63,7 +62,7 @@ async function softDeleteChats(req, res) {
   }
 }
 
-async function updateChat(req, res) {
+async function softDeleteChat(req, res) {
   const chatId = req.params.chatId;
   const updates = req.body;
 
@@ -91,7 +90,7 @@ async function updateChat(req, res) {
 module.exports = {
   getChat,
   createChat,
-  updateChat,
+  softDeleteChat,
   getChats,
   softDeleteChats,
 };

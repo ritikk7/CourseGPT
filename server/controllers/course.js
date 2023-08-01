@@ -1,6 +1,7 @@
 const Course = require('../models/course');
 const School = require('../models/school');
 const { createEmbeddingForNewData } = require('../gpt/createEmbeddings');
+
 async function getSchoolCourse(req, res) {
   try {
     const courseId = req.params.courseId;

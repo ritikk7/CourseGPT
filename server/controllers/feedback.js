@@ -13,7 +13,6 @@ async function getFeedback(req, res) {
   }
 }
 
-// notes: need to do something with feedback here (make useful)
 async function createFeedback(req, res) {
   try {
     const messageId = req.params.messageId;

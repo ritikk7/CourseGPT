@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const mongoose = require('mongoose');
 
 async function updateUser(req, res) {
   const userId = req.user.id;
@@ -15,14 +14,6 @@ async function updateUser(req, res) {
   }
 }
 
-async function deleteUser(req, res) {
-  // TODO
-  const userId = req.user.id;
-  //const deletedUser = await User.findByIdAndDelete(userId);
-  res.send({ data: `Hello delete usr ${userId}` });
-}
-
 module.exports = {
   updateUser,
-  deleteUser,
 };

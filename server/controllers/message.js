@@ -4,6 +4,7 @@ const qaPair = require('./qaPair');
 const { ask } = require('../gpt/ask');
 const { generateChatTitle } = require('../gpt/openAI');
 const mongoose = require('mongoose');
+const QAPair = require("../models/qaPair");
 const ObjectId = mongoose.Types.ObjectId;
 
 async function getAllMessages(req, res) {
@@ -129,12 +130,17 @@ async function getGptResponse(req, res) {
 
     await chat.save();
 
-    await qaPair.createQaPair({
-      course: chat.course,
-      chat: chatId,
-      question: userMessageObject._id,
-      answer: newGptMessage._id,
-    });
+    try {
+      const qaPair = await new QAPair({
+        course: chat.course,
+        chat: chatId,
+        question: userMessageObject._id,
+        answer: newGptMessage._id,
+      });
+      await qaPair.save();
+    } catch (e) {
+      throw new Error(e.message);
+    }
 
     res.status(201).json({ message: newGptMessage });
   } catch (error) {

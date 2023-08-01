@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const {
   getChat,
   createChat,
-  updateChat,
+  softDeleteChat,
   getChats,
   softDeleteChats,
 } = require('../controllers/chat');
@@ -17,7 +17,7 @@ router.post('/', createChat);
 
 router.get('/', getChats);
 
-router.patch('/:chatId', updateChat); // for setting deleted = true
+router.patch('/:chatId', softDeleteChat); // for setting deleted = true
 
 router.patch('/', softDeleteChats); // for setting deleted = true
 
