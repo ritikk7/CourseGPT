@@ -14,6 +14,14 @@
 .textBlock {
   flex-direction: column;
   display: flex;
+  width: 75%;
+}
+
+.chatBtns {
+  position: absolute;
+  right: 16px;
+  top: -8px;
+  display: flex;
 }
 
 .msgContent {

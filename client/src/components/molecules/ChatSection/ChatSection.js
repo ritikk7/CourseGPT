@@ -172,14 +172,14 @@ const ChatSection = ({ message }, ref) => {
                 {message && !messageIsGptPlaceholder && renderBotAnswer()}
               </div>
               {message && !messageIsGptPlaceholder && (
-                <>
+                <div className={styles.chatBtns}>
                   <Feedback message={message._id} />
                   <IconButton
                     icon={<CopyIcon />}
                     onClick={() => handleCopyToClipboard(message.content)}
                     style={{ backgroundColor }}
                   />
-                </>
+                </div>
               )}
             </div>
           </div>
