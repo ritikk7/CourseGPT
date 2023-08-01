@@ -99,8 +99,8 @@ const ChatSection = ({ message }, ref) => {
               query={highlightedTexts}
               styles={{
                 px: '1',
-                bg: 'blue.600',
-                color: 'white',
+                bg: theme.colors.search.highlight,
+                color: theme.colors.background.dark,
                 rounded: 'md',
               }}
             >

@@ -83,6 +83,10 @@ const theme = extendTheme({
       mainBackground: '#FFFFFF',
     },
 
+    search: {
+      highlight: '#EBB810',
+    },
+
     primary: {
       light: '#DDEAF3',
       dark: '#47687F',

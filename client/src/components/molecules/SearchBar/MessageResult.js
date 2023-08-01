@@ -42,14 +42,20 @@ const MessageResult = ({ result }) => {
 
   return (
     <>
-      <Box className={styles.box} onClick={handleClick}>
+      <Box
+        className={styles.box}
+        _hover={{
+          background: theme.colors.sidePanel.hoverItemBackground,
+          color: theme.colors.sidePanel.text,
+        }}
+        onClick={handleClick}
+      >
         <Highlight
           query={highlightedTexts}
           styles={{
             px: '1',
-            py: '1',
-            bg: 'blue.600',
-            color: theme.colors.background.light,
+            bg: theme.colors.search.highlight,
+            color: theme.colors.background.dark,
             rounded: 'md',
           }}
         >

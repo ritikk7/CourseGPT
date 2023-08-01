@@ -61,6 +61,7 @@ const SearchBarInput = () => {
   const collapseContainer = () => {
     setExpanded(false);
     clearSearch();
+    dispatch(setIsSearchBarVisible(false));
   };
 
   const clearSearch = () => {
@@ -154,6 +155,7 @@ const SearchBarInput = () => {
                 placeholder="Search for Chats/Messages"
                 name="searchString"
                 value={input}
+                autoFocus={isSearchBarVisible}
                 onFocus={() => {
                   dispatch(setActivePanelSearch());
                 }}

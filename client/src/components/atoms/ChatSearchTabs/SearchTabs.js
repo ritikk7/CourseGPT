@@ -23,20 +23,36 @@ const SearchTabs = ({ searchString, results }) => {
       <TabList>
         <Tab
           key="all"
-          _hover={{ bg: '#455A64' }}
-          _focus={{ bg: '#455A64' }}
+          _hover={{
+            background: theme.colors.sidePanel.hoverItemBackground,
+            color: theme.colors.sidePanel.text,
+          }}
+          _focus={{
+            background: theme.colors.sidePanel.activeItemBackground,
+            color: theme.colors.sidePanel.text,
+          }}
           color={theme.colors.background.light}
           borderTopRadius={7}
+          p={1}
+          fontSize="sm"
         >
           All<Badge mx={2}>{results.length}</Badge>
         </Tab>
         {Object.keys(courses).map(id => (
           <Tab
             key={id}
-            _hover={{ bg: '#455A64' }}
-            _focus={{ bg: '#455A64' }}
+            _hover={{
+              background: theme.colors.sidePanel.hoverItemBackground,
+              color: theme.colors.sidePanel.text,
+            }}
+            _focus={{
+              background: theme.colors.sidePanel.activeItemBackground,
+              color: theme.colors.sidePanel.text,
+            }}
             color={theme.colors.background.light}
             borderTopRadius={7}
+            p={1}
+            fontSize="sm"
           >
             {courses[id].courseCode}
             <Badge mx={2}>{getFilteredResults(id).length}</Badge>
