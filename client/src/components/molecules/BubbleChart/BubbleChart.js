@@ -128,36 +128,13 @@ const BubbleChart = () => {
       .selectAll()
       .data(root.leaves())
       .join('g')
-      .attr('transform', d => `translate(${d.x},${d.y})`)
-      .on('mouseout', () => {
-        d3.selectAll('.nvtooltip').remove();
-      });
-
-    const tooltip = d3
-      .select('body')
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
+      .attr('transform', d => `translate(${d.x},${d.y})`);
 
     // Add a filled circle.
     node
       .append('circle')
       .attr('fill', d => color(d.data.sentiment))
-      .attr('r', d => d.r)
-      .on('mouseover', (event, d) => {
-        tooltip.transition().duration(200).style('opacity', 0.9);
-        tooltip
-          .html(
-            `${d.data.id}<br>${format(d.value)}<br>Sentiment: ${
-              d.data.sentiment
-            }`
-          )
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`);
-      })
-      .on('mouseout', () => {
-        tooltip.transition().duration(200).style('opacity', 0);
-      });
+      .attr('r', d => d.r);
 
     // Add a label.
     const text = node.append('text').attr('clip-path', d => `circle(${d.r})`);

@@ -17,7 +17,6 @@ function AnalyticsWrapper() {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [rerenderBubble, setRerenderBubble] = useState(null);
   const selectedAnalyticsView = useSelector(
     state => state.analytics.selectedAnalyticsView
   );
@@ -40,16 +39,10 @@ function AnalyticsWrapper() {
     }
   }, [isAuthenticated, dispatch]);
 
-  useEffect(() => {
-    if (selectedAnalyticsView === 'bubble') {
-      setRerenderBubble(<BubbleChart />);
-    } else setRerenderBubble(null);
-  }, [selectedAnalyticsView]);
-
   const renderView = () => {
     switch (selectedAnalyticsView) {
       case 'bubble':
-        return rerenderBubble;
+        return <BubbleChart />;
       case 'bar':
         return <BarChart />;
       case 'scatter':
