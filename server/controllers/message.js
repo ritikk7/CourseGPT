@@ -3,6 +3,8 @@ const Message = require('../models/message');
 const qaPair = require('./qaPair');
 const { ask } = require('../gpt/ask');
 const { generateChatTitle } = require('../gpt/openAI');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 async function getAllMessages(req, res) {
   const chatId = req.params.chatId;
@@ -10,10 +12,76 @@ async function getAllMessages(req, res) {
   res.status(200).json({ messages });
 }
 
+// search all user messages
+// params: userId
+// queries: search [required], course [optional]
+async function searchUserMessages(req, res) {
+  try {
+    const userId = req.user.id;
+    const search = req.query.search;
+    if (!search || search === '') {
+      return res.status(422).json({
+        error: true,
+        message: 'Missing or empty search query parameter',
+      });
+    }
+    const agg = [
+      {
+        $search: {
+          index: 'messages',
+          text: {
+            query: search,
+            path: 'content',
+            fuzzy: {},
+          },
+          highlight: {
+            path: 'content',
+          },
+        },
+      },
+      {
+        $match: {
+          user: new ObjectId(userId),
+          deleted: false,
+        },
+      },
+      {
+        $project: {
+          user: 1,
+          chat: 1,
+          content: 1,
+          updatedAt: 1,
+          senderType: 1,
+          highlights: {
+            $meta: 'searchHighlights',
+          },
+        },
+      },
+    ];
+
+    const aggregate = await Message.aggregate(agg);
+
+    // retrieve each message's course ID and attach to the aggregate results
+    await Promise.all(
+      aggregate.map(async result => {
+        const chat = await Chat.findById(result.chat);
+        const courseId = chat.course;
+        result.course = courseId;
+        return result;
+      })
+    );
+
+    res.status(200).json(aggregate);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: true, message: 'Internal Server Error' });
+  }
+}
+
 async function createUserMessage(req, res) {
   try {
     const chatId = req.params.chatId;
-    const userId = req.params.userId;
+    const userId = req.user.id;
     const userInputMessage = req.body.content;
     const message = new Message({
       chat: chatId,
@@ -36,7 +104,7 @@ async function createUserMessage(req, res) {
 async function getGptResponse(req, res) {
   try {
     const chatId = req.params.chatId;
-    const userId = req.params.userId;
+    const userId = req.user.id;
     const userMessageObject = req.body;
 
     let chatGPTResponse;
@@ -120,4 +188,5 @@ module.exports = {
   getAllMessages,
   getGptResponse,
   createChatTitle,
+  searchUserMessages,
 };

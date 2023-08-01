@@ -11,6 +11,7 @@ const { validateToken } = require('../controllers/auth');
 router.use(validateToken);
 
 router.get('/', getAllMessages);
+router.get('/search', getAllMessages);
 
 router.post('/', createUserMessage);
 router.post('/chat-title', createChatTitle);

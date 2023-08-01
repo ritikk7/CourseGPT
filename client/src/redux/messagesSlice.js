@@ -22,8 +22,8 @@ const handleRequestError = error => {
 };
 
 // Async Functions
-const fetchMessages = async (chatId, userId) => {
-  const response = await api.get(`/users/${userId}/chats/${chatId}/messages`);
+const fetchMessages = async chatId => {
+  const response = await api.get(`/chats/${chatId}/messages`);
   return buildObjectMapFromArray(response.data.messages);
 };
 
@@ -31,8 +31,7 @@ export const fetchChatMessages = createAsyncThunk(
   'messages/fetchChatMessages',
   async (chatId, { getState }) => {
     try {
-      const userId = getState().auth.userId;
-      return await fetchMessages(chatId, userId);
+      return await fetchMessages(chatId);
     } catch (error) {
       handleRequestError(error);
     }
@@ -44,8 +43,7 @@ export const fetchActiveChatMessages = createAsyncThunk(
   async (_, { getState }) => {
     try {
       const chatId = getState().chats.activeChat._id;
-      const userId = getState().auth.userId;
-      return await fetchMessages(chatId, userId);
+      return await fetchMessages(chatId);
     } catch (error) {
       handleRequestError(error);
     }
@@ -57,12 +55,10 @@ export const createUserMessageInActiveChat = createAsyncThunk(
   async (message, { getState }) => {
     try {
       const newMessage = message || getState().messages.currentUserInput;
-      const userId = getState().auth.userId;
       const chatId = getState().chats.activeChat?._id;
-      const response = await api.post(
-        `/users/${userId}/chats/${chatId}/messages`,
-        { content: newMessage }
-      );
+      const response = await api.post(`/chats/${chatId}/messages`, {
+        content: newMessage,
+      });
       return response.data.message;
     } catch (error) {
       handleRequestError(error);
@@ -74,10 +70,9 @@ export const getGptResponseInChat = createAsyncThunk(
   'messages/getGptResponseInChat',
   async (userMessageObject, { getState }) => {
     try {
-      const userId = getState().auth.userId;
       const chatId = userMessageObject.chat;
       const response = await api.post(
-        `/users/${userId}/chats/${chatId}/messages/gpt-response`,
+        `/chats/${chatId}/messages/gpt-response`,
         userMessageObject
       );
       return response.data.message;

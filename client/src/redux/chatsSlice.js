@@ -30,8 +30,7 @@ export const fetchUserChats = createAsyncThunk(
   'chats/fetchUserChats',
   async (_, { getState }) => {
     try {
-      const userId = getState().auth.userId;
-      const response = await api.get(`/users/${userId}/chats`);
+      const response = await api.get(`/chats`);
       return buildObjectMapFromArray(response.data.chats);
     } catch (error) {
       handleRequestError(error);
@@ -43,13 +42,11 @@ export const createChatTitle = createAsyncThunk(
   'chats/createChatTitle',
   async (gptMessageObject, { getState }) => {
     try {
-      const userId = getState().auth.userId;
       const chatId = gptMessageObject.chat;
       const response = await api.post(
-        `/users/${userId}/chats/${chatId}/messages/chat-title`,
+        `/chats/${chatId}/messages/chat-title`,
         gptMessageObject
       );
-      console.log(response.data.chat);
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);
@@ -61,8 +58,7 @@ export const fetchChat = createAsyncThunk(
   'chats/fetchChat',
   async (chatId, { getState }) => {
     try {
-      const userId = getState().auth.userId;
-      const response = await api.get(`/users/${userId}/chats/${chatId}`);
+      const response = await api.get(`/chats/${chatId}`);
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);
@@ -75,8 +71,7 @@ export const createChatWithSelectedDropdownCourse = createAsyncThunk(
   async (_, { getState }) => {
     try {
       const courseId = getState().courses.currentlySelectedDropdownCourse._id;
-      const userId = getState().auth.userId;
-      const response = await api.post(`/users/${userId}/chats`, {
+      const response = await api.post(`/chats`, {
         course: courseId,
       });
       return response.data.chat;
@@ -93,16 +88,15 @@ export const softDeleteSelectedDropdownCourseChats = createAsyncThunk(
       const courseId = getState().courses.currentlySelectedDropdownCourse
         ? getState().courses.currentlySelectedDropdownCourse._id
         : null;
-      const userId = getState().auth.userId;
       let filter;
       if (courseId) {
-        filter = { course: courseId, user: userId };
+        filter = { course: courseId };
       } else {
-        filter = { user: userId };
+        filter = {};
       }
       const updates = { $set: { deleted: true } };
       const body = { filter, updates };
-      const response = await api.patch(`/users/${userId}/chats`, body);
+      const response = await api.patch(`/chats`, body);
       return buildObjectMapFromArray(response.data.chats);
     } catch (error) {
       handleRequestError(error);
@@ -114,13 +108,8 @@ export const softDeleteSingleChat = createAsyncThunk(
   'chats/softDeleteSingleChat',
   async (chatId, { getState }) => {
     try {
-      const userId = getState().auth.userId;
-
       const body = { deleted: true };
-      const response = await api.patch(
-        `/users/${userId}/chats/${chatId}`,
-        body
-      );
+      const response = await api.patch(`/chats/${chatId}`, body);
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);

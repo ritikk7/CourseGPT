@@ -5,7 +5,7 @@ const {
   createChat,
   updateChat,
   getChats,
-  updateChats,
+  softDeleteChats,
 } = require('../controllers/chat');
 const { validateToken } = require('../controllers/auth');
 
@@ -19,6 +19,6 @@ router.get('/', getChats);
 
 router.patch('/:chatId', updateChat); // for setting deleted = true
 
-router.patch('/', updateChats); // for setting deleted = true
+router.patch('/', softDeleteChats); // for setting deleted = true
 
 module.exports = router;

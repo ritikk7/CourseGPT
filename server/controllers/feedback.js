@@ -22,7 +22,7 @@ async function createFeedback(req, res) {
       throw new Error('no qa pair!!!');
     }
     const feedback = new Feedback({
-      user: req.params.userId,
+      user: req.user.id,
       qaPair: qaPair,
       rating: req.body.rating,
       comment: req.body.comment,

@@ -45,7 +45,6 @@ const ContainerTransition = { type: 'spring', damping: 22, stiffness: 150 };
 const SearchBarInput = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth);
   const activePanel = useSelector(state => state.user.activePanel);
   const [input, setInput] = useState('');
   const [isExpanded, setExpanded] = useState(false);
@@ -71,12 +70,11 @@ const SearchBarInput = () => {
   };
 
   const prepareSearchQuery = query => {
-    const url = `/users/${user.userId}/messages?search=${query}`;
+    const url = `/messages?search=${query}`;
     return encodeURI(url);
   };
 
   const searchMessages = async () => {
-    console.log('fetching results for ' + input);
     if (!input || input.trim() === '') {
       return;
     }
@@ -92,7 +90,6 @@ const SearchBarInput = () => {
     }
 
     if (response) {
-      console.log('Response: ', response.data);
       setSearchResults(response.data);
     }
     setLoading(false);

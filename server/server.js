@@ -27,16 +27,14 @@ function start() {
 }
 
 function setupExpress(app) {
-  if (process.env.NODE_ENV === 'development') {
-    app.use(
-      cors({
-        origin: 'http://localhost:3000', // Stack Overflow, Google, or ChatGPT helped me with this (Can't Remember)
-        credentials: true,
-      })
-    );
-  } else {
-    app.use(cors());
-  }
+  const corsOptions = {
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://your-production-domain.com',
+    credentials: true,
+  };
+  app.use(cors(corsOptions));
   app.use(express.json({ limit: '20mb' }));
   app.use(express.urlencoded({ limit: '20mb', extended: false }));
   app.use(passport.initialize());
@@ -44,13 +42,10 @@ function setupExpress(app) {
 }
 
 function setupRoutes(app) {
-  app.use(
-    '/api/users/:userId/chatIds/:chatId/messages/:messageId/feedback',
-    feedbackRoutes
-  );
+  app.use('/api/chats/:chatId/messages/:messageId/feedback', feedbackRoutes);
   app.use('/api/feedbackData', feedbackDataRoutes);
-  app.use('/api/users/:userId/chats/:chatId/messages', messageRoutes);
-  app.use('/api/users/:userId/chats', chatRoutes);
+  app.use('/api/chats/:chatId/messages', messageRoutes);
+  app.use('/api/chats', chatRoutes);
   app.use('/api/schools/:schoolId/courses', courseRoutes);
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);

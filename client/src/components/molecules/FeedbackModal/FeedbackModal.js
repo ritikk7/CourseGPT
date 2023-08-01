@@ -27,13 +27,10 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
       return;
     }
     try {
-      await api.post(
-        `/users/${activeChat.user}/chatIds/${activeChat._id}/messages/${message}/feedback`,
-        {
-          rating: isPositive,
-          comment: inputValue,
-        }
-      );
+      await api.post(`/chats/${activeChat._id}/messages/${message}/feedback`, {
+        rating: isPositive,
+        comment: inputValue,
+      });
       onClose();
     } catch (e) {
       console.error('Error submitting feedback:', e);

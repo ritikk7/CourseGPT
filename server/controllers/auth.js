@@ -146,7 +146,7 @@ function signToken(userId, res) {
     httpOnly: true,
     maxAge: expireInMs,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: isProduction ? 'strict' : 'lax',
   });
 }
 

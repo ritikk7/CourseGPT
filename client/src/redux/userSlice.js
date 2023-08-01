@@ -53,8 +53,7 @@ const createUserRequest = (name, requestType, path) => {
     `user/${name}`,
     async (payload = null, { getState }) => {
       try {
-        const userId = getState().auth.userId;
-        const response = await api[requestType](`${path}/${userId}`, payload);
+        const response = await api[requestType](`${path}/`, payload);
         return response.data.user;
       } catch (error) {
         handleRequestError(error);

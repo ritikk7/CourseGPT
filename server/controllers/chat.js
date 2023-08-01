@@ -1,6 +1,7 @@
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 const User = require('../models/user');
+const { Logger } = require('../util/Logger');
 
 async function getChat(req, res) {
   try {
@@ -14,7 +15,7 @@ async function getChat(req, res) {
 
 async function getChats(req, res) {
   try {
-    const userId = req.params.userId;
+    const userId = req.user.id;
     const chats = await Chat.find({ user: userId, deleted: false });
     res.send({ chats });
   } catch (error) {
@@ -23,7 +24,7 @@ async function getChats(req, res) {
 }
 
 async function createChat(req, res) {
-  const userId = req.params.userId;
+  const userId = req.user.id;
   try {
     const chat = new Chat({
       user: userId,
@@ -44,8 +45,9 @@ async function createChat(req, res) {
   }
 }
 
-async function updateChats(req, res) {
+async function softDeleteChats(req, res) {
   let filter = req.body.filter;
+  filter.user = req.user.id;
   const updates = req.body.updates;
 
   try {
@@ -53,7 +55,7 @@ async function updateChats(req, res) {
     const chats = await Chat.find(filter);
 
     // also set associated messages to deleted
-    await Message.updateMany(filter, updates);
+    await Message.updateMany(filter, updates); // duffy will this filter work for the messages?
 
     res.status(200).send({ chats });
   } catch (error) {
@@ -91,5 +93,5 @@ module.exports = {
   createChat,
   updateChat,
   getChats,
-  updateChats,
+  softDeleteChats,
 };

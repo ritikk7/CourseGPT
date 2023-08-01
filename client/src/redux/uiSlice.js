@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { updateUser } from './userSlice';
-import { fetchAllSchools, fetchSchool } from './schoolsSlice';
 import { logoutUser } from './authSlice';
 
 const uiSlice = createSlice({

@@ -58,7 +58,7 @@ async function createCourse(req, res) {
 
 async function improveModel(req, res) {
   try {
-    const submitterId = req.body.userId;
+    const submitterId = req.user.id;
     const courseId = req.params.courseId;
     const course = await Course.findById(courseId).populate('school');
 
