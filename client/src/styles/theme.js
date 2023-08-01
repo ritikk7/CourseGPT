@@ -55,7 +55,7 @@ const theme = extendTheme({
     },
 
     chatSection: {
-      dark: '#c2dcff', // background for message from chat gpt (dark background)
+      dark: '#c6daf3', // background for message from chat gpt (dark background)
       lightText: '#08101C', // text for dark background
       light: '#FFFFFF', // background for message from user (light background)
       darkText: '#08101C', // text for light background
