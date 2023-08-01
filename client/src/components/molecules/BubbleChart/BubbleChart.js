@@ -3,10 +3,17 @@ import * as d3 from 'd3';
 import Legend from '../Legend/Legend';
 import styles from './BubbleChart.module.css';
 
+export const colorScheme = [
+  '#ed475b',
+  '#f59749',
+  '#d5f252',
+  '#18c7be',
+  '#3f48c4',
+];
+
 const BubbleChart = () => {
   const [bubbleChart, setBubbleChart] = useState(null);
   const svg = useRef(null);
-  const colorScheme = ['#ed475b', '#f59749', '#d5f252', '#18c7be', '#3f48c4'];
   const dummyData = [
     {
       id: 'flare.analytics.cluster.AgglomerativeCluster',
