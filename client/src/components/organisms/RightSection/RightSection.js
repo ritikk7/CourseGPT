@@ -16,7 +16,6 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
   createChatTitle,
   createChatWithSelectedDropdownCourse,
-  fetchChat,
   setActiveChat,
   setFocusedChat,
 } from '../../../redux/chatsSlice';
@@ -36,15 +35,8 @@ import {
 import SearchBarInput from '../../molecules/SearchBar/SearchBarInput';
 import { HotKeys } from 'react-hotkeys';
 import InputArea from '../../atoms/InputArea/InputArea';
-import SearchBarNav from '../../molecules/SearchBar/SearchBarNav';
 
 const keyMap = { SHOW_SEARCH: ['command+f', 'ctrl+f'] };
-
-const Message = ({ value }) => (
-  <div className={styles.message}>
-    <p>{value}</p>
-  </div>
-);
 
 const RightSection = () => {
   const dispatch = useDispatch();
@@ -210,7 +202,6 @@ const RightSection = () => {
             />
           </Alert>
         )}
-        {!isSearchBarVisible && <SearchBarNav />}
         {mainPanel}
         {renderInput && (
           <InputArea
