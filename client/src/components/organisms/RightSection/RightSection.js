@@ -35,6 +35,7 @@ import {
 import SearchBarInput from '../../molecules/SearchBar/SearchBarInput';
 import { HotKeys } from 'react-hotkeys';
 import InputArea from '../../atoms/InputArea/InputArea';
+import SearchBarNav from '../../molecules/SearchBar/SearchBarNav';
 
 const keyMap = { SHOW_SEARCH: ['command+f', 'ctrl+f'] };
 
@@ -202,6 +203,7 @@ const RightSection = () => {
             />
           </Alert>
         )}
+        {!isSearchBarVisible && <SearchBarNav />}
         {mainPanel}
         {renderInput && (
           <InputArea
