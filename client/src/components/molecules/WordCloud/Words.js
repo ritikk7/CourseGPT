@@ -1,503 +1,87 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
-  {
-    text: 'told',
-    value: 64,
-  },
-  {
-    text: 'mistake',
-    value: 11,
-  },
-  {
-    text: 'thought',
-    value: 16,
-  },
-  {
-    text: 'bad',
-    value: 17,
-  },
-  {
-    text: 'correct',
-    value: 10,
-  },
-  {
-    text: 'day',
-    value: 54,
-  },
-  {
-    text: 'prescription',
-    value: 12,
-  },
-  {
-    text: 'time',
-    value: 77,
-  },
-  {
-    text: 'thing',
-    value: 45,
-  },
-  {
-    text: 'left',
-    value: 19,
-  },
-  {
-    text: 'pay',
-    value: 13,
-  },
-  {
-    text: 'people',
-    value: 32,
-  },
-  {
-    text: 'month',
-    value: 22,
-  },
-  {
-    text: 'again',
-    value: 35,
-  },
-  {
-    text: 'review',
-    value: 24,
-  },
-  {
-    text: 'call',
-    value: 38,
-  },
-  {
-    text: 'doctor',
-    value: 70,
-  },
-  {
-    text: 'asked',
-    value: 26,
-  },
-  {
-    text: 'finally',
-    value: 14,
-  },
-  {
-    text: 'insurance',
-    value: 29,
-  },
-  {
-    text: 'week',
-    value: 41,
-  },
-  {
-    text: 'called',
-    value: 49,
-  },
-  {
-    text: 'problem',
-    value: 20,
-  },
-  {
-    text: 'going',
-    value: 59,
-  },
-  {
-    text: 'help',
-    value: 49,
-  },
-  {
-    text: 'felt',
-    value: 45,
-  },
-  {
-    text: 'discomfort',
-    value: 11,
-  },
-  {
-    text: 'lower',
-    value: 22,
-  },
-  {
-    text: 'severe',
-    value: 12,
-  },
-  {
-    text: 'free',
-    value: 38,
-  },
-  {
-    text: 'better',
-    value: 54,
-  },
-  {
-    text: 'muscle',
-    value: 14,
-  },
-  {
-    text: 'neck',
-    value: 41,
-  },
-  {
-    text: 'root',
-    value: 24,
-  },
-  {
-    text: 'adjustment',
-    value: 16,
-  },
-  {
-    text: 'therapy',
-    value: 29,
-  },
-  {
-    text: 'injury',
-    value: 20,
-  },
-  {
-    text: 'excruciating',
-    value: 10,
-  },
-  {
-    text: 'chronic',
-    value: 13,
-  },
-  {
-    text: 'chiropractor',
-    value: 35,
-  },
-  {
-    text: 'treatment',
-    value: 59,
-  },
-  {
-    text: 'tooth',
-    value: 32,
-  },
-  {
-    text: 'chiropractic',
-    value: 17,
-  },
-  {
-    text: 'dr',
-    value: 77,
-  },
-  {
-    text: 'relief',
-    value: 19,
-  },
-  {
-    text: 'shoulder',
-    value: 26,
-  },
-  {
-    text: 'nurse',
-    value: 17,
-  },
-  {
-    text: 'room',
-    value: 22,
-  },
-  {
-    text: 'hour',
-    value: 35,
-  },
-  {
-    text: 'wait',
-    value: 38,
-  },
-  {
-    text: 'hospital',
-    value: 11,
-  },
-  {
-    text: 'eye',
-    value: 13,
-  },
-  {
-    text: 'test',
-    value: 10,
-  },
-  {
-    text: 'appointment',
-    value: 49,
-  },
-  {
-    text: 'medical',
-    value: 19,
-  },
-  {
-    text: 'question',
-    value: 20,
-  },
-  {
-    text: 'office',
-    value: 64,
-  },
-  {
-    text: 'care',
-    value: 54,
-  },
-  {
-    text: 'minute',
-    value: 29,
-  },
-  {
-    text: 'waiting',
-    value: 16,
-  },
-  {
-    text: 'patient',
-    value: 59,
-  },
-  {
-    text: 'health',
-    value: 49,
-  },
-  {
-    text: 'alternative',
-    value: 24,
-  },
-  {
-    text: 'holistic',
-    value: 19,
-  },
-  {
-    text: 'traditional',
-    value: 20,
-  },
-  {
-    text: 'symptom',
-    value: 29,
-  },
-  {
-    text: 'internal',
-    value: 17,
-  },
-  {
-    text: 'prescribed',
-    value: 26,
-  },
-  {
-    text: 'acupuncturist',
-    value: 16,
-  },
-  {
-    text: 'pain',
-    value: 64,
-  },
-  {
-    text: 'integrative',
-    value: 10,
-  },
-  {
-    text: 'herb',
-    value: 13,
-  },
-  {
-    text: 'sport',
-    value: 22,
-  },
-  {
-    text: 'physician',
-    value: 41,
-  },
-  {
-    text: 'herbal',
-    value: 11,
-  },
-  {
-    text: 'eastern',
-    value: 12,
-  },
-  {
-    text: 'chinese',
-    value: 32,
-  },
-  {
-    text: 'acupuncture',
-    value: 45,
-  },
-  {
-    text: 'prescribe',
-    value: 14,
-  },
-  {
-    text: 'medication',
-    value: 38,
-  },
-  {
-    text: 'western',
-    value: 35,
-  },
-  {
-    text: 'sure',
-    value: 38,
-  },
-  {
-    text: 'work',
-    value: 64,
-  },
-  {
-    text: 'smile',
-    value: 17,
-  },
-  {
-    text: 'teeth',
-    value: 26,
-  },
-  {
-    text: 'pair',
-    value: 11,
-  },
-  {
-    text: 'wanted',
-    value: 20,
-  },
-  {
-    text: 'frame',
-    value: 13,
-  },
-  {
-    text: 'lasik',
-    value: 10,
-  },
-  {
-    text: 'amazing',
-    value: 41,
-  },
-  {
-    text: 'fit',
-    value: 14,
-  },
-  {
-    text: 'happy',
-    value: 22,
-  },
-  {
-    text: 'feel',
-    value: 49,
-  },
-  {
-    text: 'glasse',
-    value: 19,
-  },
-  {
-    text: 'vision',
-    value: 12,
-  },
-  {
-    text: 'pressure',
-    value: 16,
-  },
-  {
-    text: 'find',
-    value: 29,
-  },
-  {
-    text: 'experience',
-    value: 59,
-  },
-  {
-    text: 'year',
-    value: 70,
-  },
-  {
-    text: 'massage',
-    value: 35,
-  },
-  {
-    text: 'best',
-    value: 54,
-  },
-  {
-    text: 'mouth',
-    value: 20,
-  },
-  {
-    text: 'staff',
-    value: 64,
-  },
-  {
-    text: 'gum',
-    value: 10,
-  },
-  {
-    text: 'chair',
-    value: 12,
-  },
-  {
-    text: 'ray',
-    value: 22,
-  },
-  {
-    text: 'dentistry',
-    value: 11,
-  },
-  {
-    text: 'canal',
-    value: 13,
-  },
-  {
-    text: 'procedure',
-    value: 32,
-  },
-  {
-    text: 'filling',
-    value: 26,
-  },
-  {
-    text: 'gentle',
-    value: 19,
-  },
-  {
-    text: 'cavity',
-    value: 17,
-  },
-  {
-    text: 'crown',
-    value: 14,
-  },
-  {
-    text: 'cleaning',
-    value: 38,
-  },
-  {
-    text: 'hygienist',
-    value: 24,
-  },
-  {
-    text: 'dental',
-    value: 59,
-  },
-  {
-    text: 'charge',
-    value: 24,
-  },
-  {
-    text: 'cost',
-    value: 29,
-  },
-  {
-    text: 'charged',
-    value: 13,
-  },
-  {
-    text: 'spent',
-    value: 17,
-  },
-  {
-    text: 'paying',
-    value: 14,
-  },
-  {
-    text: 'pocket',
-    value: 12,
-  },
-  {
-    text: 'dollar',
-    value: 11,
-  },
-  {
-    text: 'business',
-    value: 32,
-  },
-  {
-    text: 'refund',
-    value: 10,
-  },
+  { key: 'word', value: 10 },
+  { key: 'words', value: 8 },
+  { key: 'sprite', value: 7 },
+  { key: 'placed', value: 5 },
+  { key: 'layout', value: 4 },
+  { key: 'algorithm', value: 4 },
+  { key: 'area', value: 4 },
+  { key: 'without', value: 3 },
+  { key: 'step', value: 3 },
+  { key: 'bounding', value: 3 },
+  { key: 'retrieve', value: 3 },
+  { key: 'operation', value: 3 },
+  { key: 'collision', value: 3 },
+  { key: 'candidate', value: 3 },
+  { key: '32', value: 2 },
+  { key: 'placement', value: 2 },
+  { key: 'time', value: 2 },
+  { key: 'possible', value: 2 },
+  { key: 'even', value: 2 },
+  { key: 'simple', value: 2 },
+  { key: 'starting', value: 2 },
+  { key: 'previously', value: 2 },
+  { key: 'move', value: 2 },
+  { key: 'perform', value: 2 },
+  { key: 'hierarchical', value: 2 },
+  { key: 'draw', value: 2 },
+  { key: 'pixel', value: 2 },
+  { key: 'data', value: 2 },
+  { key: 'separately', value: 2 },
+  { key: 'expensive', value: 2 },
+  { key: 'pixels', value: 2 },
+  { key: 'masks', value: 2 },
+  { key: 'implementation', value: 2 },
+  { key: 'detection', value: 2 },
+  { key: 'larger', value: 2 },
+  { key: 'whole', value: 2 },
+  { key: 'comparing', value: 2 },
+  { key: 'box', value: 2 },
+  { key: 'large', value: 2 },
+  { key: 'think', value: 2 },
+  { key: 'version', value: 2 },
+  { key: 'single', value: 2 },
+  { key: 'tree', value: 2 },
+  { key: 'Cloud', value: 1 },
+  { key: 'Generator', value: 1 },
+  { key: 'Works', value: 1 },
+  { key: 'positioning', value: 1 },
+  { key: 'overlap', value: 1 },
+  { key: 'available', value: 1 },
+  { key: 'GitHub', value: 1 },
+  { key: 'open', value: 1 },
+  { key: 'source', value: 1 },
+  { key: 'license', value: 1 },
+  { key: 'd3cloud', value: 1 },
+  { key: 'Note', value: 1 },
+  { key: 'code', value: 1 },
+  { key: 'converting', value: 1 },
+  { key: 'text', value: 1 },
+  { key: 'rendering', value: 1 },
+  { key: 'final', value: 1 },
+  { key: 'output', value: 1 },
+  { key: 'requires', value: 1 },
+  { key: 'additional', value: 1 },
+  { key: 'development', value: 1 },
+  { key: 'quite', value: 1 },
+  { key: 'slow', value: 1 },
+  { key: 'hundred', value: 1 },
+  { key: 'run', value: 1 },
+  { key: 'asynchronously', value: 1 },
+  { key: 'configurable', value: 1 },
+  { key: 'size', value: 1 },
+  { key: 'makes', value: 1 },
+  { key: 'animate', value: 1 },
+  { key: 'stuttering', value: 1 },
+  { key: 'recommended', value: 1 },
+  { key: 'always', value: 1 },
+  { key: 'use', value: 1 },
+  { key: 'animations', value: 1 },
+  { key: 'prevents', value: 1 },
+  { key: 'browsers', value: 1 },
+  { key: 'event', value: 1 },
+  { key: 'loop', value: 1 },
+  { key: 'blocking', value: 1 },
+  { key: 'placing', value: 1 },
 ];
