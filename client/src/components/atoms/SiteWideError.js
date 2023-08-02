@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert,  Flex, useTheme, Box } from "@chakra-ui/react";
+import { Alert, Flex, useTheme, Box } from '@chakra-ui/react';
 
 const SiteWideError = () => {
   const theme = useTheme();
@@ -10,9 +10,7 @@ const SiteWideError = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <Box
-        width="50%"
-      >
+      <Box width="50%">
         <Alert
           status="error"
           mb={5}

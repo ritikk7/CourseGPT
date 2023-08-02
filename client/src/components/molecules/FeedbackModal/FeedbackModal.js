@@ -10,8 +10,10 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useTheme, ModalCloseButton, Textarea
-} from "@chakra-ui/react";
+  useTheme,
+  ModalCloseButton,
+  Textarea,
+} from '@chakra-ui/react';
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
 
 const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {

@@ -148,18 +148,20 @@ const SearchBarInput = () => {
                 }}
                 onChange={handleChange}
               />
-              <InputRightElement>
-                <IconButton
-                  isRound={true}
-                  variant="solid"
-                  colorScheme="gray.300"
-                  aria-label="Clear Search Bar"
-                  size="lg"
-                  fontSize="14px"
-                  icon={<CloseIcon />}
-                  onClick={clearSearch}
-                />
-              </InputRightElement>
+              {input !== '' && (
+                <InputRightElement>
+                  <IconButton
+                    isRound={true}
+                    variant="solid"
+                    colorScheme="gray.300"
+                    aria-label="Clear Search Bar"
+                    size="lg"
+                    fontSize="14px"
+                    icon={<CloseIcon />}
+                    onClick={clearSearch}
+                  />
+                </InputRightElement>
+              )}
             </InputGroup>
             {isExpanded && (
               <SearchResults

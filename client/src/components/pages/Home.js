@@ -14,9 +14,9 @@ import {
 import { setActivePanelInfo } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
 import AnalyticsWrapper from '../molecules/Analytics/AnalyticsWrapper';
-import { errorSelector } from "../../redux/selectors/errorSelector";
-import { Alert, AlertIcon, Flex, useTheme } from "@chakra-ui/react";
-import SiteWideError from "../atoms/SiteWideError";
+import { errorSelector } from '../../redux/selectors/errorSelector';
+import { Alert, AlertIcon, Flex, useTheme } from '@chakra-ui/react';
+import SiteWideError from '../atoms/SiteWideError';
 
 function Home() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -65,7 +65,7 @@ function Home() {
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (isSiteWideError) return <SiteWideError/>;
+  if (isSiteWideError) return <SiteWideError />;
 
   const renderPage = () => {
     if (seeFeedback) {
