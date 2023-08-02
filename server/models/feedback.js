@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const FeedbackSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    qaPair: { type: Schema.Types.ObjectId, ref: 'QAPair' },
+    user: { type: Schema.Types.ObjectId, ref: 'User' , required: true},
+    qaPair: { type: Schema.Types.ObjectId, ref: 'QAPair' , required: true},
     rating: { type: Boolean, required: true },
     comment: { type: String, default: '' },
   },

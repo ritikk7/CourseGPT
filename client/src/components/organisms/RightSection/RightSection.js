@@ -101,8 +101,8 @@ const RightSection = () => {
     dispatch(setActivePanelChat());
     await dispatch(createUserMessageInActiveChat(currentUserInput)).then(
       async newMessagePayload => {
-        dispatch(setActiveChat(newMessagePayload.payload.chat));
-        dispatch(setFocusedChat(newMessagePayload.payload.chat));
+        dispatch(setActiveChat(newMessagePayload.payload?.chat));
+        dispatch(setFocusedChat(newMessagePayload.payload?.chat));
         await dispatch(getGptResponseInChat(newMessagePayload.payload)).then(
           async newGptMessage => {
             dispatch(createChatTitle(newGptMessage.payload));

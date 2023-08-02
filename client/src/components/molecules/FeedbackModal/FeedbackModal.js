@@ -10,8 +10,8 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useTheme,
-} from '@chakra-ui/react';
+  useTheme, ModalCloseButton, Textarea
+} from "@chakra-ui/react";
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
 
 const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
@@ -41,29 +41,34 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent bg={theme.colors.secondary.dark}>
-        <ModalHeader color={theme.colors.textPrimary.light}>
+      <ModalContent bg={theme.colors.profileModal.mainBackground}>
+        <ModalCloseButton
+          color={theme.colors.profileModal.mainFormInputColor}
+        />
+        <ModalHeader color={theme.colors.profileModal.mainTextColor}>
           {isPositive
             ? "We're glad we answered your question! What stood out to you?"
             : "We're sorry to hear that! What stood out to you?"}
         </ModalHeader>
         <ModalBody>
-          <Input
+          <Textarea
+            size="lg"
             value={inputValue}
             onChange={handleInputChange}
-            borderColor={theme.colors.tertiary.light}
-            color={theme.colors.textPrimary.light}
-            focusBorderColor={theme.colors.primary.light}
+            isResizable={true}
+            height="100px"
+            color={theme.colors.profileModal.mainTextColor}
+            bg={theme.colors.profileModal.mainBackground}
             placeholder="Tell us your thoughts"
           />
         </ModalBody>
         <ModalFooter>
           <Button
             bg={theme.colors.button.light}
-            color={theme.colors.textPrimary.light}
+            color={theme.colors.button.text}
             _hover={{
-              bgColor: theme.colors.button.hover,
-              color: theme.colors.textPrimary.light,
+              bg: theme.colors.button.hover,
+              color: theme.colors.button.text,
             }}
             onClick={handleSubmit}
           >
@@ -73,10 +78,10 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
             variant="ghost"
             onClick={onClose}
             bg={theme.colors.buttonCancel.light}
-            color={theme.colors.textPrimary.light}
+            color={theme.colors.buttonCancel.text}
             _hover={{
-              bgColor: theme.colors.buttonCancel.hover,
-              color: theme.colors.textPrimary.light,
+              bg: theme.colors.buttonCancel.hover,
+              color: theme.colors.buttonCancel.text,
             }}
             ml={3}
           >
