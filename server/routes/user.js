@@ -7,5 +7,4 @@ router.use(validateToken);
 
 router.patch('/', updateUser);
 
-
 module.exports = router;

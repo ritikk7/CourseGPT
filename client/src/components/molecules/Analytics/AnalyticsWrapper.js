@@ -28,8 +28,7 @@ function AnalyticsWrapper() {
       if (isAuthenticated || user.type !== 'Developer') {
         navigate('/');
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

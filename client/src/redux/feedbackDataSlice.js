@@ -57,6 +57,8 @@ const feedbackDataSlice = createSlice({
   initialState: {
     feedbackInfo: [],
     freqData: {},
+    error: null,
+    loading: false,
   },
   reducers: {},
   extraReducers: builder => {
@@ -76,6 +78,8 @@ const feedbackDataSlice = createSlice({
       .addCase(logoutUser.fulfilled, state => {
         state.feedbackInfo = [];
         state.freqData = {};
+        state.error = null;
+        state.loading = false;
       });
   },
 });

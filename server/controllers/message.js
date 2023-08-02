@@ -1,10 +1,9 @@
 const Chat = require('../models/chat');
 const Message = require('../models/message');
-const qaPair = require('./qaPair');
 const { ask } = require('../gpt/ask');
 const { generateChatTitle } = require('../gpt/openAI');
 const mongoose = require('mongoose');
-const QAPair = require("../models/qaPair");
+const QAPair = require('../models/qaPair');
 const ObjectId = mongoose.Types.ObjectId;
 
 async function getAllMessages(req, res) {
