@@ -13,7 +13,7 @@
     "start": "npm run server:prod",
     "server:prod": "cd server && npm run start:prod",
     "heroku-postbuild": "cd client && npm run build:prod",
-    "postinstall": "cd server && npm install && cd ../client && npm install --force && cd ..",
+    "postinstall": "cd server && npm install && cd ../client && npm install && cd ..",
     "lint": "eslint .",
     "format": "prettier --write .",
     "lint:fix": "eslint --fix .",
