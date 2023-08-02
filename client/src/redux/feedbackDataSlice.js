@@ -15,20 +15,21 @@ const handleRejected = (state, action) => {
   state.loading = false;
 };
 
+const handleRequestError = error => {
+  throw error.response?.data?.error || error.message;
+};
+
 // Async Functions
 export const fetchFeedbackAnalysis = createAsyncThunk(
   'feedbackData/fetchFeedbackAnalysis',
   async (courseId, { getState }) => {
     try {
       const course = courseId || null;
-      console.log('feedback data slice');
       const response = await api.get(`/feedbackData`, { courseId: course });
-      console.log('feedback data slice api call done');
-      // console.log(response.data.feedbackData);
 
       return response.data.feedbackData;
     } catch (error) {
-      console.log(error.message);
+      handleRequestError(error);
     }
   }
 );
@@ -38,16 +39,14 @@ export const fetchGroups = createAsyncThunk(
   async (groupData, { getState }) => {
     try {
       const group = groupData || null;
-      console.log(group);
 
       const response = await api.post(`/feedbackData/groups`, {
         groupData: group,
       });
-      console.log('feedback data slice api call done');
 
       return response.data.freqData;
     } catch (error) {
-      console.log(error.message);
+      handleRequestError(error);
     }
   }
 );
