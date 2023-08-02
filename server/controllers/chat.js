@@ -54,7 +54,14 @@ async function softDeleteChats(req, res) {
     const chats = await Chat.find(filter);
 
     // also set associated messages to deleted
-    await Message.updateMany(filter, updates); // duffy will this filter work for the messages?
+    chats.forEach(async chat => {
+      let messageFilter = {
+        user: req.user.id,
+        chat: chat._id,
+        deleted: false,
+      };
+      await Message.updateMany(messageFilter, updates);
+    });
 
     res.status(200).send({ chats });
   } catch (error) {
@@ -77,7 +84,11 @@ async function softDeleteChat(req, res) {
     });
 
     // also set associated messages to deleted
-    const filter = { chat: chatId };
+    const filter = {
+      user: req.user.id,
+      chat: chatId,
+      deleted: false,
+    };
     await Message.updateMany(filter, updates);
     const updatedMessagesFound = await Message.find(filter);
 
