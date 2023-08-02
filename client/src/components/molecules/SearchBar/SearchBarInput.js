@@ -53,16 +53,6 @@ const SearchBarInput = () => {
   const [isLoading, setLoading] = useState(false);
   const isSearchBarVisible = useSelector(state => state.ui.isSearchBarVisible);
 
-  const expandContainer = () => {
-    setExpanded(true);
-  };
-
-  const collapseContainer = () => {
-    setExpanded(false);
-    clearSearch();
-    dispatch(setIsSearchBarVisible(false));
-  };
-
   const clearSearch = () => {
     setInput('');
     setLoading(false);
@@ -102,14 +92,15 @@ const SearchBarInput = () => {
 
   useEffect(() => {
     if (activePanel === 'SEARCH' && !isClickedOutside && isSearchBarVisible) {
-      expandContainer();
-    } else collapseContainer();
+      setExpanded(true);
+    } else hideSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePanel, isClickedOutside, isSearchBarVisible]);
 
   useDebounce(input, 500, searchMessages);
 
   const hideSearch = () => {
+    setExpanded(false);
     dispatch(setIsSearchBarVisible(false));
     clearSearch();
   };
@@ -166,7 +157,7 @@ const SearchBarInput = () => {
                   size="lg"
                   fontSize="14px"
                   icon={<CloseIcon />}
-                  onClick={hideSearch}
+                  onClick={clearSearch}
                 />
               </InputRightElement>
             </InputGroup>

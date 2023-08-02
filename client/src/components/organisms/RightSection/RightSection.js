@@ -10,6 +10,7 @@ import {
 } from '../../../redux/messagesSlice';
 import {
   setActivePanelChat,
+  setActivePanelSearch,
   setShouldFocusChatInput,
 } from '../../../redux/userSlice';
 import { ChevronRightIcon } from '@chakra-ui/icons';
@@ -70,6 +71,7 @@ const RightSection = () => {
     SHOW_SEARCH: e => {
       e.preventDefault();
       dispatch(setIsSearchBarVisible(true));
+      dispatch(setActivePanelSearch());
     },
   };
 

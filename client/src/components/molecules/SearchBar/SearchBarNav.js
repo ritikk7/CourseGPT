@@ -20,7 +20,6 @@ const SearchBarNav = () => {
   };
   return (
     <Box
-      as="button"
       pos="absolute"
       w="100%"
       py={0}
