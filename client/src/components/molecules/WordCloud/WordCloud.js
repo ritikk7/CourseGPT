@@ -22,7 +22,7 @@ const WordCloud = () => {
           {
             label: '',
             data: wordCloudData.map(d => 10 + d.value * 10),
-            color: wordCloudData.map((d, index) => colorScheme[(index % 5)]),
+            color: wordCloudData.map((d, index) => colorScheme[index % 5]),
           },
         ],
       },
