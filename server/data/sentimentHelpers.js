@@ -1,16 +1,21 @@
-import * as tf from '@tensorflow/tfjs';
+const tf = require('@tensorflow/tfjs-node');
+const axios = require('axios');
 
-export async function loadModel() {
+async function loadModel() {
   const url = `https://storage.googleapis.com/tfjs-models/tfjs/sentiment_cnn_v1/model.json`;
   const model = await tf.loadLayersModel(url);
   return model;
 }
 
-export async function getMetaData() {
-  const metadata = await fetch(
-    'https://storage.googleapis.com/tfjs-models/tfjs/sentiment_cnn_v1/metadata.json'
-  );
-  return metadata.json();
+async function getMetaData() {
+  try {
+    const response = await axios.get(
+      'https://storage.googleapis.com/tfjs-models/tfjs/sentiment_cnn_v1/metadata.json'
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching metadata: ', error);
+  }
 }
 
 // Adds padding for model
@@ -30,31 +35,35 @@ function addPadding(sentences, metadata) {
   });
 }
 
-export function getSentimentScore(sentence, model, metadata) {
+function getSentimentScore(sentence, model, metadata) {
   const trimmed = sentence
     .trim()
     .toLowerCase()
-    .replace(/([.,!])/g, '')
+    .replace(/(\.|,|!)/g, '')
     .split(' ');
 
-  // If word is misspelt, find closest word or return undefined
   const sequence = trimmed.map(word => {
     const wordIndex = metadata.word_index[word];
-    if (typeof wordIndex === 'undefined') {
+    if (
+      typeof wordIndex === 'undefined' ||
+      wordIndex + metadata.index_from > 19999
+    ) {
       return 2;
     }
     return wordIndex + metadata.index_from;
   });
+
   const paddedSequence = addPadding([sequence], metadata);
   const input = tf.tensor2d(paddedSequence, [1, metadata.max_len]);
-
   const predictOut = model.predict(input);
-  const score = predictOut.dataSync()[0];
+
+  const score = predictOut.array();
   predictOut.dispose();
+
   return score;
 }
 
-export function calculateVariance(sentiments) {
+function calculateVariance(sentiments) {
   const mean =
     sentiments.reduce((acc, val) => acc + val, 0) / sentiments.length;
   const squaredDifferences = sentiments.map(val => (val - mean) ** 2);
@@ -63,7 +72,7 @@ export function calculateVariance(sentiments) {
   return variance;
 }
 
-export function calculateMedian(sentiments) {
+function calculateMedian(sentiments) {
   const sortedArray = sentiments.slice().sort((a, b) => a - b);
   const middleIndex = Math.floor(sortedArray.length / 2);
 
@@ -74,19 +83,17 @@ export function calculateMedian(sentiments) {
   }
 }
 
-export function calculateMean(sentiments) {
+function calculateMean(sentiments) {
   const sum = sentiments.reduce((acc, val) => acc + val, 0);
   const mean = sum / sentiments.length;
   return mean;
 }
 
-/*
-Useful links that I referenced:
-- Tensorflow JS docs (ex: https://www.tensorflow.org/js/guide/nodejs)
-- https://github.com/tensorflow/tfjs-models/tree/master/universal-sentence-encoder
-- https://github.com/jinglescode/demos/tree/master/src/app/components/nlp-sentence-encoder
-- https://github.com/jinglescode/textual-similarity-universal-sentence-encoder
-- https://bensonruan.com/twitter-sentiment-analysis-with-tensorflowjs/
-- https://github.com/ibm-build-lab/Watson-NLP/blob/main/ML/Entities-Keywords-Extraction/Hotel%20Reviews%20Analysis%20-%20Entities%20and%20Keywords.ipynb
-- https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-additional-resources
-*/
+module.exports = {
+  loadModel,
+  getMetaData,
+  getSentimentScore,
+  calculateVariance,
+  calculateMedian,
+  calculateMean,
+};

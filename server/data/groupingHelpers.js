@@ -1,80 +1,104 @@
-// const natural = require('natural');
-// const nlp = require('compromise');
+const tf = require('@tensorflow/tfjs');
+const use = require('@tensorflow-models/universal-sentence-encoder');
 
-// // Function to lemmatize a word using WordNet
-// function lemmatizeWord(word) {
-//   let doc = nlp(word);
-//   return (
-//     doc.verbs().toInfinitive().out('text') ||
-//     doc.nouns().toSingular().out('text') ||
-//     word
-//   );
-// }
+async function initializeTensorflow() {
+  await tf.ready();
+}
 
-// // Function to extract keyword phrases
-// async function extractKeywordPhrases(feedbackList) {
-//   console.log('group helper');
+async function getEmbeddings(list_sentences) {
+  const model = await use.load();
+  return await model.embed(list_sentences);
+}
 
-//   console.log(feedbackList);
-//   // Create a tokenizer using natural
-//   const tokenizer = new natural.WordTokenizer();
-//   const toReturn = {};
-//   for (let groups of feedbackList) {
-//     // Tokenize all feedback and merge into a single array of words
-//     const words = groups[1]
-//       .map(feedback => tokenizer.tokenize(feedback.toLowerCase()))
-//       .flat();
+function dot(a, b) {
+  let sum = 0;
+  for (let i = 0; i < a.length; i++) {
+    sum += a[i] * b[i];
+  }
+  return sum;
+}
 
-//     // // Lemmatize each word to group similar words (e.g., "dogs" and "dog")
-//     const lemmatizedWords = words.map(word => lemmatizeWord(word));
+function similarity(a, b) {
+  const magnitudeA = Math.sqrt(dot(a, a));
+  const magnitudeB = Math.sqrt(dot(b, b));
+  if (magnitudeA && magnitudeB) {
+    return dot(a, b) / (magnitudeA * magnitudeB);
+  } else {
+    return false;
+  }
+}
 
-//     // console.log("Lemmatized words: ", lemmatizedWords);
-//     // const freqDist = natural.FrequencyDistribution(lemmatizedWords);
-//     // console.log("Frequency distribution: ", freqDist);
-//     // const mostCommonPhrases = freqDist.mostCommon(10);
-//     // console.log("Most common phrases: ", mostCommonPhrases);
-//     // console.log("First group: ", groups[0]);
-//     // toReturn[groups[0]] = mostCommonPhrases;
-//     // console.log("toReturn object: ", toReturn);
-//   }
-//   console.log(toReturn);
+function cosineSimilarityMatrix(matrix) {
+  const cosineSimilarityMatrix = [];
+  for (let i = 0; i < matrix.length; i++) {
+    const row = [];
+    for (let j = 0; j < i; j++) {
+      row.push(cosineSimilarityMatrix[j][i]);
+    }
+    row.push(1);
+    for (let j = i + 1; j < matrix.length; j++) {
+      row.push(similarity(matrix[i], matrix[j]));
+    }
+    cosineSimilarityMatrix.push(row);
+  }
+  return cosineSimilarityMatrix;
+}
 
-//   return toReturn;
-// }
+// eslint-disable-next-line max-statements
+function formGroups(cosineSimilarityMatrix, listSentences) {
+  const dictKeysInGroup = {};
+  const groups = [];
 
-// const winkNLP = require('wink-nlp');
-// const its = require('wink-nlp/src/its.js');
-// const as = require('wink-nlp/src/as.js');
-// const model = require('wink-eng-lite-model');
-// const nlp = winkNLP(model);
+  for (let i = 0; i < cosineSimilarityMatrix.length; i++) {
+    const thisRow = cosineSimilarityMatrix[i];
+    for (let j = i; j < thisRow.length; j++) {
+      if (i !== j) {
+        const simScore = cosineSimilarityMatrix[i][j];
 
-// function extractKeywordPhrases(feedbackList) {
-//   for (let group of feedbackList) {
-//     let doc = nlp.readDoc(group[1].flat());
+        if (simScore > 0.5) {
+          let groupNum;
 
-//     let nouns = doc.nouns().out(its.normal, as.array);
+          if (!(i in dictKeysInGroup)) {
+            groupNum = groups.length;
+            dictKeysInGroup[i] = groupNum;
+          } else {
+            groupNum = dictKeysInGroup[i];
+          }
+          if (!(j in dictKeysInGroup)) {
+            dictKeysInGroup[j] = groupNum;
+          }
 
-//     let verbs = doc.verbs().out(its.normal, as.array);
+          if (groups.length <= groupNum) {
+            groups.push([]);
+          }
+          groups[groupNum].push(i);
+          groups[groupNum].push(j);
+        }
+      }
+    }
+  }
 
-//     let allWords = [...nouns, ...verbs];
+  const groupData = groups.map(group => [...new Set(group)]);
+  const returnGroups = [];
+  for (let i in groupData) {
+    let temp = [];
+    for (let j in groupData[i]) {
+      const index = groupData[i][j];
+      if (index >= 0 && index < listSentences.length) {
+        temp.push(listSentences[index]);
+      }
+    }
+    returnGroups.push(temp);
+  }
 
-//     // create a Map to count the frequencies
-//     let freqMap = new Map();
-//     allWords.forEach(word => {
-//       let count = freqMap.get(word) || 0;
-//       freqMap.set(word, count + 1);
-//     });
+  return returnGroups;
+}
 
-//     // sort the frequencies in descending order and take the top 10
-//     let mostFrequentWords = Array.from(freqMap)
-//       .sort((a, b) => b[1] - a[1])
-//       .slice(0, 10)
-//       .map(([word, frequency]) => ({ word, frequency }));
-
-//     return mostFrequentWords;
-//   }
-// }
-
-// module.exports = {
-//   extractKeywordPhrases,
-// };
+module.exports = {
+  initializeTensorflow,
+  getEmbeddings,
+  dot,
+  similarity,
+  cosineSimilarityMatrix,
+  formGroups,
+};

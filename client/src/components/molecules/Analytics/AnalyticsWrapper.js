@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../../redux/authSlice';
-import FeedbackData from '../../organisms/temp/mainData';
+import FeedbackData from './LoadData';
 import styles from './AnalyticsWrapper.module.css';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/react';

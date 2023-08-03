@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import faker from 'faker';
+import { useSelector } from 'react-redux';
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +24,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Sentiment Analysis of the 5 Most Asked Questions',
+      text: 'Sentiment Analysis of the Most Asked Questions',
     },
   },
   responsive: true,
@@ -42,31 +42,27 @@ export const options = {
   },
 };
 
-const labels = ['Cats', 'Focus', 'question', 'April', 'Exam'];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Average Sentiment',
-      data: labels.map(
-        () => faker.datatype.number({ min: 0, max: 1000 }) / 1000
-      ),
-      backgroundColor: 'rgb(255, 99, 132)',
-      stack: 'Stack 0',
-    },
-    {
-      label: 'Median Sentiment',
-      data: labels.map(
-        () => faker.datatype.number({ min: 0, max: 1000 }) / 1000
-      ),
-      backgroundColor: 'rgb(53, 162, 235)',
-      stack: 'Stack 1',
-    },
-  ],
-};
-
 const BarChart = () => {
+  const barChartInfo = useSelector(state => state.feedbackData.barChartData);
+
+  const data = {
+    labels: barChartInfo[0],
+    datasets: [
+      {
+        label: 'Average Sentiment',
+        data: barChartInfo[1],
+        backgroundColor: 'rgb(255, 99, 132)',
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Median Sentiment',
+        data: barChartInfo[2],
+        backgroundColor: 'rgb(53, 162, 235)',
+        stack: 'Stack 1',
+      },
+    ],
+  };
+
   return (
     <div
       style={{

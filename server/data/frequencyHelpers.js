@@ -144,26 +144,30 @@ function removeStopwords(words) {
   return res;
 }
 
-export function extractKeywordPhrases(feedbackList) {
+function extractKeywordPhrases(feedbackList) {
   for (let group of feedbackList) {
-    let doc = nlp.readDoc(group[1].flat().join(' '));
+    let allWords = nlp.readDoc(group[1].flat().join(' '));
 
-    let words = doc.tokens().out(its.normal, as.array);
+    let words = allWords.tokens().out(its.normal, as.array);
     words = removeStopwords(words);
 
-    // create a Map to count the frequencies
+    // create a map to count the frequencies
     let freqMap = new Map();
     words.forEach(word => {
       let count = freqMap.get(word) || 0;
       freqMap.set(word, count + 1);
     });
 
-    // sort the frequencies in descending order and take the top 10
+    // sort the frequencies in descending order and take the top 100
     let mostFrequentWords = Array.from(freqMap)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([word, frequency]) => ({ word, frequency }));
+      .slice(0, 100)
+      .map(([text, value]) => ({ text, value })); // changed keys here
 
     return mostFrequentWords;
   }
 }
+
+module.exports = {
+  extractKeywordPhrases,
+};

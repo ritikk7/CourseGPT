@@ -8,33 +8,44 @@ import {
   Legend,
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
-import faker from 'faker';
+import { useSelector } from 'react-redux';
 
 // https://react-chartjs-2.js.org/examples/scatter-chart/
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-export const options = {
+const options = {
   scales: {
     y: {
       beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Average Sentiment',
+      },
+    },
+    x: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Frequency of Question Feedback',
+      },
     },
   },
 };
 
-export const data = {
-  datasets: [
-    {
-      label: 'Sentiment',
-      data: Array.from({ length: 100 }, () => ({
-        x: faker.datatype.number({ min: 0, max: 100 }),
-        y: faker.datatype.number({ min: 0, max: 100 }) / 100,
-      })),
-      backgroundColor: 'rgba(255, 99, 132, 1)',
-    },
-  ],
-};
-
 const ScatterChart = () => {
+  const scatterChartData = useSelector(
+    state => state.feedbackData.scatterChartData
+  );
+  const data = {
+    datasets: [
+      {
+        label: 'Sentiment',
+        data: scatterChartData,
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+      },
+    ],
+  };
+
   return (
     <div
       style={{

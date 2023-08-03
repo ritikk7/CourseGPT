@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
-import { logoutUser } from './authSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -15,10 +14,6 @@ const handleRejected = (state, action) => {
   state.loading = false;
 };
 
-const handleRequestError = error => {
-  throw error.response?.data?.error || error.message;
-};
-
 // Async Functions
 export const fetchFeedbackAnalysis = createAsyncThunk(
   'feedbackData/fetchFeedbackAnalysis',
@@ -26,27 +21,10 @@ export const fetchFeedbackAnalysis = createAsyncThunk(
     try {
       const course = courseId || null;
       const response = await api.get(`/feedbackData`, { courseId: course });
-
-      return response.data.feedbackData;
+      console.log(response);
+      return response.data;
     } catch (error) {
-      handleRequestError(error);
-    }
-  }
-);
-
-export const fetchGroups = createAsyncThunk(
-  'feedbackData/fetchGroups',
-  async (groupData, { getState }) => {
-    try {
-      const group = groupData || null;
-
-      const response = await api.post(`/feedbackData/groups`, {
-        groupData: group,
-      });
-
-      return response.data.freqData;
-    } catch (error) {
-      handleRequestError(error);
+      console.log(error.message);
     }
   }
 );
@@ -54,32 +32,29 @@ export const fetchGroups = createAsyncThunk(
 const feedbackDataSlice = createSlice({
   name: 'feedbackData',
   initialState: {
-    feedbackInfo: [],
+    groups: [],
+    feedbackSentiment: {},
+    barChartData: [[], [], []],
+    wordCloudData: [],
+    scatterChartData: [],
+    bubbleChartData: [],
     freqData: {},
-    error: null,
-    loading: false,
+    hasLoadedData: false,
   },
   reducers: {},
   extraReducers: builder => {
     builder
       .addCase(fetchFeedbackAnalysis.pending, handlePending)
       .addCase(fetchFeedbackAnalysis.fulfilled, (state, action) => {
-        state.feedbackInfo = action.payload;
+        state.groups = action.payload.groups;
+        state.feedbackSentiment = action.payload.feedbackSentiment;
+        state.barChartData = action.payload.barChartData;
+        state.wordCloudData = action.payload.wordCloudData;
+        state.scatterChartData = action.payload.scatterChartData;
+        state.bubbleChartData = action.payload.bubbleChartData;
+        state.hasLoadedData = true;
       })
-      .addCase(fetchFeedbackAnalysis.rejected, handleRejected)
-      .addCase(fetchGroups.pending, handlePending)
-      .addCase(fetchGroups.fulfilled, (state, action) => {
-        state.freqData = action.payload;
-      })
-      .addCase(fetchGroups.rejected, handleRejected)
-
-      // Auth slice
-      .addCase(logoutUser.fulfilled, state => {
-        state.feedbackInfo = [];
-        state.freqData = {};
-        state.error = null;
-        state.loading = false;
-      });
+      .addCase(fetchFeedbackAnalysis.rejected, handleRejected);
   },
 });
 

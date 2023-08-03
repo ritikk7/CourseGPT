@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import words from './Words';
 import { useSelector } from 'react-redux';
 import { Text, Center } from '@chakra-ui/react';
 import { Chart } from 'chart.js';
@@ -10,18 +9,7 @@ const WordCloud = () => {
   const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);
   const sidePanelLength = 262;
   const colorScheme = ['#c7003c', '#ff9412', '#52b788', '#0073b5', '#3c2394'];
-
-  const chooseColor = sentiment => {
-    if (0 <= sentiment && sentiment < 0.2) {
-      return colorScheme[0];
-    } else if (0.2 <= sentiment && sentiment < 0.4) {
-      return colorScheme[1];
-    } else if (0.4 <= sentiment && sentiment < 0.6) {
-      return colorScheme[2];
-    } else if (0.6 <= sentiment && sentiment < 0.8) {
-      return colorScheme[3];
-    } else return colorScheme[4];
-  };
+  const wordCloudData = useSelector(state => state.feedbackData.wordCloudData);
 
   useEffect(() => {
     const ctx = document.getElementById('word-cloud').getContext('2d');
@@ -29,12 +17,12 @@ const WordCloud = () => {
     const chart = new Chart(ctx, {
       type: 'wordCloud',
       data: {
-        labels: words.map(d => d.key),
+        labels: wordCloudData.map(d => d.text),
         datasets: [
           {
             label: '',
-            data: words.map(d => 10 + d.value * 10),
-            color: words.map(d => chooseColor(d.sentiment)),
+            data: wordCloudData.map(d => 10 + d.value * 10),
+            color: wordCloudData.map((d, index) => colorScheme[(index % 5)]),
           },
         ],
       },
@@ -67,7 +55,6 @@ const WordCloud = () => {
       >
         Top Words From The Last 100 Questions
       </Text>
-      <Legend colorScheme={colorScheme} m="auto" mt="30px" />
       <Center>
         <canvas
           id="word-cloud"

@@ -1,9 +1,12 @@
 const { getDatabaseFeedbackInfo } = require('../data/databaseHelpers');
 const { extractKeywordPhrases } = require('../data/groupingHelpers');
+const { analyzeFeedback } = require('../data/formatHelpers');
+
 async function getFeedbackAnalysis(req, res) {
   try {
-    const feedbackData = await getDatabaseFeedbackInfo(req.body.courseId);
-    res.status(201).send({ feedbackData: feedbackData });
+    const data = await getDatabaseFeedbackInfo(req.body.courseId);
+    const feedbackData = await analyzeFeedback(data);
+    res.status(200).send(feedbackData);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
