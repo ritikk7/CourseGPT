@@ -74,74 +74,74 @@ and time constraints.
 
 #### Minimal Requirements
 
-1. **Simple user login**
+1. **Simple user login** ✔️
    - As a user, I want to be able to create an account and log in
      so that I can access CourseGPT.
-2. **Being able to ask questions (1 course supported)**
+2. **Being able to ask questions (1 course supported)** ✔️
    - As a student user, I want to be able to ask questions and
      receive answers for at least one supported course so that I can understand
      the course content better.
-3. **Chat history (view)**
+3. **Chat history (view)** ✔️
    - As a student user, I want to be able to view my past chatIds so
      that I can review the information that I've learned.
 
 #### Standard Requirements
 
-1. **Deleting chat history**
+1. **Deleting chat history** ✔️
    - As a student user, I want to be able to clear my chat history
      so that I can keep my chat interface focused on my current
      learning goals.
-2. **Feedback on individual messages**
+2. **Feedback on individual messages** ✔️
    - As a user, I want to be able to provide feedback on each
      response from CourseGPT so that I can help the developers improve
      CourseGPT
      and further my learning.
-3. **Favourite courses**
+3. **Favourite courses** ✔️
    - As a student user, I want to be able to favorite courses and
      have them easily selectable when creating a new chat so that I can quickly
      access the courses I'm currently studying. Although I recognize that only
      one course will be significantly trained and useful.
-4. **Suggested prompt generation**
+4. **Suggested prompt generation** ✔️
    - As a student user, I want to have suggested prompts based on
      my selected course so that I can get ideas for what questions to ask or
      topics to explore.
-5. **ProfileSettings changes**
+5. **ProfileSettings changes** ✔️
    - As a user, I want to be able to edit my email and password in my profile
      settings so that I can keep my account information up to date.
 
 #### Stretch Requirements
 
-1. **Professor improved CourseGPT model**
+1. **Professor improved CourseGPT model** ✔️
    - As a professor user, I want to be able to upload PDF documents
      that provide more information for training my course
      so that CourseGPT can provide more helpful answers to students.
-2. **Professor new CourseGPT model**
+2. **Professor new CourseGPT model** ❎
    - As a professor user, I want to be able to upload PDF documents
      that will be used to create and train a new course so that
      students in my course can utilize ChatGPT.
-3. **Admin/Developer dashboard**
+3. **Admin/Developer dashboard** ✔️
    - As an admin, I want to have a dashboard that provides an
      overview of usage statistics, such as the number of users, number
      of questions asked, and most popular courses, so that I can understand how
      the system is being used and make data-driven decisions about how to
      improve it.
-4. **Community feature**
+4. **Community feature** ❎
    - As a student user, I want to be able to see popular questions
      asked by other students for a certain course and answers endorsed by
      instructors so that I can learn more from other student usage and what my
      instructors believe to be important.
-5. **Usage Analytics**
+5. **Usage Analytics** ❎
    - As a developer for CourseGPT, I want to have easy
      access to detailed data related to each course, such as popular questions
      and answers, feedback on messages, and other relevant data points so that
      I can analyze user behavior and CourseGPT's performance and
      improve the models for each course, further increasing user satisfaction
      and learning.
-6. **Multiple Course Support**
+6. **Multiple Course Support** ❗
    - As a student user, I want to be able to select multiple different courses
      and receive helpful assistance in all of them so that I can learn more
      about all the courses I am taking, rather than just one.
-7. **Chat Search Functionality**
+7. **Chat Search Functionality** ✔️
    - As a student user, I want to be able to access a search bar to search
      through all of my chatIds to easily locate information so that I can
      efficiently find the information I need without having to scroll through
