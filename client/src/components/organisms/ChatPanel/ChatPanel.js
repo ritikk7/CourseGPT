@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import styles from './ChatPanel.module.css';
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
 import ChatSection from '../../molecules/ChatSection/ChatSection';
-import { useTheme } from '@chakra-ui/react';
 
 const ChatPanel = () => {
   const scrollRef = useRef(null);

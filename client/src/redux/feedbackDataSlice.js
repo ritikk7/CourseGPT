@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../api/axiosInstance';
+import { logoutUser } from './authSlice';
 
 // State Handlers
 const handleLoading = (state, loadingStatus) => {
@@ -14,17 +15,21 @@ const handleRejected = (state, action) => {
   state.loading = false;
 };
 
+// Helpers
+const handleRequestError = error => {
+  throw error.response?.data?.error || error.message;
+};
+
 // Async Functions
 export const fetchFeedbackAnalysis = createAsyncThunk(
   'feedbackData/fetchFeedbackAnalysis',
-  async (courseId, { getState }) => {
+  async courseId => {
     try {
       const course = courseId || null;
       const response = await api.get(`/feedbackData`, { courseId: course });
-      console.log(response);
       return response.data;
     } catch (error) {
-      console.log(error.message);
+      handleRequestError(error);
     }
   }
 );
@@ -40,6 +45,8 @@ const feedbackDataSlice = createSlice({
     bubbleChartData: [],
     freqData: {},
     hasLoadedData: false,
+    error: null,
+    loading: false,
   },
   reducers: {},
   extraReducers: builder => {
@@ -54,7 +61,18 @@ const feedbackDataSlice = createSlice({
         state.bubbleChartData = action.payload.bubbleChartData;
         state.hasLoadedData = true;
       })
-      .addCase(fetchFeedbackAnalysis.rejected, handleRejected);
+      .addCase(fetchFeedbackAnalysis.rejected, handleRejected)
+      // Auth slice
+      .addCase(logoutUser.fulfilled, state => {
+        state.groups = [];
+        state.feedbackSentiment = {};
+        state.barChartData = [[], [], []];
+        state.wordCloudData = [];
+        state.scatterChartData = [];
+        state.bubbleChartData = [];
+        state.freqData = {};
+        state.hasLoadedData = false;
+      });
   },
 });
 

@@ -11,6 +11,7 @@ import BarChart from '../BarChart/BarChart';
 import ScatterChart from '../ScatterChart/ScatterChart';
 import WordCloud from '../WordCloud/WordCloud';
 import { setIsSidePanelVisible } from '../../../redux/uiSlice';
+import { setUserError } from '../../../redux/userSlice';
 
 function AnalyticsWrapper() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -28,7 +29,9 @@ function AnalyticsWrapper() {
       if (isAuthenticated || user.type !== 'Developer') {
         navigate('/');
       }
-    } catch (error) {}
+    } catch (error) {
+      dispatch(setUserError(error));
+    }
   };
 
   useEffect(() => {

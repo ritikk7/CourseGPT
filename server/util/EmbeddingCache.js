@@ -10,15 +10,16 @@ class EmbeddingCache {
   }
 
   async getAllByCourse(courseId) {
-    const now = new Date();
+    // this variable is to catch cases where the user trained the model (added embeddings) before asking any questions.
+    // (asking questions is what would pull all of the embeddings from the database)
+    let embeddingsCreatedBeforeQuestionsWereAsked =
+      this.lastUpdated[courseId] &&
+      this.lastUpdated[courseId].setMilliseconds(0) <=
+        this.cache[courseId][0].createdAt.setMilliseconds(0);
 
-    if (
-      !this.cache[courseId] ||
-      (this.lastUpdated[courseId] &&
-        this.lastUpdated[courseId] < this.cache[courseId][0].updatedAt)
-    ) {
+    if (!this.cache[courseId] || embeddingsCreatedBeforeQuestionsWereAsked) {
       this.cache[courseId] = await Embedding.find({ course: courseId });
-      this.lastUpdated[courseId] = now;
+      this.lastUpdated[courseId] = new Date();
     }
 
     return this.cache[courseId];

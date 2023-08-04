@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Text, Center } from '@chakra-ui/react';
 import { Chart } from 'chart.js';
 import { WordCloudController, WordElement } from 'chartjs-chart-wordcloud';
-import Legend from '../Legend/Legend';
 
 const WordCloud = () => {
   const isSidePanelVisible = useSelector(state => state.ui.isSidePanelVisible);

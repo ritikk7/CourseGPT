@@ -24,7 +24,7 @@ const handleRequestError = error => {
 // Async Functions
 export const fetchSchool = createAsyncThunk(
   'schools/fetchSchool',
-  async (schoolId, { getState }) => {
+  async schoolId => {
     try {
       const response = await api.get(`/schools/${schoolId}`);
       return response.data.school;
@@ -36,7 +36,7 @@ export const fetchSchool = createAsyncThunk(
 
 export const fetchAllSchools = createAsyncThunk(
   'schools/fetchAllSchools',
-  async (_, { getState }) => {
+  async () => {
     try {
       const response = await api.get('/schools');
       return buildObjectMapFromArray(response.data.schools);

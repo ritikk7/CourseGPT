@@ -24,7 +24,7 @@ const handleRequestError = error => {
 // Async Functions
 export const fetchSchoolCourse = createAsyncThunk(
   'courses/fetchSchoolCourse',
-  async ({ schoolId, courseId }, { getState }) => {
+  async ({ schoolId, courseId }) => {
     try {
       const response = await api.get(
         `/schools/${schoolId}/courses/${courseId}`
@@ -57,7 +57,7 @@ export const trainCurrentlySelectedDropdownCourse = createAsyncThunk(
 
 export const fetchSchoolCourses = createAsyncThunk(
   'courses/fetchSchoolCourses',
-  async (schoolId, { getState }) => {
+  async schoolId => {
     try {
       const response = await api.get(`/schools/${schoolId}/courses`);
       return buildObjectMapFromArray(response.data.courses);
@@ -69,7 +69,7 @@ export const fetchSchoolCourses = createAsyncThunk(
 
 export const fetchAllCourses = createAsyncThunk(
   'courses/fetchAllCourses',
-  async (_, { getState }) => {
+  async () => {
     try {
       const response = await api.get(`/courses`);
       return buildObjectMapFromArray(response.data.courses);
@@ -124,12 +124,9 @@ const coursesSlice = createSlice({
       })
       .addCase(fetchAllCourses.rejected, handleRejected)
       .addCase(trainCurrentlySelectedDropdownCourse.pending, handlePending)
-      .addCase(
-        trainCurrentlySelectedDropdownCourse.fulfilled,
-        (state, action) => {
-          handleLoading(state, false);
-        }
-      )
+      .addCase(trainCurrentlySelectedDropdownCourse.fulfilled, state => {
+        handleLoading(state, false);
+      })
       .addCase(trainCurrentlySelectedDropdownCourse.rejected, handleRejected)
 
       // Auth slice

@@ -244,7 +244,7 @@ export default function RegisterUserDetails() {
   );
 }
 
-function UserTypeSelectButtons({ handleChange, theme }) {
+function UserTypeSelectButtons({ handleChange }) {
   const options = ['Student', 'Professor'];
 
   const { getRadioProps } = useRadioGroup({

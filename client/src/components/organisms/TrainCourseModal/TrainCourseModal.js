@@ -40,7 +40,6 @@ const TrainCourseModal = ({ isOpen, handleClose, selectedCourseName }) => {
             placeholder="Your text here..."
             value={textAreaValue}
             onChange={handleTextAreaChange}
-            isResizable={true}
             height="300px"
             color={theme.colors.profileModal.mainTextColor}
             bg={theme.colors.profileModal.mainBackground}

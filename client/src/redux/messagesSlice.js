@@ -29,7 +29,7 @@ const fetchMessages = async chatId => {
 
 export const fetchChatMessages = createAsyncThunk(
   'messages/fetchChatMessages',
-  async (chatId, { getState }) => {
+  async chatId => {
     try {
       return await fetchMessages(chatId);
     } catch (error) {
@@ -68,7 +68,7 @@ export const createUserMessageInActiveChat = createAsyncThunk(
 
 export const getGptResponseInChat = createAsyncThunk(
   'messages/getGptResponseInChat',
-  async (userMessageObject, { getState }) => {
+  async userMessageObject => {
     try {
       const chatId = userMessageObject.chat;
       const response = await api.post(
@@ -121,14 +121,14 @@ const messagesSlice = createSlice({
         handleLoading(state, false);
       })
       .addCase(createUserMessageInActiveChat.rejected, handleRejected)
-      .addCase(getGptResponseInChat.pending, (state, action) => {
+      .addCase(getGptResponseInChat.pending, state => {
         state.gptLoading = true;
       })
       .addCase(getGptResponseInChat.fulfilled, (state, action) => {
         state.messages[action.payload._id] = action.payload;
         state.gptLoading = false;
       })
-      .addCase(getGptResponseInChat.rejected, (state, action) => {
+      .addCase(getGptResponseInChat.rejected, state => {
         state.gptLoading = false;
       })
 

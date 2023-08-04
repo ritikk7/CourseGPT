@@ -56,8 +56,6 @@ function buildMessageHelper(strings, query, tokenBudget) {
     tokensInMessageSoFar += nextTokenCount;
   }
 
-  Logger.debug(includedInfo);
-
   const message =
     generatePreamble(strings, includedInfoCount, query) +
     includedInfo.join('') +

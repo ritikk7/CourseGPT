@@ -1,28 +1,9 @@
 :root {
   --primary-colour: #455a64;
-  --secondary-colour: #d9edfa;
   --tertiary-colour: #d9edfa;
   --text-primary-colour: #ffffff;
-  --accent-colour: #a1c7ff;
-  --error-colour: #f44336;
-  --background-colour: #8c9ea6;
-  --button-hover-colour: #1a76b4;
-  --link-hover-colour: #bdbdbd;
-  --formLabel-colour: #aebdc2;
-  --buttonTextHover-colour: #263238;
   --sidebar-shading: 31, 58, 96;
-
-  --primary-colour-rgba: 144, 163, 174;
   --secondary-colour-rgba: 122, 143, 156;
-  --tertiary-colour-rgba: 207, 216, 220;
-  --text-primary-colour-rgba: 255, 255, 255;
-  --accent-colour-rgba: 161, 199, 255;
-  --error-colour-rgba: 244, 67, 54;
-  --background-colour-rgba: 140, 158, 166;
-  --button-hover-colour-rgba: 26, 118, 180;
-  --link-hover-colour-rgba: 189, 189, 189;
-  --formLabel-colour-rgba: 174, 189, 194;
-  --buttonTextHover-colour-rgba: 38, 50, 56;
 }
 
 body {

@@ -47,7 +47,7 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
     state => state.courses.currentlySelectedDropdownCourse
   );
   const [disableNewChatButton, setDisableNewChatButton] = useState(
-    !!!selectedCourse && !isGptLoading
+    !selectedCourse && !isGptLoading
   );
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isTrainCourseModalOpen, setTrainCourseModalOpen] = useState(false);

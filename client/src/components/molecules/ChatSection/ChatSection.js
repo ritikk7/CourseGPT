@@ -1,9 +1,9 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import styles from './ChatSection.module.css';
 import ChatSenderImage from '../../atoms/ChatSenderImage/ChatSenderImage';
 import { useSelector } from 'react-redux';
 import Typewriter from 'typewriter-effect';
-import { Box, Highlight, useTheme, IconButton } from '@chakra-ui/react';
+import { Box, Highlight, IconButton, useTheme } from '@chakra-ui/react';
 import { CopyIcon } from '@chakra-ui/icons';
 import Feedback from '../FeedbackPanel/FeedbackPanel';
 import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
@@ -67,6 +67,7 @@ const ChatSection = ({ message }, ref) => {
         } else {
           return block.split('\n').map((item, key) => (
             <span key={key}>
+              {/* eslint-disable-next-line react/no-children-prop */}
               <ReactMarkdown children={item} />
               <br />
             </span>
@@ -79,13 +80,12 @@ const ChatSection = ({ message }, ref) => {
 
   const handleNewlineText = text => {
     if (text) {
-      let htmlText = text
+      return text
         .split('\n')
-        .map((item, key) => {
-          return `<span key=${key}>` + `${item}` + `<br />` + `</span>`;
+        .map(item => {
+          return `<span>${item}<br /></span>`;
         })
         .join('');
-      return htmlText;
     }
     return null;
   };
@@ -132,13 +132,13 @@ const ChatSection = ({ message }, ref) => {
       return (
         <Typewriter
           options={{
-            delay: message.content.length > isLongPassageLength ? 10 : 20,
+            delay: message.content.length > isLongPassageLength ? 2 : 20,
           }}
           onInit={typewriter => {
             typewriter
               .typeString(handleNewlineText(message.content))
               .callFunction(() => {
-                document.querySelector('.Typewriter__cursor').remove();
+                document.querySelector('.Typewriter__cursor')?.remove();
               })
               .start();
           }}

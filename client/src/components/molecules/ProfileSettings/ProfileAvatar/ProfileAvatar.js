@@ -54,6 +54,7 @@ const ProfileAvatar = ({ handleClose }) => {
         <SimpleGrid columns={4}>
           {avatarImages.map((image, index) => (
             <div
+              key={index}
               className={styles.btn}
               style={
                 selectedAvatar === image

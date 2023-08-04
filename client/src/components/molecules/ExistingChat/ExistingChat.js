@@ -26,7 +26,7 @@ const ExistingChat = ({
   }, [window.innerWidth]);
 
   useEffect(() => {
-    setIsFocused(focusedChat == id);
+    setIsFocused(String(focusedChat) === String(id));
     setIsEditMode(false);
   }, [focusedChat]);
 

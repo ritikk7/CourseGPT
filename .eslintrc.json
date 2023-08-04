@@ -10,7 +10,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "max-statements": ["error", 20],
+    "max-statements": ["error", 30],
     "no-unused-vars": "error"
   },
   "overrides": [
@@ -20,22 +20,16 @@
         "browser": true,
         "jest": true
       },
-      "extends": ["plugin:react/recommended", "plugin:react-hooks/recommended"],
-      "plugins": ["react", "jest", "react-hooks"],
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "eslint:recommended"
+      ],
+      "plugins": ["react-hooks"],
       "settings": {
         "react": {
           "version": "detect"
         }
-      },
-      "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "react/react-in-jsx-scope": "off",
-        "jest/no-disabled-tests": "warn",
-        "jest/no-focused-tests": "error",
-        "jest/no-identical-title": "error",
-        "jest/prefer-to-have-length": "warn",
-        "jest/valid-expect": "error",
-        "react-hooks/exhaustive-deps": "off"
       }
     },
     {

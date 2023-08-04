@@ -11,11 +11,10 @@ import {
   fetchAllCourses,
   setCurrentlySelectedDropdownCourse,
 } from '../../redux/coursesSlice';
-import { setActivePanelInfo } from '../../redux/userSlice';
+import { setActivePanelInfo, setUserError } from '../../redux/userSlice';
 import { fetchUserChats, setWaitingFirstMessage } from '../../redux/chatsSlice';
 import AnalyticsWrapper from '../molecules/Analytics/AnalyticsWrapper';
 import { errorSelector } from '../../redux/selectors/errorSelector';
-import { Alert, AlertIcon, Flex, useTheme } from '@chakra-ui/react';
 import SiteWideError from '../atoms/SiteWideError';
 
 function Home() {
@@ -46,7 +45,9 @@ function Home() {
       } else {
         navigate('/login');
       }
-    } catch (error) {}
+    } catch (error) {
+      dispatch(setUserError(error));
+    }
   };
 
   const loadData = async () => {
@@ -60,7 +61,9 @@ function Home() {
       }
       await dispatch(fetchUserChats());
       setIsLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      dispatch(setUserError(error));
+    }
   };
 
   if (isLoading) return <LoadingSpinner />;

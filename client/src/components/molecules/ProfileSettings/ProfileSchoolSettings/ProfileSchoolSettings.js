@@ -44,6 +44,7 @@ const ProfileSchoolSettings = ({ handleClose }) => {
   const handleCourseChange = course => {
     setSelectedCourses(prevCourses => {
       if (prevCourses[course._id]) {
+        // eslint-disable-next-line no-unused-vars
         const { [course._id]: deletedCourse, ...remainingCourses } =
           prevCourses;
         return remainingCourses;

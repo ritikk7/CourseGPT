@@ -49,17 +49,14 @@ const handleRequestError = error => {
 
 // Async Functions
 const createUserRequest = (name, requestType, path) => {
-  return createAsyncThunk(
-    `user/${name}`,
-    async (payload = null, { getState }) => {
-      try {
-        const response = await api[requestType](`${path}/`, payload);
-        return response.data.user;
-      } catch (error) {
-        handleRequestError(error);
-      }
+  return createAsyncThunk(`user/${name}`, async (payload = null) => {
+    try {
+      const response = await api[requestType](`${path}/`, payload);
+      return response.data.user;
+    } catch (error) {
+      handleRequestError(error);
     }
-  );
+  });
 };
 
 export const updateUser = createUserRequest(
@@ -105,13 +102,13 @@ const userSlice = createSlice({
     setUserError: (state, action) => {
       state.error = action.payload;
     },
-    setActivePanelInfo: (state, action) => {
+    setActivePanelInfo: state => {
       state.activePanel = 'INFO';
     },
-    setActivePanelChat: (state, action) => {
+    setActivePanelChat: state => {
       state.activePanel = 'CHAT';
     },
-    setActivePanelSearch: (state, action) => {
+    setActivePanelSearch: state => {
       state.activePanel = 'SEARCH';
     },
     setShouldFocusChatInput: (state, action) => {
@@ -143,7 +140,7 @@ const userSlice = createSlice({
           state.shouldFocusChatInput = true;
         }
       )
-      .addCase(setActiveChat, (state, action) => {
+      .addCase(setActiveChat, state => {
         state.shouldFocusChatInput = true;
       });
   },

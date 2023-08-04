@@ -102,7 +102,7 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, handleRejected)
       .addCase(fetchUser.pending, handlePending)
       .addCase(fetchUser.fulfilled, handleFulfilledActiveUser)
-      .addCase(fetchUser.rejected, (state, action) => {
+      .addCase(fetchUser.rejected, state => {
         state.error = null; // Lazy way to prevent displaying "No Token Provided" message on login page.
         state.loading = false;
       });

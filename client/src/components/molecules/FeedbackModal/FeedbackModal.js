@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../../api/axiosInstance';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  Input,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,10 +14,12 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { activeChatWithMessagesSelector } from '../../../redux/selectors/activeChatWithMessagesSelector';
+import { setUserError } from '../../../redux/userSlice';
 
 const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
   const [inputValue, setInputValue] = useState('');
   const activeChat = useSelector(activeChatWithMessagesSelector);
+  const dispatch = useDispatch();
 
   const handleInputChange = e => {
     setInputValue(e.target.value);
@@ -35,7 +36,7 @@ const FeedbackModal = ({ isOpen, onClose, isPositive, message }) => {
       });
       onClose();
     } catch (e) {
-      console.error('Error submitting feedback:', e);
+      dispatch(setUserError(e));
     }
   };
 
