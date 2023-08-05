@@ -13,6 +13,7 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsSearchBarVisible } from '../../../redux/uiSlice';
 import { setActivePanelSearch } from '../../../redux/userSlice';
+import { fetchFeedbackAnalysis } from '../../../redux/feedbackDataSlice';
 
 const SidePanelUserMenu = ({
   setSettingsOpen,
@@ -116,7 +117,10 @@ const SidePanelUserMenu = ({
               _hover={{
                 color: theme.colors.sidePanel.menuTextHover,
               }}
-              onClick={() => setSeeFeedback(true)}
+              onClick={() => {
+                setSeeFeedback(true);
+                dispatch(fetchFeedbackAnalysis());
+              }}
             >
               View Analytics
             </MenuItem>

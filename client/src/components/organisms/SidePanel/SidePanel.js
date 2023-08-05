@@ -27,13 +27,7 @@ import { fetchActiveChatMessages } from '../../../redux/messagesSlice';
 import TrainCourseModal from '../TrainCourseModal/TrainCourseModal';
 import { Box, Button, useMediaQuery, useTheme } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import {
-  BubbleChart,
-  BarChart,
-  ScatterPlot,
-  Assessment,
-  Abc,
-} from '@mui/icons-material';
+import { BubbleChart, BarChart, ScatterPlot, Abc } from '@mui/icons-material';
 import { setIsSidePanelVisible } from '../../../redux/uiSlice';
 
 const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
@@ -173,20 +167,6 @@ const SidePanel = ({ setSeeFeedback, isAnalyticsSidePanel }) => {
           </Button>
         </div>
         <div className={styles.selectDataView}>
-          <Button
-            onClick={() => {
-              dispatch(setSelectedAnalyticsView('feedback'));
-            }}
-            bg={theme.colors.sidePanel.background}
-            color={theme.colors.sidePanel.text}
-            _hover={{
-              bg: theme.colors.sidePanel.hoverItemBackground,
-              color: theme.colors.sidePanel.menuTextHover,
-            }}
-            leftIcon={<Assessment />}
-          >
-            Feedback
-          </Button>
           <Button
             onClick={() => {
               dispatch(setSelectedAnalyticsView('bubble'));
