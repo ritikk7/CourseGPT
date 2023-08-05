@@ -17,8 +17,8 @@ const BubbleChart = () => {
     const width = window.screen.width;
     const height = 700;
     const margin = 1;
-    const name = d => d.id.split('.').pop();
-    const names = d => name(d).split(/(?=[A-Z][a-z])|\s+/g);
+    const name = d => d.id?.split('.').pop();
+    const names = d => name(d)?.split(/(?=[A-Z][a-z])|\s+/g);
 
     const format = d3.format(',d');
 

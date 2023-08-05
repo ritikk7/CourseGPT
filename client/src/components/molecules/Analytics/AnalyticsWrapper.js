@@ -85,7 +85,7 @@ function AnalyticsWrapper() {
     return (
       <Tooltip
         label="Currently loading feedback data"
-        fontSize="lg"
+        fontSize="md"
         placement="top"
       >
         <div
