@@ -9,6 +9,7 @@ async function getFeedback(req, res) {
     }
     res.status(201).send({ feedback: feedback });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -29,6 +30,7 @@ async function createFeedback(req, res) {
     const newFeedback = await feedback.save();
     res.status(201).send({ feedback: newFeedback });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -46,6 +48,7 @@ async function updateFeedback(req, res) {
 
     res.status(201).send({ feedback: updatedFeedback });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -59,6 +62,7 @@ async function deleteFeedback(req, res) {
     );
     res.status(201).send({ deletedFeedback: deletedFeedback });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }

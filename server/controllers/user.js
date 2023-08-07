@@ -10,6 +10,7 @@ async function updateUser(req, res) {
     });
     res.send({ user: updatedUser });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: 'Failed to update user' });
   }
 }

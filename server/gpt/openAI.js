@@ -15,7 +15,7 @@ async function createCourseGptCompletion(
   temperature = 0.5,
   retryMin = 0,
   retryMax = 5,
-  gptModel = process.env.OPENAI_GPT_MODEL,
+  gptModel = process.env.OPENAI_GPT_MODEL
 ) {
   Logger.logEnter();
   const NUM_ATTEMPTS = 3;

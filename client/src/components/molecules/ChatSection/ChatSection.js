@@ -10,7 +10,7 @@ import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { renderToString } from "react-dom/server";
+import { renderToString } from 'react-dom/server';
 
 const ChatSection = ({ message }, ref) => {
   const user = useSelector(state => state.user);
@@ -34,7 +34,7 @@ const ChatSection = ({ message }, ref) => {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
-    return (createdAtTimestamp >= currentTime - 30);
+    return createdAtTimestamp >= currentTime - 30;
   }
 
   useEffect(() => {
@@ -62,7 +62,9 @@ const ChatSection = ({ message }, ref) => {
       return blocks.map((block, index) => {
         if (index % 2 === 1) {
           const existingLanguage = block.match(/^\s*(\w+)/);
-          const language = existingLanguage ? existingLanguage[1] : 'javascript'; // default language javascript
+          const language = existingLanguage
+            ? existingLanguage[1]
+            : 'javascript'; // default language javascript
           const codeContent = block.replace(/^\s*\w+\s*/, '');
           return (
             <SyntaxHighlighter language={language} style={prism} key={index}>
@@ -126,11 +128,15 @@ const ChatSection = ({ message }, ref) => {
         <Typewriter
           options={{
             delay: 1,
-            cursor:'' // buggy so removed
+            cursor: '', // buggy so removed
           }}
           onInit={typewriter => {
             typewriter
-              .typeString(renderToString(handleMixedTextWithCodeBlocksAndNewlines(message.content)))
+              .typeString(
+                renderToString(
+                  handleMixedTextWithCodeBlocksAndNewlines(message.content)
+                )
+              )
               .start();
           }}
         />
@@ -142,7 +148,7 @@ const ChatSection = ({ message }, ref) => {
           autoStart: true,
           loop: true,
           strings: [''],
-          cursor:'' // buggy so removed
+          cursor: '', // buggy so removed
         }}
       />
     );

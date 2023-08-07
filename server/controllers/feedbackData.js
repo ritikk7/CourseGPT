@@ -8,6 +8,7 @@ async function getFeedbackAnalysis(req, res) {
     const feedbackData = await analyzeFeedback(data);
     res.status(200).send(feedbackData);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -20,6 +21,7 @@ async function getFreqAnalysis(req, res) {
     console.log(freqData);
     res.status(201).send({ freqData: freqData });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }

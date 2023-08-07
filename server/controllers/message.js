@@ -97,6 +97,7 @@ async function createUserMessage(req, res) {
 
     res.status(201).json({ message: newUserMessage });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Something went wrong' + error.message });
   }
 }
@@ -143,6 +144,7 @@ async function getGptResponse(req, res) {
 
     res.status(201).json({ message: newGptMessage });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error: 'Something went wrong ' + error.message + error + error.stack,
     });
@@ -182,6 +184,7 @@ async function createChatTitle(req, res) {
 
     res.status(201).json({ chat: updatedChat });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error: 'Something went wrong ' + error.message + error + error.stack,
     });

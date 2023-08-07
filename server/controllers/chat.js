@@ -8,6 +8,7 @@ async function getChat(req, res) {
     const chat = await Chat.findById(chatId);
     res.send({ chat });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: error.message });
   }
 }
@@ -18,6 +19,7 @@ async function getChats(req, res) {
     const chats = await Chat.find({ user: userId, deleted: false });
     res.send({ chats });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: error.message });
   }
 }
@@ -40,6 +42,7 @@ async function createChat(req, res) {
 
     res.status(201).send({ chat: newChat });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: error.message });
   }
 }
@@ -65,6 +68,7 @@ async function softDeleteChats(req, res) {
 
     res.status(200).send({ chats });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: error.message });
   }
 }
@@ -94,6 +98,7 @@ async function softDeleteChat(req, res) {
 
     res.status(200).send({ chat: updatedChat, messages: updatedMessagesFound });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: error.message });
   }
 }

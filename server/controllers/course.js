@@ -9,6 +9,7 @@ async function getSchoolCourse(req, res) {
 
     res.status(200).json({ course });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -20,6 +21,7 @@ async function getSchoolCourses(req, res) {
 
     res.status(200).json({ courses });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -30,6 +32,7 @@ async function getAllCourses(req, res) {
 
     res.status(200).json({ courses });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -53,6 +56,7 @@ async function createCourse(req, res) {
 
     res.status(200).json({ course: savedCourse });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -67,6 +71,7 @@ async function improveModel(req, res) {
 
     res.status(200).json({ course });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message + error.stack });
   }
 }

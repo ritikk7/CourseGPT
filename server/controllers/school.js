@@ -14,6 +14,7 @@ async function createSchool(req, res) {
     const savedSchool = await newSchool.save();
     res.status(200).json({ school: savedSchool });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -25,6 +26,7 @@ async function getSchool(req, res) {
 
     res.status(200).json({ school });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -35,6 +37,7 @@ async function getAllSchools(req, res) {
 
     res.status(200).json({ schools: schools });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }

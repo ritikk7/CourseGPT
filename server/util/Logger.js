@@ -35,7 +35,7 @@ class Logger {
   }
 
   error(...messages) {
-    if (!this.isProduction && this.logFlag) {
+    if (this.logFlag) {
       console.error(chalk.red(...messages));
     }
   }

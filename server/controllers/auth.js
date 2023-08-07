@@ -30,6 +30,7 @@ async function register(req, res) {
     signToken(savedUser.id, res);
     res.json({ user: savedUser });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -49,6 +50,7 @@ async function login(req, res) {
     signToken(user.id, res);
     res.json({ user: user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -59,6 +61,7 @@ async function logout(req, res) {
     res.clearCookie('token');
     res.json({ message: 'Successfully logged out' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -81,6 +84,7 @@ async function updatePassword(req, res) {
 
     res.json({ message: 'Password updated successfully' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -93,6 +97,7 @@ async function getAuthorizedUser(req, res) {
     }
     res.json({ user: user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -154,6 +159,7 @@ async function blacklistToken(token) {
   try {
     await BlacklistedToken.create({ token });
   } catch (error) {
+    console.log(error);
     console.log('Error blacklisting token:', error);
   }
 }

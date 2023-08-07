@@ -77,7 +77,7 @@ async function generateSectionTitle(cleanedSectionContent) {
     0.5,
     60,
     180,
-    "gpt-3.5-turbo"
+    'gpt-3.5-turbo'
   );
 
   generatedTitle = generatedTitle.replace(/['"]+/g, '');
@@ -96,7 +96,7 @@ async function extractKeywords(sectionContent) {
       0.5,
       60,
       180,
-      "gpt-3.5-turbo"
+      'gpt-3.5-turbo'
     );
 
     if (rawKeywords.includes(',')) {
