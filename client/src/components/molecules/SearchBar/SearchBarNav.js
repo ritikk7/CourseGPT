@@ -21,7 +21,7 @@ const SearchBarNav = () => {
   return (
     <Box
       pos="absolute"
-      left="50%"
+      left="50%" // w 100% was preventing other buttons to be clicked within the area. flex wasnt working.
       transform="translateX(-50%)"
       py={0}
       color={theme.colors.chatSection.lightText}
