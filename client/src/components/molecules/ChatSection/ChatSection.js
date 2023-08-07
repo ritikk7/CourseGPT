@@ -10,6 +10,7 @@ import mapHighlightedTextToArray from '../../../util/mapHighlightedText';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { renderToString } from "react-dom/server";
 
 const ChatSection = ({ message }, ref) => {
   const user = useSelector(state => state.user);
@@ -82,16 +83,6 @@ const ChatSection = ({ message }, ref) => {
     return null;
   };
 
-  const handleNewlineText = text => {
-    if (text) {
-      return text
-        .split('\n')
-        .map(line => `<div style="margin-bottom: 1em;">${line}</div>`)
-        .join('');
-    }
-    return null;
-  };
-
   const handleNewlineHTMLHighlighted = text => {
     if (text) {
       return text.split('\n').map((item, key) => {
@@ -139,7 +130,7 @@ const ChatSection = ({ message }, ref) => {
           }}
           onInit={typewriter => {
             typewriter
-              .typeString(handleNewlineText(message.content))
+              .typeString(renderToString(handleMixedTextWithCodeBlocksAndNewlines(message.content)))
               .start();
           }}
         />

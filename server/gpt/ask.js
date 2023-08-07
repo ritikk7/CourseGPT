@@ -11,7 +11,7 @@ const { Logger } = require('../util/Logger');
 async function buildQueryMessage(query, course, tokenBudget) {
   Logger.logEnter();
 
-  const maxEmbeddingsToInclude = 5; // adjust this to lower value if responses end up including irrelevant information
+  const maxEmbeddingsToInclude = 10; // adjust this to lower value if responses end up including irrelevant information
   const relatednessThreshold = 0.7;
   const strings = await getAscendingOrderRelatednessStrings(
     query,
