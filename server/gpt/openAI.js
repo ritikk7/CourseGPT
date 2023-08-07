@@ -14,7 +14,8 @@ async function createCourseGptCompletion(
   messages,
   temperature = 0.5,
   retryMin = 0,
-  retryMax = 5
+  retryMax = 5,
+  gptModel = process.env.OPENAI_GPT_MODEL,
 ) {
   Logger.logEnter();
   const NUM_ATTEMPTS = 3;
@@ -22,7 +23,7 @@ async function createCourseGptCompletion(
     try {
       validateInput(messages, temperature);
       const response = await openAI.createChatCompletion({
-        model: process.env.OPENAI_GPT_MODEL,
+        model: gptModel,
         messages: messages,
         temperature: temperature,
       });
