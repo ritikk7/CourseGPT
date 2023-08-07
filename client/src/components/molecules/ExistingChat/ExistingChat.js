@@ -114,7 +114,7 @@ const ExistingChat = ({
         </div>
         {!isFocused && <div className={styles.gradient} />}
       </Button>
-      {renderActions()}
+      {!isGptLoading ? renderActions() : <></>}
     </div>
   );
 };
