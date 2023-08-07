@@ -21,7 +21,8 @@ const SearchBarNav = () => {
   return (
     <Box
       pos="absolute"
-      w="100%"
+      left="50%"
+      transform="translateX(-50%)"
       py={0}
       color={theme.colors.chatSection.lightText}
       onClick={handleClick}

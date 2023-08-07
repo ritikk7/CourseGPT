@@ -25,16 +25,16 @@ const ChatSection = ({ message }, ref) => {
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
   const userImage = userProfile ? userProfile : 'https://bit.ly/dan-abramov';
-  const renderAnimation = isTimestampLessThan15SecondsAgo(message.createdAt);
+  const renderAnimation = isTimestampLessThan20SecondsAgo(message.createdAt);
   const isLongPassageLength = 300;
   const [typingAnimation, setTypingAnimation] = useState('.');
 
   // Credit to chatGPT
-  function isTimestampLessThan15SecondsAgo(createdAt) {
+  function isTimestampLessThan20SecondsAgo(createdAt) {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
-    return createdAtTimestamp >= currentTime - 15;
+    return createdAtTimestamp >= currentTime - 20;
   }
 
   useEffect(() => {

@@ -80,7 +80,7 @@ const RightSection = () => {
     if (!isTrainingCourse && trainingCompleted) {
       timeoutId = setTimeout(() => {
         setTrainingCompleted(false);
-      }, 5000);
+      }, 4000);
     }
     return () => clearTimeout(timeoutId);
   }, [isTrainingCourse, trainingCompleted]);
