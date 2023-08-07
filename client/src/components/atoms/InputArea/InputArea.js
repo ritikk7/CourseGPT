@@ -15,12 +15,24 @@ const InputArea = ({
   return (
     <div className={styles.inputSection}>
       <div className={styles.inputArea}>
-        <input
+        <textarea
           className={styles.input}
           placeholder="Enter a prompt..."
           value={currentUserInput || ''}
           onChange={e => setInputText(e.target.value)}
-          onKeyDown={onInputSubmit}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              if (currentUserInput.trim() && !disableInput) {
+                inputRef.current.style.height = '50px'; // reset to default (in InputArea.module.css)
+                onInputSubmit(e);
+              }
+            }
+          }}
+          onInput={e => {
+            e.target.style.height = '50px'; // reset to default (in InputArea.module.css)
+            e.target.style.height = Math.min(e.target.scrollHeight, 100) + 'px';
+          }}
           ref={inputRef}
           style={{
             backgroundColor: theme.colors.chatSection.inputBackground,
@@ -30,14 +42,17 @@ const InputArea = ({
         <button
           className={styles.sendBtn}
           onClick={e => {
-            if (currentUserInput.trim()) onInputSubmit(e);
+            if (currentUserInput.trim()) {
+              inputRef.current.style.height = '50px'; // reset to default (in InputArea.module.css)
+              onInputSubmit(e);
+            }
           }}
           style={
             currentUserInput.trim() && !disableInput
               ? {}
               : { cursor: 'not-allowed', opacity: 0.5 }
           }
-          disabled={disableInput}
+          disabled={disableInput || !currentUserInput.trim()}
         >
           <ArrowForwardIcon
             color={theme.colors.chatSection.sendArrow}
