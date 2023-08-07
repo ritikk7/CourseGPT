@@ -11,7 +11,7 @@ const { Logger } = require('../util/Logger');
 async function buildQueryMessage(query, course, tokenBudget) {
   Logger.logEnter();
 
-  const maxEmbeddingsToInclude = 10; // adjust this to lower value if responses end up being bad again
+  const maxEmbeddingsToInclude = 5; // adjust this to lower value if responses end up including irrelevant information
   const relatednessThreshold = 0.7;
   const strings = await getAscendingOrderRelatednessStrings(
     query,
@@ -70,7 +70,7 @@ function generatePreamble(strings, numInfo, query) {
 }
 
 function generatePostamble(strings, numInfo, query) {
-  return `As an AI, you're given ${numInfo} pieces of information above related to the question below. Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. The pieces of information are above. Read all of the information again before you answer. The question is below.\n\n"${query}"`;
+  return `As an AI, you're given ${numInfo} pieces of information above related to the question below. Each piece of information, enclosed in square brackets, is important for understanding the context and answering the question. If necessary information is not available, you will state that I could not find an answer. The pieces of information are above. Read all of the information again before you answer. The question is below. Do not include references in your answer\n\n"${query}"`;
 }
 
 async function ask(query, chatId, tokenBudget = process.env.TOKEN_LIMIT - 200) {

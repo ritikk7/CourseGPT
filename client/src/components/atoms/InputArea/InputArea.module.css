@@ -13,19 +13,17 @@
 }
 
 .input {
-  padding: 12px;
+  padding: 12px 66px 12px 12px;
   box-shadow: rgba(48, 45, 45, 0.2) 0px 7px 29px 0px;
   border-radius: 4px;
   font-size: medium;
   border: none;
   width: 100%;
   outline: none;
-  background-color: var(--gray2);
   color: white;
-}
-
-.input::placeholder {
-  color: var(--placeholder);
+  overflow-y: auto;
+  height: 50px;
+  resize: none;
 }
 
 .message {

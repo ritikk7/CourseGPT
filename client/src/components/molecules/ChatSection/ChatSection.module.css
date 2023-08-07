@@ -11,10 +11,24 @@
   position: relative;
 }
 
+.lineBreak {
+  margin-bottom: 1em;
+}
+
+
 .textBlock {
   flex-direction: column;
   display: flex;
   width: 75%;
+  overflow-x: auto;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.textBlock pre {
+  /* SyntaxHighlighter creates a pre */
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .chatBtns {

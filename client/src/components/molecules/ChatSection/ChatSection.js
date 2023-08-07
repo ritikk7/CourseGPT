@@ -25,16 +25,15 @@ const ChatSection = ({ message }, ref) => {
   const messageIsGptPlaceholder = message?.isGptPlaceholder;
 
   const userImage = userProfile ? userProfile : 'https://bit.ly/dan-abramov';
-  const renderAnimation = isTimestampLessThan20SecondsAgo(message.createdAt);
-  const isLongPassageLength = 300;
+  const renderAnimation = shouldRenderAnimation(message.createdAt);
   const [typingAnimation, setTypingAnimation] = useState('.');
 
   // Credit to chatGPT
-  function isTimestampLessThan20SecondsAgo(createdAt) {
+  function shouldRenderAnimation(createdAt) {
     const createdAtTimestamp = Math.floor(new Date(createdAt).getTime() / 1000); // Convert ISO date string to timestamp in seconds
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
 
-    return createdAtTimestamp >= currentTime - 20;
+    return (createdAtTimestamp >= currentTime - 20);
   }
 
   useEffect(() => {
@@ -55,23 +54,28 @@ const ChatSection = ({ message }, ref) => {
   );
 
   const handleMixedTextWithCodeBlocksAndNewlines = text => {
+    // function is overly complicated as working with md turns out to be a pain
+    // improvements can be made here
     if (text) {
       let blocks = text.split('```');
       return blocks.map((block, index) => {
         if (index % 2 === 1) {
+          const existingLanguage = block.match(/^\s*(\w+)/);
+          const language = existingLanguage ? existingLanguage[1] : 'javascript'; // default language javascript
+          const codeContent = block.replace(/^\s*\w+\s*/, '');
           return (
-            <SyntaxHighlighter language="javascript" style={prism} key={index}>
-              {block}
+            <SyntaxHighlighter language={language} style={prism} key={index}>
+              {codeContent}
             </SyntaxHighlighter>
           );
         } else {
-          return block.split('\n').map((item, key) => (
-            <span key={key}>
-              {/* eslint-disable-next-line react/no-children-prop */}
-              <ReactMarkdown children={item} />
-              <br />
-            </span>
+          const lines = block.split('\n');
+          const content = lines.map((line, key) => (
+            <div style={{ marginBottom: '1em' }} key={key}>
+              <ReactMarkdown children={line} />
+            </div>
           ));
+          return <>{content}</>;
         }
       });
     }
@@ -82,9 +86,7 @@ const ChatSection = ({ message }, ref) => {
     if (text) {
       return text
         .split('\n')
-        .map(item => {
-          return `<span>${item}<br /></span>`;
-        })
+        .map(line => `<div style="margin-bottom: 1em;">${line}</div>`)
         .join('');
     }
     return null;
@@ -132,14 +134,12 @@ const ChatSection = ({ message }, ref) => {
       return (
         <Typewriter
           options={{
-            delay: message.content.length > isLongPassageLength ? 2 : 20,
+            delay: 1,
+            cursor:'' // buggy so removed
           }}
           onInit={typewriter => {
             typewriter
               .typeString(handleNewlineText(message.content))
-              .callFunction(() => {
-                document.querySelector('.Typewriter__cursor')?.remove();
-              })
               .start();
           }}
         />
@@ -151,6 +151,7 @@ const ChatSection = ({ message }, ref) => {
           autoStart: true,
           loop: true,
           strings: [''],
+          cursor:'' // buggy so removed
         }}
       />
     );
