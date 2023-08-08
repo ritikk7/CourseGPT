@@ -4,7 +4,6 @@ const {
   createUserMessage,
   getAllMessages,
   getGptResponse,
-  createChatTitle,
   checkGptResponse,
 } = require('../controllers/message');
 const { validateToken } = require('../controllers/auth');
@@ -15,7 +14,7 @@ router.get('/', getAllMessages);
 router.get('/search', getAllMessages);
 
 router.post('/', createUserMessage);
-router.post('/chat-title', createChatTitle);
+
 
 router.post('/gpt-response', getGptResponse);
 router.get('/gpt-response-status', checkGptResponse);

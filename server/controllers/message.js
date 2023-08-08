@@ -180,55 +180,10 @@ async function checkGptResponse(req, res) {
   }
 }
 
-async function createChatTitle(req, res) {
-  try {
-    const chatId = req.params.chatId;
-    let updatedChat = await Chat.findById(chatId).populate('messages');
-    let userMessageContent;
-    let chatGptResponseContent;
-    let messageIds = [];
-
-    for (let i = 0; i < updatedChat.messages.length; i++) {
-      // only ever executed when there are two messages - one user and one gpt
-      let message = updatedChat.messages[i];
-      if (message.role === 'user') {
-        userMessageContent = message.content;
-      } else {
-        chatGptResponseContent = message.content;
-      }
-      messageIds.push(message._id);
-    }
-
-    if (!updatedChat.title) {
-      updatedChat.title = await generateChatTitle(
-        userMessageContent,
-        chatGptResponseContent,
-        0.5,
-        0,
-        5,
-        'gpt-3.5-turbo'
-      );
-    }
-
-    await updatedChat.save();
-
-    // The frontend expects just a list of id's not the populated messages
-    updatedChat.messages = messageIds;
-
-    res.status(201).json({ chat: updatedChat });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: 'Something went wrong ' + error.message + error + error.stack,
-    });
-  }
-}
-
 module.exports = {
   createUserMessage,
   getAllMessages,
   getGptResponse,
-  createChatTitle,
   searchUserMessages,
   checkGptResponse,
 };
