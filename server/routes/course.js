@@ -17,6 +17,6 @@ router.get('/', getSchoolCourses);
 
 router.post('/', createCourse);
 router.put('/:courseId/improve-model', improveModel);
-router.get('/:courseId/improve-model', getTrainingStatus);
+router.get('/:courseId/training-status', getTrainingStatus);
 
 module.exports = router;
