@@ -79,25 +79,29 @@
       instructors so that I can learn more from other student usage and what my
       instructors believe to be important.
 
-### Requirements/Ideas Added Mid-Project (1/5 ✅)
+### Requirements/Ideas Added Mid-Project (2/6 ✅)
 
 1. **Copy to Clipboard Functionality** ✅
     - As a user, I want to be able to easily copy Course GPT messages to my clipboard,
       enabling me to easily share or save important information.
 
-2. **Email Confirmation** ❌
+2. **Google login** ✅
+   - As a user, I want to be able to create an account and log in
+     with Google so that I can access CourseGPT with ease.
+
+3. **Email Confirmation** ❌
     - As a new user, I need to confirm my email to ensure the authenticity
       of my account so that unauthorized access can be minimized.
 
-3. **Share Conversation Feature** ❌
+4. **Share Conversation Feature** ❌
     - As a user, I want to have a share button for each conversation
       so that I can easily share valuable insights with others.
 
-4. **Auto-training** ❌
+5. **Auto-training** ❌
     - As a professor user, I want to be able to link my mail or Piazza so that the model can be trained automatically,
       further reducing my involvement managing Q&A from students
 
-5. **Piazza / Slack Integration** ❌
+6. **Piazza / Slack Integration** ❌
     - As a student user, I want my questions to be answered in a thread instantly by CourseGPT within existing platforms
       that I already use so that it does not disrupt my current workflow and so other students can see my questions
     - As a professor user, I want to have CourseGPT answer student questions within existing communication platforms
