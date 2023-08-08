@@ -99,9 +99,9 @@ async function improveModel(req, res) {
 }
 
 async function getTrainingStatus(req, res) {
+  const submitterId = req.user.id;
   const courseId = req.params.courseId;
-  const userId = req.user.id;
-  const key = `${courseId}-${userId}`;
+  const key = `${courseId}-${submitterId}`;
   const responseStatus = trainingStatuses[key] || { status: 'not-started' };
 
   if (responseStatus.status === 'failed') {
