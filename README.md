@@ -84,7 +84,7 @@ place.
       instructors so that I can learn more from other student usage and what my
       instructors believe to be important.
 
-### Requirements/Ideas Added Mid-Project (2/6 ✅)
+### Stretch Requirements/Ideas Added Mid-Project (2/6 ✅)
 
 1. **Copy to Clipboard Functionality** ✅
     - As a user, I want to be able to easily copy Course GPT messages to my clipboard,
