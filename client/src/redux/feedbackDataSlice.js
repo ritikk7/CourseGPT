@@ -73,6 +73,7 @@ const feedbackDataSlice = createSlice({
         state.bubbleChartData = [];
         state.freqData = {};
         state.hasLoadedData = false;
+        handleLoading(state, false);
       });
   },
 });
