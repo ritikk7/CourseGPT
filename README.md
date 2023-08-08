@@ -19,6 +19,15 @@ place.
     - As a student user, I want to be able to ask questions and
       receive answers for at least one supported course so that I can understand
       the course content better.
+    - ⚠️NOTE ⚠️ Trained on ALL CPSC 455 website data, not slides or MERN documentation. We felt that, although possible,
+      it would not be a valuable use of our time to train CourseGPT on all MERN related documentation, as ChatGPT can
+      easily
+      provide this.
+        - CourseGPT is relatively more useful for course logistics, as well as course-specific content, rather than
+          generally available information. For example, courses that have adapted slides, textbooks, or other highly
+          tailored course material.
+        - CPSC 455 is unique, as there are no bounds on our application of MERN or other technologies - all of which we
+          can find help for online or from ChatGPT. This is why we only trained it on website data.
 3. **Chat history (view)** ✅
     - As a student user, I want to be able to view my past chatIds so
       that I can review the information that I've learned.
@@ -58,7 +67,8 @@ place.
     - As a student user, I want to be able to select multiple different courses
       and receive helpful assistance in all of them so that I can learn more
       about all the courses I am taking, rather than just one.
-    - ⚠️NOTE ⚠️ Trained on ALL CPSC 455 data, and some CPSC 213 data. Can easily be trained on more.
+    - ⚠️NOTE ⚠️ Trained on ALL CPSC 455 website data, and some CPSC 213 course-specific data. Can easily be trained on
+      more.
 
 3. Developer/Admin Analytics Page ✅
     - As an admin/developer user, I want an enhanced analytics page
@@ -130,6 +140,8 @@ Individual React components make up our application, with components separated i
 better organization.
 
 ### NodeJS and other “Back Ends”
+
+TBD @KYLE
 
 ### NoSQL with MongoDB
 
