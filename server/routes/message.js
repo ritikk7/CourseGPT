@@ -1,27 +1,20 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams to access chatId (ie parent route)
-
 const {
-  getMessage,
-  createMessage,
-  updateMessage,
-  deleteMessage,
+  createUserMessage,
+  getAllMessages,
+  getGptResponse,
+  createChatTitle,
 } = require('../controllers/message');
+const { validateToken } = require('../controllers/auth');
 
-router.get('/:messageId', (req, res) => {
-  getMessage(req, res);
-});
+router.use(validateToken);
 
-router.post('/', (req, res) => {
-  createMessage(req, res); //may not need this
-});
+router.get('/', getAllMessages);
+router.get('/search', getAllMessages);
 
-router.put('/:messageId', (req, res) => {
-  updateMessage(req, res);
-});
-
-router.delete('/:messageId', (req, res) => {
-  deleteMessage(req, res);
-});
+router.post('/', createUserMessage);
+router.post('/chat-title', createChatTitle);
+router.post('/gpt-response', getGptResponse);
 
 module.exports = router;

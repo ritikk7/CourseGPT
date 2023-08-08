@@ -1,33 +1,112 @@
+const Chat = require('../models/chat');
+const Message = require('../models/message');
+const User = require('../models/user');
+
 async function getChat(req, res) {
-  // TODO
-  const userId = req.params.userId;
-  const chatId = req.params.chatId;
-  res.send({ data: `Hello get chatId ${chatId} for user ${userId}` });
+  try {
+    const chatId = req.params.chatId;
+    const chat = await Chat.findById(chatId);
+    res.send({ chat });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
+}
+
+async function getChats(req, res) {
+  try {
+    const userId = req.user.id;
+    const chats = await Chat.find({ user: userId, deleted: false });
+    res.send({ chats });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
 }
 
 async function createChat(req, res) {
-  // TODO
-  const userId = req.params.userId;
-  res.send({ data: `Hello create new chat for user ${userId}` });
+  const userId = req.user.id;
+  try {
+    const chat = new Chat({
+      user: userId,
+      messages: [],
+      course: req.body.course,
+    });
+    const newChat = await chat.save();
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(500).send({ error: 'There is no such user!' });
+    }
+    user.chats.push(newChat._id);
+    await user.save();
+
+    res.status(201).send({ chat: newChat });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
 }
 
-async function updateChat(req, res) {
-  // TODO
-  const userId = req.params.userId;
-  const chatId = req.params.chatId;
-  res.send({ data: `Hello update chatId ${chatId} for user ${userId}` });
+async function softDeleteChats(req, res) {
+  let filter = req.body.filter;
+  filter.user = req.user.id;
+  const updates = req.body.updates;
+
+  try {
+    await Chat.updateMany(filter, updates);
+    const chats = await Chat.find(filter);
+
+    // also set associated messages to deleted
+    chats.forEach(async chat => {
+      let messageFilter = {
+        user: req.user.id,
+        chat: chat._id,
+        deleted: false,
+      };
+      await Message.updateMany(messageFilter, updates);
+    });
+
+    res.status(200).send({ chats });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
 }
 
-async function deleteChat(req, res) {
-  // TODO
-  const userId = req.params.userId;
+async function softDeleteChat(req, res) {
   const chatId = req.params.chatId;
-  res.send({ data: `Hello delete chatId ${chatId} for user ${userId}` });
+  const updates = req.body;
+
+  try {
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      res.status(404).send({ error: 'ChatSection not found' });
+    }
+
+    const updatedChat = await Chat.findByIdAndUpdate(chatId, updates, {
+      new: true,
+    });
+
+    // also set associated messages to deleted
+    const filter = {
+      user: req.user.id,
+      chat: chatId,
+      deleted: false,
+    };
+    await Message.updateMany(filter, updates);
+    const updatedMessagesFound = await Message.find(filter);
+
+    res.status(200).send({ chat: updatedChat, messages: updatedMessagesFound });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
 }
 
 module.exports = {
   getChat,
   createChat,
-  updateChat,
-  deleteChat,
+  softDeleteChat,
+  getChats,
+  softDeleteChats,
 };

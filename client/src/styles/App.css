@@ -1,9 +1,18 @@
 .App {
-  background-color: var(--gray1);
   min-height: 100vh;
-  display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: black;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 10px;
+  pointer-events: none;
+  font-size: 12px;
+  opacity: 0;
 }

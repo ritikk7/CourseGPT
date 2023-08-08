@@ -1,37 +1,20 @@
-const User = require("../models/user");
-
-async function getUser(req, res) {
-  // TODO
-  const userId = req.params.userId;
-  //const user = await User.findById(userId);
-  res.send({ data: `Hello get usr ${userId}` });
-}
-
-async function createUser(req, res) {
-  // TODO
-  //const newUser = new User(req.body);
-  //const createdUser = await newUser.save();
-  res.send({ data: `Hello post usr` });
-}
+const User = require('../models/user');
 
 async function updateUser(req, res) {
-  // TODO
-  const userId = req.params.userId;
+  const userId = req.user.id;
   const updates = req.body;
-  //const updatedUser = await User.findByIdAndUpdate(userId, updates);
-  res.send({ data: `Hello put usr ${userId} ${updates}` });
-}
 
-async function deleteUser(req, res) {
-  // TODO
-  const userId = req.params.userId;
-  //const deletedUser = await User.findByIdAndDelete(userId);
-  res.send({ data: `Hello delete usr ${userId}` });
+  try {
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+    });
+    res.send({ user: updatedUser });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: 'Failed to update user' });
+  }
 }
 
 module.exports = {
-  getUser,
-  createUser,
   updateUser,
-  deleteUser,
 };

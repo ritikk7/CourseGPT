@@ -1,0 +1,70 @@
+.container {
+  width: 82%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: 0.5s;
+}
+
+@media only screen and (max-width: 1380px) {
+  .container {
+    width: calc(100% - 250px);
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .container {
+    width: 100%;
+  }
+}
+
+.inputSection {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 12vh;
+}
+
+.inputArea {
+  width: 60%;
+  text-align: center;
+  margin: auto;
+  position: relative;
+}
+
+.input {
+  padding: 12px;
+  box-shadow: rgba(var(--secondary-colour-rgba), 0.2) 0px 7px 29px 0px;
+  border-radius: 4px;
+  font-size: medium;
+  border: none;
+  width: 100%;
+  outline: none;
+  color: #08101c;
+}
+
+.input::placeholder {
+  color: var(--chakra-colors-primary-light);
+}
+
+.message {
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.sendBtn {
+  background: transparent;
+  position: absolute;
+  right: 0;
+  outline: none;
+  border: none;
+  height: 48px;
+  width: 66px;
+}
+
+.toggleSidepanelBtn {
+  position: absolute;
+  top: 10px;
+}

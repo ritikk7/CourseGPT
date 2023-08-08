@@ -1,0 +1,52 @@
+.chatComponent {
+  width: 100%;
+  padding: 48px;
+  min-height: 120px;
+}
+
+.chatContent {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  position: relative;
+}
+
+.lineBreak {
+  margin-bottom: 1em;
+}
+
+.textBlock {
+  flex-direction: column;
+  display: flex;
+  width: 75%;
+  overflow-x: auto;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.textBlock pre {
+  /* SyntaxHighlighter creates a pre */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.chatBtns {
+  position: absolute;
+  right: 16px;
+  top: -8px;
+  display: flex;
+}
+
+.msgContent {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.chatFeedback {
+  margin: auto;
+  right: 0;
+  width: 100%;
+  display: flex;
+}

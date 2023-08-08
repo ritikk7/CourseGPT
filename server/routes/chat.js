@@ -1,27 +1,24 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
 const {
   getChat,
   createChat,
-  updateChat,
-  deleteChat,
+  softDeleteChat,
+  getChats,
+  softDeleteChats,
 } = require('../controllers/chat');
+const { validateToken } = require('../controllers/auth');
 
-router.get('/:chatId', (req, res) => {
-  getChat(req, res);
-});
+router.use(validateToken);
 
-router.post('/', (req, res) => {
-  createChat(req, res);
-});
+router.get('/:chatId', getChat);
 
-router.put('/:chatId', (req, res) => {
-  updateChat(req, res);
-});
+router.post('/', createChat);
 
-router.delete('/:chatId', (req, res) => {
-  deleteChat(req, res);
-});
+router.get('/', getChats);
+
+router.patch('/:chatId', softDeleteChat); // for setting deleted = true
+
+router.patch('/', softDeleteChats); // for setting deleted = true
 
 module.exports = router;

@@ -1,9 +1,9 @@
 :root {
-  --placeholder: rgb(194, 194, 194);
-  --gray1: #353744;
-  --gray2: #474a5a;
-  --black1: rgb(31, 31, 32);
-  /* borderColor: rgb(100, 100, 102) */
+  --primary-colour: #455a64;
+  --tertiary-colour: #d9edfa;
+  --text-primary-colour: #ffffff;
+  --sidebar-shading: 31, 58, 96;
+  --secondary-colour-rgba: 122, 143, 156;
 }
 
 body {
@@ -13,6 +13,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  overflow: hidden;
 }
 
 code {

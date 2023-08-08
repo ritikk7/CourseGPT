@@ -1,0 +1,13 @@
+.chatPanel {
+  height: 85vh;
+  overflow-y: auto;
+}
+
+.chatPanel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chatPanel::-webkit-scrollbar-thumb {
+  background: var(--primary-colour);
+  border-radius: 4px;
+}

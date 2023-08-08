@@ -1,33 +1,85 @@
-async function getCourse(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  const courseId = req.params.courseId;
-  res.send({ data: `Hello get course ${courseId} for school ${schoolId}` });
+const Course = require('../models/course');
+const School = require('../models/school');
+const { createEmbeddingForNewData } = require('../gpt/createEmbeddings');
+
+async function getSchoolCourse(req, res) {
+  try {
+    const courseId = req.params.courseId;
+    const course = await Course.findById(courseId);
+
+    res.status(200).json({ course });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function getSchoolCourses(req, res) {
+  try {
+    const schoolId = req.params.schoolId;
+    const courses = await Course.find({ school: schoolId });
+
+    res.status(200).json({ courses });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function getAllCourses(req, res) {
+  try {
+    const courses = await Course.find({});
+
+    res.status(200).json({ courses });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
 }
 
 async function createCourse(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello create new course for ${schoolId}` });
+  try {
+    const schoolId = req.params.schoolId;
+    const newCourse = new Course({
+      courseName: req.body.courseName || req.body.courseCode,
+      courseCode: req.body.courseCode,
+      department:
+        req.body.department || req.body.courseCode.match(/^[a-zA-Z]+/)[0],
+      school: schoolId,
+      promptTemplates: req.body.promptTemplates || [],
+    });
+
+    const savedCourse = await newCourse.save();
+    const school = await School.findById(schoolId);
+    school.courses.push(savedCourse);
+    await school.save();
+
+    res.status(200).json({ course: savedCourse });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
 }
 
-async function updateCourse(req, res) {
-  // TODO
-  const courseId = req.params.courseId;
-  const schoolId = req.params.schoolId;
-  res.send({ data: `Hello update course ${courseId} for school ${schoolId}` });
-}
+async function improveModel(req, res) {
+  try {
+    const submitterId = req.user.id;
+    const courseId = req.params.courseId;
+    const course = await Course.findById(courseId).populate('school');
 
-async function deleteCourse(req, res) {
-  // TODO
-  const schoolId = req.params.schoolId;
-  const courseId = req.params.courseId;
-  res.send({ data: `Hello delete msg ${courseId} for school ${schoolId}` });
+    await createEmbeddingForNewData(submitterId, course, req.body.content);
+
+    res.status(200).json({ course });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message + error.stack });
+  }
 }
 
 module.exports = {
-  getCourse,
+  getSchoolCourse,
+  getSchoolCourses,
+  getAllCourses,
   createCourse,
-  updateCourse,
-  deleteCourse,
+  improveModel,
 };
