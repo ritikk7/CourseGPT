@@ -60,6 +60,7 @@ const feedbackDataSlice = createSlice({
         state.scatterChartData = action.payload.scatterChartData;
         state.bubbleChartData = action.payload.bubbleChartData;
         state.hasLoadedData = true;
+        handleLoading(state, false);
       })
       .addCase(fetchFeedbackAnalysis.rejected, handleRejected)
       // Auth slice

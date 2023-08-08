@@ -1,5 +1,4 @@
 const { getDatabaseFeedbackInfo } = require('../data/databaseHelpers');
-const { extractKeywordPhrases } = require('../data/groupingHelpers');
 const { analyzeFeedback } = require('../data/formatHelpers');
 
 async function getFeedbackAnalysis(req, res) {
@@ -13,20 +12,6 @@ async function getFeedbackAnalysis(req, res) {
   }
 }
 
-async function getFreqAnalysis(req, res) {
-  try {
-    const groupData = req.body.groupData;
-    const freqData = await extractKeywordPhrases(groupData);
-    console.log('get analysis');
-    console.log(freqData);
-    res.status(201).send({ freqData: freqData });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
-  }
-}
-
 module.exports = {
   getFeedbackAnalysis,
-  getFreqAnalysis,
 };

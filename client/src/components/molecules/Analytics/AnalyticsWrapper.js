@@ -24,6 +24,7 @@ function AnalyticsWrapper() {
   const isLoadingFeedbackData = useSelector(
     state => state.feedbackData.loading
   );
+  const hasLoadedData = useSelector(state => state.feedbackData.hasLoadedData);
 
   const loginAndLoadUserData = async () => {
     try {
@@ -58,7 +59,7 @@ function AnalyticsWrapper() {
   };
 
   const renderContent = () => {
-    if (!isLoadingFeedbackData) {
+    if (!isLoadingFeedbackData && hasLoadedData) {
       return (
         <>
           {!isSidePanelVisible && (
