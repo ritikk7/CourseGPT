@@ -102,52 +102,81 @@ async function createUserMessage(req, res) {
   }
 }
 
+let gptResponses = {};
+
 async function getGptResponse(req, res) {
   try {
     const chatId = req.params.chatId;
     const userId = req.user.id;
     const userMessageObject = req.body;
+    if (gptResponses[chatId] && gptResponses[chatId].status === 'in-progress') {
+      return res
+        .status(400)
+        .json({ error: 'Request already in progress for this chat ID.' });
+    }
 
-    let chatGPTResponse;
+    gptResponses[chatId] = { status: 'in-progress' };
+
     if (userMessageObject.content.toLowerCase().includes('ignore')) {
-      chatGPTResponse =
-        "Potential security risk detected in your input. Please do not use words that might interfere with the AI's operations and try again with another question.";
+      gptResponses[chatId].message =
+        'Potential security risk detected in your input...';
+      gptResponses[chatId].status = 'complete';
     } else {
-      chatGPTResponse = await ask(userMessageObject.content, chatId);
+      ask(userMessageObject.content, chatId)
+        .then(async chatGPTResponse => {
+          const gptMessage = new Message({
+            chat: chatId,
+            user: userId,
+            role: 'system',
+            content: chatGPTResponse,
+          });
+
+          const newGptMessage = await gptMessage.save();
+
+          let chat = await Chat.findById(chatId);
+          chat.messages.push(newGptMessage._id);
+
+          await chat.save();
+
+          try {
+            const qaPair = await new QAPair({
+              course: chat.course,
+              chat: chatId,
+              question: userMessageObject._id,
+              answer: newGptMessage._id,
+            });
+            await qaPair.save();
+          } catch (e) {
+            throw new Error(e.message);
+          }
+
+          gptResponses[chatId].message = newGptMessage;
+          gptResponses[chatId].status = 'complete';
+        })
+        .catch(error => {
+          console.log(error);
+          gptResponses[chatId].status = 'failed';
+          gptResponses[chatId].message = error.message;
+        });
     }
 
-    const gptMessage = new Message({
-      chat: chatId,
-      user: userId,
-      role: 'system',
-      content: chatGPTResponse,
-    });
-
-    const newGptMessage = await gptMessage.save();
-
-    let chat = await Chat.findById(chatId);
-    chat.messages.push(newGptMessage._id);
-
-    await chat.save();
-
-    try {
-      const qaPair = await new QAPair({
-        course: chat.course,
-        chat: chatId,
-        question: userMessageObject._id,
-        answer: newGptMessage._id,
-      });
-      await qaPair.save();
-    } catch (e) {
-      throw new Error(e.message);
-    }
-
-    res.status(201).json({ message: newGptMessage });
+    res.status(202).json(gptResponses[chatId]);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: 'Something went wrong ' + error.message + error + error.stack,
-    });
+    res
+      .status(500)
+      .json({ error: 'Something went wrong ' + error.message + error.stack });
+  }
+}
+
+async function checkGptResponse(req, res) {
+  const chatId = req.params.chatId;
+  const responseStatus = gptResponses[chatId] || { status: 'not-started' };
+
+  if (responseStatus.status === 'failed') {
+    res.status(500).json({ error: responseStatus.message });
+  } else {
+    res.status(200).json(responseStatus);
   }
 }
 
@@ -173,7 +202,11 @@ async function createChatTitle(req, res) {
     if (!updatedChat.title) {
       updatedChat.title = await generateChatTitle(
         userMessageContent,
-        chatGptResponseContent
+        chatGptResponseContent,
+        0.5,
+        0,
+        5,
+        'gpt-3.5-turbo'
       );
     }
 
@@ -197,4 +230,5 @@ module.exports = {
   getGptResponse,
   createChatTitle,
   searchUserMessages,
+  checkGptResponse,
 };
