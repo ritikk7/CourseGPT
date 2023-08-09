@@ -29,9 +29,9 @@ function start() {
 function setupExpress(app) {
   const corsOptions = {
     origin:
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : 'https://your-production-domain.com',
+      process.env.NODE_ENV !== 'production'
+        ? 'https://course-gpt.herokuapp.com/'
+        : 'http://localhost:3000',
     credentials: true,
   };
   app.use(cors(corsOptions));
