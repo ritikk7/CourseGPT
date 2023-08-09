@@ -14,7 +14,9 @@ companion [(ref to a similar, but smaller version)](https://edge.edx.org/assets/
 
 ## Grading
 
-If you'd like an account that has many questions and responses already populated (for testing), you can use the following account.
+If you'd like an account that has many questions and responses already populated (for testing), you can use the following account. The account type is developer, which gives you access to all additional features (training, analytics, etc.).
+
+However, this is not necessary - you can easily create your own account, if you'd prefer.
 
 Email: grading@gmail.com
 
