@@ -6,7 +6,19 @@ course-specific materials and logistical details. Professors and TA’s can sit 
 assistant managing repetitive Q&A, while students can enjoy instant answers to questions for all of their courses in one
 place.
 
+⚠️ Currently trained on **all** [CPSC 455 website](https://blogs.ubc.ca/cpsc4552023s/) data (except slides) and the CPSC
+213
+companion [(ref to a similar, but smaller version)](https://edge.edx.org/assets/courseware/v1/4c9e578a40cc467b5078edf5d441f69c/asset-v1:UBC+CPSC213-921+2017S2+type@asset+block/companion.pdf)
+
 ---
+
+## Grading
+
+If you'd like an account that has many questions and responses already populated (for testing), you can use the following account.
+
+Email: grading@gmail.com
+
+Password: i_love_grading
 
 ## Project Goals
 
@@ -29,7 +41,7 @@ place.
         - CPSC 455 is unique, as there are no bounds on our application of MERN or other technologies - all of which we
           can find help for online or from ChatGPT. This is why we only trained it on website data.
 3. **Chat history (view)** ✅
-    - As a student user, I want to be able to view my past chatIds so
+    - As a student user, I want to be able to view my past chat so
       that I can review the information that I've learned.
 
 ### Standard Requirements (5/5 ✅)
@@ -69,22 +81,22 @@ place.
     - As a student user, I want to be able to select multiple different courses
       and receive helpful assistance in all of them so that I can learn more
       about all the courses I am taking, rather than just one.
-    - ⚠️NOTE ⚠️ Trained on ALL CPSC 455 website data, and some CPSC 213 course-specific data. Can easily be trained on
-      more.
+    - ⚠️ Currently trained on **all** [CPSC 455 website](https://blogs.ubc.ca/cpsc4552023s/) data (except slides) and the CPSC
+      213 companion [(ref to a similar, but smaller version)](https://www.cs.ubc.ca/~tmm/courses/213-10/resources/companion.pdf)
 
 3. Developer/Admin Analytics Page ✅
 
     - As an admin/developer user, I want an enhanced analytics page
-      providing data related to popularity, feedback, and gapair, so that
+      providing data related to feedback so that
       I can have a comprehensive understanding of user interactions and
       optimize the platform accordingly.
 
 4. **Chat Search Functionality** ✅
 
     - As a student user, I want to be able to access a search bar to search
-      through all of my chatIds to easily locate information so that I can
+      through all of my chats to easily locate information so that I can
       efficiently find the information I need without having to scroll through
-      all my chatIds.
+      all my chats.
 
 5. **Professor new CourseGPT model** ❌
 
@@ -98,7 +110,7 @@ place.
       instructors so that I can learn more from other student usage and what my
       instructors believe to be important.
 
-### Stretch Requirements/Ideas Added Mid-Project (2/7 ✅)
+### Stretch Requirements/Ideas Added Mid-Project (3/8 ✅)
 
 1. **Copy to Clipboard Functionality** ✅
 
@@ -110,22 +122,26 @@ place.
     - As a user, I want to be able to create an account and log in
       with Google so that I can access CourseGPT with ease.
 
-3. **Email Confirmation** ❌
+3. **Cookie-based Sessions** ✅
+
+   - As a user, I want to be able to stay logged in after I close my browser, or if I open a new tab, so that my study flow is not disrupted.
+
+4. **Email Confirmation** ❌
 
     - As a new user, I need to confirm my email to ensure the authenticity
       of my account so that unauthorized access can be minimized.
 
-4. **Share Conversation Feature** ❌
+5. **Share Conversation Feature** ❌
 
     - As a user, I want to have a share button for each conversation
       so that I can easily share valuable insights with others.
 
-5. **Auto-training** ❌
+6. **Auto-training** ❌
 
     - As a professor user, I want to be able to link my mail or Piazza so that the model can be trained automatically,
       further reducing my involvement managing Q&A from students
 
-6. **Piazza / Slack Integration** ❌
+7. **Piazza / Slack Integration** ❌
     - As a student user, I want my questions to be answered in a thread instantly by CourseGPT within existing platforms
       that I already use so that it does not disrupt my current workflow and so other students can see my questions
     - As a professor user, I want to have CourseGPT answer student questions within existing communication platforms
@@ -133,7 +149,7 @@ place.
       answers
       and improve student learning further
 
-7. **Deleting Train Data** ❌
+8. **Deleting Train Data** ❌
     - As a proffesor user, I want to be able to see all of the data I have submitted to train my course and easily edit
       or delete the data so that students always have the most uo-to-date information.
 
@@ -143,7 +159,7 @@ place.
 
 HTML, CSS, and JavaScript was used for more than just building the app’s layout and basic styling. We used them to make
 custom animations, scrollbars, canvas graphs integrations, accessibility enhancements, and responsiveness. Styles were
-also organized into CSS modules for cleaner scoping.
+also organized into CSS modules for clean scoping.
 
 ### React and the “Front End”
 
@@ -172,7 +188,7 @@ directly retrieved from MongoDB when a user asks a question.
 
 Heroku was used to deploy the application through adding `heroku-postbuild`, `postinstall`, and concurrently `start`
 scripts
-to our top level `package.json`. Additionally, our frontend Axios, and backend passport configuration, was configured to
+to our top level `package.json`. Additionally, our frontend Axios, and backend passport and express configuration, was configured to
 point to localhost during development or staging, and to the Heroku URL for
 production. From there, we connected heroku to our `main` branch, which automatically re-deployed our application after
 after new commit to `main`.
@@ -184,11 +200,10 @@ after new commit to `main`.
 This functionality is what allows our models for each course to grow, as per the professors requirements, offering
 students access to any information the professor would like to programmatically provide.
 
-When a professor submits text to train their course, a world of complexity unfolds. The process begins mainly when the
+When a professor submits text to train their course, the process begins mainly when the
 `createEmbeddingForNewData` function is called to create embeddings for new data. It breaks down raw data into chunks,
 normalizes and cleans the text, extracts keywords, and generates section titles. All of this is done to ensure that the
-generated embeddings are optimized for future student queries. The resulting sections are then processed into training
-strings that are used to create embeddings using the Open AI API. These embeddings are then both stored in the database,
+generated embeddings are optimized for future student queries. The resulting sections are then processed into embeddings using the Open AI API, then stored in the database,
 in addition to a software cache for low-latency access on future student queries.
 
 When a student submits a question, we
@@ -210,7 +225,7 @@ marked as "complete".
 #### Appendix A: Understanding Embeddings
 
 In the context of natural language
-processing (NLP), embeddings translate words, sentences, or even entire documents into vectors of real numbers. These
+processing (NLP), embeddings translate words into vectors of real numbers. These
 decimal point values can then be leveraged for efficient similarity comparison between other embeddings.
 
 #### Appendix B: Description of a Token
@@ -248,6 +263,8 @@ reducing their manual effort to train the model themselves on repetitive questio
 and professors use. The third enhancement, **Deleting Train Data**, would enable professors to view, edit, or delete
 training data, ensuring that the course information provided within CourseGPT remains up-to-date.
 
+Bonus: Refactoring and ensuring production-level code quality and security.
+
 ## Contributions
 
 ### Carolyn
@@ -265,9 +282,9 @@ allowed users to select profile avatars.
 
 ### Kyle
 
-I took the lead in laying the foundational aspects of the project which included the: folder structure, npm
+I placed priority on laying the foundational aspects of the project which included the: folder structure, npm
 scripts, auto-deployment to Heroku, Express server and (most) routes, Redux slices and selectors, Mongo DB models, and
-the user login & registration. After Duffy's preliminary research, I also implemented the primary
+the user login & account creation. After Duffy's preliminary research, I also implemented the primary
 chat and auto-training features, excluding the frontend rendering components done by Amy. Beyond these specific tasks,
 my
 contributions rippled throughout the entire project through refactoring, fixing bugs, and implementing various
@@ -282,4 +299,16 @@ chats/messages search feature.
 
 ### Ritik
 
-I took responsibility to build out the UI for the Profile Modal allowing users to make changes to their personal information, their choice of school and courses, and passwords. I also implemented the functionality that allows the users to change their passwords, and UX features like the ability to copy the chat response to clipboard.
+I took responsibility to build out the UI for the Profile Modal allowing users to make changes to their personal
+information, their choice of school and courses, and passwords. I also implemented the functionality that allows the
+users to change their passwords, and UX features like the ability to copy the chat response to clipboard.
+
+## References
+
+As developers, leveraging online resources is part of our workflow. As such, it was challenging for us to document every
+single place we learned from throughout our code base. We used the Chakra UI, Mongo, NPM, Heroku, Redux, Passport, JWT,
+Axios, and other documentation. Additionally, we learned some sections from online YouTube tutorials, Stack Overflow,
+and ChatGPT.
+Some code was adapted from ChatGPT and Stack Overflow, and we tried to document this in relevant locations. However,
+easily over
+95% of our project was written by us.
