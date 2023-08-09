@@ -29,7 +29,7 @@ function start() {
 function setupExpress(app) {
   const corsOptions = {
     origin:
-      process.env.NODE_ENV !== 'production'
+      process.env.NODE_ENV === 'production'
         ? 'https://course-gpt.herokuapp.com/'
         : 'http://localhost:3000',
     credentials: true,
