@@ -312,3 +312,7 @@ and ChatGPT.
 Some code was adapted from ChatGPT and Stack Overflow, and we tried to document this in relevant locations. However,
 easily over
 95% of our project was written by us.
+
+## Screenshots
+![KyleRich 2023-08-09 at 08.51.32.png](readme_images%2FKyleRich%202023-08-09%20at%2008.51.32.png)![KyleRich 2023-08-09 at 08.52.26.png](readme_images%2FKyleRich%202023-08-09%20at%2008.52.26.png)![KyleRich 2023-08-09 at 08.52.35.png](readme_images%2FKyleRich%202023-08-09%20at%2008.52.35.png)![KyleRich 2023-08-09 at 08.52.59.png](readme_images%2FKyleRich%202023-08-09%20at%2008.52.59.png)![KyleRich 2023-08-09 at 08.53.22.png](readme_images%2FKyleRich%202023-08-09%20at%2008.53.22.png)
+![KyleRich 2023-08-09 at 08.55.58.png](readme_images%2FKyleRich%202023-08-09%20at%2008.55.58.png)![KyleRich 2023-08-09 at 08.56.23.png](readme_images%2FKyleRich%202023-08-09%20at%2008.56.23.png)
