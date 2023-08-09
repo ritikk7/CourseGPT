@@ -64,22 +64,22 @@ const SidePanelUserMenu = ({
         >
           Profile
         </MenuItem>
-        <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
-        <MenuItem
-          bg={theme.colors.sidePanel.menuBackground}
-          color={theme.colors.sidePanel.menuText}
-          _hover={{
-            color: theme.colors.sidePanel.menuTextHover,
-          }}
-          onClick={() => {
-            dispatch(setIsSearchBarVisible(true));
-            dispatch(setActivePanelSearch());
-          }}
-        >
-          Search Chats/Messages
-        </MenuItem>
         {!isGptLoading ? (
           <>
+            <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
+            <MenuItem
+              bg={theme.colors.sidePanel.menuBackground}
+              color={theme.colors.sidePanel.menuText}
+              _hover={{
+                color: theme.colors.sidePanel.menuTextHover,
+              }}
+              onClick={() => {
+                dispatch(setIsSearchBarVisible(true));
+                dispatch(setActivePanelSearch());
+              }}
+            >
+              Search Chats/Messages
+            </MenuItem>
             <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
             <MenuItem
               bg={theme.colors.sidePanel.menuBackground}
@@ -108,7 +108,7 @@ const SidePanelUserMenu = ({
             </MenuItem>{' '}
           </>
         ) : null}
-        {allowedViewAnalytics.includes(userType) ? (
+        {allowedViewAnalytics.includes(userType) && !isGptLoading ? (
           <>
             <MenuDivider borderColor={theme.colors.sidePanel.menuText} />
             <MenuItem

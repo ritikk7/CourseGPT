@@ -102,92 +102,81 @@ async function createUserMessage(req, res) {
   }
 }
 
+let gptResponses = {};
+
 async function getGptResponse(req, res) {
   try {
     const chatId = req.params.chatId;
     const userId = req.user.id;
     const userMessageObject = req.body;
+    if (gptResponses[chatId] && gptResponses[chatId].status === 'in-progress') {
+      return res
+        .status(400)
+        .json({ error: 'Request already in progress for this chat ID.' });
+    }
 
-    let chatGPTResponse;
+    gptResponses[chatId] = { status: 'in-progress' };
+
     if (userMessageObject.content.toLowerCase().includes('ignore')) {
-      chatGPTResponse =
-        "Potential security risk detected in your input. Please do not use words that might interfere with the AI's operations and try again with another question.";
+      gptResponses[chatId].message =
+        'Potential security risk detected in your input...';
+      gptResponses[chatId].status = 'complete';
     } else {
-      chatGPTResponse = await ask(userMessageObject.content, chatId);
+      ask(userMessageObject.content, chatId)
+        .then(async chatGPTResponse => {
+          const gptMessage = new Message({
+            chat: chatId,
+            user: userId,
+            role: 'system',
+            content: chatGPTResponse,
+          });
+
+          const newGptMessage = await gptMessage.save();
+
+          let chat = await Chat.findById(chatId);
+          chat.messages.push(newGptMessage._id);
+
+          await chat.save();
+
+          try {
+            const qaPair = await new QAPair({
+              course: chat.course,
+              chat: chatId,
+              question: userMessageObject._id,
+              answer: newGptMessage._id,
+            });
+            await qaPair.save();
+          } catch (e) {
+            throw new Error(e.message);
+          }
+
+          gptResponses[chatId].message = newGptMessage;
+          gptResponses[chatId].status = 'complete';
+        })
+        .catch(error => {
+          console.log(error);
+          gptResponses[chatId].status = 'failed';
+          gptResponses[chatId].message = error.message;
+        });
     }
 
-    const gptMessage = new Message({
-      chat: chatId,
-      user: userId,
-      role: 'system',
-      content: chatGPTResponse,
-    });
-
-    const newGptMessage = await gptMessage.save();
-
-    let chat = await Chat.findById(chatId);
-    chat.messages.push(newGptMessage._id);
-
-    await chat.save();
-
-    try {
-      const qaPair = await new QAPair({
-        course: chat.course,
-        chat: chatId,
-        question: userMessageObject._id,
-        answer: newGptMessage._id,
-      });
-      await qaPair.save();
-    } catch (e) {
-      throw new Error(e.message);
-    }
-
-    res.status(201).json({ message: newGptMessage });
+    res.status(202).json(gptResponses[chatId]);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: 'Something went wrong ' + error.message + error + error.stack,
-    });
+    res
+      .status(500)
+      .json({ error: 'Something went wrong ' + error.message + error.stack });
   }
 }
 
-async function createChatTitle(req, res) {
-  try {
-    const chatId = req.params.chatId;
-    let updatedChat = await Chat.findById(chatId).populate('messages');
-    let userMessageContent;
-    let chatGptResponseContent;
-    let messageIds = [];
+async function checkGptResponse(req, res) {
+  const chatId = req.params.chatId;
+  const responseStatus = gptResponses[chatId] || { status: 'not-started' };
 
-    for (let i = 0; i < updatedChat.messages.length; i++) {
-      // only ever executed when there are two messages - one user and one gpt
-      let message = updatedChat.messages[i];
-      if (message.role === 'user') {
-        userMessageContent = message.content;
-      } else {
-        chatGptResponseContent = message.content;
-      }
-      messageIds.push(message._id);
-    }
-
-    if (!updatedChat.title) {
-      updatedChat.title = await generateChatTitle(
-        userMessageContent,
-        chatGptResponseContent
-      );
-    }
-
-    await updatedChat.save();
-
-    // The frontend expects just a list of id's not the populated messages
-    updatedChat.messages = messageIds;
-
-    res.status(201).json({ chat: updatedChat });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: 'Something went wrong ' + error.message + error + error.stack,
-    });
+  if (responseStatus.status === 'failed') {
+    res.status(500).json({ error: responseStatus.message });
+  } else {
+    res.status(200).json(responseStatus);
   }
 }
 
@@ -195,6 +184,6 @@ module.exports = {
   createUserMessage,
   getAllMessages,
   getGptResponse,
-  createChatTitle,
   searchUserMessages,
+  checkGptResponse,
 };

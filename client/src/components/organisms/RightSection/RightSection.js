@@ -107,7 +107,7 @@ const RightSection = () => {
         dispatch(setFocusedChat(newMessagePayload.payload?.chat));
         await dispatch(getGptResponseInChat(newMessagePayload.payload)).then(
           async newGptMessage => {
-            dispatch(createChatTitle(newGptMessage.payload));
+            dispatch(createChatTitle(newGptMessage.payload?.chat));
           }
         );
       }
@@ -205,7 +205,7 @@ const RightSection = () => {
             />
           </Alert>
         )}
-        {!isSearchBarVisible && <SearchBarNav />}
+        {!isGptLoading && !isSearchBarVisible && <SearchBarNav />}
         {mainPanel}
         {renderInput && (
           <InputArea
@@ -216,7 +216,7 @@ const RightSection = () => {
             disableInput={isGptLoading}
           />
         )}
-        {isSearchBarVisible && <SearchBarInput />}
+        {!isGptLoading && isSearchBarVisible && <SearchBarInput />}
       </div>
     </HotKeys>
   );

@@ -61,18 +61,54 @@ async function createCourse(req, res) {
   }
 }
 
+let trainingStatuses = {};
+
 async function improveModel(req, res) {
   try {
     const submitterId = req.user.id;
     const courseId = req.params.courseId;
+    const key = `${courseId}-${submitterId}`;
+    if (
+      trainingStatuses[key] &&
+      trainingStatuses[key].status === 'in-progress'
+    ) {
+      return res.status(400).json({
+        error: 'Request already in progress for this user and course.',
+      });
+    }
+
     const course = await Course.findById(courseId).populate('school');
 
-    await createEmbeddingForNewData(submitterId, course, req.body.content);
+    trainingStatuses[key] = { status: 'in-progress' };
 
-    res.status(200).json({ course });
+    createEmbeddingForNewData(submitterId, course, req.body.content)
+      .then(() => {
+        trainingStatuses[key].status = 'complete';
+      })
+      .catch(error => {
+        console.log(error);
+        trainingStatuses[key].status = 'failed';
+        trainingStatuses[key].message = error.message;
+      });
+
+    res.status(202).json(trainingStatuses[key]);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message + error.stack });
+  }
+}
+
+async function getTrainingStatus(req, res) {
+  const submitterId = req.user.id;
+  const courseId = req.params.courseId;
+  const key = `${courseId}-${submitterId}`;
+  const responseStatus = trainingStatuses[key] || { status: 'not-started' };
+
+  if (responseStatus.status === 'failed') {
+    res.status(500).json({ error: responseStatus.message });
+  } else {
+    delete responseStatus.message;
+    res.status(200).json(responseStatus);
   }
 }
 
@@ -82,4 +118,5 @@ module.exports = {
   getAllCourses,
   createCourse,
   improveModel,
+  getTrainingStatus,
 };

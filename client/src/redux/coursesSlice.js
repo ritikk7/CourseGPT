@@ -44,11 +44,20 @@ export const trainCurrentlySelectedDropdownCourse = createAsyncThunk(
         getState().courses.currentlySelectedDropdownCourse?.school;
       const courseId = getState().courses.currentlySelectedDropdownCourse?._id;
 
-      const response = await api.put(
-        `/schools/${schoolId}/courses/${courseId}/improve-model`,
-        { content }
-      );
-      return response.data;
+      await api.put(`/schools/${schoolId}/courses/${courseId}/improve-model`, {
+        content,
+      });
+
+      let status;
+      do {
+        await new Promise(resolve => setTimeout(resolve, 3000)); // polls every 3 seconds for training status
+        const response = await api.get(
+          `/schools/${schoolId}/courses/${courseId}/training-status`
+        );
+        status = response.data.status;
+      } while (status !== 'complete');
+
+      return { status: 'complete', courseId };
     } catch (error) {
       handleRequestError(error);
     }

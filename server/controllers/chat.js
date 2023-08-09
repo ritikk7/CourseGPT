@@ -1,6 +1,7 @@
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 const User = require('../models/user');
+const { generateChatTitle } = require('../gpt/openAI');
 
 async function getChat(req, res) {
   try {
@@ -57,13 +58,13 @@ async function softDeleteChats(req, res) {
     const chats = await Chat.find(filter);
 
     // also set associated messages to deleted
-    chats.forEach(async chat => {
+    chats.forEach(chat => {
       let messageFilter = {
         user: req.user.id,
         chat: chat._id,
         deleted: false,
       };
-      await Message.updateMany(messageFilter, updates);
+      Message.updateMany(messageFilter, updates);
     });
 
     res.status(200).send({ chats });
@@ -103,10 +104,55 @@ async function softDeleteChat(req, res) {
   }
 }
 
+async function createChatTitle(req, res) {
+  try {
+    const chatId = req.params.chatId;
+    let messageIds = [];
+
+    let updatedChat = await Chat.findById(chatId).populate('messages');
+    let userMessageContent;
+    let chatGptResponseContent;
+
+    for (let i = 0; i < updatedChat.messages.length; i++) {
+      let message = updatedChat.messages[i];
+      if (!userMessageContent && message.role === 'user') {
+        userMessageContent = message.content;
+      } else if (!chatGptResponseContent && message.role === 'system') {
+        chatGptResponseContent = message.content;
+      }
+      messageIds.push(message._id);
+    }
+
+    if (!updatedChat.title) {
+      updatedChat.title = await generateChatTitle(
+        userMessageContent,
+        chatGptResponseContent,
+        0.5,
+        0,
+        5,
+        'gpt-3.5-turbo'
+      );
+    }
+
+    await updatedChat.save();
+
+    // The frontend expects just a list of id's not the populated messages
+    updatedChat.messages = messageIds;
+
+    res.status(201).json({ chat: updatedChat });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: 'Something went wrong ' + error.message + error + error.stack,
+    });
+  }
+}
+
 module.exports = {
   getChat,
   createChat,
   softDeleteChat,
   getChats,
   softDeleteChats,
+  createChatTitle,
 };

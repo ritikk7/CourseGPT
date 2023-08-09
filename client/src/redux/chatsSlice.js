@@ -31,6 +31,12 @@ export const fetchUserChats = createAsyncThunk(
   async () => {
     try {
       const response = await api.get(`/chats`);
+      for (const chat of response.data.chats) {
+        if (!chat.title || chat.title.length === 0) {
+          const chatTitleRes = await api.post(`/chats/${chat._id}/chat-title`);
+          chat.title = chatTitleRes.data.chat.title;
+        }
+      }
       return buildObjectMapFromArray(response.data.chats);
     } catch (error) {
       handleRequestError(error);
@@ -40,13 +46,9 @@ export const fetchUserChats = createAsyncThunk(
 
 export const createChatTitle = createAsyncThunk(
   'chats/createChatTitle',
-  async gptMessageObject => {
+  async chatId => {
     try {
-      const chatId = gptMessageObject.chat;
-      const response = await api.post(
-        `/chats/${chatId}/messages/chat-title`,
-        gptMessageObject
-      );
+      const response = await api.post(`/chats/${chatId}/chat-title`);
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);

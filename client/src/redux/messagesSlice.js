@@ -71,11 +71,23 @@ export const getGptResponseInChat = createAsyncThunk(
   async userMessageObject => {
     try {
       const chatId = userMessageObject.chat;
-      const response = await api.post(
+      await api.post(
         `/chats/${chatId}/messages/gpt-response`,
         userMessageObject
       );
-      return response.data.message;
+
+      let status;
+      let message;
+      do {
+        await new Promise(resolve => setTimeout(resolve, 500)); // polls every 0.5 seconds for gpt message status
+        const response = await api.get(
+          `/chats/${chatId}/messages/gpt-response-status`
+        );
+        status = response.data.status;
+        message = response.data.message;
+      } while (status !== 'complete');
+
+      return message;
     } catch (error) {
       handleRequestError(error);
     }
