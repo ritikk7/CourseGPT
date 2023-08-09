@@ -282,4 +282,4 @@ chats/messages search feature.
 
 ### Ritik
 
-Improved profile modal UI, implemented change password functionality, and copy-to-clipboard.
+I took responsibility to build out the UI for the Profile Modal allowing users to make changes to their personal information, their choice of school and courses, and passwords. I also implemented the functionality that allows the users to change their passwords, and UX features like the ability to copy the chat response to clipboard.
