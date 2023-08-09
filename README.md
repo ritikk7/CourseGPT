@@ -241,7 +241,7 @@ sentiment analysis)
 
 ## Next Steps
 
-[Stretch Requirements/Ideas Added Mid-Project (2/7 ✅)](#stretch-requirements/ideas-added-mid-project-2/7-✅)
+[Stretch Requirements/Ideas Added Mid-Project (2/7 ✅)](#stretch-requirementsideas-added-mid-project-27-)
 The first is **Auto-training**, where professors can link their mail or Piazza for automatic course model training,
 reducing their manual effort to train the model themselves on repetitive questions. The second idea focuses on *
 *Piazza / Slack Integration** which allows CourseGPT to answer questions within existing platforms that both students
