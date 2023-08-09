@@ -55,14 +55,14 @@ const theme = extendTheme({
     },
 
     chatSection: {
-      dark: '#c6daf3', // background for message from chat gpt (dark background)
-      lightText: '#08101C', // text for dark background
-      light: '#FFFFFF', // background for message from user (light background)
-      darkText: '#08101C', // text for light background
-      sendArrow: '#1F3A60', // send arrow inside input box
-      inputBackground: '#FFFFFF', // background for user input box
-      inputText: '#1F3A60', // text for user input box
-      icon: `#1F3A60`, // icon color for feedback on top of dark background
+      dark: '#c6daf3',
+      lightText: '#08101C',
+      light: '#FFFFFF',
+      darkText: '#08101C',
+      sendArrow: '#1F3A60',
+      inputBackground: '#FFFFFF',
+      inputText: '#1F3A60',
+      icon: `#1F3A60`,
     },
 
     button: {
@@ -79,33 +79,12 @@ const theme = extendTheme({
       dark: '#1A243B',
     },
 
-    feedbackModal: {
-      mainBackground: '#FFFFFF',
-    },
-
     search: {
       highlight: '#EBB810',
-    },
-
-    primary: {
-      light: '#DDEAF3',
-      dark: '#47687F',
-    },
-    secondary: {
-      light: '#6A7F8C',
-      dark: '#3F5761',
-    },
-    tertiary: {
-      light: '#B3C5D3',
-      dark: '#2F414C',
     },
     textPrimary: {
       light: '#FFFFFF',
       dark: '#08101C',
-    },
-    textSecondary: {
-      light: '#7F9CAE',
-      dark: '#1A2834',
     },
     accent: {
       light: '#79AAFF',
@@ -120,23 +99,6 @@ const theme = extendTheme({
       hover: '#8C8C8C',
       light: '#D6D6D6',
       dark: '#495F6C',
-    },
-    formLabel: {
-      light: '#7E99A7',
-      dark: '#3B4D57',
-    },
-
-    neutral: {
-      light: '#7F9CAE',
-      dark: '#2E404C',
-    },
-  },
-  styles: {
-    global: {
-      body: {
-        color: 'textSecondary.light',
-        bg: 'background.light',
-      },
     },
   },
 });

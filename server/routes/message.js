@@ -15,7 +15,6 @@ router.get('/search', getAllMessages);
 
 router.post('/', createUserMessage);
 
-
 router.post('/gpt-response', getGptResponse);
 router.get('/gpt-response-status', checkGptResponse);
 

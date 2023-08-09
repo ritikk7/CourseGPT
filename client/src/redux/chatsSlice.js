@@ -31,11 +31,9 @@ export const fetchUserChats = createAsyncThunk(
   async () => {
     try {
       const response = await api.get(`/chats`);
-      for(const chat of response.data.chats) {
-        if(!chat.title || chat.title.length === 0) {
-          const chatTitleRes = await api.post(
-            `/chats/${chat._id}/chat-title`,
-          );
+      for (const chat of response.data.chats) {
+        if (!chat.title || chat.title.length === 0) {
+          const chatTitleRes = await api.post(`/chats/${chat._id}/chat-title`);
           chat.title = chatTitleRes.data.chat.title;
         }
       }
@@ -50,9 +48,7 @@ export const createChatTitle = createAsyncThunk(
   'chats/createChatTitle',
   async chatId => {
     try {
-      const response = await api.post(
-        `/chats/${chatId}/chat-title`,
-      );
+      const response = await api.post(`/chats/${chatId}/chat-title`);
       return response.data.chat;
     } catch (error) {
       handleRequestError(error);

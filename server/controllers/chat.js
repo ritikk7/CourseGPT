@@ -1,7 +1,7 @@
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 const User = require('../models/user');
-const { generateChatTitle } = require("../gpt/openAI");
+const { generateChatTitle } = require('../gpt/openAI');
 
 async function getChat(req, res) {
   try {
@@ -117,7 +117,7 @@ async function createChatTitle(req, res) {
       let message = updatedChat.messages[i];
       if (!userMessageContent && message.role === 'user') {
         userMessageContent = message.content;
-      } else if(!chatGptResponseContent && message.role === 'system'){
+      } else if (!chatGptResponseContent && message.role === 'system') {
         chatGptResponseContent = message.content;
       }
       messageIds.push(message._id);
