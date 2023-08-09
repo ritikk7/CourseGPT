@@ -11,7 +11,7 @@ class EmbeddingCache {
 
   async getAllByCourse(courseId) {
     // this variable is to catch cases where the user trained the model (added embeddings) before asking any questions.
-    // (asking questions is what would pull all of the embeddings from the database)
+    // (asking questions is what would pull all the embeddings from the database)
     let embeddingsCreatedBeforeQuestionsWereAsked =
       this.lastUpdated[courseId] &&
       this.lastUpdated[courseId].setMilliseconds(0) <=

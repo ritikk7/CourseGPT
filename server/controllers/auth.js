@@ -78,8 +78,7 @@ async function updatePassword(req, res) {
       return res.status(400).json({ error: 'Old password does not match' });
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(req.body.newPassword, 10);
     await user.save();
 
     res.json({ message: 'Password updated successfully' });
