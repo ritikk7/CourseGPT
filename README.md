@@ -12,16 +12,6 @@ companion [(ref to a similar, but smaller version)](https://edge.edx.org/assets/
 
 ---
 
-## Grading
-
-If you'd like an account that has many questions and responses already populated (for testing), you can use the following account. The account type is developer, which gives you access to all additional features (training, analytics, etc.).
-
-However, this is not necessary - you can easily create your own account, if you'd prefer.
-
-Email: grading@gmail.com
-
-Password: i_love_grading
-
 ## Project Goals
 
 ### Minimal Requirements (3/3 ✅)
@@ -267,44 +257,6 @@ and professors use. The third enhancement, **Deleting Train Data\*\*, would enab
 training data, ensuring that the course information provided within CourseGPT remains up-to-date.
 
 Bonus: Refactoring and ensuring production-level code quality and security.
-
-## Contributions
-
-### Carolyn
-
-I worked heavily on the data analysis flow. For preparation, this included everything from the backend/frontend of
-feedback collection and the creation of question-answer pairs on our backend. In terms of the data analysis, I completed
-all of the backend, which involved tokenizing and grouping similar questions and analyzing frequency and sentiment.
-
-### Amy
-
-I built all the frontend and some of the initial backend for the chat and message functionality, including chat
-filtering.
-Additionally, I designed and implemented the overall UI, created visualizations for the data analysis dashboard, and
-allowed users to select profile avatars.
-
-### Kyle
-
-I placed priority on laying the foundational aspects of the project which included the: folder structure, npm
-scripts, auto-deployment to Heroku, Express server and (most) routes, Redux slices and selectors, Mongo DB models, and
-the user login & account creation. After Duffy's preliminary research, I also implemented the primary
-chat and auto-training features, excluding the frontend rendering components done by Amy. Beyond these specific tasks,
-my
-contributions rippled throughout the entire project through refactoring, fixing bugs, and implementing various
-improvements.
-
-### Duffy
-
-I was responsible for spearheading the preliminary research and development phase of the Embeddings-based Search Model,
-enabling users to query GPT based on the provided training text. I also built the new user registration
-flow, allowing new users to select their school and courses. I later also implemented the frontend and backend
-chats/messages search feature.
-
-### Ritik
-
-I took responsibility to build out the UI for the Profile Modal allowing users to make changes to their personal
-information, their choice of school and courses, and passwords. I also implemented the functionality that allows the
-users to change their passwords, and UX features like the ability to copy the chat response to clipboard.
 
 ## References
 
